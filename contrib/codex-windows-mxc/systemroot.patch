@@ -1,5 +1,5 @@
 diff --git a/codex-rs/exec-server/src/fs_sandbox.rs b/codex-rs/exec-server/src/fs_sandbox.rs
-index f3e39c4..92afe8f 100644
+index f3e39c4..63eefde 100644
 --- a/codex-rs/exec-server/src/fs_sandbox.rs
 +++ b/codex-rs/exec-server/src/fs_sandbox.rs
 @@ -373,10 +373,10 @@ fn helper_env_key_is_allowed(key: &str) -> bool {
@@ -8,29 +8,51 @@ index f3e39c4..92afe8f 100644
          || bazel_bwrap_env_key_is_allowed(key)
 -        // MXC needs SystemDrive to resolve platform directories and LOCALAPPDATA
 -        // to create the sandboxed helper process.
-+        // MXC needs SystemDrive to resolve platform directories, LOCALAPPDATA
-+        // to create the helper, and SystemRoot when using an explicit child env.
++        // MXC needs SystemDrive to resolve platform directories, and SystemRoot and
++        // LOCALAPPDATA to create the sandboxed helper process.
          || (cfg!(windows)
 -            && ["PATH", "SystemDrive", "LOCALAPPDATA"]
 +            && ["PATH", "SystemDrive", "SystemRoot", "LOCALAPPDATA"]
                  .iter()
                  .any(|allowed| key.eq_ignore_ascii_case(allowed)))
  }
-@@ -716,7 +716,9 @@ mod tests {
+@@ -716,6 +716,7 @@ mod tests {
                  ("Path", r"C:\Windows\System32"),
                  ("LocalAppData", r"C:\Users\test\AppData\Local"),
                  ("SystemDrive", "C:"),
-+                ("sYsTeMrOoT", r"C:\Windows"),
++                ("systemROOT", r"C:\Windows"),
                  ("PATH_INJECTION", "bad"),
-+                ("SYSTEMROOT_INJECTION", "bad"),
                  ("OPENAI_API_KEY", "secret"),
              ]
-             .map(|(key, value)| (OsString::from(key), OsString::from(value))),
-@@ -731,6 +733,7 @@ mod tests {
+@@ -731,6 +732,7 @@ mod tests {
                      r"C:\Users\test\AppData\Local".to_string()
                  ),
                  ("SystemDrive".to_string(), "C:".to_string()),
-+                ("sYsTeMrOoT".to_string(), r"C:\Windows".to_string()),
++                ("systemROOT".to_string(), r"C:\Windows".to_string()),
              ])
          );
      }
+diff --git a/codex-rs/exec-server/tests/file_system_windows.rs b/codex-rs/exec-server/tests/file_system_windows.rs
+index bbcd2c0..bcb4c46 100644
+--- a/codex-rs/exec-server/tests/file_system_windows.rs
++++ b/codex-rs/exec-server/tests/file_system_windows.rs
+@@ -447,6 +447,19 @@ async fn file_system_remote_fs_helper_respects_windows_sandbox_write_policy(
+         "sandboxed fs helper must not create blocked file after error: {error}"
+     );
+ 
++    let mut writable_sandbox = workspace_write_sandbox(readonly_dir.clone());
++    writable_sandbox.windows_sandbox_selection = sandbox.windows_sandbox_selection;
++    let allowed_file = readonly_dir.join("allowed.txt");
++    file_system
++        .write_file(
++            &PathUri::from_host_native_path(&allowed_file)?,
++            b"allowed".to_vec(),
++            WriteFileOptions::default(),
++            Some(&writable_sandbox),
++        )
++        .await?;
++    assert_eq!(std::fs::read(&allowed_file)?, b"allowed");
++
+     Ok(())
+ }
+ 

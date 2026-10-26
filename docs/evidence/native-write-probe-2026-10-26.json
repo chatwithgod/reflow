@@ -316,15 +316,37 @@
     ],
     "candidate_patch": {
       "path": "contrib/codex-windows-mxc/systemroot.patch",
-      "sha256": "2e2ce088a8a0cdd3d520a7bda3422fca1bf6b5996de4010b7bd49c4386aa5bcb",
+      "sha256": "42fd696ed97d5ce2260a6e894b43b611eb6a0d841cd77ba02fc444d6dd869f65",
+      "origin": "verbatim diff of upstream d4bdafd378a8e328a67a4cd3557b5fe634af378c",
+      "new_reflow_upstream_contribution": false,
       "applies_to_pinned_upstream": true,
-      "applied_candidate_git_blob": "92afe8f2096cede276733841d9992e2023b119b8",
-      "rust_unit_test": "added, not run: Rust toolchain absent",
+      "applied_files_match_upstream_fix": {
+        "codex-rs/exec-server/src/fs_sandbox.rs": "63eefde6ee8caf9f52f2cdb0c4c03622c32a311a",
+        "codex-rs/exec-server/tests/file_system_windows.rs": "bcb4c462ec263557aeea08a7c4bea92fe63e5ae5"
+      },
+      "rust_unit_test": "not run",
       "patched_cli_build": "not performed",
       "native_patch_retest": "not performed",
-      "published_or_submitted": false
+      "submitted_by_reflow": false
     },
     "related_public_issue": "https://github.com/openai/codex/issues/56918",
-    "related_issue_same_root_cause_confirmed": false
-  }
+    "related_issue_same_root_cause_confirmed": false,
+    "upstream_fix": {
+      "pr": "https://github.com/openai/codex/pull/56468",
+      "commit": "d4bdafd378a8e328a67a4cd3557b5fe634af378c",
+      "merged_on": "2026-10-23",
+      "attribution": "OpenAI upstream author jif; not a new Reflow contribution",
+      "inspected_main": "970111f6cb62cc02fe36a82ea7d71b37a2889c97"
+    },
+    "published_versions_checked": {
+      "checked_on": "2026-10-27",
+      "registry_url": "https://registry.npmjs.org/-/package/@openai/codex/dist-tags",
+      "latest": "0.164.0",
+      "alpha": "0.165.0-alpha.1",
+      "alpha_source_commit": "4cf2c16e4bc67809f620582d1999818e1b51eb2e",
+      "alpha_source_preserves_systemroot": false,
+      "alpha_binary_installed_or_tested": false
+    }
+  },
+  "updated_on": "2026-10-27"
 }

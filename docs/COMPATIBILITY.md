@@ -11,7 +11,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 
 Windows amd64 已原生运行。Linux/macOS 的 amd64、arm64 目前仅交叉编译通过，尚未原生运行验收。
 
-Windows 原生 `apply_patch` 尚未通过独立写入探针：CLI `0.164.0-alpha.11.1` 和 `0.164.0` 在模拟上游下，经过或绕过 Reflow 都写入失败；命令写文件通过。已确认原生文件系统 helper 缺少 `SYSTEMROOT` 导致启动失败，并准备候选补丁，但尚未编译复测，完整工作区编辑兼容性尚未验收。见 [离线复现与证据](NATIVE-WRITE-PROBE.md)。
+Windows 原生 `apply_patch` 尚未通过独立写入探针：CLI `0.164.0-alpha.11.1` 和 `0.164.0` 在模拟上游下，经过或绕过 Reflow 都写入失败；命令写文件通过。已确认原生文件系统 helper 缺少 `SYSTEMROOT` 导致启动失败。上游已有修复，但尚未验证包含修复的 CLI，完整工作区编辑兼容性尚未验收。见 [离线复现与证据](NATIVE-WRITE-PROBE.md)。
 
 独立代理还覆盖 HTTP/SSE、预热、取消、gzip/zstd 请求、compact 透传、多轮恢复与缓存隔离。上述协议回归主要使用模拟客户端/上游，不能推导为 Desktop/dot 已验收。详情见 [dev.3 验证记录](VERIFICATION-0.1.0-dev.3.md)。
 

@@ -4,4 +4,5 @@
 *.ts text eol=lf
 *.json text eol=lf
 adapters/magpie/patches/*.patch -text -whitespace
+contrib/codex-windows-mxc/*.patch -text -whitespace
 *.ps1 text eol=lf
