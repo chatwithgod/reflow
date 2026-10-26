@@ -31,6 +31,9 @@ $summary = [ordered]@{
     tests_skipped = @($events | Where-Object { $_.Action -eq 'skip' -and $_.Test }).Count
     race = 'pass'; vet = 'pass'; decoder_fuzz = 'pass'
     native_cli_synthetic_auth = [bool]$CodexExe
+    native_app_server_synthetic_auth = [bool]$CodexExe
+    native_app_server_history_modes = $(if ($CodexExe) { @('legacy','paginated') } else { @() })
+    native_app_server_scope = 'backend RPC only: login identity, native provider, tool result, cold resume, config restore; no Desktop/dot UI'
     native_workspace_write_probe = 'excluded: run native_write_probe tag separately; see docs/NATIVE-WRITE-PROBE.md'
     native_cli_version = $(if ($CodexExe) { & $CodexExe --version } else { $null })
     pi_cli_synthetic_oauth = [bool]$PiCli

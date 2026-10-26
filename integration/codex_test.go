@@ -43,7 +43,7 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 	}
 }
 
-type nativeLoginMode struct{ codeMode, nativeWrite, direct, command, add, noDaemon bool }
+type nativeLoginMode struct{ codeMode, nativeWrite, direct, command, add, noDaemon, appServer, paginated bool }
 
 func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	codeMode, nativeWrite := mode.codeMode, mode.nativeWrite
@@ -71,7 +71,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	}
 	var mu sync.Mutex
 	var calls, wsCalls, httpCalls, chosenTools, discardedTools int
-	var authSeen, toolSeen bool
+	var authSeen, toolSeen, resumeSeen bool
 	var paths []string
 
 	mcp := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -214,6 +214,12 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 				events = streamed
 			}
 		} else {
+			if mode.appServer && n == 4 {
+				raw, _ := json.Marshal(body["input"])
+				mu.Lock()
+				resumeSeen = strings.Contains(string(raw), "chosen-call") && strings.Contains(string(raw), "REFLOW_TOOL_OK") && strings.Contains(string(raw), "REFLOW_NATIVE_OK")
+				mu.Unlock()
+			}
 			input, _ := body["input"].([]any)
 			for _, value := range input {
 				item, ok := value.(map[string]any)
@@ -227,10 +233,14 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 					mu.Unlock()
 				}
 			}
-			events = testfixture.Round("finish", 20, false)
+			finalID, marker := "finish", "REFLOW_NATIVE_OK"
+			if mode.appServer && n == 4 {
+				finalID, marker = "resumed", "REFLOW_NATIVE_RESUMED"
+			}
+			events = testfixture.Round(finalID, 20, false)
 			for _, ev := range events {
 				if item, ok := ev["item"].(map[string]any); ok && item["type"] == "message" {
-					item["content"] = []any{core.Object{"type": "output_text", "text": "REFLOW_NATIVE_OK", "annotations": []any{}}}
+					item["content"] = []any{core.Object{"type": "output_text", "text": marker, "annotations": []any{}}}
 				}
 			}
 		}
@@ -301,7 +311,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		proxyURL = startProxy(t, proxyURL)
 	}
 	chatgptURL, caPath := upstream.URL, ""
-	if mode.direct {
+	if mode.direct || mode.appServer {
 		cloud, certificate := testfixture.LocalTLS(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			w.Header().Set("Content-Type", "application/json")
 			if strings.Contains(r.URL.Path, "/accounts/check") {
@@ -347,7 +357,13 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	if caPath != "" {
 		cmd.Env = append(cmd.Env, "CODEX_CA_CERTIFICATE="+caPath)
 	}
-	out, err := cmd.CombinedOutput()
+	var out []byte
+	var err error
+	if mode.appServer {
+		out, err = runAppServerLifecycle(t, ctx, cmd, home, work, proxyURL, prompt, mode.paginated)
+	} else {
+		out, err = cmd.CombinedOutput()
+	}
 	if nativeWrite {
 		contents, readErr := os.ReadFile(filepath.Join(work, "probe.txt"))
 		if readErr != nil || strings.TrimSpace(string(contents)) != "REFLOW_TOOL_OK" {
@@ -362,6 +378,8 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	expectedCalls := 3
 	if mode.direct {
 		expectedCalls = 2
+	} else if mode.appServer {
+		expectedCalls = 4
 	}
 	if err != nil || calls != expectedCalls || !authSeen || !toolSeen || chosenTools != 1 || discardedTools != 0 || wsCalls < expectedCalls || httpCalls != 0 || !strings.Contains(string(out), "REFLOW_NATIVE_OK") || strings.Contains(string(out), "falling back to HTTP") {
 		text := strings.ReplaceAll(string(out), jwt, "[synthetic token]")
@@ -370,12 +388,15 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		}
 		t.Fatalf("native CLI err=%v calls=%d WS=%d HTTP=%d auth=%t tool=%t chosen=%d discarded=%d paths=%v output=%s", err, calls, wsCalls, httpCalls, authSeen, toolSeen, chosenTools, discardedTools, paths, text)
 	}
+	if mode.appServer && !resumeSeen {
+		t.Fatal("app-server resume did not return retained tool history and the prior final message")
+	}
 	t.Logf("installed CLI: %d synthetic inference calls via WebSocket, 1 real read-only MCP invocation, discarded call not executed, result returned; no HTTP fallback", calls)
 	if mode.direct {
 		return
 	}
 	stats := proxyMetrics(t, proxyURL)
-	if stats.Requests != 3 || stats.Continuations != 1 || stats.InputTokens != 300 || stats.OutputTokens != 586 || !stats.UsageComplete {
+	if stats.Requests != int64(expectedCalls) || stats.Continuations != 1 || stats.InputTokens != int64(expectedCalls*100) || stats.OutputTokens != int64(526+(expectedCalls-1)*30) || !stats.UsageComplete {
 		t.Fatalf("native CLI upstream accounting mismatch: %+v", stats)
 	}
 	if stats.ContinuedToolResponses != 1 || stats.ContinuedToolCalls != 1 || stats.ContinuedToolResults != 1 || stats.ToolTrackingDrops != 0 {

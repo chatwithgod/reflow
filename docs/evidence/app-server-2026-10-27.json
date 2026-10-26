@@ -1,0 +1,200 @@
+{
+  "date_local": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "source_base_commit": "6e943fbc3159bde0b75d9fa3b8f8b83a17463327",
+  "source_snapshot": "test additions on source_base_commit, identified by file hashes below",
+  "summary": {
+    "created_utc": "2026-10-26T21:41:49.2470575Z",
+    "go_version": "go version go1.26.8 windows/amd64",
+    "tests_passed": 79,
+    "tests_skipped": 0,
+    "race": "pass",
+    "vet": "pass",
+    "decoder_fuzz": "pass",
+    "native_cli_synthetic_auth": true,
+    "native_app_server_synthetic_auth": true,
+    "native_app_server_history_modes": [
+      "legacy",
+      "paginated"
+    ],
+    "native_app_server_scope": "backend RPC only: login identity, native provider, tool result, cold resume, config restore; no Desktop/dot UI",
+    "native_workspace_write_probe": "excluded: run native_write_probe tag separately; see docs/NATIVE-WRITE-PROBE.md",
+    "native_cli_version": "codex-cli 0.164.0",
+    "pi_cli_synthetic_oauth": true,
+    "pi_cli_version": "1.4.0",
+    "proxy_binary_sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee",
+    "native_plugin_synthetic_auth": true,
+    "plugin_marketplace": "dist/0.1.0-dev.4/20261027-032350-799/reflow_plugin_0.1.0-dev.4_windows_amd64",
+    "live_account": false,
+    "live_model": false,
+    "desktop_and_dot": "not tested",
+    "production_modified": false
+  },
+  "event_pass_counts": {
+    "tests.jsonl": 79,
+    "race.jsonl": 79
+  },
+  "app_server": {
+    "history_modes": [
+      "legacy",
+      "paginated"
+    ],
+    "mode_concurrency": 1,
+    "process_concurrency_per_mode": 1,
+    "basis": "successful source assertions for each mode; no raw RPC transcript stored",
+    "per_mode": {
+      "synthetic_inference_requests": 4,
+      "continuations": 1,
+      "completed_user_turns": 2,
+      "transport": "WebSocket",
+      "http_inference_fallback": false,
+      "native_account_type": "chatgpt",
+      "model_provider": "openai",
+      "retained_local_readonly_mcp_executions": 1,
+      "discarded_mcp_executions": 0,
+      "continued_tool_responses": 1,
+      "continued_tool_calls": 1,
+      "continued_tool_results": 1,
+      "tool_tracking_drops": 0,
+      "input_tokens": 400,
+      "output_tokens": 616,
+      "usage_complete": true,
+      "cold_process_resume": true,
+      "retained_tool_and_final_history_returned": true,
+      "config_controller_connect": true,
+      "config_restore_exact": true
+    },
+    "native_home_verified_before_thread_request": true,
+    "external_http_destinations_denied_by_local_proxy": true,
+    "existing_credentials_read": false,
+    "refresh_token_requested": false,
+    "desktop_or_dot_ui_tested": false
+  },
+  "artifacts": [
+    {
+      "path": "dist/0.1.0-dev.4/20261027-032350-799/reflow_0.1.0-dev.4_windows_amd64/reflow.exe",
+      "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee",
+      "bytes": 10994688
+    },
+    {
+      "path": "build/codex-patched/20261026-172605-319799/codex.exe",
+      "sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+      "bytes": 342918656
+    },
+    {
+      "path": "build/codex-patched/20261026-172605-319799/codex-code-mode-host.exe",
+      "sha256": "4d82e0157eba9afdb48650cb3bdd7c709d5bb1ce08ec661941ba74c605f2f0d3",
+      "bytes": 106674176
+    }
+  ],
+  "desktop_source_inspection": {
+    "appx_version": "26.1021.3705.0",
+    "package_version": "26.1021.31345",
+    "files": [
+      {
+        "file": ".vite/build/bootstrap-BYjpvKBK.js",
+        "size": 618167,
+        "sha256": "3081dd9f7fdf0eba02d8caf99becb6f891e7bd9a3b1f7345537eb10165e16ff1"
+      },
+      {
+        "file": ".vite/build/application-network-startup-B4Wezh-6.js",
+        "size": 298670,
+        "sha256": "9775ead462eb9ab9c31b4a8aedf92b18a5a657f186be21f207a9b7adb143895f"
+      },
+      {
+        "file": ".vite/build/startup-requirements-CuyNnLmn.js",
+        "size": 119108,
+        "sha256": "3451b138221aaad11aad1db8ec122a3363189379b9d47d2b0fe7bf553636a46f"
+      },
+      {
+        "file": ".vite/build/main-BPBEjAxi.js",
+        "size": 5082185,
+        "sha256": "2327d031e32c8d80c0dbf9bd81144466a90f8e49d3bc64e6604c23fbab900d7f"
+      }
+    ],
+    "read_only": true,
+    "desktop_launched": false,
+    "ui_accepted": false,
+    "native_ui_control_available": false,
+    "dot_browser_surface_available": false,
+    "candidate_environment": [
+      "CODEX_HOME",
+      "CODEX_ELECTRON_USER_DATA_PATH",
+      "CODEX_CLI_PATH",
+      "CODEX_APP_SERVER_FORCE_CLI"
+    ],
+    "limit": "source observations only; no GUI launch, isolation or dot visibility acceptance",
+    "codex_normal_text_ui_control_tool_available": false,
+    "source_observations": [
+      "CODEX_ELECTRON_USER_DATA_PATH sets Electron userData before the single-instance lock",
+      "Explicit CODEX_HOME survives startup environment reloading when the userData override is also set",
+      "CODEX_CLI_PATH selects a CLI backend executable",
+      "CODEX_APP_SERVER_FORCE_CLI=1 bypasses the configured WebSocket backend selection"
+    ]
+  },
+  "evidence_files": [
+    {
+      "path": "integration/app_server_test.go",
+      "sha256": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+      "bytes": 10385
+    },
+    {
+      "path": "integration/codex_test.go",
+      "sha256": "006e1f5c47cb79e070f07ede7f493e70aeaade97e8c9e4c45f4deb9e462108bc",
+      "bytes": 16320
+    },
+    {
+      "path": "scripts/verify.ps1",
+      "sha256": "c4ccb98719d56eb9f4696f03b9d44736df9a22ad877648811e0e442142d20c41",
+      "bytes": 3889
+    },
+    {
+      "path": "build/verification/20261027-054112-483/summary.json",
+      "sha256": "f3b2967bc08c9134def46b986198a602ed9b68895538a1a1846f8e6fa3c7641d",
+      "bytes": 1138
+    },
+    {
+      "path": "build/verification/20261027-054112-483/tests.jsonl",
+      "sha256": "bf1f4c3028cf1156660de8dd6093a954d07baeeda55922377c6bba384f040149",
+      "bytes": 72536
+    },
+    {
+      "path": "build/verification/20261027-054112-483/race.jsonl",
+      "sha256": "4c8b14485cbb33aab2586790d4d63e05d702f86929b345f15d7ed2781e05ff27",
+      "bytes": 73355
+    },
+    {
+      "path": "build/verification/20261027-054112-483/fuzz.txt",
+      "sha256": "543688a196eb520726f63e89d74118ad40c5c56913ee2ca6088b27223ee5e159",
+      "bytes": 442
+    },
+    {
+      "path": "build/app-server-history-modes-20261027.jsonl",
+      "sha256": "49c5d11810fb3e7e2f1751bdcb9bfa6068a011175431f82cf814852dd0a3bc82",
+      "bytes": 4972
+    },
+    {
+      "path": "build/verify-app-server-history-console.log",
+      "sha256": "d93dab7cb9f5bb371eed4a0d9f206a2cb71635300b365a8fd1ce99db2b9665cf",
+      "bytes": 146413
+    },
+    {
+      "path": "build/desktop-source-inspection-20261027.json",
+      "sha256": "6a9986e0774588cd4e6726b0d015559dde616767219a862da20416bc0b007f3f",
+      "bytes": 1349
+    }
+  ],
+  "live_tests": {
+    "new_sessions": 0,
+    "existing_sessions_total": 6,
+    "existing_inference_requests_total": 35,
+    "existing_continuations_total": 1
+  },
+  "limits": [
+    "Synthetic upstream success does not prove real continuation closure or model quality",
+    "Desktop source observations do not prove GUI isolation or dot entry visibility",
+    "No real token refresh, Linux/macOS native execution, or remote CI acceptance",
+    "Native write probe results are separate historical evidence, not rerun here",
+    "No production configuration changes, public pushes, releases or submissions"
+  ]
+}

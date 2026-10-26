@@ -5,6 +5,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | 接入方式 | 版本与范围 | 已验证行为 |
 | --- | --- | --- |
 | Codex CLI | 官方 `0.164.0-alpha.11.1`；本轮为本地 `0.164.0` 加上游 `d4bdafd` 修复 | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；本轮核对新增结果关联计数。原版写入失败另行保留 |
+| Codex app-server | 同一本地 `0.164.0` 修复构件；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的 `openai-codex` provider | 保留内置 OAuth 和模型目录，只改请求地址；SSE、WebSocket、工具执行与回传通过。新的 `openai` provider 未适配 |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过。补丁未提交上游 |
@@ -14,6 +15,8 @@ Windows amd64 已原生运行。Linux/macOS 的 amd64、arm64 目前仅交叉编
 已测两版官方 Windows CLI 的 `apply_patch` 写入探针失败，原因是文件系统 helper 缺少 `SYSTEMROOT`。加入上游修复、补齐 Code Mode 宿主的本地 `0.164.0` 构件已通过五个写入场景及原生协议、插件定向回归。这是隔离源码构件的离线结果；官方已测版本仍保留失败记录，真实会话尚未完整验收。见 [复现与证据](NATIVE-WRITE-PROBE.md)。
 
 独立代理还覆盖 HTTP/SSE、预热、取消、gzip/zstd 请求、compact 透传、多轮恢复与缓存隔离。上述协议回归主要使用模拟客户端/上游，不能推导为 Desktop/dot 已验收。详情见 [dev.4 验证记录](VERIFICATION-0.1.0-dev.4.md)。
+
+最新源码全量回归为 79 个通过项、0 跳过，race、vet、fuzz 通过。新增 app-server 检查沿用 dev.4 构件，没有替换生产客户端，也没有新增真实账号调用。两种历史格式的证据与桌面隔离入口的只读调查见 [app-server 记录](APP-SERVER-2026-10-27.md)。
 
 ## Magpie 边界
 

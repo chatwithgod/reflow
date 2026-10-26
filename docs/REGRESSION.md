@@ -1,8 +1,8 @@
 # 回归测试与离线流水线
 
-`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数的 dev.4 本地验收为 76 个通过项、0 跳过，使用本地修复版 Codex 和模拟上游，见 [验证记录](VERIFICATION-0.1.0-dev.4.md)。此前 dev.3 的 65 项记录继续保留。
+`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数的最新本地验收为 79 个通过项、0 跳过，使用本地修复版 Codex 和模拟上游，新增 app-server 的两种历史格式检查，见 [补充验证](APP-SERVER-2026-10-27.md)。此前 [dev.4 的 76 项](VERIFICATION-0.1.0-dev.4.md)和 dev.3 的 65 项记录继续保留。
 
-默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。已测两版官方 Windows CLI 仍有失败记录；加入上游修复的本地构件已通过五个场景。不能把默认 76 项通过与这些定向结果混作同一次全量验收。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
+默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。已测两版官方 Windows CLI 仍有失败记录；加入上游修复的本地构件已通过五个场景。不能把默认回归与这些定向结果混作同一次全量验收。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
 
 ## 评测自检
 
@@ -26,7 +26,7 @@ Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失�
 - [setup-go](https://github.com/actions/setup-go)：`b7ad1dad31e06c5925ef5d2fc7ad053ef454303e`
 - [setup-python](https://github.com/actions/setup-python)：`6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`
 
-仓库权限为只读 `contents`，不配置模型凭据，不包含发布步骤。工作流未提供客户端路径，因此会跳过 Codex、Pi 和原生插件三项测试。它已通过 actionlint 1.7.12，本地 Windows 执行了对应脚本；尚未推送或在 GitHub Actions 运行，不能作为 Linux/macOS 已运行的证据。
+仓库权限为只读 `contents`，不配置模型凭据，不包含发布步骤。工作流未提供客户端路径，因此会跳过 Codex CLI、Codex app-server、Pi 和原生插件四项测试。工作流文件此前已通过 actionlint 1.7.12，加入 app-server 后未改动；本地 Windows 执行了对应脚本，尚未推送或在 GitHub Actions 运行，不能作为 Linux/macOS 已运行的证据。
 
 首次本地离线脚本记为 78 个通过项、3 个客户端测试跳过，其中 20 个通过项来自 `dist` 中的适配器副本。现已添加模块边界排除生成目录，并重跑了完整客户端模拟验收。原始记录、计数更正和两种评测自检路径的证据见 [offline-ci-prep.json](evidence/offline-ci-prep.json)。CI 未执行的边界不因这次本地复查而改变。
 

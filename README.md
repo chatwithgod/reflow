@@ -10,9 +10,10 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.4`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。源码范围的 76 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调；本轮 Codex 使用加入上游修复的隔离源码构件。详细范围见 [dev.4 验证](docs/VERIFICATION-0.1.0-dev.4.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前开发版本为 `0.1.0-dev.4`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。最新源码回归为 79 个通过项、0 跳过，race、vet 和 fuzz 通过，包含打包程序与客户端联调；Codex 使用加入上游修复的隔离源码构件。详细范围见 [app-server 补充验证](docs/APP-SERVER-2026-10-27.md)、[dev.4 初始验证](docs/VERIFICATION-0.1.0-dev.4.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
+- **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复会话及配置还原通过；这是后端协议验证，Desktop/dot 界面仍未验收。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
 - **Codex 原生插件**：本地市场注册安装、缓存二进制、4 个 stdio MCP 工具，以及真实 Codex 会话通过 Code Mode 调用 `status` 均已验证。见 [插件说明](plugins/codex/README.md)。
 - **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；Windows 测试夹具补丁使 14 个旧失败项通过，宿主全量仍有 36 个失败项。见 [适配与补丁](adapters/magpie/README.md)。
@@ -22,7 +23,7 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 
 2026-10-27 的修复版单次真实诊断在 61.647 秒正常结束，4 次推理请求、文件评分 9/9、工具失败 0 次；本次未触发续接，因此整体验收仍未完成。见 [最新实测](docs/LIVE-SMOKE-2026-10-27.md)。
 
-已测两版官方 Windows CLI 的原生补丁写入存在客户端缺陷；加入上游修复的隔离源码构件已通过五个写入场景，以及原生协议、插件回归。默认 76 项回归不包含这一探针，真实账号整体验收仍未完成。见 [复现与限制](docs/NATIVE-WRITE-PROBE.md)。
+已测两版官方 Windows CLI 的原生补丁写入存在客户端缺陷；加入上游修复的隔离源码构件已通过五个写入场景，以及原生协议、插件回归。默认回归不包含这一探针，真实账号整体验收仍未完成。见 [复现与限制](docs/NATIVE-WRITE-PROBE.md)。
 
 公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 
