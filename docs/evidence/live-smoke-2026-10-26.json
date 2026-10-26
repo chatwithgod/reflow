@@ -1,0 +1,407 @@
+{
+  "date": "2026-10-26",
+  "live_account": true,
+  "model": "gpt-6.1-sol",
+  "effort": "high",
+  "proxy_binary_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6",
+  "corrective_runner_commit": "62ee5c1b5acd2a974f8cbff9ede95e19a4d687da",
+  "corrective_runner_sha256": "4c8a410bab629cba7654eadcac58ed69b0c26543ca044cb5d676291c42b34f68",
+  "pilot": {
+    "source_record": "build/evaluations/20261026-131940-696761/results.json",
+    "sha256": "99b6bb033f1c78b10a1ffe69fec1e3cb1dd7e7aeb3aa4213069eb10da3f0c0ee",
+    "data": {
+      "kind": "paired_task_evaluation",
+      "seed": 17,
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "timeout_seconds": 180,
+      "live_execution": true,
+      "task_sources": {
+        "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+        "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+        "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079"
+      },
+      "trials": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "off",
+          "max_continue": 0
+        },
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1
+        }
+      ],
+      "results": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "off",
+          "max_continue": 0,
+          "status": "finished",
+          "exit_code": 0,
+          "elapsed_seconds": 46.968,
+          "client_reported_usage": {
+            "input_tokens": 62548,
+            "cached_input_tokens": 57728,
+            "output_tokens": 644,
+            "reasoning_output_tokens": 322
+          },
+          "completed_turns": 1,
+          "error_events": 0,
+          "upstream_metrics": {
+            "requests": 4,
+            "continuations": 0,
+            "warmups": 1,
+            "completed": 4,
+            "failed": 0,
+            "usage_reports": 4,
+            "parse_errors": 0,
+            "unsupported_responses": 0,
+            "input_tokens": 62548,
+            "output_tokens": 644,
+            "cached_tokens": 57728,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 322,
+            "usage_complete": true,
+            "scope": "streaming_responses"
+          },
+          "upstream_reported_usage": {
+            "input_tokens": 62548,
+            "output_tokens": 644,
+            "cached_tokens": 57728,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 322
+          },
+          "model_evidence_valid": true,
+          "mode": "live",
+          "score": {
+            "status": "scored",
+            "total": 9,
+            "passed": 6,
+            "failed": [
+              "test_final_line",
+              "test_unicode_separator_is_not_newline",
+              "test_utf8_byte_boundaries"
+            ]
+          },
+          "success": false
+        },
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1,
+          "status": "finished",
+          "exit_code": 0,
+          "elapsed_seconds": 57.2,
+          "client_reported_usage": {
+            "input_tokens": 62044,
+            "cached_input_tokens": 51200,
+            "output_tokens": 751,
+            "reasoning_output_tokens": 430
+          },
+          "completed_turns": 1,
+          "error_events": 0,
+          "upstream_metrics": {
+            "requests": 4,
+            "continuations": 0,
+            "warmups": 1,
+            "completed": 4,
+            "failed": 0,
+            "usage_reports": 4,
+            "parse_errors": 0,
+            "unsupported_responses": 0,
+            "input_tokens": 62044,
+            "output_tokens": 751,
+            "cached_tokens": 51200,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 430,
+            "usage_complete": true,
+            "scope": "streaming_responses"
+          },
+          "upstream_reported_usage": {
+            "input_tokens": 62044,
+            "output_tokens": 751,
+            "cached_tokens": 51200,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 430
+          },
+          "model_evidence_valid": true,
+          "mode": "live",
+          "score": {
+            "status": "scored",
+            "total": 9,
+            "passed": 6,
+            "failed": [
+              "test_final_line",
+              "test_unicode_separator_is_not_newline",
+              "test_utf8_byte_boundaries"
+            ]
+          },
+          "success": false
+        }
+      ],
+      "binary_sha256": {
+        "codex": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+        "reflow": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6"
+      }
+    }
+  },
+  "corrective_pair": {
+    "source_record": "build/evaluations/20261026-133423-854766/results.json",
+    "sha256": "aa8a51f71d9d4ddc817649b362494030bb1b251ec92fe13b0a5952dd3144a96f",
+    "data": {
+      "kind": "paired_task_evaluation",
+      "seed": 17,
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "timeout_seconds": 180,
+      "live_execution": true,
+      "trial_concurrency": 1,
+      "native_subagents_enabled": false,
+      "interval_seconds": 30,
+      "runner_sha256": "4c8a410bab629cba7654eadcac58ed69b0c26543ca044cb5d676291c42b34f68",
+      "task_sources": {
+        "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+        "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+        "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079"
+      },
+      "trials": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "off",
+          "max_continue": 0
+        },
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1
+        }
+      ],
+      "results": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "off",
+          "max_continue": 0,
+          "status": "finished",
+          "exit_code": 0,
+          "elapsed_seconds": 115.824,
+          "client_reported_usage": {
+            "input_tokens": 134482,
+            "cached_input_tokens": 121088,
+            "output_tokens": 3274,
+            "reasoning_output_tokens": 442
+          },
+          "completed_turns": 1,
+          "error_events": 0,
+          "command_events": 6,
+          "file_change_events": 1,
+          "tool_failure_events": 1,
+          "rate_limit_detected": false,
+          "upstream_metrics": {
+            "requests": 8,
+            "continuations": 0,
+            "warmups": 0,
+            "completed": 8,
+            "failed": 0,
+            "usage_reports": 8,
+            "parse_errors": 0,
+            "unsupported_responses": 0,
+            "input_tokens": 134482,
+            "output_tokens": 3274,
+            "cached_tokens": 121088,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 442,
+            "usage_complete": true,
+            "scope": "streaming_responses"
+          },
+          "upstream_reported_usage": {
+            "input_tokens": 134482,
+            "output_tokens": 3274,
+            "cached_tokens": 121088,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 442
+          },
+          "model_evidence_valid": true,
+          "mode": "live",
+          "artifact_changed": true,
+          "score": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "success": true
+        },
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1,
+          "status": "agent_timeout",
+          "exit_code": 1,
+          "elapsed_seconds": 180.209,
+          "client_reported_usage": {
+            "input_tokens": 0,
+            "cached_input_tokens": 0,
+            "output_tokens": 0,
+            "reasoning_output_tokens": 0
+          },
+          "completed_turns": 0,
+          "error_events": 0,
+          "command_events": 4,
+          "file_change_events": 2,
+          "tool_failure_events": 3,
+          "rate_limit_detected": false,
+          "upstream_metrics": {
+            "requests": 7,
+            "continuations": 1,
+            "warmups": 1,
+            "completed": 7,
+            "failed": 0,
+            "usage_reports": 7,
+            "parse_errors": 0,
+            "unsupported_responses": 0,
+            "input_tokens": 112236,
+            "output_tokens": 2828,
+            "cached_tokens": 103424,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 1005,
+            "usage_complete": true,
+            "scope": "streaming_responses"
+          },
+          "upstream_reported_usage": {
+            "input_tokens": 112236,
+            "output_tokens": 2828,
+            "cached_tokens": 103424,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 1005
+          },
+          "model_evidence_valid": false,
+          "mode": "live",
+          "artifact_changed": true,
+          "score": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "success": false
+        }
+      ],
+      "execution_preflight": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0
+      },
+      "binary_sha256": {
+        "codex": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+        "reflow": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6"
+      },
+      "stopped_early": true
+    }
+  },
+  "total_observed_inference_requests": 23,
+  "total_continuations": 1,
+  "observed_upstream_failures": 0,
+  "production_invariants": {
+    "auth_file_unchanged_in_both_batches": true,
+    "config_file_unchanged_in_both_batches": true,
+    "remaining_trial_directories": 0,
+    "remaining_owned_live_cli_processes": 0
+  },
+  "acceptance": {
+    "native_login_inference_observed": true,
+    "workspace_artifact_changes_observed": true,
+    "real_continuation_observed": true,
+    "continuation_then_tool_then_normal_finish_verified": false,
+    "quality_improvement_demonstrated": false,
+    "timeout_root_cause_identified": false
+  },
+  "offline_preflight": {
+    "source_record": "build/evaluation-preflight-proof.json",
+    "sha256": "79ff1020b4fe58bd971e438d03157cbf651d4f4fb08a163b28a7ba4be13a126d",
+    "data": {
+      "positive": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0
+      },
+      "negative_without_system_drive": {
+        "kind": "windows_mxc",
+        "status": "fail",
+        "workspace_write_verified": false,
+        "exit_code": 1,
+        "timed_out": false,
+        "model_calls": 0
+      },
+      "model_calls": 0
+    }
+  },
+  "offline_regression": {
+    "source_record": "build/verification/20261026-214712-696/summary.json",
+    "sha256": "c2077162835f8cdff4fa6ecd6fa983407b606122ea3d495d2178721587c09a9d",
+    "data": {
+      "created_utc": "2026-10-26T13:47:43.3681542Z",
+      "go_version": "go version go1.26.8 windows/amd64",
+      "tests_passed": 65,
+      "tests_skipped": 0,
+      "race": "pass",
+      "vet": "pass",
+      "decoder_fuzz": "pass",
+      "native_cli_synthetic_auth": true,
+      "native_cli_version": "codex-cli 0.164.0-alpha.11.1",
+      "pi_cli_synthetic_oauth": true,
+      "pi_cli_version": "1.4.0",
+      "proxy_binary_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6",
+      "native_plugin_synthetic_auth": true,
+      "live_account": false,
+      "live_model": false,
+      "desktop_and_dot": "not tested",
+      "production_modified": false
+    }
+  },
+  "runner_tests": {
+    "source_record": "build/evaluation-process/20261026-134615-540735/summary.json",
+    "sha256": "4305c184ff6a0fbb1706d251894b8e28130280e6c9e1032759642039dbeea71f",
+    "data": {
+      "live_account": false,
+      "live_model": false,
+      "production_modified": false,
+      "status": "pass",
+      "steps": [
+        {
+          "name": "build_synthetic_agent",
+          "exit_code": 0
+        },
+        {
+          "name": "runner_process_tests",
+          "exit_code": 0
+        },
+        {
+          "name": "grader_self_test",
+          "exit_code": 0
+        }
+      ],
+      "process_tests_passed": 5,
+      "proxy_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6"
+    }
+  },
+  "planned_single_diagnostic": {
+    "file": "build/evaluations/20261026-135317-199575/results.json",
+    "executed": false
+  }
+}

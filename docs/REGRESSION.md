@@ -1,10 +1,10 @@
 # 回归测试与离线流水线
 
-`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数、排除构件副本后的 dev.3 本地验收为 63 个通过项、0 跳过，见 [验证记录](VERIFICATION-0.1.0-dev.3.md)。
+`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数、排除构件副本并增补 Code Mode 回归后的 dev.3 本地验收为 65 个通过项、0 跳过，见 [验证记录](VERIFICATION-0.1.0-dev.3.md)。
 
 ## 评测自检
 
-在源码目录使用新增入口，会构建代理与合成 agent，然后运行 4 项进程检查和 4 项任务评分器自检：
+在源码目录使用新增入口，会构建代理与合成 agent，然后运行 5 项进程检查和 4 项任务评分器自检：
 
 ```sh
 python scripts/check-evaluation.py --go /absolute/path/to/go

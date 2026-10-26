@@ -36,6 +36,10 @@ class RunnerProcessTests(unittest.TestCase):
                 record = self.execute(condition, "Fix merge_intervals in solution.py")
                 self.assertTrue(record["success"], record)
                 self.assertEqual(record["completed_turns"], 1)
+                self.assertTrue(record["artifact_changed"])
+                self.assertTrue(record["event_trace"])
+                for event in record["event_trace"]:
+                    self.assertLessEqual(set(event), {"at_seconds", "event", "kind", "status", "exit_code"})
                 self.assertEqual(record["client_reported_usage"]["input_tokens"], 10)
                 self.assertEqual(record["client_reported_usage"]["output_tokens"], 8 if condition == "on" else 5)
                 self.assertEqual(record["upstream_metrics"]["requests"], 0)
@@ -57,6 +61,12 @@ class RunnerProcessTests(unittest.TestCase):
     def test_timeout_joins_owned_processes_and_removes_credentials(self):
         record = self.execute("on", "SYNTHETIC_AGENT_TIMEOUT merge_intervals", timeout=1)
         self.assertEqual(record["status"], "agent_timeout")
+        self.assertFalse(record["success"])
+
+    def test_rate_limit_stops_agent_and_records_only_classification(self):
+        record = self.execute("on", "SYNTHETIC_AGENT_RATE_LIMIT parse_chunks", timeout=5)
+        self.assertEqual(record["status"], "rate_limited")
+        self.assertTrue(record["rate_limit_detected"])
         self.assertFalse(record["success"])
 
 

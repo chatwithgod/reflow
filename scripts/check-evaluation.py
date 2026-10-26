@@ -33,7 +33,7 @@ def main():
     (report / "oracles.json").write_text(json.dumps(ORACLES), encoding="utf-8")
     summary = {"live_account": False, "live_model": False, "production_modified": False,
                "status": "running", "steps": []}
-    keep = {"PATH", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "PROGRAMDATA",
+    keep = {"PATH", "SYSTEMROOT", "SYSTEMDRIVE", "WINDIR", "COMSPEC", "PATHEXT", "PROGRAMDATA",
             "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY"}
     env = {key: value for key, value in os.environ.items() if key.upper() in keep}
     env.update(GOTOOLCHAIN="local", GOENV="off", GOWORK="off", CGO_ENABLED="0",
@@ -72,7 +72,7 @@ def main():
                                          "discover", "-s", "evaluations", "-p", "test_runner.py", "-v"])
             output = log.read_text(encoding="utf-8")
             count = re.search(r"Ran (\d+) tests? in", output)
-            if not count or int(count.group(1)) < 4 or "skipped=" in output:
+            if not count or int(count.group(1)) < 5 or "skipped=" in output:
                 raise RuntimeError("evaluation process tests did not all run")
             summary["process_tests_passed"] = int(count.group(1))
             run("grader_self_test", [sys.executable, "evaluations/run.py", "--self-test"])

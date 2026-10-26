@@ -10,7 +10,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。排除构件副本后，源码范围的 63 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调。详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。排除构件副本并增补 Code Mode 回归后，源码范围的 65 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调。详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
@@ -18,7 +18,7 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 - **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；宿主全量测试未通过，选定失败项在干净上游和修改版复查时失败集合相同。见 [适配与补丁](adapters/magpie/README.md)。
 - **开关评测**：4 项任务、34 个评分检查点，评分器和进程管理自检通过，尚无真实模型质量结果。见 [评测说明](docs/EVALUATION.md)。
 
-这些验证使用隔离目录和模拟上游，没有调用真实账号，也没有改动生产配置。真实账号、Desktop/dot 和任务质量验收仍未完成。
+上述自动回归使用隔离目录和模拟上游。后续原生 ChatGPT 登录实测中，关闭组正常完成；开启组观察到一次真实续接且文件评分 9/9，但会话达到 180 秒上限，尚未完整验收。见 [真实测试记录](docs/LIVE-SMOKE-2026-10-26.md)。生产配置未改，Desktop/dot 和质量改善结论仍待验证。
 
 公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 

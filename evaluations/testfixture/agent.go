@@ -59,6 +59,11 @@ func main() {
 		fmt.Println(`{"type":"turn.failed","error":{"message":"SYNTHETIC_PRIVATE_SENTINEL"}}`)
 		os.Exit(1)
 	}
+	if strings.Contains(prompt, "SYNTHETIC_AGENT_RATE_LIMIT") {
+		fmt.Println(`{"type":"error","message":"429 rate_limit SYNTHETIC_PRIVATE_SENTINEL"}`)
+		time.Sleep(10 * time.Second)
+		os.Exit(1)
+	}
 	task := ""
 	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache"} {
 		if strings.Contains(prompt, name) {

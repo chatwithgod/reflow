@@ -1,7 +1,7 @@
 {
-  "created_utc": "2026-10-26T12:05:21.0868487Z",
+  "created_utc": "2026-10-26T13:47:43.3681542Z",
   "go_version": "go version go1.26.8 windows/amd64",
-  "tests_passed": 63,
+  "tests_passed": 65,
   "tests_skipped": 0,
   "race": "pass",
   "vet": "pass",
@@ -16,8 +16,8 @@
   "live_model": false,
   "desktop_and_dot": "not tested",
   "production_modified": false,
-  "source_record": "build/verification/20261026-200452-729/summary.json",
-  "source_record_sha256": "a98b0cd5c8ba81b0ba8d5531eaf44e082cc020a477e08f8fbdd61f78157b9d02",
+  "source_record": "build/verification/20261026-214712-696/summary.json",
+  "source_record_sha256": "c2077162835f8cdff4fa6ecd6fa983407b606122ea3d495d2178721587c09a9d",
   "version": "0.1.0-dev.3",
   "binary_build": "dist/0.1.0-dev.3/20261026-193741-521",
   "evaluation_runner": {
@@ -148,5 +148,21 @@
     "source_pass_items": 63,
     "reason": "go test ./... had included adapters copied below dist"
   },
-  "source_only_after_dist_module_boundary": true
+  "source_only_after_dist_module_boundary": true,
+  "followup_code_mode_verification": {
+    "source_record": "build/verification/20261026-214712-696/summary.json",
+    "sha256": "c2077162835f8cdff4fa6ecd6fa983407b606122ea3d495d2178721587c09a9d",
+    "tests_passed": 65,
+    "tests_skipped": 0,
+    "race": "pass",
+    "vet": "pass",
+    "decoder_fuzz": "pass",
+    "real_model": false
+  },
+  "source_only_initial_verification": {
+    "source_record": "build/verification/20261026-200452-729/summary.json",
+    "sha256": "a98b0cd5c8ba81b0ba8d5531eaf44e082cc020a477e08f8fbdd61f78157b9d02",
+    "tests_passed": 63,
+    "tests_skipped": 0
+  }
 }

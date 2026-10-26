@@ -30,6 +30,19 @@ func syntheticJWT(claims core.Object) string {
 // Uses the installed CLI, a fresh home, synthetic ChatGPT credentials and an
 // actual local read-only MCP tool. No shell command or real model call is made.
 func TestCodexNativeLoginOffline(t *testing.T) {
+	if os.Getenv("REFLOW_CODEX_BIN") == "" {
+		t.Skip("set REFLOW_CODEX_BIN for the isolated installed-CLI test")
+	}
+	for _, codeMode := range []bool{false, true} {
+		name := "direct_mcp"
+		if codeMode {
+			name = "code_mode"
+		}
+		t.Run(name, func(t *testing.T) { verifyNativeLoginOffline(t, codeMode) })
+	}
+}
+
+func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 	bin := os.Getenv("REFLOW_CODEX_BIN")
 	if bin == "" {
 		t.Skip("set REFLOW_CODEX_BIN for the isolated installed-CLI test")
@@ -114,9 +127,15 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 			args, _ := json.Marshal(core.Object{"marker": id})
 			patch := func(item core.Object) {
 				if item["type"] == "function_call" {
-					item["name"] = "probe"
-					item["namespace"] = "mcp__reflow_fixture"
-					item["arguments"] = string(args)
+					if codeMode {
+						item["type"], item["name"], item["namespace"] = "custom_tool_call", "exec", "functions"
+						item["input"] = "const spec=ALL_TOOLS.find(x=>x.name.includes('reflow_fixture')&&x.name.endsWith('probe')); if(!spec) throw new Error('Fixture tool unavailable'); text(await tools[spec.name](" + string(args) + "));"
+						delete(item, "arguments")
+					} else {
+						item["name"] = "probe"
+						item["namespace"] = "mcp__reflow_fixture"
+						item["arguments"] = string(args)
+					}
 				}
 			}
 			for _, ev := range events {
@@ -133,6 +152,26 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 					}
 				}
 			}
+			if codeMode {
+				var streamed []core.Object
+				for _, event := range events {
+					item, _ := event["item"].(map[string]any)
+					if event["type"] == "response.output_item.added" && item["type"] == "custom_tool_call" {
+						input := item["input"].(string)
+						start, _ := core.Clone(item)
+						start["input"], start["status"] = "", "in_progress"
+						event["item"] = start
+						streamed = append(streamed, event)
+						for _, delta := range []string{input[:len(input)/2], input[len(input)/2:]} {
+							streamed = append(streamed, core.Object{"type": "response.custom_tool_call_input.delta", "output_index": 1, "item_id": item["id"], "delta": delta})
+						}
+						streamed = append(streamed, core.Object{"type": "response.custom_tool_call_input.done", "output_index": 1, "item_id": item["id"], "input": input})
+					} else {
+						streamed = append(streamed, event)
+					}
+				}
+				events = streamed
+			}
 		} else {
 			input, _ := body["input"].([]any)
 			for _, value := range input {
@@ -140,7 +179,7 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 				if !ok {
 					continue
 				}
-				if item["type"] == "function_call_output" && item["call_id"] == "chosen-call" {
+				if (item["type"] == "function_call_output" || item["type"] == "custom_tool_call_output") && item["call_id"] == "chosen-call" {
 					out, _ := json.Marshal(item["output"])
 					mu.Lock()
 					toolSeen = strings.Contains(string(out), "REFLOW_TOOL_OK")
@@ -221,7 +260,7 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 	defer cancel()
 	args := []string{"exec", "--ignore-user-config", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-s", "read-only", "-C", work, "-m", "gpt-6.1-sol",
 		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + proxyURL + "\"", "-c", "chatgpt_base_url=\"" + upstream.URL + "\"",
-		"-c", "features.memories=false", "-c", "features.apps=false", "-c", "features.code_mode=false", "-c", "model_reasoning_effort=\"low\"",
+		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "model_reasoning_effort=\"low\"",
 		"-c", "mcp_servers.reflow_fixture.url=\"" + mcp.URL + "\"",
 		"-c", "mcp_servers.reflow_fixture.tools.probe.approval_mode=\"approve\"",
 		"Synthetic local protocol test. Use the read-only fixture tool and report its final marker."}

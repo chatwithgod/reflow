@@ -168,6 +168,8 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
         usage = {key: 0 for key in ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens")}
         observed = {"completed_turns": 0, "error_events": 0, "command_events": 0,
                     "file_change_events": 0, "tool_failure_events": 0, "rate_limit_detected": False}
+        event_trace = []
+        trace_truncated = False
         try:
             proxy_process, endpoint, listener = start_proxy(args.reflow, trial["max_continue"], env)
             command = [str(args.codex), "-a", "never", "exec", "--ignore-user-config", "--ignore-rules",
@@ -184,6 +186,7 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **spawn_options())
 
             def consume():
+                nonlocal trace_truncated
                 # Only whitelisted numbers survive parsing. Text and tool payloads
                 # are discarded rather than written to diagnostic files.
                 while True:
@@ -206,9 +209,22 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                         if any(marker in error_text for marker in ("429", "rate_limit", "rate limit", "too many requests")):
                             observed["rate_limit_detected"] = True
                             stop(agent)
-                    elif event.get("type") == "item.completed":
+                    elif event.get("type") in ("item.started", "item.completed"):
                         item = event.get("item", {})
                         kind = item.get("type")
+                        if kind in ("command_execution", "file_change", "mcp_tool_call", "agent_message", "reasoning"):
+                            entry = {"at_seconds": round(time.monotonic() - started, 3),
+                                     "event": event["type"], "kind": kind}
+                            if item.get("status") in ("in_progress", "completed", "failed"):
+                                entry["status"] = item["status"]
+                            if type(item.get("exit_code")) is int:
+                                entry["exit_code"] = item["exit_code"]
+                            if len(event_trace) < 80:
+                                event_trace.append(entry)
+                            else:
+                                trace_truncated = True
+                        if event["type"] != "item.completed":
+                            continue
                         if kind == "command_execution":
                             observed["command_events"] += 1
                         elif kind == "file_change":
@@ -230,12 +246,14 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
             record.update(status="agent_timeout" if timed_out else "finished" if agent.returncode == 0 else "agent_error",
                           exit_code=agent.returncode, elapsed_seconds=round(time.monotonic() - started, 3),
                           client_reported_usage=usage, **observed)
+            record.update(event_trace=event_trace, event_trace_truncated=trace_truncated)
             if observed["rate_limit_detected"]:
                 record["status"] = "rate_limited"
             metrics = read_metrics(endpoint)
             record["upstream_metrics"] = metrics
             record["upstream_reported_usage"] = {key: metrics[key] for key in ("input_tokens", "output_tokens", "cached_tokens", "cache_write_tokens", "reasoning_tokens")} if metrics and metrics["usage_complete"] else None
             record["model_evidence_valid"] = bool(metrics and metrics["requests"] > 0 and observed["completed_turns"] > 0)
+            record["upstream_inference_observed"] = bool(metrics and metrics["completed"] > 0)
             record["mode"] = "live" if require_inference else "synthetic_runner_check"
             record["artifact_changed"] = solution.exists() and solution.read_bytes() != initial_solution
             if require_inference and record["status"] == "finished" and not record["model_evidence_valid"]:
@@ -269,6 +287,7 @@ def main():
     parser.add_argument("--model")
     parser.add_argument("--effort", choices=["low", "medium", "high", "xhigh"], default="high")
     parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(STARTERS))
+    parser.add_argument("--conditions", nargs="+", choices=["off", "on"], default=["off", "on"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-continue", type=int, default=3)
     parser.add_argument("--timeout", type=int, default=600)
@@ -283,6 +302,8 @@ def main():
         parser.error("choose self-test or live execution")
     if len(args.tasks) != len(set(args.tasks)):
         parser.error("task ids must be unique; use --repeats for repeated trials")
+    if len(args.conditions) != len(set(args.conditions)):
+        parser.error("conditions must be unique")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
@@ -312,9 +333,12 @@ def main():
         for task in order:
             conditions = ["off", "on"] if (repeat + task_index[task]) % 2 == 0 else ["on", "off"]
             for condition in conditions:
+                if condition not in args.conditions:
+                    continue
                 trials.append({"task": task, "repeat": repeat, "condition": condition,
                                "max_continue": args.max_continue if condition == "on" else 0})
-    plan = {"kind": "paired_task_evaluation", "seed": args.seed, "model": args.model,
+    plan = {"kind": "paired_task_evaluation" if len(args.conditions) == 2 else "single_condition_diagnostic",
+            "seed": args.seed, "model": args.model,
             "effort": args.effort, "timeout_seconds": args.timeout, "live_execution": args.run_live,
             "trial_concurrency": 1, "native_subagents_enabled": False,
             "interval_seconds": args.interval_seconds,
