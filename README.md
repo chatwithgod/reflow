@@ -10,7 +10,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。打包程序的 73 个测试项、race、vet 和 fuzz 通过，详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。排除构件副本后，源码范围的 63 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调。详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。

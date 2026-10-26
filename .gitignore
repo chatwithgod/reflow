@@ -1,6 +1,7 @@
 .tools/
 build/
-dist/
+dist/*
+!dist/go.mod
 *.exe
 *.test
 coverage.out

@@ -1,0 +1,101 @@
+{
+  "github_actions_executed": false,
+  "live_account": false,
+  "production_modified": false,
+  "windows_offline_suite": {
+    "source_record": "build/verification/20261026-195624-057/summary.json",
+    "sha256": "9594b585785b398d68747522cbedeb6073ccdcc4ea8811e9f3c07d9c7d27c0d8",
+    "tests_passed": 78,
+    "tests_skipped": 3,
+    "pass_categories": {
+      "top_level_tests": 64,
+      "test_subcases": 11,
+      "fuzz_entries_including_seeds": 3
+    },
+    "skipped_tests": [
+      "TestCodexNativeLoginOffline",
+      "TestPiOAuthOffline",
+      "TestCodexPluginInstallAndStdioOffline"
+    ],
+    "race": "pass",
+    "vet": "pass",
+    "fuzz": "pass",
+    "generated_copy_pass_items": 20,
+    "source_pass_items": 58,
+    "count_correction": "Raw pass count includes generated adapter copies; dist/go.mod now excludes those directories."
+  },
+  "evaluation_checks": [
+    {
+      "source_record": "build/evaluation-process/20261026-115057-526521/summary.json",
+      "sha256": "dcb92c3a4192d4b8a5167dcb75e987815ec72842febe0aaa88e500ee8349b12c",
+      "result": {
+        "live_account": false,
+        "live_model": false,
+        "production_modified": false,
+        "status": "pass",
+        "steps": [
+          {
+            "name": "build_synthetic_agent",
+            "exit_code": 0
+          },
+          {
+            "name": "runner_process_tests",
+            "exit_code": 0
+          },
+          {
+            "name": "grader_self_test",
+            "exit_code": 0
+          }
+        ],
+        "process_tests_passed": 4,
+        "proxy_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6"
+      }
+    },
+    {
+      "source_record": "build/evaluation-process/20261026-115337-560051/summary.json",
+      "sha256": "42fe86377564576923856304a27c62ffc92e67ec88b2923f97d67f969098d7f5",
+      "result": {
+        "live_account": false,
+        "live_model": false,
+        "production_modified": false,
+        "status": "pass",
+        "steps": [
+          {
+            "name": "build_proxy",
+            "exit_code": 0
+          },
+          {
+            "name": "build_synthetic_agent",
+            "exit_code": 0
+          },
+          {
+            "name": "runner_process_tests",
+            "exit_code": 0
+          },
+          {
+            "name": "grader_self_test",
+            "exit_code": 0
+          }
+        ],
+        "process_tests_passed": 4,
+        "proxy_sha256": "ced5d036499d12eeca49d1cb2fd958af25fd3ed81ba6d754b76a3c56944c3bd8"
+      }
+    }
+  ],
+  "actionlint": {
+    "version": "1.7.12",
+    "exit_code": 0,
+    "source_log": "build/actionlint-offline.log",
+    "sha256": "7869bc1a90db90564e5477efefcbf334d14dfd8d9694d049690fa4dc7bd8691e"
+  },
+  "workflow_sha256": "58f338964cf1b4bb05d3abd38eb208733c3b4464a2121a34198c7065a0fdeff3",
+  "source_only_full_client_recheck": {
+    "source_record": "build/verification/20261026-200452-729/summary.json",
+    "sha256": "a98b0cd5c8ba81b0ba8d5531eaf44e082cc020a477e08f8fbdd61f78157b9d02",
+    "tests_passed": 63,
+    "tests_skipped": 0,
+    "race": "pass",
+    "vet": "pass",
+    "fuzz": "pass"
+  }
+}

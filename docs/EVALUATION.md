@@ -17,6 +17,8 @@ python evaluations/run.py --self-test
 python evaluations/run.py --model gpt-6.1-sol --repeats 3
 ```
 
+完整的进程自检可运行 `python scripts/check-evaluation.py --go /absolute/path/to/go`。它会自行构建合成 agent 和代理，不再需要手工准备测试二进制；可通过 `--proxy` 使用已有构件。见 [回归入口](REGRESSION.md)。
+
 第二条只生成 24 次试验的计划，结果位于 `build/evaluations/`。真实运行需用户单独授权，并显式提供 `--run-live`、`--codex`、`--reflow`、`--auth-file` 和 `--model`；登录文件必须是原生 ChatGPT 登录，Reflow 构件须支持 `-metrics`。若没有观察到代理上的推理请求，或遇到启动、客户端错误、超时，会停止后续试验，保留已完成的数字记录。
 
 这是一组小型可复现实验。只比较完整成对的真实结果，并同时报告成功率和耗时；不能将结论直接外推到全部编程任务。
