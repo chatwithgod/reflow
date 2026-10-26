@@ -1,0 +1,15 @@
+{
+  "base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+  "cgroup_fix_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+  "apply_order": [
+    "00-cgroup-root.patch",
+    "host-execution.patch",
+    "reflow-bridge.patch"
+  ],
+  "patches": {
+    "00-cgroup-root.patch": "621114aca546d06f9efb3acaee1fe6621adfedb81269d2ca55d39824738ca346",
+    "host-execution.patch": "79a2ac317f7dfd5a8917e2b9a4a466603b933e9baaa365d9f69363f4ea7215e8",
+    "reflow-bridge.patch": "4422d8c8952e04cbf60f41d130c1b26020d9a98de3d43bc54f2333d5ef429a52"
+  },
+  "published": false
+}

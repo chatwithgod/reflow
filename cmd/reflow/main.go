@@ -30,6 +30,7 @@ func run() error {
 	upstream := flag.String("upstream", "https://chatgpt.com/backend-api/codex", "fixed upstream base URL")
 	maxContinue := flag.Int("max-continue", 3, "maximum extra model requests (0 disables folding)")
 	showVersion := flag.Bool("version", false, "print version")
+	metrics := flag.Bool("metrics", false, "enable payload-free upstream counters at /metrics")
 	flag.Parse()
 	if *showVersion {
 		fmt.Println(version.String)
@@ -41,7 +42,7 @@ func run() error {
 	}
 	cfg := core.DefaultConfig()
 	cfg.MaxContinue = *maxContinue
-	handler, err := proxy.New(proxy.Config{Upstream: *upstream, Fold: cfg})
+	handler, err := proxy.New(proxy.Config{Upstream: *upstream, Fold: cfg, EnableMetrics: *metrics})
 	if err != nil {
 		return err
 	}

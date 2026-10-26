@@ -244,4 +244,8 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 		t.Fatalf("native CLI err=%v calls=%d WS=%d HTTP=%d auth=%t tool=%t chosen=%d discarded=%d paths=%v output=%s", err, calls, wsCalls, httpCalls, authSeen, toolSeen, chosenTools, discardedTools, paths, text)
 	}
 	t.Logf("installed CLI: 3 synthetic inference calls via WebSocket, 1 real read-only MCP invocation, discarded call not executed, result returned; no HTTP fallback")
+	stats := proxyMetrics(t, proxyURL)
+	if stats.Requests != 3 || stats.Continuations != 1 || stats.InputTokens != 300 || stats.OutputTokens != 586 || !stats.UsageComplete {
+		t.Fatalf("native CLI upstream accounting mismatch: %+v", stats)
+	}
 }

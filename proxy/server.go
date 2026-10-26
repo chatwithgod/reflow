@@ -27,6 +27,10 @@ type Config struct {
 	Upstream string
 	Fold     core.Config
 	Client   *http.Client
+	// FullReplay uses known complete history instead of a parent response ID.
+	// Embedded hosts may open a fresh upstream WebSocket for every HTTP round.
+	FullReplay    bool
+	EnableMetrics bool
 }
 
 type Server struct {
@@ -35,6 +39,7 @@ type Server struct {
 	client    *http.Client
 	cache     *ReplayCache
 	heartbeat time.Duration
+	metrics   *metricsStore
 }
 
 func New(config Config) (*Server, error) {
@@ -54,7 +59,11 @@ func New(config Config) (*Server, error) {
 	}
 	copyClient := *client
 	copyClient.CheckRedirect = func(*http.Request, []*http.Request) error { return http.ErrUseLastResponse }
-	return &Server{upstream: u, config: config, client: &copyClient, cache: NewReplayCache(), heartbeat: 15 * time.Second}, nil
+	server := &Server{upstream: u, config: config, client: &copyClient, cache: NewReplayCache(), heartbeat: 15 * time.Second}
+	if config.EnableMetrics {
+		server.metrics = &metricsStore{}
+	}
+	return server, nil
 }
 
 func loopbackHost(host string) bool {
@@ -74,6 +83,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.URL.Path == "/healthz" && r.Method == http.MethodGet {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]any{"service": "reflow", "status": "ready", "version": version.String, "max_continue": s.config.Fold.MaxContinue})
+		return
+	}
+	if r.URL.Path == "/metrics" && r.Method == http.MethodGet {
+		w.Header().Set("Content-Type", "application/json")
+		_ = json.NewEncoder(w).Encode(s.metrics.snapshot())
 		return
 	}
 	if r.Header.Get("Authorization") == "" {
@@ -133,6 +147,9 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	scope := credentialScope(r.Header)
 	wire, replay := s.cache.Resolve(scope, body)
+	if s.config.FullReplay && replay != nil {
+		wire = replay
+	}
 	prepare(wire)
 	if replay != nil {
 		prepare(replay)
@@ -181,7 +198,7 @@ func cleanHeaders(h http.Header) http.Header {
 	return out
 }
 
-func (s *Server) upstreamRequest(ctx context.Context, r *http.Request, body io.Reader, rewritten bool) (*http.Response, error) {
+func (s *Server) upstreamRequest(ctx context.Context, r *http.Request, body io.Reader, rewritten, continuation bool) (*http.Response, error) {
 	req, err := http.NewRequestWithContext(ctx, r.Method, s.target(r).String(), body)
 	if err != nil {
 		return nil, err
@@ -193,7 +210,28 @@ func (s *Server) upstreamRequest(ctx context.Context, r *http.Request, body io.R
 		req.Header.Set("Content-Type", "application/json")
 	}
 	req.Header.Set("Accept-Encoding", "identity")
-	return s.client.Do(req)
+	var observed *metricRound
+	if r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/responses") {
+		observed = s.metrics.begin(continuation, false)
+	}
+	resp, err := s.client.Do(req)
+	if observed == nil {
+		return resp, err
+	}
+	if err != nil {
+		observed.failed()
+		return resp, err
+	}
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		observed.failed()
+		return resp, nil
+	}
+	if !strings.Contains(resp.Header.Get("Content-Type"), "text/event-stream") || (resp.Header.Get("Content-Encoding") != "" && resp.Header.Get("Content-Encoding") != "identity") {
+		observed.unsupported()
+		return resp, nil
+	}
+	resp.Body = &meteredBody{ReadCloser: resp.Body, round: observed}
+	return resp, nil
 }
 
 func copyResponse(w http.ResponseWriter, resp *http.Response) {
@@ -206,7 +244,7 @@ func copyResponse(w http.ResponseWriter, resp *http.Response) {
 }
 
 func (s *Server) passthrough(w http.ResponseWriter, r *http.Request) {
-	resp, err := s.upstreamRequest(r.Context(), r, r.Body, false)
+	resp, err := s.upstreamRequest(r.Context(), r, r.Body, false, false)
 	if err != nil {
 		http.Error(w, "upstream connection failed", 502)
 		return
@@ -231,7 +269,7 @@ func (s *Server) foldHTTP(w http.ResponseWriter, r *http.Request, scope string, 
 		if err != nil {
 			return
 		}
-		resp, err := s.upstreamRequest(r.Context(), r, bytes.NewReader(data), true)
+		resp, err := s.upstreamRequest(r.Context(), r, bytes.NewReader(data), true, fold.Rounds() > 1)
 		if err != nil {
 			if !started {
 				http.Error(w, "upstream connection failed", 502)

@@ -1,4 +1,4 @@
-# Reflow (0.1.0-dev.2)
+# Reflow (0.1.0-dev.3)
 
 Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
 
@@ -10,13 +10,17 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前版本为 `0.1.0-dev.2`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。
+当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。打包程序的 73 个测试项、race、vet 和 fuzz 通过，详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
 - **Codex 原生插件**：本地市场注册安装、缓存二进制、4 个 stdio MCP 工具，以及真实 Codex 会话通过 Code Mode 调用 `status` 均已验证。见 [插件说明](plugins/codex/README.md)。
+- **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；宿主全量测试未通过，选定失败项在干净上游和修改版复查时失败集合相同。见 [适配与补丁](adapters/magpie/README.md)。
+- **开关评测**：4 项任务、34 个评分检查点，评分器和进程管理自检通过，尚无真实模型质量结果。见 [评测说明](docs/EVALUATION.md)。
 
-这些验证使用隔离目录和模拟上游，没有调用真实账号，也没有改动生产配置。真实账号、Desktop/dot、Magpie 和任务质量评测仍未完成。
+这些验证使用隔离目录和模拟上游，没有调用真实账号，也没有改动生产配置。真实账号、Desktop/dot 和任务质量验收仍未完成。
+
+公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
 
@@ -36,10 +40,15 @@ reflow -listen 127.0.0.1:18516 --max-continue 0
 
 # 查看当前版本
 reflow -version
+
+# 评测时启用只包含数字的上游计数
+reflow -metrics
 ```
 
 服务运行后，可通过浏览器或命令行查看健康状态：
 `GET http://127.0.0.1:18516/healthz`
+
+`-metrics` 默认关闭；启用后可读取 `/metrics` 的请求数、实际续接次数和上游报告的 token 总量。计数不包含账号、模型名、响应 ID 或正文，也不写入磁盘。预热单列；缺失或无法解析用量时 `usage_complete` 为 `false`。这些计数不代表美元费用，范围限于 Responses 流。
 
 ### 2. 客户端配置与还原
 

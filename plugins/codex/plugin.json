@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "reflow",
-  "version": "0.1.0-dev.2",
+  "version": "0.1.0-dev.3",
   "description": "本地 Reflow 服务诊断与可恢复的 Codex 接入配置。Local diagnostics and reversible Codex routing for Reflow.",
   "extensions": {
     "com.openai": {

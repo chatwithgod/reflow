@@ -1,0 +1,985 @@
+{
+  "base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+  "live_account": false,
+  "production_modified": false,
+  "published": false,
+  "runs": {
+    "full_modified": {
+      "phase": "suite",
+      "command": [
+        "go",
+        "test",
+        "-tags",
+        "nogui",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "./..."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 1,
+      "goos": "host",
+      "live_account": false,
+      "production_modified": false,
+      "test_items": {
+        "pass": 12180,
+        "skip": 615,
+        "fail": 60
+      },
+      "failures": [
+        {
+          "Package": "github.com/yetone/magpie/internal/omarchy",
+          "Test": "TestPlacePanel"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/omarchy",
+          "Test": "TestPlacePanelNoOutput"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/omarchy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/github:yuweihao17/codearts"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/github:yuweihao17/codearts_at_main"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/yuweihao17/codearts"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/https://github.com/yuweihao17/codearts"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/git+file"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved/git+file_at_main"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestGitPluginUpdateOnlyWhenItsRepositoryMoved"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgySessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgyRowOnly"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyRestartOnMac"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange/darwin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestWindowPageStaysInside"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestAsideOfflineDisconnectRestoresWithoutDaemon"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb",
+          "Test": "TestSQLiteSurvivesMalformedEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexDaemonEnvIsTheTerminals"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/keyring"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/auto"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRefreshWritesItem"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSwitch"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainAskedSeldom"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainPromptWaitedFor"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRetry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSignOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignInKnown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestClaudeAsRootEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestSweepBridgeProjectsTakesOnlyTheBridgesFolders"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestGatewayHeldByAContainer"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestRemoveFoundSkill"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestGoneAgentListedToTakeOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage",
+          "Test": "TestDesktopSessionAccountMetadata"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestLodyImportHandoff"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestImportStatusUnreadableIsUnknown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestAionUiImportRow"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageServedShutIn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageReadsWhatItDeclared"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageNoAPI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWebGuard"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageActions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWindowPolicy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestCheckMixedServerEachSide"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestSavedButSignedOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestProxyCheckSaysAProxyPassedBy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestUpdateThatWontStart"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestClaudeDesktopCarriesTheLanguage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestHandedOverGatewayFinishesItsStream"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog/not_the_provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSignInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestMaskedRecordKeepsSentAndBack"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCopilotFolderFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder-cn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestOpenLodyRunsItsDesktopEntry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestDesktopExec"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestAutoVisionDoesNotBuildListsAgain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway"
+        }
+      ],
+      "source_record": "build/magpie-verification/20261026-102617-288686/summary.json",
+      "source_record_sha256": "ad314cb58f2d6d5441a9f83aa255a9a3ee39f7ab131998ab91415570c1d16d8a",
+      "log_sha256": "ca22fe2deecac7744fbd276f583375650d0fe2534ea28ad07484fec91ba10420"
+    },
+    "selected_baseline": {
+      "phase": "suite",
+      "command": [
+        "go",
+        "test",
+        "-tags",
+        "nogui",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-run",
+        "^(?:TestAgyRowOnly|TestAgySessions|TestAionUiImportRow|TestAsideOfflineDisconnectRestoresWithoutDaemon|TestAutoVisionDoesNotBuildListsAgain|TestCheckMixedServerEachSide|TestClaudeAsRootEnv|TestClaudeDesktopCarriesTheLanguage|TestCodexDaemonEnvIsTheTerminals|TestCodexKeychainAskedSeldom|TestCodexKeychainPromptWaitedFor|TestCodexKeychainRefreshWritesItem|TestCodexKeychainRetry|TestCodexKeychainSignOut|TestCodexKeychainSwitch|TestCodexSignInInKeychain|TestCodexSignInKnown|TestCodexSignedInInKeychain|TestCodexSyncMendsGoneCatalog|TestCopilotFolderFromAnIDEPluginIsNotTheCLI|TestDesktopExec|TestDesktopSessionAccountMetadata|TestGatewayHeldByAContainer|TestGitPluginUpdateOnlyWhenItsRepositoryMoved|TestGoneAgentListedToTakeOut|TestHandedOverGatewayFinishesItsStream|TestImportStatusUnreadableIsUnknown|TestLodyImportHandoff|TestMaskedRecordKeepsSentAndBack|TestOpenLodyRunsItsDesktopEntry|TestPlacePanel|TestPlacePanelNoOutput|TestPluginPageActions|TestPluginPageNoAPI|TestPluginPageReadsWhatItDeclared|TestPluginPageServedShutIn|TestPluginPageWebGuard|TestPluginPageWindowPolicy|TestProxyCheckSaysAProxyPassedBy|TestQoderSettingsFromAnIDEPluginIsNotTheCLI|TestRemoveFoundSkill|TestSQLiteSurvivesMalformedEnv|TestSavedButSignedOut|TestSweepBridgeProjectsTakesOnlyTheBridgesFolders|TestUpdateThatWontStart|TestWindowPageStaysInside|TestWorkBuddyOwnSaveAfterStartIsNoChange|TestWorkBuddyRestartOnMac)$",
+        "./internal/agent",
+        "./internal/gateway",
+        "./internal/gui",
+        "./internal/library",
+        "./internal/omarchy",
+        "./internal/plugin",
+        "./internal/provider",
+        "./internal/sessions",
+        "./internal/sqlitedb",
+        "./internal/usage"
+      ],
+      "base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+      "source_sha256": "faf3c0997fe9cbbf5acf3e427ac2bb9fba60575dc47d717d9df5669ecb54176f",
+      "exit_code": 1,
+      "goos": "host",
+      "live_account": false,
+      "production_modified": false,
+      "test_items": {
+        "pass": 12,
+        "skip": 0,
+        "fail": 50
+      },
+      "failures": [
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyRestartOnMac"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange/darwin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestAsideOfflineDisconnectRestoresWithoutDaemon"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestClaudeDesktopCarriesTheLanguage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog/not_the_provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSignInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCopilotFolderFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder-cn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestOpenLodyRunsItsDesktopEntry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestDesktopExec"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb",
+          "Test": "TestSQLiteSurvivesMalformedEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgySessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgyRowOnly"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage",
+          "Test": "TestDesktopSessionAccountMetadata"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexDaemonEnvIsTheTerminals"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/keyring"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/auto"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRefreshWritesItem"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestClaudeAsRootEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSwitch"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainAskedSeldom"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainPromptWaitedFor"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRetry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSignOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignInKnown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestSavedButSignedOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestRemoveFoundSkill"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestSweepBridgeProjectsTakesOnlyTheBridgesFolders"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestHandedOverGatewayFinishesItsStream"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestAutoVisionDoesNotBuildListsAgain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestGoneAgentListedToTakeOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestCheckMixedServerEachSide"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestWindowPageStaysInside"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestGatewayHeldByAContainer"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestLodyImportHandoff"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestImportStatusUnreadableIsUnknown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestAionUiImportRow"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageServedShutIn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageReadsWhatItDeclared"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageNoAPI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWebGuard"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageActions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWindowPolicy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestProxyCheckSaysAProxyPassedBy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestUpdateThatWontStart"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui"
+        }
+      ],
+      "source_record": "build/magpie-verification/20261026-104904-505177/summary.json",
+      "source_record_sha256": "90d1e1c6bf98994b9f1ae59e6d482040dd991c523af157cbbd932d01a66fa7f0",
+      "log_sha256": "3fb77f9e1fb26ae1ab31d0804eec855ffe55d2d62a22563e4d9c674e19509480"
+    },
+    "selected_modified": {
+      "phase": "suite",
+      "command": [
+        "go",
+        "test",
+        "-tags",
+        "nogui",
+        "-json",
+        "-count=1",
+        "-timeout=45m",
+        "-run",
+        "^(?:TestAgyRowOnly|TestAgySessions|TestAionUiImportRow|TestAsideOfflineDisconnectRestoresWithoutDaemon|TestAutoVisionDoesNotBuildListsAgain|TestCheckMixedServerEachSide|TestClaudeAsRootEnv|TestClaudeDesktopCarriesTheLanguage|TestCodexDaemonEnvIsTheTerminals|TestCodexKeychainAskedSeldom|TestCodexKeychainPromptWaitedFor|TestCodexKeychainRefreshWritesItem|TestCodexKeychainRetry|TestCodexKeychainSignOut|TestCodexKeychainSwitch|TestCodexSignInInKeychain|TestCodexSignInKnown|TestCodexSignedInInKeychain|TestCodexSyncMendsGoneCatalog|TestCopilotFolderFromAnIDEPluginIsNotTheCLI|TestDesktopExec|TestDesktopSessionAccountMetadata|TestGatewayHeldByAContainer|TestGitPluginUpdateOnlyWhenItsRepositoryMoved|TestGoneAgentListedToTakeOut|TestHandedOverGatewayFinishesItsStream|TestImportStatusUnreadableIsUnknown|TestLodyImportHandoff|TestMaskedRecordKeepsSentAndBack|TestOpenLodyRunsItsDesktopEntry|TestPlacePanel|TestPlacePanelNoOutput|TestPluginPageActions|TestPluginPageNoAPI|TestPluginPageReadsWhatItDeclared|TestPluginPageServedShutIn|TestPluginPageWebGuard|TestPluginPageWindowPolicy|TestProxyCheckSaysAProxyPassedBy|TestQoderSettingsFromAnIDEPluginIsNotTheCLI|TestRemoveFoundSkill|TestSQLiteSurvivesMalformedEnv|TestSavedButSignedOut|TestSweepBridgeProjectsTakesOnlyTheBridgesFolders|TestUpdateThatWontStart|TestWindowPageStaysInside|TestWorkBuddyOwnSaveAfterStartIsNoChange|TestWorkBuddyRestartOnMac)$",
+        "./internal/agent",
+        "./internal/gateway",
+        "./internal/gui",
+        "./internal/library",
+        "./internal/omarchy",
+        "./internal/plugin",
+        "./internal/provider",
+        "./internal/sessions",
+        "./internal/sqlitedb",
+        "./internal/usage"
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 1,
+      "goos": "host",
+      "live_account": false,
+      "production_modified": false,
+      "test_items": {
+        "pass": 12,
+        "skip": 0,
+        "fail": 50
+      },
+      "failures": [
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb",
+          "Test": "TestSQLiteSurvivesMalformedEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgySessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexDaemonEnvIsTheTerminals"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions",
+          "Test": "TestAgyRowOnly"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/keyring"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain/auto"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignedInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRefreshWritesItem"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSwitch"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainAskedSeldom"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage",
+          "Test": "TestDesktopSessionAccountMetadata"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainPromptWaitedFor"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainRetry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexKeychainSignOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestClaudeAsRootEnv"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestCodexSignInKnown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider",
+          "Test": "TestSavedButSignedOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sqlitedb"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/usage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/sessions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestRemoveFoundSkill"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestSweepBridgeProjectsTakesOnlyTheBridgesFolders"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestHandedOverGatewayFinishesItsStream"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestAutoVisionDoesNotBuildListsAgain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyRestartOnMac"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange/darwin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestAsideOfflineDisconnectRestoresWithoutDaemon"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestGoneAgentListedToTakeOut"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library",
+          "Test": "TestCheckMixedServerEachSide"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/library"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestClaudeDesktopCarriesTheLanguage"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog/not_the_provider"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSyncMendsGoneCatalog"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCodexSignInInKeychain"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestCopilotFolderFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder-cn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestOpenLodyRunsItsDesktopEntry"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent",
+          "Test": "TestDesktopExec"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/agent"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin",
+          "Test": "TestWindowPageStaysInside"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/plugin"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestGatewayHeldByAContainer"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestLodyImportHandoff"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestImportStatusUnreadableIsUnknown"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestAionUiImportRow"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageServedShutIn"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageReadsWhatItDeclared"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageNoAPI"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWebGuard"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageActions"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestPluginPageWindowPolicy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestProxyCheckSaysAProxyPassedBy"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui",
+          "Test": "TestUpdateThatWontStart"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gui"
+        }
+      ],
+      "source_record": "build/magpie-verification/20261026-105000-473683/summary.json",
+      "source_record_sha256": "19546ff56c5e8d43716a39124e6fdd7fc67ea089c768bf234269d4a4ed4053d8",
+      "log_sha256": "d46e358f8e1e8fa337e4d0be357587d67aa6e0ef552d321faea0860c28ae68c5"
+    },
+    "vet_windows_nogui": {
+      "phase": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-tags",
+        "nogui",
+        "./..."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "windows",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-104659-555898/summary.json",
+      "source_record_sha256": "96f7ae8e43ce3564f2e462572b45d6f57b76f0b45b8b529f13e71106ec861f0d",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet_linux_nogui": {
+      "phase": "vet",
+      "command": [
+        "go",
+        "vet",
+        "-tags",
+        "nogui",
+        "./..."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "linux",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-104659-490879/summary.json",
+      "source_record_sha256": "daa3d2724ed1eeb85542bf68a20ce8cb5740ed4ef65e7f9d13efcb4b9401b6f8",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "vet_windows_normal": {
+      "phase": "vet",
+      "command": [
+        "go",
+        "vet",
+        "./..."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "windows",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-112615-568655/summary.json",
+      "source_record_sha256": "bb4096439868ef50ac935b5a42dd636df1205d4ce4c9926d5c48d31f99183843",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build_linux_nogui": {
+      "phase": "build",
+      "command": [
+        "go",
+        "build",
+        "-tags",
+        "nogui",
+        "-o",
+        "<isolated-report-output>",
+        "."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "linux",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-110833-574101/summary.json",
+      "source_record_sha256": "c6ec1033752f900203f42a09de49b4b954729b5e03a46adb426bf21e59216bb3",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build_windows_normal": {
+      "phase": "build",
+      "command": [
+        "go",
+        "build",
+        "-o",
+        "<isolated-report-output>",
+        "."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "windows",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-110833-644353/summary.json",
+      "source_record_sha256": "7d57292f881fa5fbcd1823ebd3f1538ee01993ad246742d782def950d6150e7e",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "build_windows_reflow": {
+      "phase": "build",
+      "command": [
+        "go",
+        "build",
+        "-tags",
+        "nogui reflow",
+        "-o",
+        "<isolated-report-output>",
+        "."
+      ],
+      "base_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+      "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+      "exit_code": 0,
+      "goos": "windows",
+      "live_account": false,
+      "production_modified": false,
+      "source_record": "build/magpie-verification/20261026-110833-724439/summary.json",
+      "source_record_sha256": "7adb055d28294c4bee0b1783d112c503ef71b7e440fe7e2d6c1d7795eccab07c",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "failure_comparison": {
+    "scope": "selected previous failures only, not full baseline suite",
+    "same_failing_test_set": true,
+    "failed_test_items": 50,
+    "only_baseline": [],
+    "only_modified": []
+  },
+  "focused_race": {
+    "source_log": "build/magpie-reflow-race-fixed.log",
+    "sha256": "221c414187bb272953c01f1b7485a2e4030e32f18c81b2afc05bf85b79b8037a",
+    "result": "pass",
+    "command": "go test -race -tags 'nogui reflow' ./internal/gateway ./internal/gwexec ./plugins/reflow github.com/chatwithgod/reflow/adapters/magpie -run '^Test(Reflow|Execution|FoldedUsage|ZeroDefault|Bounds|Registration|Embedded)' -count=1 -timeout5m"
+  },
+  "patches": {
+    "base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+    "cgroup_fix_commit": "86f6f917f1f29740e42ef1d45a293761ddac2c06",
+    "apply_order": [
+      "00-cgroup-root.patch",
+      "host-execution.patch",
+      "reflow-bridge.patch"
+    ],
+    "patches": {
+      "00-cgroup-root.patch": "621114aca546d06f9efb3acaee1fe6621adfedb81269d2ca55d39824738ca346",
+      "host-execution.patch": "79a2ac317f7dfd5a8917e2b9a4a466603b933e9baaa365d9f69363f4ea7215e8",
+      "reflow-bridge.patch": "4422d8c8952e04cbf60f41d130c1b26020d9a98de3d43bc54f2333d5ef429a52"
+    },
+    "published": false
+  }
+}

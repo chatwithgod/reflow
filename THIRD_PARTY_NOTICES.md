@@ -62,5 +62,9 @@ SOFTWARE.
 - github.com/klauspost/compress v1.20.3: upstream notices retained in THIRD_PARTY_LICENSES.txt.
 - github.com/pelletier/go-toml/v2 v2.4.3: MIT; used to preserve unrelated Codex TOML while changing only its routing URL.
 - Go runtime and standard library: BSD-3-Clause, full notice retained in THIRD_PARTY_LICENSES.txt.
+
+## Magpie development patches
+
+The adapter patch context derives from [yetone/magpie](https://github.com/yetone/magpie) at `a1174674da9d1435443e95ffac7d0300ce8b59d6`, MIT, Copyright (c) 2026 yetone. Its full license is retained in [adapters/magpie/LICENSE.magpie](adapters/magpie/LICENSE.magpie). These are local development patches; no upstream acceptance or official plugin distribution is claimed.
 - Historical CPA SDK and YAML notices are retained for provenance; neither is a dependency of this standalone module.
 - Portable Go/LLVM-MinGW toolchains are development-only and are not included in release ZIPs.

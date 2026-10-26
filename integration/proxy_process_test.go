@@ -3,6 +3,8 @@ package integration
 import (
 	"bufio"
 	"context"
+	"encoding/json"
+	"net/http"
 	"net/http/httptest"
 	"os"
 	"os/exec"
@@ -19,7 +21,7 @@ func startProxy(t *testing.T, upstream string) string {
 	t.Helper()
 	bin := os.Getenv("REFLOW_PROXY_BIN")
 	if bin == "" {
-		handler, err := proxy.New(proxy.Config{Upstream: upstream, Fold: core.DefaultConfig()})
+		handler, err := proxy.New(proxy.Config{Upstream: upstream, Fold: core.DefaultConfig(), EnableMetrics: true})
 		if err != nil {
 			t.Fatal(err)
 		}
@@ -28,7 +30,7 @@ func startProxy(t *testing.T, upstream string) string {
 		return server.URL
 	}
 	ctx, cancel := context.WithCancel(context.Background())
-	cmd := exec.CommandContext(ctx, bin, "-listen", "127.0.0.1:0", "-upstream", upstream)
+	cmd := exec.CommandContext(ctx, bin, "-listen", "127.0.0.1:0", "-upstream", upstream, "-metrics")
 	stderr, err := cmd.StderrPipe()
 	if err != nil {
 		cancel()
@@ -61,4 +63,19 @@ func startProxy(t *testing.T, upstream string) string {
 		t.Fatal("packaged Reflow did not report a listening address")
 		return ""
 	}
+}
+
+func proxyMetrics(t *testing.T, url string) proxy.Metrics {
+	t.Helper()
+	client := &http.Client{Timeout: 3 * time.Second}
+	res, err := client.Get(url + "/metrics")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer res.Body.Close()
+	var stats proxy.Metrics
+	if json.NewDecoder(res.Body).Decode(&stats) != nil || !stats.Enabled {
+		t.Fatal("packaged proxy did not expose enabled metrics")
+	}
+	return stats
 }

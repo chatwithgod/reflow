@@ -191,6 +191,10 @@ func TestPiOAuthOffline(t *testing.T) {
 				t.Fatalf("Pi %s err=%v calls=%d ws=%d http=%d auth=%t tool=%t output=%s", transport, err, calls, wsCalls, httpCalls, authSeen, toolSeen, text)
 			}
 			t.Log(fmt.Sprintf("Pi OAuth storage + endpoint extension: %s, 3 requests, real read-tool result returned, discarded read not executed", transport))
+			stats := proxyMetrics(t, url)
+			if stats.Requests != 3 || stats.Continuations != 1 || stats.InputTokens != 300 || stats.OutputTokens != 586 || !stats.UsageComplete {
+				t.Fatalf("Pi upstream accounting mismatch: %+v", stats)
+			}
 		})
 	}
 }

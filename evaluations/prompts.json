@@ -1,0 +1,18 @@
+[
+  {
+    "id": "intervals",
+    "prompt": "Fix the implementation in solution.py by completing merge_intervals(intervals). The function accepts an iterable of integer pairs (start, end), supporting negative coordinates and zero-length intervals where start == end. If any interval has start > end, raise a ValueError. Merge all overlapping or adjacent (touching) intervals into single spans. Zero-length intervals must be preserved and merged properly with overlapping or touching intervals. Return the resulting non-overlapping intervals as a list of tuples sorted in ascending order by start point. Do not mutate the caller-provided input. Use only the Python standard library, keep the public API intact, and do not modify test or grading files."
+  },
+  {
+    "id": "topo",
+    "prompt": "Fix the existing implementation in solution.py for topological_order(dependencies). The input is a dict[str, list[str]], where each key depends on the nodes listed in its value. Nodes appearing only as dependency targets must also be included in the graph. At each step, select the lexicographically smallest node among all currently available zero-in-degree nodes, ignoring duplicate dependencies. If the dependency graph contains any cycle or self-loop, raise a ValueError. An empty input mapping must return an empty list. Do not modify the original input collection. Rely strictly on the Python standard library, preserve the existing function interface, and do not alter test harnesses or grader files."
+  },
+  {
+    "id": "ndjson",
+    "prompt": "Fix the implementation in solution.py for parse_chunks(chunks). The function accepts an iterator yielding raw bytes chunks and parses them into a list of UTF-8 NDJSON values. Chunks may split arbitrarily across line breaks, single characters, or multi-byte UTF-8 boundaries. Support both LF and CRLF delimiters, skip blank or whitespace-only lines, and parse the final line even without a trailing newline. Return all decoded JSON values in encountered order. If any invalid UTF-8 bytes or malformed JSON payloads are encountered, raise a ValueError rather than silently dropping or skipping data. Empty inputs must return an empty list. Use only the Python standard library and maintain the original signature without modifying grader scripts."
+  },
+  {
+    "id": "lru",
+    "prompt": "Fix the LRUCache class in solution.py. The constructor accepts a non-negative integer capacity, raising ValueError if capacity is negative. Implement get(key, default=None) to return the stored value and mark the key as most recently used upon a hit, or return default without inserting on a miss. Implement put(key, value) to insert or update the key as most recently used, evicting the least recently used item when capacity is exceeded. Implement keys() to return keys ordered from least to most recently used without modifying access recency. When capacity is zero, the cache must never store any items. Use only Python standard library modules, preserve class signatures, and do not alter test or grader files."
+  }
+]

@@ -1,0 +1,143 @@
+{
+  "created_utc": "2026-10-26T11:23:41.5019606Z",
+  "go_version": "go version go1.26.8 windows/amd64",
+  "tests_passed": 73,
+  "tests_skipped": 0,
+  "race": "pass",
+  "vet": "pass",
+  "decoder_fuzz": "pass",
+  "native_cli_synthetic_auth": true,
+  "native_cli_version": "codex-cli 0.164.0-alpha.11.1",
+  "pi_cli_synthetic_oauth": true,
+  "pi_cli_version": "1.4.0",
+  "proxy_binary_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6",
+  "native_plugin_synthetic_auth": true,
+  "live_account": false,
+  "live_model": false,
+  "desktop_and_dot": "not tested",
+  "production_modified": false,
+  "source_record": "build/verification/20261026-192312-907/summary.json",
+  "source_record_sha256": "48f007723bcc9b15500c277f3c6f6ad3fcf292bb1cddea9729631807da94006d",
+  "version": "0.1.0-dev.3",
+  "binary_build": "dist/0.1.0-dev.3/20261026-190823-191",
+  "evaluation_runner": {
+    "tests_passed": 4,
+    "source_log": "build/evaluation-runner-tests-dev3.log",
+    "sha256": "9c1b147ba42023427b36e353cf48d5e9502fb6aac2cf26324a1a743828b8353b",
+    "live_model": false
+  },
+  "grader": {
+    "source_record": "build/evaluations/20261026-112450-088609/summary.json",
+    "sha256": "b826066e06c58de3b304170c1c2e4d8efaaa57b29d83396bdf30f7f7857f3a5f",
+    "results": {
+      "kind": "grader_self_test",
+      "model_calls": 0,
+      "tasks": {
+        "intervals": {
+          "oracle": {
+            "status": "scored",
+            "total": 8,
+            "passed": 8,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 8,
+            "passed": 1,
+            "failed": [
+              "test_generator",
+              "test_input_unchanged",
+              "test_negative_and_points",
+              "test_nested",
+              "test_reversed_rejected",
+              "test_touching",
+              "test_unsorted_overlap"
+            ]
+          }
+        },
+        "topo": {
+          "oracle": {
+            "status": "scored",
+            "total": 8,
+            "passed": 8,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 8,
+            "passed": 3,
+            "failed": [
+              "test_current_ready_order",
+              "test_cycle",
+              "test_dependency_only_and_duplicates",
+              "test_dependency_order",
+              "test_self_cycle"
+            ]
+          }
+        },
+        "ndjson": {
+          "oracle": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 9,
+            "passed": 6,
+            "failed": [
+              "test_final_line",
+              "test_unicode_separator_is_not_newline",
+              "test_utf8_byte_boundaries"
+            ]
+          }
+        },
+        "lru": {
+          "oracle": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 9,
+            "passed": 3,
+            "failed": [
+              "test_capacity_one",
+              "test_eviction",
+              "test_hit_recency",
+              "test_keys_is_observation",
+              "test_negative",
+              "test_update_recency"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "packaging": {
+    "build": "dist/0.1.0-dev.3/20261026-193741-521",
+    "archives_checked": 10,
+    "windows_binary_matches_verified": true,
+    "windows_binary_sha256": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6",
+    "zip_crc_and_digests": "pass",
+    "unix_executable_permissions": "pass",
+    "native_marketplace_layout": "pass",
+    "documentation": "pass",
+    "live_account": false,
+    "production_modified": false
+  },
+  "next_live_plan": {
+    "file": "build/evaluations/20261026-113705-358689/results.json",
+    "executed": false,
+    "task": "ndjson",
+    "trials": 2,
+    "model_proposed": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds_per_trial": 180,
+    "max_additional_rounds_per_response": 1,
+    "requires_user_authorization": true
+  }
+}

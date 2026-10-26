@@ -1,0 +1,284 @@
+"""Plan paired trials by default. Live execution requires explicit arguments."""
+import argparse
+from datetime import datetime, timezone
+import hashlib
+import json
+import os
+from pathlib import Path
+import queue
+import random
+import re
+import signal
+import subprocess
+import sys
+import tempfile
+import threading
+import time
+import urllib.request
+
+from tasks import ORACLES, STARTERS
+
+HERE = Path(__file__).resolve().parent
+ROOT = HERE.parent
+
+
+def fingerprint(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def grade(task, path):
+    env = {k: v for k, v in os.environ.items() if k.upper() in {"PATH", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT"}}
+    for key in ("HOME", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "TEMP", "TMP"):
+        env[key] = str(path.resolve().parent)
+    try:
+        process = subprocess.Popen([sys.executable, "-I", str(HERE / "score.py"), "--task", task,
+                                    "--solution", str(path)], stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                   stdin=subprocess.DEVNULL, text=True, cwd=path.resolve().parent, env=env,
+                                   **spawn_options())
+        stdout, _ = process.communicate(timeout=10)
+        return json.loads(stdout.strip().splitlines()[-1])
+    except subprocess.TimeoutExpired:
+        stop(process)
+        process.communicate()
+        return {"status": "score_timeout", "passed": 0}
+    except (ValueError, IndexError):
+        return {"status": "score_error", "passed": 0}
+
+
+def stop(process):
+    if process is None or process.poll() is not None:
+        return
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/PID", str(process.pid), "/T", "/F"],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    else:
+        os.killpg(process.pid, signal.SIGTERM)
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait()
+
+
+def spawn_options():
+    return {"creationflags": subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == "nt" else {"start_new_session": True}
+
+
+def trial_env(profile):
+    keep = {"PATH", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "PROGRAMDATA",
+            "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY"}
+    env = {k: v for k, v in os.environ.items() if k.upper() in keep}
+    for name, relative in {"HOME": "", "USERPROFILE": "", "APPDATA": "appdata",
+                           "LOCALAPPDATA": "localappdata", "TEMP": "temp", "TMP": "temp",
+                           "CODEX_HOME": "codex-home"}.items():
+        directory = profile / relative
+        directory.mkdir(parents=True, exist_ok=True)
+        env[name] = str(directory)
+    env.update(NO_PROXY="127.0.0.1,localhost", RUST_LOG="error")
+    return env
+
+
+def start_proxy(binary, maximum, env):
+    process = subprocess.Popen([str(binary), "-listen", "127.0.0.1:0", "-max-continue", str(maximum),"-metrics"],
+                               stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                               stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace", env=env, **spawn_options())
+    addresses = queue.Queue()
+
+    def listen():
+        for line in process.stderr:
+            match = re.search(r" listening on ([^;]+);", line)
+            if match:
+                addresses.put("http://" + match.group(1))
+
+    thread = threading.Thread(target=listen, daemon=True)
+    thread.start()
+    try:
+        return process, addresses.get(timeout=10), thread
+    except queue.Empty:
+        stop(process)
+        thread.join(timeout=5)
+        process.stderr.close()
+        raise RuntimeError("proxy_start_failed") from None
+
+
+def read_metrics(endpoint):
+    try:
+        opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        with opener.open(endpoint + "/metrics", timeout=3) as response:
+            raw = json.loads(response.read(8192))
+        if raw.get("enabled") is not True or raw.get("scope") != "streaming_responses":
+            return None
+        numbers = ("requests", "continuations", "warmups", "completed", "failed", "usage_reports",
+                   "parse_errors", "unsupported_responses", "input_tokens", "output_tokens", "cached_tokens",
+                   "cache_write_tokens", "reasoning_tokens")
+        if any(type(raw.get(key)) is not int or raw[key] < 0 for key in numbers):
+            return None
+        return {**{key: raw[key] for key in numbers}, "usage_complete": raw.get("usage_complete") is True,
+                "scope": "streaming_responses"}
+    except Exception:
+        return None
+
+
+def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
+    record = dict(trial)
+    proxy_process = agent = None
+    listener = reader = None
+    with tempfile.TemporaryDirectory(prefix="trial-", dir=report) as temporary:
+        profile = Path(temporary).resolve()
+        if not profile.is_relative_to(report.resolve()):
+            raise RuntimeError("temporary profile escaped its report directory")
+        env = trial_env(profile)
+        work = profile / "workspace"
+        work.mkdir()
+        solution = work / "solution.py"
+        solution.write_text(STARTERS[trial["task"]], encoding="utf-8")
+        (Path(env["CODEX_HOME"]) / "auth.json").write_text(auth, encoding="utf-8")
+        usage = {key: 0 for key in ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens")}
+        observed = {"completed_turns": 0, "error_events": 0}
+        try:
+            proxy_process, endpoint, listener = start_proxy(args.reflow, trial["max_continue"], env)
+            command = [str(args.codex), "-a", "never", "exec", "--ignore-user-config", "--ignore-rules",
+                       "--skip-git-repo-check", "--ephemeral", "--json", "-s", "workspace-write", "-C", str(work),
+                       "-m", args.model, "-c", 'cli_auth_credentials_store="file"',
+                       "-c", f'openai_base_url="{endpoint}"', "-c", f'model_reasoning_effort="{args.effort}"',
+                       "-c", "features.memories=false", "-c", "features.apps=false", prompt]
+            started = time.monotonic()
+            agent = subprocess.Popen(command, cwd=work, env=env, stdin=subprocess.DEVNULL,
+                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **spawn_options())
+
+            def consume():
+                # Only whitelisted numbers survive parsing. Text and tool payloads
+                # are discarded rather than written to diagnostic files.
+                while True:
+                    line = agent.stdout.readline(1 << 20)
+                    if not line:
+                        break
+                    try:
+                        event = json.loads(line)
+                    except (ValueError, UnicodeDecodeError):
+                        continue
+                    if event.get("type") == "turn.completed":
+                        observed["completed_turns"] += 1
+                        for key in usage:
+                            value = event.get("usage", {}).get(key)
+                            if isinstance(value, int) and value >= 0:
+                                usage[key] += value
+                    elif event.get("type") in ("error", "turn.failed"):
+                        observed["error_events"] += 1
+
+            reader = threading.Thread(target=consume, daemon=True)
+            reader.start()
+            timed_out = False
+            try:
+                agent.wait(timeout=args.timeout)
+            except subprocess.TimeoutExpired:
+                timed_out = True
+                stop(agent)
+            reader.join(timeout=5)
+            record.update(status="agent_timeout" if timed_out else "finished" if agent.returncode == 0 else "agent_error",
+                          exit_code=agent.returncode, elapsed_seconds=round(time.monotonic() - started, 3),
+                          client_reported_usage=usage, **observed)
+            metrics = read_metrics(endpoint)
+            record["upstream_metrics"] = metrics
+            record["upstream_reported_usage"] = {key: metrics[key] for key in ("input_tokens", "output_tokens", "cached_tokens", "cache_write_tokens", "reasoning_tokens")} if metrics and metrics["usage_complete"] else None
+            record["model_evidence_valid"] = bool(metrics and metrics["requests"] > 0 and observed["completed_turns"] > 0)
+            record["mode"] = "live" if require_inference else "synthetic_runner_check"
+            if require_inference and record["status"] == "finished" and not record["model_evidence_valid"]:
+                record["status"] = "proxy_inference_unverified"
+            record["score"] = grade(trial["task"], solution)
+            score = record["score"]
+            record["success"] = record["status"] == "finished" and score.get("status") == "scored" and score["passed"] == score["total"]
+        except Exception as exc:
+            record.update(status="runner_error", error_type=type(exc).__name__, success=False)
+        finally:
+            stop(agent)
+            stop(proxy_process)
+            if reader:
+                reader.join(timeout=5)
+            if listener:
+                listener.join(timeout=5)
+            if agent is not None and agent.stdout is not None:
+                agent.stdout.close()
+            if proxy_process is not None and proxy_process.stderr is not None:
+                proxy_process.stderr.close()
+    return record
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--self-test", action="store_true")
+    parser.add_argument("--run-live", action="store_true")
+    parser.add_argument("--codex", type=Path)
+    parser.add_argument("--reflow", type=Path)
+    parser.add_argument("--auth-file", type=Path)
+    parser.add_argument("--model")
+    parser.add_argument("--effort", choices=["low", "medium", "high", "xhigh"], default="high")
+    parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(STARTERS))
+    parser.add_argument("--repeats", type=int, default=1)
+    parser.add_argument("--max-continue", type=int, default=3)
+    parser.add_argument("--timeout", type=int, default=600)
+    parser.add_argument("--seed", type=int, default=17)
+    args = parser.parse_args()
+    if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
+        parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
+    if args.self_test and args.run_live:
+        parser.error("choose self-test or live execution")
+    if len(args.tasks) != len(set(args.tasks)):
+        parser.error("task ids must be unique; use --repeats for repeated trials")
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
+    report = ROOT / "build" / "evaluations" / stamp
+    report.mkdir(parents=True, exist_ok=False)
+    if args.self_test:
+        outcomes = {}
+        for task in STARTERS:
+            with tempfile.TemporaryDirectory(prefix="scorer-", dir=report) as temporary:
+                path = Path(temporary) / "solution.py"
+                path.write_text(ORACLES[task], encoding="utf-8")
+                oracle = grade(task, path)
+                path.write_text(STARTERS[task], encoding="utf-8")
+                starter = grade(task, path)
+                if oracle.get("status") != "scored" or oracle["passed"] != oracle["total"] or starter.get("passed", 0) >= oracle["total"]:
+                    raise RuntimeError(f"grader validation failed for {task}")
+                outcomes[task] = {"oracle": oracle, "starter": starter}
+        summary = {"kind": "grader_self_test", "model_calls": 0, "tasks": outcomes}
+        (report / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        print(f"Grader self-test passed for {len(outcomes)} tasks; no model calls. Evidence: {report}")
+        return
+    prompts = {item["id"]: item["prompt"] for item in json.loads((HERE / "prompts.json").read_text(encoding="utf-8"))}
+    trials = []
+    task_index = {task: index for index, task in enumerate(sorted(args.tasks))}
+    rng = random.Random(args.seed)
+    for repeat in range(args.repeats):
+        order = list(args.tasks)
+        rng.shuffle(order)
+        for task in order:
+            conditions = ["off", "on"] if (repeat + task_index[task]) % 2 == 0 else ["on", "off"]
+            for condition in conditions:
+                trials.append({"task": task, "repeat": repeat, "condition": condition,
+                               "max_continue": args.max_continue if condition == "on" else 0})
+    plan = {"kind": "paired_task_evaluation", "seed": args.seed, "model": args.model,
+            "effort": args.effort, "timeout_seconds": args.timeout, "live_execution": args.run_live,
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json")},
+            "trials": trials, "results": []}
+    if args.run_live:
+        if not all((args.codex, args.reflow, args.auth_file, args.model)):
+            parser.error("live execution requires --codex, --reflow, --auth-file and --model")
+        args.codex, args.reflow = args.codex.resolve(strict=True), args.reflow.resolve(strict=True)
+        auth = args.auth_file.resolve(strict=True).read_text(encoding="utf-8-sig")
+        parsed = json.loads(auth)
+        if parsed.get("auth_mode") != "chatgpt" or not parsed.get("tokens", {}).get("access_token"):
+            parser.error("an explicit native ChatGPT auth file is required")
+        plan["binary_sha256"] = {"codex": fingerprint(args.codex), "reflow": fingerprint(args.reflow)}
+        for trial in trials:
+            result = run_trial(args, trial, prompts[trial["task"]], auth, report)
+            plan["results"].append(result)
+            (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+            if result["status"] != "finished":
+                plan["stopped_early"] = True
+                break
+    (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+    print(f"{'Executed' if args.run_live else 'Planned'} {len(plan['results']) if args.run_live else len(trials)} trials. Evidence: {report}")
+
+
+if __name__ == "__main__":
+    main()

@@ -14,6 +14,29 @@ type Reader struct {
 
 func NewReader(r io.Reader) *Reader { return &Reader{r: r} }
 
+// Decoder accepts arbitrary chunks without owning or buffering a transport.
+// It has the same bounded framing rules as Reader.
+type Decoder struct{ d eventDecoder }
+
+func (d *Decoder) Push(chunk []byte) ([]Object, error) {
+	if err := d.d.feed(chunk); err != nil {
+		return nil, err
+	}
+	var events []Object
+	for {
+		event, ready, err := d.d.next()
+		if err != nil {
+			return events, err
+		}
+		if !ready {
+			return events, nil
+		}
+		events = append(events, event)
+	}
+}
+
+func (d *Decoder) Finish() error { return d.d.finish() }
+
 func (r *Reader) Next() (Object, error) {
 	for {
 		event, ready, err := r.d.next()

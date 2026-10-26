@@ -5,3 +5,5 @@ dist/
 *.test
 coverage.out
 local-config.json
+__pycache__/
+*.pyc

@@ -24,6 +24,7 @@ type lane struct {
 	canceled   bool
 	currentID  string
 	pending    []packet
+	metrics    *metricRound
 }
 
 func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
@@ -82,6 +83,11 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 	go read(down, fromClient)
 	go read(up, fromUpstream)
 	lanes := map[string]*lane{}
+	defer func() {
+		for _, lane := range lanes {
+			lane.metrics.failed()
+		}
+	}()
 	cache := NewReplayCache()
 	scope := credentialScope(r.Header)
 	write := func(conn *websocket.Conn, event core.Object) error {
@@ -125,6 +131,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			l.fold = fold
 		}
 		delete(wire, "stream")
+		l.metrics = s.metrics.begin(false, wire["generate"] == false)
 		return write(up, wire) == nil
 	}
 	advance := func(id string, l *lane) bool {
@@ -210,6 +217,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 			typ, _ := ev["type"].(string)
+			l.metrics.event(ev)
 			terminal := typ == "response.completed" || typ == "response.done" || typ == "response.failed" || typ == "response.incomplete" || typ == "error"
 			if response, ok := ev["response"].(map[string]any); ok {
 				if rid, _ := response["id"].(string); rid != "" {
@@ -294,6 +302,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 				if id != "" {
 					d.Next["stream_id"] = id
 				}
+				l.metrics = s.metrics.begin(true, false)
 				if write(up, d.Next) != nil {
 					return
 				}
