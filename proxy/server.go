@@ -15,10 +15,13 @@ import (
 	"time"
 
 	"github.com/chatwithgod/reflow/core"
+	"github.com/chatwithgod/reflow/internal/version"
 	"github.com/klauspost/compress/zstd"
 )
 
 const MaxRequestBytes = 16 << 20
+
+var errForwardedUpstream = errors.New("upstream error forwarded")
 
 type Config struct {
 	Upstream string
@@ -70,7 +73,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.URL.Path == "/healthz" && r.Method == http.MethodGet {
 		w.Header().Set("Content-Type", "application/json")
-		io.WriteString(w, `{"service":"reflow","status":"ready","version":"0.1.0-dev.1"}`)
+		_ = json.NewEncoder(w).Encode(map[string]any{"service": "reflow", "status": "ready", "version": version.String, "max_continue": s.config.Fold.MaxContinue})
 		return
 	}
 	if r.Header.Get("Authorization") == "" {
@@ -258,6 +261,9 @@ func (s *Server) foldHTTP(w http.ResponseWriter, r *http.Request, scope string, 
 			started = true
 		}
 		if err := s.consumeHTTP(r.Context(), resp.Body, w, fold, emit); err != nil {
+			if errors.Is(err, errForwardedUpstream) {
+				return
+			}
 			if r.Context().Err() == nil {
 				reason := "upstream_error"
 				if errors.Is(err, io.EOF) {
@@ -319,6 +325,14 @@ func (s *Server) consumeHTTP(ctx context.Context, body io.ReadCloser, w http.Res
 		case item := <-events:
 			if item.err != nil {
 				return item.err
+			}
+			// Preserve native retry/refresh codes such as previous_response_not_found.
+			// A hidden continuation attempt cannot be exposed as a new client error.
+			if item.event["type"] == "error" && fold.Rounds() == 1 {
+				if err := emit(item.event); err != nil {
+					return err
+				}
+				return errForwardedUpstream
 			}
 			out, err := fold.Push(item.event)
 			if err != nil {

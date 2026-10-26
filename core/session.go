@@ -264,12 +264,25 @@ func (s *Session) Push(ev Object) ([]Object, error) {
 
 func (s *Session) HasTerminal() bool { return s.terminal != nil }
 
+// Rounds is the number of upstream attempts opened for this client request.
+func (s *Session) Rounds() int { return s.round }
+
 func (s *Session) reason() string {
 	if s.terminal["type"] != "response.completed" {
 		return "upstream_terminal"
 	}
 	if !s.replayable {
 		return "unresolved_parent"
+	}
+	// A hosted tool may already have performed work upstream. Unlike a client
+	// function call, buffering its event cannot undo that work. Do not discard
+	// such an output or replay its original request speculatively.
+	for _, entry := range s.buffer {
+		switch entry.item["type"] {
+		case "message", "function_call", "custom_tool_call":
+		default:
+			return "upstream_tool_already_executed"
+		}
 	}
 	if !inContinueWindow(tierN(reasoningTokens(s.usage)), s.config.MaxTierN) {
 		return "rule_not_matched"

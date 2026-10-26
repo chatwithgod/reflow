@@ -1,4 +1,4 @@
-param([string]$GoExe = 'go', [string]$Compiler = '', [string]$CodexExe = '', [string]$PiCli = '', [string]$NodeExe = '', [string]$ProxyExe = '')
+param([string]$GoExe = 'go', [string]$Compiler = '', [string]$CodexExe = '', [string]$PiCli = '', [string]$NodeExe = '', [string]$ProxyExe = '', [string]$PluginMarketplace = '')
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location -LiteralPath $projectRoot
@@ -13,10 +13,11 @@ if ($CodexExe) { $env:REFLOW_CODEX_BIN = $CodexExe } else { Remove-Item Env:REFL
 if ($PiCli) { $env:REFLOW_PI_CLI = $PiCli } else { Remove-Item Env:REFLOW_PI_CLI -ErrorAction SilentlyContinue }
 if ($NodeExe) { $env:REFLOW_NODE_BIN = $NodeExe } else { Remove-Item Env:REFLOW_NODE_BIN -ErrorAction SilentlyContinue }
 if ($ProxyExe) { $env:REFLOW_PROXY_BIN = $ProxyExe } else { Remove-Item Env:REFLOW_PROXY_BIN -ErrorAction SilentlyContinue }
+if ($PluginMarketplace) { $env:REFLOW_PLUGIN_MARKETPLACE = $PluginMarketplace } else { Remove-Item Env:REFLOW_PLUGIN_MARKETPLACE -ErrorAction SilentlyContinue }
 $env:CGO_ENABLED = '1'
-& $GoExe test -json ./... 2>&1 | Tee-Object -FilePath (Join-Path $reportDir 'tests.jsonl')
+& $GoExe test -count=1 -json ./... 2>&1 | Tee-Object -FilePath (Join-Path $reportDir 'tests.jsonl')
 if ($LASTEXITCODE -ne 0) { throw 'Tests failed; evidence preserved.' }
-& $GoExe test -race -json ./... 2>&1 | Tee-Object -FilePath (Join-Path $reportDir 'race.jsonl')
+& $GoExe test -race -count=1 -json ./... 2>&1 | Tee-Object -FilePath (Join-Path $reportDir 'race.jsonl')
 if ($LASTEXITCODE -ne 0) { throw 'Race tests failed; evidence preserved.' }
 & $GoExe vet ./... 2>&1 | Tee-Object -FilePath (Join-Path $reportDir 'vet.txt')
 if ($LASTEXITCODE -ne 0) { throw 'Vet failed; evidence preserved.' }
@@ -34,6 +35,8 @@ $summary = [ordered]@{
     pi_cli_synthetic_oauth = [bool]$PiCli
     pi_cli_version = $(if ($PiCli) { $piRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PiCli)); (Get-Content -LiteralPath (Join-Path $piRoot 'package.json') -Raw | ConvertFrom-Json).version } else { $null })
     proxy_binary_sha256 = $(if ($ProxyExe) { (Get-FileHash -LiteralPath $ProxyExe -Algorithm SHA256).Hash.ToLowerInvariant() } else { $null })
+    native_plugin_synthetic_auth = [bool]($CodexExe -and $PluginMarketplace)
+    plugin_marketplace = $PluginMarketplace
     live_account = $false; live_model = $false
     desktop_and_dot = 'not tested'; production_modified = $false
 }

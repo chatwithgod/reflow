@@ -41,7 +41,9 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			headers.Del(k)
 		}
 	}
-	up, resp, err := websocket.Dial(ctx, target.String(), &websocket.DialOptions{HTTPClient: s.client, HTTPHeader: headers})
+	// The incoming HTTP context cancels an abandoned handshake; after upgrade,
+	// the connection read pumps own cancellation for the long-lived stream.
+	up, resp, err := websocket.Dial(r.Context(), target.String(), &websocket.DialOptions{HTTPClient: s.client, HTTPHeader: headers})
 	if err != nil {
 		if resp != nil {
 			copyResponse(w, resp)
@@ -245,6 +247,17 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			}
 			if l.canceled && terminal {
 				if emit(id, l.fold.Abort("canceled")) != nil {
+					return
+				}
+				if !advance(id, l) {
+					return
+				}
+				continue
+			}
+			if typ == "error" && l.fold.Rounds() == 1 {
+				// The client needs the original code to rebuild context after an
+				// uncached parent (and to distinguish auth/quota failures).
+				if down.Write(ctx, p.kind, p.data) != nil {
 					return
 				}
 				if !advance(id, l) {

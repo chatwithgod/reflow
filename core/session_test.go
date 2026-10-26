@@ -206,3 +206,21 @@ func TestEmptyInputStaysArray(t *testing.T) {
 		t.Fatal("null input")
 	}
 }
+
+func TestHostedToolsAreNotDiscardedAndReexecuted(t *testing.T) {
+	s := newSession(t, DefaultConfig())
+	es := fixtureRound("r", 516, true, true)
+	for _, ev := range es {
+		if item, ok := ev["item"].(map[string]any); ok && item["type"] == "function_call" {
+			item["type"] = "image_generation_call"
+		}
+	}
+	feed(t, s, es)
+	d, err := s.Finish()
+	if err != nil || d.Next != nil || d.Result.StopReason != "upstream_tool_already_executed" {
+		t.Fatalf("decision=%v err=%v", d, err)
+	}
+	if s.output[len(s.output)-1]["type"] != "image_generation_call" {
+		t.Fatal("hosted result lost")
+	}
+}

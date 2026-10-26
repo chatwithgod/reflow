@@ -11,10 +11,9 @@ import (
 	"time"
 
 	"github.com/chatwithgod/reflow/core"
+	"github.com/chatwithgod/reflow/internal/version"
 	"github.com/chatwithgod/reflow/proxy"
 )
-
-const version = "0.1.0-dev.1"
 
 func main() {
 	if err := run(); err != nil {
@@ -24,13 +23,16 @@ func main() {
 }
 
 func run() error {
+	if len(os.Args) > 1 && (os.Args[1] == "mcp" || os.Args[1] == "codex-config") {
+		return controlCommand(os.Args[1], os.Args[2:])
+	}
 	listen := flag.String("listen", "127.0.0.1:18516", "loopback listen address")
 	upstream := flag.String("upstream", "https://chatgpt.com/backend-api/codex", "fixed upstream base URL")
 	maxContinue := flag.Int("max-continue", 3, "maximum extra model requests (0 disables folding)")
 	showVersion := flag.Bool("version", false, "print version")
 	flag.Parse()
 	if *showVersion {
-		fmt.Println(version)
+		fmt.Println(version.String)
 		return nil
 	}
 	host, _, err := net.SplitHostPort(*listen)
@@ -56,7 +58,7 @@ func run() error {
 		defer cancel()
 		_ = server.Shutdown(shutdown)
 	}()
-	fmt.Fprintf(os.Stderr, "Reflow %s listening on %s; credentials stay with the client\n", version, listener.Addr())
+	fmt.Fprintf(os.Stderr, "Reflow %s listening on %s; credentials stay with the client\n", version.String, listener.Addr())
 	err = server.Serve(listener)
 	if err == http.ErrServerClosed {
 		return nil

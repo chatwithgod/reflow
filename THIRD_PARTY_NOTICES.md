@@ -60,6 +60,7 @@ SOFTWARE.
 
 - github.com/coder/websocket v1.8.15: ISC; its notice is retained in THIRD_PARTY_LICENSES.txt.
 - github.com/klauspost/compress v1.20.3: upstream notices retained in THIRD_PARTY_LICENSES.txt.
+- github.com/pelletier/go-toml/v2 v2.4.3: MIT; used to preserve unrelated Codex TOML while changing only its routing URL.
 - Go runtime and standard library: BSD-3-Clause, full notice retained in THIRD_PARTY_LICENSES.txt.
 - Historical CPA SDK and YAML notices are retained for provenance; neither is a dependency of this standalone module.
 - Portable Go/LLVM-MinGW toolchains are development-only and are not included in release ZIPs.

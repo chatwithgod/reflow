@@ -1,4 +1,4 @@
-# Reflow (0.1.0-dev.1)
+# Reflow (0.1.0-dev.2)
 
 Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
 
@@ -10,11 +10,13 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前版本为 `0.1.0-dev.1`，处于早期开发阶段：
+当前版本为 `0.1.0-dev.2`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。
 
-- 目前支持直接从源码构建，**尚未公开发布正式的二进制文件或安装包**。
-- 已针对 Pi 1.4.0 提供适配扩展（`adapters/pi/reflow.ts`），可以在保留原有登录与模型列表的前提下按需挂载。见 [Pi 接入说明](adapters/pi/README.md)。
-- Codex 原生插件接入以及 Magpie 支持目前均未完成。
+- **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
+- **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
+- **Codex 原生插件**：本地市场注册安装、缓存二进制、4 个 stdio MCP 工具，以及真实 Codex 会话通过 Code Mode 调用 `status` 均已验证。见 [插件说明](plugins/codex/README.md)。
+
+这些验证使用隔离目录和模拟上游，没有调用真实账号，也没有改动生产配置。真实账号、Desktop/dot、Magpie 和任务质量评测仍未完成。
 
 ## 凭据与网络边界
 
@@ -39,13 +41,18 @@ reflow -version
 服务运行后，可通过浏览器或命令行查看健康状态：
 `GET http://127.0.0.1:18516/healthz`
 
-### 2. 客户端配置与手动还原
+### 2. 客户端配置与还原
 
-目前没有配套自动切换或恢复工具，修改配置时需要手动操作：
+先启动服务，再预览并接入。工具只修改用户级 `openai_base_url`，继续使用 Codex 内置 provider 和原有登录；明确选择了其他 provider 时会拒绝自动切换。
 
-1. **记录原有配置**：修改前，先记下你当前 Codex 配置里的 `openai_base_url`（如果有）。
-2. **连接本地代理**：将 Codex 的用户级 `openai_base_url` 指向 `http://127.0.0.1:18516`。继续保留内置的官方 provider 即可，无需创建 `model_providers.openai`。
-3. **手动还原设置**：停止或退出 Reflow 服务前，请手动把 `openai_base_url` 改回原样或直接删除该字段，避免后续请求因端口无响应而报错。
+```sh
+reflow codex-config --action preview
+reflow codex-config --action connect
+# 停止服务前还原
+reflow codex-config --action restore
+```
+
+只有实际改变配置后才需要重启 Codex。还原保留其他设置的后续修改；路由已被手动改动时会拒绝覆盖。可用 `--codex-home` 指定另一份配置目录。原生插件提供相同的预览、接入和还原工具，安装插件不会自动启动代理。
 
 ## 验证范围与局限
 
@@ -55,13 +62,15 @@ reflow -version
 - 下一轮交互所需的父响应 ID 衔接
 - WebSocket 连接预热与多通道并发
 - HTTP 请求取消与压缩请求处理
+- WebSocket 中途取消、断开、丢失父响应后的完整重放，以及过期缓存的清理
+- 遇到已由上游执行的工具时停止续接，避免重新执行其副作用
 
 近期在本地模拟环境下补充了两组真实 CLI 的链路验证：
 
 - **Pi CLI 1.4.0**：临时隔离环境配合合成 OAuth 凭证，跑通 SSE 与 WebSocket 双路径的续接流程。内置 `read` 工具读取合成文件，工具结果回传；被舍弃轮次的读操作没有执行。
 - **Codex CLI 0.164.0-alpha.11.1**：使用合成 ChatGPT 凭证，纯 WebSocket、无 HTTP 回退，实际执行一次本地只读 MCP 工具，并回传结果。此前 shell 工具测试有过断言误判，已修正并保留失败记录。
 
-同一 Windows 构件已通过上述 CLI 验证；Linux/macOS 构件当前仅完成交叉编译。详细范围见 [验证记录](docs/VERIFICATION-2026-10-26.md)。
+Windows 构件已通过上述 CLI 验证；Linux/macOS 只做交叉编译，尚无原生运行证据。详细范围见 [dev.2 验证记录](docs/VERIFICATION-0.1.0-dev.2.md)，以及保留的 [dev.1 记录](docs/VERIFICATION-2026-10-26.md)。
 
 这些测试只证明已覆盖场景的行为符合预期，不等同于真实线上账号的 OAuth 验收，也尚未验证真实 Token 自动刷新、Codex Desktop / dot、跨连接恢复的完整边界或实际模型输出质量。
 
@@ -75,9 +84,9 @@ go test -race ./...
 go vet ./...
 ```
 
-真实客户端的隔离测试默认跳过。设置 `REFLOW_CODEX_BIN` 指向 Codex CLI，或设置 `REFLOW_PI_CLI` 指向 Pi 1.4.0 的 `dist/bundle/cli.js` 后，可以运行对应测试；`REFLOW_NODE_BIN` 指定 Node，`REFLOW_PROXY_BIN` 指定待验收的 Reflow 构件。测试自行创建合成凭证，不读取现有账号。
+真实客户端的隔离测试默认跳过。设置 `REFLOW_CODEX_BIN` 指向 Codex CLI，或设置 `REFLOW_PI_CLI` 指向 Pi 1.4.0 的 `dist/bundle/cli.js` 后，可以运行对应测试；`REFLOW_NODE_BIN` 指定 Node，`REFLOW_PROXY_BIN` 指定待验收的 Reflow 构件，`REFLOW_PLUGIN_MARKETPLACE` 指定已打包的本地插件市场目录。测试自行创建合成凭证，不读取现有账号。
 
-PowerShell 下可使用 `scripts/verify.ps1` 保存验证记录，使用 `scripts/build.ps1 -AllPlatforms` 生成五个平台的本地构件。构件存放在版本号和时间戳目录中，不覆盖旧构件。
+PowerShell 下可使用 `scripts/verify.ps1` 保存验证记录，使用 `scripts/build.ps1 -AllPlatforms -WithCodexPlugin` 生成五个平台的独立服务和插件包。构建需要 Go 1.26 和 Python 3.9+；验证脚本的 `-PluginMarketplace` 参数对应上述插件目录。构件存放在版本号和时间戳目录中，不覆盖旧构件。
 
 ## 来源与致谢
 

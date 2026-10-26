@@ -1,0 +1,17 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "reflow",
+  "version": "0.1.0-dev.2",
+  "description": "本地 Reflow 服务诊断与可恢复的 Codex 接入配置。Local diagnostics and reversible Codex routing for Reflow.",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Reflow",
+        "shortDescription": "诊断本地续接服务，配置或恢复 Codex 接入。",
+        "developerName": "chatwithgod",
+        "category": "Productivity",
+        "capabilities": ["Read", "Write"]
+      }
+    }
+  }
+}
