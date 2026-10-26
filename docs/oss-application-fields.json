@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "checked_date": "2026-10-27",
+  "status": "local_draft_not_submitted",
+  "technical_checkpoint": "fa2c622",
+  "sources": {
+    "program": "https://developers.openai.com/community/codex-for-oss",
+    "form": "https://openai.com/form/codex-for-oss/"
+  },
+  "field_character_limit": 500,
+  "fields": {
+    "qualification": {
+      "text": "Reflow is an early-stage standalone Go engine and local proxy for budget-bounded continuation, decoupled from CPA. It holds intermediate outputs while preserving retained tool calls, usage totals, and client-managed login. Integrations are prepared for Codex CLI, app-server, a Codex plugin, and Pi 1.4.0, with local Magpie patches. Its 79 passing regression checks use synthetic upstreams. The aim is reproducible maintenance of cross-client protocol compatibility.",
+      "characters": 466
+    },
+    "api_credit_use": {
+      "text": "Credits would fund planned maintenance: small-batch, budget-capped API runs checking protocol compatibility, tool-use round-trips, and disconnect recovery. We would reproduce failures, compare upstream versions, review fixes, and validate releases. These proposed API workloads are separate from our previous ChatGPT subscription tests, which are not an API-spend baseline.",
+      "characters": 373
+    },
+    "additional_context": {
+      "text": "The standalone project has no public release or verified adoption data yet. Six live sessions produced 35 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.",
+      "characters": 459
+    }
+  },
+  "submission_values_not_collected": [
+    "first_name",
+    "last_name",
+    "chatgpt_account_email",
+    "public_github_username",
+    "public_github_repository_url",
+    "verified_primary_or_core_maintainer_role",
+    "requested_optional_support",
+    "openai_organization_id"
+  ],
+  "facts_to_preserve": [
+    "Synthetic upstream checks are not real-account acceptance",
+    "No verified adoption figures or quality-improvement claims",
+    "One prior real continuation occurred in a timed-out session",
+    "The later successful patched-client session triggered zero continuations",
+    "Desktop/dot UI remains unaccepted",
+    "Magpie patches are local, not submitted or merged"
+  ]
+}

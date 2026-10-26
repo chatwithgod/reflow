@@ -1,0 +1,38 @@
+# Codex for OSS 申请草稿
+
+2026-10-27 核对。本地草稿，未提交；技术证据基线为 `fa2c622`。目前工作副本未配置远程仓库，也未登记独立 Reflow 可核验的公开仓库链接。个人信息没有从账号文件中读取或填入本文。
+
+申请表要求公开的 GitHub 账号和仓库链接，选择主要或核心维护者身份；项目价值、API 额度用途和补充说明三段文字各限 500 字符。具体字段以提交时的 [官方申请表](https://openai.com/form/codex-for-oss/) 为准。[计划介绍](https://developers.openai.com/community/codex-for-oss)允许规模较小但有生态价值的项目说明理由，不代表一定入选。
+
+下面按现有事实说明跨客户端兼容性与可复现维护价值。没有把回归测试计数写成采用量，也没有声称续接能提高回答质量。三段英文同时保存在 [结构化文本](oss-application-fields.json)，便于核对和复制；字符数包含空格与标点，不包含字段名。
+
+## 项目价值：466 字符
+
+Reflow is an early-stage standalone Go engine and local proxy for budget-bounded continuation, decoupled from CPA. It holds intermediate outputs while preserving retained tool calls, usage totals, and client-managed login. Integrations are prepared for Codex CLI, app-server, a Codex plugin, and Pi 1.4.0, with local Magpie patches. Its 79 passing regression checks use synthetic upstreams. The aim is reproducible maintenance of cross-client protocol compatibility.
+
+中文意思：独立 Reflow 的价值在于让多客户端共享有限预算的续接、工具调用和用量处理，并提供可复现的兼容性检查；目前仍是早期开发项目。
+
+## API 额度用途：373 字符
+
+Credits would fund planned maintenance: small-batch, budget-capped API runs checking protocol compatibility, tool-use round-trips, and disconnect recovery. We would reproduce failures, compare upstream versions, review fixes, and validate releases. These proposed API workloads are separate from our previous ChatGPT subscription tests, which are not an API-spend baseline.
+
+中文意思：这是未来 API 维护工作的用途草稿，包括有限批次的协议、工具往返和断连验证。既有 ChatGPT 订阅测试不作为 API 花费依据。本草稿不预选申请项目，只有决定申请 API 额度时才使用这一段。
+
+## 补充说明：459 字符
+
+The standalone project has no public release or verified adoption data yet. Six live sessions produced 35 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.
+
+中文意思：如实说明公开发布、社区采用和完整真实续接验收方面的缺口。超时的是包含续接的会话；后续修复版虽然完成任务，却没有触发续接。
+
+## 各项说法的依据
+
+| 申请说法 | 可核对的本地依据 |
+| --- | --- |
+| 独立核心、客户端接入和插件入口 | [兼容性说明](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md) |
+| 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
+| 6 次会话、35 次推理请求、1 次续接 | [最近实测](LIVE-SMOKE-2026-10-27.md)及其关联的前序记录 |
+| Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；宿主全量仍有 36 个失败项 |
+
+这些本地链接尚不能替代供审核者打开的公共证据。公开仓库获授权建立后，应将对应提交、验证记录和维护补丁转换为可访问链接；不要把待提交补丁写成已合并贡献。
+
+提交前仍需填写姓名、ChatGPT 账号邮箱、公开 GitHub 账号与仓库 URL，并确认维护者身份、申请哪些支持以及所需的组织信息。当前没有可核实的独立版星数、下载量或用户数，相关指标留空。Desktop/dot 暂留未验收，申请草稿没有改变工程验收状态。发布、上游提交和正式申请仍按 [计划](../PLAN.md) 分别处理。

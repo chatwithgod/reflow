@@ -4,9 +4,11 @@ Reflow 已从 CPA 插件提取为独立核心，并为 Codex CLI、Pi 和 Magpie
 
 ## 计划定位
 
-[Codex for Open Source 官方说明](https://developers.openai.com/community/codex-for-oss)（2026-10-26 核对）面向核心维护者和广泛使用的公开项目，也允许其他项目解释其生态价值。支持内容包括六个月 ChatGPT Pro with Codex、按条件提供的 Codex Security，以及用于核心开源工作的 API 额度；页面明确支持 Pi 等其他客户端。
+[Codex for Open Source 官方说明](https://developers.openai.com/community/codex-for-oss)（2026-10-27 重新核对）面向核心维护者和广泛使用的公开项目，也允许其他项目解释其生态价值。支持内容包括六个月 ChatGPT Pro with Codex、按条件提供的 Codex Security，以及用于核心开源工作的 API 额度；页面明确支持 Pi 等其他客户端。
 
 工程判断是：跨生态适配能拓宽 Reflow 的用途，但不是计划的官方先决条件，也不保证入选。申请时应说明已经解决的维护问题、可复现结果及后续维护用途，不把本地适配数量写成社区采用量。
+
+已按 [官方申请表](https://openai.com/form/codex-for-oss/) 的三段 500 字符限制准备 [本地申请草稿](OSS-APPLICATION-DRAFT.md)。项目价值、API 用途和补充说明分别为 466、373、459 字符。尚未填写个人信息、公开仓库链接或选择支持项目，也未提交申请。
 
 ## 当前证据
 
