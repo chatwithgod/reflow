@@ -1,0 +1,62 @@
+{
+  "status": "awaiting_new_explicit_authorization",
+  "prepared_date": "2026-10-27",
+  "source_commit": "bdeeb45",
+  "source_plan": {
+    "path": "build/evaluations/20261026-223402-099415/results.json",
+    "sha256": "8d466161c75cf2285d1d7fa23dba258568c911625483ab073d71743af01ef44a"
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "topo",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "isolated Codex 0.164.0 plus upstream d4bdafd",
+    "sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "allowed_scope_if_approved": [
+    "one topo on trial",
+    "native ChatGPT login copied to temporary home",
+    "preflight before evaluation",
+    "no automatic repeat if zero continuations",
+    "stop on timeout, error or rate limit"
+  ],
+  "excluded_scope": [
+    "Desktop/dot UI",
+    "production configuration or services",
+    "publication or submission",
+    "active token refresh test",
+    "additional trials"
+  ],
+  "continuation_guaranteed": false,
+  "quality_comparison": false,
+  "new_model_calls": 0
+}

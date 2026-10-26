@@ -40,3 +40,17 @@ python evaluations/run.py --preflight-only --codex /absolute/path/to/codex.exe
 第二条只生成 24 次试验的计划；第三条仅检查客户端，不读取登录文件。结果位于 `build/evaluations/`。真实运行需用户单独授权，并显式提供 `--run-live`、`--codex`、`--reflow`、`--auth-file` 和 `--model`；登录文件必须是原生 ChatGPT 登录，Reflow 构件须支持 `-metrics`。若没有观察到代理上的推理请求，或遇到启动、客户端错误、超时，会停止后续试验，保留已完成的数字记录。
 
 这是一组小型可复现实验。只比较完整成对的真实结果，并同时报告成功率和耗时；不能将结论直接外推到全部编程任务。
+
+## 待授权的单次补充方案
+
+2026-10-27 已生成一个只含拓扑排序 `topo` 开启组的计划，没有执行。它使用现有任务与 8 项评分检查，补充 NDJSON 之外的任务覆盖；没有证据证明它更容易自然触发续接，也不保证这次能完成真实续接验收。计划与源码散列见 [next-live-topo-plan.json](evidence/next-live-topo-plan.json)。
+
+拟继续使用隔离修复版 Codex `0.164.0`、Reflow dev.4 和 `gpt-6.1-sol/high`：仅一次任务，并发 1，禁用子代理，显式启用 Code Mode，模型会话最多 180 秒，每轮最多增加一次续接。先做客户端预检，再在临时目录使用已有原生登录；不修改生产配置，超时、客户端异常或限流即停止。不会因未触发续接自动再跑，不包含 Desktop/dot、主动刷新测试或任何发布。
+
+以下只是生成计划的无账号命令，已经执行；没有提供 `--run-live` 或账号文件：
+
+```sh
+python evaluations/run.py --model gpt-6.1-sol --effort high --tasks topo --conditions on --repeats 1 --max-continue 1 --timeout 180 --interval-seconds 30 --seed 17
+```
+
+若之后获得针对这一轮的新授权，才执行真实版本。它是单条件诊断，不作为开关质量比较。验收须同时检查真实续接、匹配的后续工具回传、工具成功与正常会话结束；仅有满分文件或续接次数不算完成。若匿名时间线与计数不足以确认后续工具成功，也保留为证据不足。此前授权的那一次已经使用，不能复用为本计划的执行权限。
