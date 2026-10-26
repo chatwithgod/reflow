@@ -3,6 +3,7 @@
   "checked_date": "2026-10-27",
   "status": "local_draft_not_submitted",
   "technical_checkpoint": "fa2c622",
+  "latest_live_record": "evidence/live-topo-2026-10-27.json",
   "sources": {
     "program": "https://developers.openai.com/community/codex-for-oss",
     "form": "https://openai.com/form/codex-for-oss/"
@@ -18,8 +19,8 @@
       "characters": 373
     },
     "additional_context": {
-      "text": "The standalone project has no public release or verified adoption data yet. Six live sessions produced 35 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.",
-      "characters": 459
+      "text": "The standalone project has no public release or verified adoption data yet. Seven live sessions produced 40 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.",
+      "characters": 461
     }
   },
   "submission_values_not_collected": [

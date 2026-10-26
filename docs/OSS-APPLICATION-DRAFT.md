@@ -1,6 +1,6 @@
 # Codex for OSS 申请草稿
 
-2026-10-27 核对。本地草稿，未提交；技术证据基线为 `fa2c622`。目前工作副本未配置远程仓库，也未登记独立 Reflow 可核验的公开仓库链接。个人信息没有从账号文件中读取或填入本文。
+2026-10-27 核对。本地草稿，未提交；技术回归基线为 `fa2c622`，真实调用累计数已补入 [拓扑排序诊断](LIVE-TOPO-2026-10-27.md)。目前工作副本未配置远程仓库，也未登记独立 Reflow 可核验的公开仓库链接。个人信息没有从账号文件中读取或填入本文。
 
 申请表要求公开的 GitHub 账号和仓库链接，选择主要或核心维护者身份；项目价值、API 额度用途和补充说明三段文字各限 500 字符。具体字段以提交时的 [官方申请表](https://openai.com/form/codex-for-oss/) 为准。[计划介绍](https://developers.openai.com/community/codex-for-oss)允许规模较小但有生态价值的项目说明理由，不代表一定入选。
 
@@ -18,9 +18,9 @@ Credits would fund planned maintenance: small-batch, budget-capped API runs chec
 
 中文意思：这是未来 API 维护工作的用途草稿，包括有限批次的协议、工具往返和断连验证。既有 ChatGPT 订阅测试不作为 API 花费依据。本草稿不预选申请项目，只有决定申请 API 额度时才使用这一段。
 
-## 补充说明：459 字符
+## 补充说明：461 字符
 
-The standalone project has no public release or verified adoption data yet. Six live sessions produced 35 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.
+The standalone project has no public release or verified adoption data yet. Seven live sessions produced 40 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.
 
 中文意思：如实说明公开发布、社区采用和完整真实续接验收方面的缺口。超时的是包含续接的会话；后续修复版虽然完成任务，却没有触发续接。
 
@@ -30,7 +30,7 @@ The standalone project has no public release or verified adoption data yet. Six 
 | --- | --- |
 | 独立核心、客户端接入和插件入口 | [兼容性说明](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md) |
 | 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
-| 6 次会话、35 次推理请求、1 次续接 | [最近实测](LIVE-SMOKE-2026-10-27.md)及其关联的前序记录 |
+| 7 次会话、40 次推理请求、1 次续接 | [最近实测](LIVE-TOPO-2026-10-27.md)及其关联的前序记录 |
 | Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；宿主全量仍有 36 个失败项 |
 
 这些本地链接尚不能替代供审核者打开的公共证据。公开仓库获授权建立后，应将对应提交、验证记录和维护补丁转换为可访问链接；不要把待提交补丁写成已合并贡献。

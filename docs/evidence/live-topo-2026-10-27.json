@@ -1,0 +1,232 @@
+{
+  "date_local": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "authorization": "one topo on diagnostic, concurrency 1; explicitly authorized and now consumed",
+  "runner_source_commit": "84a014a27ad9ab233060b2cecf594ebcbba7e07b",
+  "source_record": {
+    "path": "build/evaluations/20261026-225914-771813/results.json",
+    "sha256": "607055f768e650e0752a72827b3d09ccb17801981c4a9cb18a92a7650ac2d34f"
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-topo-live.py",
+    "sha256": "35be2fe746d1b7c16450123b691a51cec7e072b91a0194459d0c37c35926da7d"
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-topo-plan.json",
+    "sha256": "5e462d60354de24f07e68d27be9abe3f922cca62b9438836d81fe3127ea54f41"
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "topo",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "topo",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 36.771,
+        "client_reported_usage": {
+          "input_tokens": 76676,
+          "cached_input_tokens": 70528,
+          "output_tokens": 1270,
+          "reasoning_output_tokens": 86
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 3,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 8.74,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 8.996,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 9.569,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 12.405,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 12.968,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 18.19,
+            "event": "item.started",
+            "kind": "file_change",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 18.392,
+            "event": "item.completed",
+            "kind": "file_change",
+            "status": "completed"
+          },
+          {
+            "at_seconds": 29.749,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 30.439,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 33.846,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "upstream_metrics": {
+          "requests": 5,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 5,
+          "failed": 0,
+          "usage_reports": 5,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 76676,
+          "output_tokens": 1270,
+          "cached_tokens": 70528,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 86,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 76676,
+          "output_tokens": 1270,
+          "cached_tokens": 70528,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 86
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "score": {
+          "status": "scored",
+          "total": 8,
+          "passed": 8,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "production_invariants": {
+    "source_record": {
+      "path": "build/live-authorized-topo-20261027/invariants.json",
+      "sha256": "86fc089c429478cc81f98e13ac9b782314d7015b5ea84108868086585a7bb831"
+    },
+    "cleanup_record": {
+      "path": "build/live-authorized-topo-20261027/cleanup.json",
+      "sha256": "8c565fd4097829377b87f0988a01e4658cec94ddc1b5508b5bc63d5aa6c3b1ce"
+    },
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_owned_client_or_proxy_processes": 0,
+    "native_login_precheck": true,
+    "auth_read_after_no_account_preflight": true
+  },
+  "accounting": {
+    "previous_sessions": 6,
+    "this_session": 1,
+    "cumulative_sessions": 7,
+    "previous_inference_requests": 35,
+    "this_session_inference_requests": 5,
+    "cumulative_inference_requests": 40,
+    "cumulative_continuations": 1,
+    "subscription_usage_not_usd": true
+  },
+  "acceptance": {
+    "native_real_inference": true,
+    "native_file_change_completed": true,
+    "artifact_changed_and_scored": true,
+    "normal_session_completion": true,
+    "real_continuation_in_this_session": false,
+    "continuation_then_successful_tool_then_normal_finish_verified": false,
+    "quality_or_speed_improvement_proven": false,
+    "desktop_dot_or_refresh_tested": false
+  },
+  "interpretation": "Five fully observed responses report 86 reasoning tokens in total, below the fixed rule minimum candidate of 516 per response. Zero continuation is consistent with this. No trigger rule changed; no automatic rerun."
+}
