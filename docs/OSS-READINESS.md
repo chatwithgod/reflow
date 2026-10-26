@@ -10,6 +10,8 @@ Reflow 已从 CPA 插件提取为独立核心，并为 Codex CLI、Pi 和 Magpie
 
 已按 [官方申请表](https://openai.com/form/codex-for-oss/) 的三段 500 字符限制准备 [本地申请草稿](OSS-APPLICATION-DRAFT.md)。项目价值、API 用途和补充说明分别为 466、373、461 字符。尚未填写个人信息、公开仓库链接或选择支持项目，也未提交申请。
 
+独立仓库的首次公开动作另有 [源码预览方案](PUBLICATION-PLAN.md)：固定待审提交，先准备本地源码包和构件校验，再按用户授权创建公开仓库并推送。正式 Release、商店、上游 PR 和申请分别处理。
+
 ## 当前证据
 
 | 类别 | 已有成果 | 仍需补齐 |
