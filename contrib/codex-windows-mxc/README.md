@@ -22,12 +22,16 @@ OpenAI 已于 2026-10-23 合并 [PR #56468](https://github.com/openai/codex/pull
 
 已验证补丁可应用到标签 `rust-v0.164.0`、提交 `6aaac694803004a63c6f393d153c96d22521a6b9`，两个结果文件与上游修复提交逐字节一致。2026-10-27 核对 npm 时，稳定标签为 `0.164.0`，alpha 标签为 `0.165.0-alpha.1`；后者源码也仍缺少 `SystemRoot`，没有安装或将其表述为已修复构件。
 
-目前**尚未运行 Rust 单元测试、编译修复后的 CLI 或完成其原生工具复测**。对应检查命令是在 Codex 源码的 `codex-rs` 目录中运行：
+环境过滤的 Rust 单测已在隔离 MSVC 构建环境通过（1 项，其他 399 项未执行）。本地 CLI 和同版本 Code Mode 宿主均已构建；五个原生写入场景，以及直接 MCP、Code Mode 和原生插件的定向回归通过。具体范围见 [写入验证](../../docs/NATIVE-WRITE-PROBE.md)。Rust 检查命令是在 Codex 源码的 `codex-rs` 目录中运行：
 
 ```powershell
 cargo test -p codex-exec-server --lib helper_env_preserves_windows_runtime_variables_without_leaking_secrets
 cargo test -p codex-exec-server --test file_system_windows file_system_remote_fs_helper_respects_windows_sandbox_write_policy
 ```
+
+第二条沙箱测试尚未运行，实际文件写入另由 Reflow 的原生客户端探针验证。编译时只同步了锁文件中 166 个本地包的发布版本号，1308 条外部依赖记录保持原样；没有因此更新依赖版本。工具链、SDK 和构建缓存均位于独立目录。
+
+源码构件需要同时提供 `codex.exe` 和 `codex-code-mode-host.exe`。最初漏掉宿主导致工具无法执行的失败记录也已保留；两份成功构件的散列、构建日志与测试日志索引在机器可读证据的 `patched_validation` 中。本地源码构件没有替换原安装，不是官方发布版本；上述缺陷复现脚本面向未修复版本，修复构件用 Go 原生写入探针验收。
 
 补丁沿用 [OpenAI Codex 的 Apache-2.0 许可证](https://github.com/openai/codex/blob/6aaac694803004a63c6f393d153c96d22521a6b9/LICENSE)。本地 Reflow 的协议代码没有因此改动。公开报告 [#56918](https://github.com/openai/codex/issues/56918) 存在相同表面报错，但不能据此认定对方根因相同。
 

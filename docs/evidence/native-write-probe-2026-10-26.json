@@ -155,10 +155,11 @@
   },
   "limitations": [
     "Synthetic upstream and credentials; not real-service acceptance",
-    "Native fs-helper launch cause reproduced; candidate patched CLI has not been built or retested",
+    "Official binaries previously tested still fail the native patch probe; passing result is for the identified local source build and companion",
     "Real 180-second timeout not reproduced or explained",
-    "PowerShell ConstrainedLanguage is separate from the confirmed missing helper environment variable",
-    "Early direct-route setup failure excluded from patch comparison"
+    "PowerShell ConstrainedLanguage is separate from the missing helper environment variable",
+    "Early direct-route setup failure excluded from patch comparison",
+    "First local CLI bundle lacked the code-mode host; that failure is retained separately"
   ],
   "diagnosis": {
     "status": "native filesystem helper startup failure reproduced: missing SYSTEMROOT",
@@ -324,9 +325,17 @@
         "codex-rs/exec-server/src/fs_sandbox.rs": "63eefde6ee8caf9f52f2cdb0c4c03622c32a311a",
         "codex-rs/exec-server/tests/file_system_windows.rs": "bcb4c462ec263557aeea08a7c4bea92fe63e5ae5"
       },
-      "rust_unit_test": "not run",
-      "patched_cli_build": "not performed",
-      "native_patch_retest": "not performed",
+      "rust_unit_test": {
+        "status": "pass",
+        "test": "fs_sandbox::tests::helper_env_preserves_windows_runtime_variables_without_leaking_secrets",
+        "passed": 1,
+        "filtered_out": 399,
+        "target": "x86_64-pc-windows-msvc",
+        "source": "build/codex-patched/20261026-172605-319799/helper-environment-unit.log",
+        "sha256": "2b4988a198508c543be5fc6b037959cc4850721d4cce750516d22ce86c887bd0"
+      },
+      "patched_cli_build": "pass; local source build, not an official release",
+      "native_patch_retest": "five synthetic native workspace-write cases pass",
       "submitted_by_reflow": false
     },
     "related_public_issue": "https://github.com/openai/codex/issues/56918",
@@ -346,7 +355,147 @@
       "alpha_source_commit": "4cf2c16e4bc67809f620582d1999818e1b51eb2e",
       "alpha_source_preserves_systemroot": false,
       "alpha_binary_installed_or_tested": false
+    },
+    "lock_refresh": {
+      "kind": "release_workspace_version_lock_refresh",
+      "workspace_version_updates": 166,
+      "external_dependency_records_unchanged": true,
+      "external_dependency_record_count": 1308,
+      "original_sha256": "7ec2bfabf3b967c00409b85489076f8df3849745d3e469473d88288322adeb4a",
+      "resolved_sha256": "bc5f7352658f51deace9dddb4bc404742b06c6402cc825b6d37051c008d989bd"
     }
   },
-  "updated_on": "2026-10-27"
+  "updated_on": "2026-10-27",
+  "patched_validation": {
+    "build_kind": "isolated local source build; production binaries not replaced",
+    "reported_version": "codex-cli 0.164.0",
+    "source_base": "6aaac694803004a63c6f393d153c96d22521a6b9",
+    "upstream_fix": "d4bdafd378a8e328a67a4cd3557b5fe634af378c",
+    "cli_sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+    "code_mode_host_sha256": "4d82e0157eba9afdb48650cb3bdd7c709d5bb1ce08ec661941ba74c605f2f0d3",
+    "bundle": {
+      "source": "build/codex-patched/20261026-172605-319799/bundle.json",
+      "sha256": "d21e614c35d1e416b778e63401fcaec1cf276ee1aa8e3c38c5c54c29e9b21031"
+    },
+    "cli_build": {
+      "source": "build/codex-patched/20261026-172605-319799/summary.json",
+      "sha256": "0acd76340bb567487ae99cd902345732a6f87d5ebfc54628826f1e9de004aad6"
+    },
+    "host_build": {
+      "source": "build/codex-patched/20261026-175414-140071/summary.json",
+      "sha256": "db100cb04938f6516b87e4b2afae8b4c617a103b9ffda1cdfb48b1d8c231fa2c"
+    },
+    "filesystem_rpc": {
+      "source": "build/mxc-exec-server-control-patched.json",
+      "sha256": "c80f5e45bb7ba31ab8b6101ac39109337c58296b701e3aa787b84afd31d11df8",
+      "data": {
+        "kind": "native_sandboxed_fs_rpc",
+        "live_account": false,
+        "model_calls": 0,
+        "client_version": "codex-cli 0.164.0",
+        "max_concurrent_requests": 1,
+        "write_response": {
+          "id": 2,
+          "result": {}
+        },
+        "exit_code": 0,
+        "host_file_updated": true,
+        "stderr": ""
+      }
+    },
+    "native_write_probe": {
+      "source": "build/native-write-patched-bundle-20261027-020303-094.jsonl",
+      "sha256": "ab60652c0c791e6361dcbc8d8885de5d9160ec3dc36e2abd1e352e25aa7b2060",
+      "cases": [
+        {
+          "name": "patch_via_reflow",
+          "status": "pass",
+          "seconds": 1.95
+        },
+        {
+          "name": "patch_direct",
+          "status": "pass",
+          "seconds": 1.14
+        },
+        {
+          "name": "patch_add_direct",
+          "status": "pass",
+          "seconds": 1.15
+        },
+        {
+          "name": "patch_direct_no_daemon",
+          "status": "pass",
+          "seconds": 1.2
+        },
+        {
+          "name": "command_via_reflow",
+          "status": "pass",
+          "seconds": 1.52
+        }
+      ]
+    },
+    "native_protocol_and_plugin": {
+      "source": "build/native-regression-patched-20261027-020719-943.jsonl",
+      "sha256": "e2eceee719e4e465d46a65eced9f59bbb576ec3483e09bbca6599cbe9f17f999",
+      "outcomes": [
+        {
+          "name": "TestCodexNativeLoginOffline/direct_mcp",
+          "status": "pass",
+          "seconds": 0.8
+        },
+        {
+          "name": "TestCodexNativeLoginOffline/code_mode",
+          "status": "pass",
+          "seconds": 0.78
+        },
+        {
+          "name": "TestCodexNativeLoginOffline",
+          "status": "pass",
+          "seconds": 1.58
+        },
+        {
+          "name": "TestCodexPluginInstallAndStdioOffline",
+          "status": "pass",
+          "seconds": 1.22
+        }
+      ]
+    },
+    "initial_incomplete_bundle": {
+      "source": "build/native-write-patched-20261027-014931-042.jsonl",
+      "sha256": "c143a023f7e1c79446842595a73a8bbb2f17a6312d6968893d3d447eced89530",
+      "status": "five failures: code-mode host missing, native write tools not reached",
+      "fixed_by": "build matching code-mode-host and include it beside the CLI"
+    },
+    "toolchain": [
+      {
+        "source": "build/rust-toolchain-provenance.json",
+        "sha256": "d662ed3ae117345796b1169e48e1c7e2b009c3ffe09dcdb3b50bfcd3a4aedc05"
+      },
+      {
+        "source": "build/rust-msvc-std-provenance.json",
+        "sha256": "fdfdcd3c306253ec3c7cb05c1b279012dc05a17e4456cf20b0feb65aa35da3fc"
+      },
+      {
+        "source": "build/msvc-tools/20261026-170418-986927/summary.json",
+        "sha256": "3274c2ccd04fb02a9a1e33e8209199850bf3fcf2b042c6f34756857ec76e18dc"
+      },
+      {
+        "source": "build/codex-v8-provenance.json",
+        "sha256": "2958874a7990012da5240ec15106c9459cbc0193f2d395e15fa1ddbe634d02f1"
+      },
+      {
+        "source": "build/codex-patched/20261026-171350-709473/summary.json",
+        "sha256": "f156236c4df6f61f4827ebf8878d340a1aaebc906d3e5e2719f3459faa433833"
+      },
+      {
+        "source": "build/resource-wrapper/summary.json",
+        "sha256": "75a876ac76cfdb7b40dbaf1f0d4516868dd18e5bd2b8cb3acfc20e1af8e15b24"
+      }
+    ],
+    "max_concurrent_test_clients": 1,
+    "live_account": false,
+    "live_model_requests": 0,
+    "real_continuation_acceptance": false,
+    "desktop_and_dot": "not tested"
+  }
 }

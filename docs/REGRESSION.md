@@ -2,7 +2,7 @@
 
 `scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数、排除构件副本并增补 Code Mode 回归后的 dev.3 本地验收为 65 个通过项、0 跳过，见 [验证记录](VERIFICATION-0.1.0-dev.3.md)。
 
-默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。该探针目前在两版 Windows CLI 中失败，不能把 65 项通过表述为完整原生写文件兼容。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
+默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。已测两版官方 Windows CLI 仍有失败记录；加入上游修复的本地构件已通过五个场景。不能把默认 65 项通过与这些定向结果混作同一次全量验收。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
 
 ## 评测自检
 
