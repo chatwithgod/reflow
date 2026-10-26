@@ -31,6 +31,7 @@ $summary = [ordered]@{
     tests_skipped = @($events | Where-Object { $_.Action -eq 'skip' -and $_.Test }).Count
     race = 'pass'; vet = 'pass'; decoder_fuzz = 'pass'
     native_cli_synthetic_auth = [bool]$CodexExe
+    native_workspace_write_probe = 'excluded: run native_write_probe tag separately; see docs/NATIVE-WRITE-PROBE.md'
     native_cli_version = $(if ($CodexExe) { & $CodexExe --version } else { $null })
     pi_cli_synthetic_oauth = [bool]$PiCli
     pi_cli_version = $(if ($PiCli) { $piRoot = Split-Path -Parent (Split-Path -Parent (Split-Path -Parent $PiCli)); (Get-Content -LiteralPath (Join-Path $piRoot 'package.json') -Raw | ConvertFrom-Json).version } else { $null })

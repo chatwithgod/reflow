@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"sync"
 	"testing"
@@ -28,7 +29,7 @@ func syntheticJWT(claims core.Object) string {
 }
 
 // Uses the installed CLI, a fresh home, synthetic ChatGPT credentials and an
-// actual local read-only MCP tool. No shell command or real model call is made.
+// actual local read-only MCP tool. No real model call is made.
 func TestCodexNativeLoginOffline(t *testing.T) {
 	if os.Getenv("REFLOW_CODEX_BIN") == "" {
 		t.Skip("set REFLOW_CODEX_BIN for the isolated installed-CLI test")
@@ -38,11 +39,14 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 		if codeMode {
 			name = "code_mode"
 		}
-		t.Run(name, func(t *testing.T) { verifyNativeLoginOffline(t, codeMode) })
+		t.Run(name, func(t *testing.T) { verifyNativeLoginOffline(t, nativeLoginMode{codeMode: codeMode}) })
 	}
 }
 
-func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
+type nativeLoginMode struct{ codeMode, nativeWrite, direct, command, add, noDaemon bool }
+
+func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
+	codeMode, nativeWrite := mode.codeMode, mode.nativeWrite
 	bin := os.Getenv("REFLOW_CODEX_BIN")
 	if bin == "" {
 		t.Skip("set REFLOW_CODEX_BIN for the isolated installed-CLI test")
@@ -51,6 +55,11 @@ func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 	home, work := filepath.Join(base, "codex-home"), filepath.Join(base, "workspace")
 	for _, p := range []string{home, work, filepath.Join(base, "temp"), filepath.Join(base, "appdata"), filepath.Join(base, "localappdata")} {
 		if err := os.MkdirAll(p, 0700); err != nil {
+			t.Fatal(err)
+		}
+	}
+	if nativeWrite && !mode.add {
+		if err := os.WriteFile(filepath.Join(work, "probe.txt"), []byte("before\n"), 0600); err != nil {
 			t.Fatal(err)
 		}
 	}
@@ -99,7 +108,16 @@ func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 				discardedTools++
 			}
 			mu.Unlock()
-			result = core.Object{"content": []any{core.Object{"type": "text", "text": "REFLOW_TOOL_OK"}}, "isError": false}
+			text := "REFLOW_TOOL_OK"
+			if nativeWrite {
+				contents, err := os.ReadFile(filepath.Join(work, "probe.txt"))
+				if err != nil {
+					text = "fixture read failed"
+				} else {
+					text = string(contents)
+				}
+			}
+			result = core.Object{"content": []any{core.Object{"type": "text", "text": text}}, "isError": false}
 		default:
 			result = core.Object{}
 		}
@@ -118,9 +136,9 @@ func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 		authSeen = authSeen || header.Get("Authorization") == "Bearer "+jwt
 		mu.Unlock()
 		var events []core.Object
-		if n <= 2 {
+		if (n <= 2 && !mode.direct) || (n == 1 && mode.direct) {
 			tokens, id := 20, "chosen"
-			if n == 1 {
+			if n == 1 && !mode.direct {
 				tokens, id = 516, "discarded"
 			}
 			events = testfixture.Round(id, tokens, true)
@@ -130,6 +148,29 @@ func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 					if codeMode {
 						item["type"], item["name"], item["namespace"] = "custom_tool_call", "exec", "functions"
 						item["input"] = "const spec=ALL_TOOLS.find(x=>x.name.includes('reflow_fixture')&&x.name.endsWith('probe')); if(!spec) throw new Error('Fixture tool unavailable'); text(await tools[spec.name](" + string(args) + "));"
+						if nativeWrite {
+							patch := "*** Begin Patch\n*** Update File: probe.txt\n@@\n-before\n+REFLOW_TOOL_OK\n*** End Patch"
+							if mode.add {
+								patch = "*** Begin Patch\n*** Add File: probe.txt\n+REFLOW_TOOL_OK\n*** End Patch"
+							}
+							if id == "discarded" {
+								patch = "*** Begin Patch\n*** Add File: discarded.txt\n+discarded write must remain invisible\n*** End Patch"
+							}
+							encoded, _ := json.Marshal(patch)
+							item["input"] = "const writer=ALL_TOOLS.find(x=>x.name.endsWith('apply_patch')); if(!writer) throw new Error('Fixture patch tool unavailable'); text(await tools[writer.name](" + string(encoded) + ")); " + item["input"].(string)
+							if mode.command {
+								file := "probe.txt"
+								if id == "discarded" {
+									file = "discarded.txt"
+								}
+								command := "printf 'REFLOW_TOOL_OK\\n' > " + file
+								if runtime.GOOS == "windows" {
+									command = "cmd.exe /d /c \"echo REFLOW_TOOL_OK>" + file + "\""
+								}
+								params, _ := json.Marshal(core.Object{"cmd": command, "workdir": work, "yield_time_ms": 10000, "max_output_tokens": 200})
+								item["input"] = "const writer=ALL_TOOLS.find(x=>x.name.endsWith('exec_command')); if(!writer) throw new Error('Fixture command tool unavailable'); text(await tools[writer.name](" + string(params) + ")); const spec=ALL_TOOLS.find(x=>x.name.includes('reflow_fixture')&&x.name.endsWith('probe')); text(await tools[spec.name](" + string(args) + "));"
+							}
+						}
 						delete(item, "arguments")
 					} else {
 						item["name"] = "probe"
@@ -255,34 +296,84 @@ func verifyNativeLoginOffline(t *testing.T, codeMode bool) {
 		testfixture.WriteSSE(w, respond(body, r.Header))
 	}))
 	defer upstream.Close()
-	proxyURL := startProxy(t, upstream.URL+"/backend-api/codex")
+	proxyURL := upstream.URL + "/backend-api/codex"
+	if !mode.direct {
+		proxyURL = startProxy(t, proxyURL)
+	}
+	chatgptURL, caPath := upstream.URL, ""
+	if mode.direct {
+		cloud, certificate := testfixture.LocalTLS(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			w.Header().Set("Content-Type", "application/json")
+			if strings.Contains(r.URL.Path, "/accounts/check") {
+				fmt.Fprint(w, `{"accounts":[{"id":"synthetic-account","plan_type":"pro","workspace_backend_origin":"NO_CONSTRAINT","account_routing_override":"NO_CONSTRAINT"}]}`)
+				return
+			}
+			http.Error(w, "synthetic cloud endpoint", 404)
+		}))
+		defer cloud.Close()
+		chatgptURL, caPath = cloud.URL, certificate
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 35*time.Second)
 	defer cancel()
-	args := []string{"exec", "--ignore-user-config", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-s", "read-only", "-C", work, "-m", "gpt-6.1-sol",
-		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + proxyURL + "\"", "-c", "chatgpt_base_url=\"" + upstream.URL + "\"",
+	prompt := "Synthetic local protocol test. Use the read-only fixture tool and report its final marker."
+	if nativeWrite {
+		prompt = "Synthetic local protocol test. You may modify only probe.txt and discarded.txt in this temporary workspace. Use the read-only fixture tool to read the retained marker, then finish."
+	}
+	args := []string{"-a", "never", "exec", "--ignore-user-config", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-C", work, "-m", "gpt-6.1-sol",
+		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + proxyURL + "\"", "-c", "chatgpt_base_url=\"" + chatgptURL + "\"",
 		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "model_reasoning_effort=\"low\"",
 		"-c", "mcp_servers.reflow_fixture.url=\"" + mcp.URL + "\"",
-		"-c", "mcp_servers.reflow_fixture.tools.probe.approval_mode=\"approve\"",
-		"Synthetic local protocol test. Use the read-only fixture tool and report its final marker."}
+		"-c", "mcp_servers.reflow_fixture.tools.probe.approval_mode=\"approve\""}
+	if nativeWrite {
+		args = append(args, "-c", "default_permissions=\":workspace\"")
+	} else {
+		args = append(args, "-s", "read-only")
+	}
+	if nativeWrite && runtime.GOOS == "windows" {
+		args = append(args, "-c", "windows.sandbox=\"mxc\"")
+	}
+	args = append(args, prompt)
+	if mode.noDaemon {
+		args = append([]string{"--no-daemon"}, args...)
+	}
 	cmd := exec.CommandContext(ctx, bin, args...)
 	cmd.Dir = work
-	for _, name := range []string{"PATH", "SystemRoot", "WINDIR", "COMSPEC", "PATHEXT", "ProgramData"} {
+	for _, name := range []string{"PATH", "SystemRoot", "SystemDrive", "WINDIR", "COMSPEC", "PATHEXT", "ProgramData"} {
 		if value := os.Getenv(name); value != "" {
 			cmd.Env = append(cmd.Env, name+"="+value)
 		}
 	}
-	cmd.Env = append(cmd.Env, "CODEX_HOME="+home, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=warn")
+	cmd.Env = append(cmd.Env, "CODEX_HOME="+home, "HOME="+base, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=warn")
+	if caPath != "" {
+		cmd.Env = append(cmd.Env, "CODEX_CA_CERTIFICATE="+caPath)
+	}
 	out, err := cmd.CombinedOutput()
+	if nativeWrite {
+		contents, readErr := os.ReadFile(filepath.Join(work, "probe.txt"))
+		if readErr != nil || strings.TrimSpace(string(contents)) != "REFLOW_TOOL_OK" {
+			t.Errorf("native tool did not update its permitted workspace file: %v", readErr)
+		}
+		if _, statErr := os.Stat(filepath.Join(work, "discarded.txt")); !os.IsNotExist(statErr) {
+			t.Errorf("discarded native patch was executed: %v", statErr)
+		}
+	}
 	mu.Lock()
 	defer mu.Unlock()
-	if err != nil || calls != 3 || !authSeen || !toolSeen || chosenTools != 1 || discardedTools != 0 || wsCalls < 3 || httpCalls != 0 || !strings.Contains(string(out), "REFLOW_NATIVE_OK") || strings.Contains(string(out), "falling back to HTTP") {
+	expectedCalls := 3
+	if mode.direct {
+		expectedCalls = 2
+	}
+	if err != nil || calls != expectedCalls || !authSeen || !toolSeen || chosenTools != 1 || discardedTools != 0 || wsCalls < expectedCalls || httpCalls != 0 || !strings.Contains(string(out), "REFLOW_NATIVE_OK") || strings.Contains(string(out), "falling back to HTTP") {
 		text := strings.ReplaceAll(string(out), jwt, "[synthetic token]")
 		if len(text) > 7000 {
 			text = text[len(text)-7000:]
 		}
 		t.Fatalf("native CLI err=%v calls=%d WS=%d HTTP=%d auth=%t tool=%t chosen=%d discarded=%d paths=%v output=%s", err, calls, wsCalls, httpCalls, authSeen, toolSeen, chosenTools, discardedTools, paths, text)
 	}
-	t.Logf("installed CLI: 3 synthetic inference calls via WebSocket, 1 real read-only MCP invocation, discarded call not executed, result returned; no HTTP fallback")
+	t.Logf("installed CLI: %d synthetic inference calls via WebSocket, 1 real read-only MCP invocation, discarded call not executed, result returned; no HTTP fallback", calls)
+	if mode.direct {
+		return
+	}
 	stats := proxyMetrics(t, proxyURL)
 	if stats.Requests != 3 || stats.Continuations != 1 || stats.InputTokens != 300 || stats.OutputTokens != 586 || !stats.UsageComplete {
 		t.Fatalf("native CLI upstream accounting mismatch: %+v", stats)

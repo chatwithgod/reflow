@@ -1,0 +1,330 @@
+{
+  "date": "2026-10-26",
+  "kind": "native_windows_workspace_write_probe",
+  "live_account": false,
+  "live_model_requests": 0,
+  "max_concurrent_test_clients": 1,
+  "permissions": ":workspace",
+  "windows_sandbox": "mxc",
+  "operating_system_version": "10.0.26300.0",
+  "source_base_commit": "048471d12475477aa5ef12d346a1911ba03744a0",
+  "current_reproduction_source_sha256": {
+    "integration/codex_test.go": "5ffb2ad6efa21da8fce2aa81f1b10577a96c0351a44ae4245225812bb2185276",
+    "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09"
+  },
+  "clients": [
+    {
+      "version": "codex-cli 0.164.0-alpha.11.1",
+      "sha256": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+      "source": "existing Desktop-managed binary; not modified"
+    },
+    {
+      "version": "codex-cli 0.164.0",
+      "sha256": "6f267830b029ee25d9339864aa867cd45de9f8fd4c5ea007d2e63c13a0c66d36",
+      "source": "isolated npm install --ignore-scripts",
+      "package": "@openai/codex@0.164.0",
+      "package_lock_sha256": "2e1928767273742a57d88cbf2d9bbf33623e9b40fcc5bdc2661fe146d81fbf38",
+      "native_package_url": "https://registry.npmjs.org/@openai/codex/-/codex-0.164.0-win32-x64.tgz",
+      "native_package_integrity": "sha512-urWPhwh9YavuoAPIkmVYKBTtd5OtGVL4Ki0Fb28dhK/Mz6Pt4LSy+gbRrZFz5+RXrw9ubvXuXDCcd8beYcWhDg=="
+    }
+  ],
+  "results": [
+    {
+      "cli_version": "0.164.0-alpha.11.1",
+      "source": "build/native-write-offline-checked.jsonl",
+      "sha256": "60f45eb357bcfe3f2fa8a6202349b3bf508c7cce2ca986d43651d9beb8fef3af",
+      "cases": [
+        {
+          "name": "patch_via_reflow",
+          "status": "fail",
+          "seconds": 2.99,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        },
+        {
+          "name": "patch_direct",
+          "status": "fail",
+          "seconds": 4.99,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        },
+        {
+          "name": "command_via_reflow",
+          "status": "pass",
+          "seconds": 3.82,
+          "mxc_failed_to_write_file": false,
+          "host_file_assertion_failed": false
+        }
+      ]
+    },
+    {
+      "cli_version": "0.164.0-alpha.11.1",
+      "source": "build/native-write-offline-add.jsonl",
+      "sha256": "756a57ff9fdb816fda5b6d0e0dbe6d4d189c5da7d0e9b921f054045a8b935934",
+      "cases": [
+        {
+          "name": "patch_add_direct",
+          "status": "fail",
+          "seconds": 2.91,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        }
+      ]
+    },
+    {
+      "cli_version": "0.164.0",
+      "source": "build/native-write-offline-stable-0.164.0.jsonl",
+      "sha256": "1ee947c86a036c14daa5027e3d992d1e77f3dc97e17eeb72cb054754a82c83b6",
+      "cases": [
+        {
+          "name": "patch_via_reflow",
+          "status": "fail",
+          "seconds": 5.25,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        },
+        {
+          "name": "patch_direct",
+          "status": "fail",
+          "seconds": 3.04,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        },
+        {
+          "name": "patch_add_direct",
+          "status": "fail",
+          "seconds": 2.63,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        },
+        {
+          "name": "command_via_reflow",
+          "status": "pass",
+          "seconds": 3.92,
+          "mxc_failed_to_write_file": false,
+          "host_file_assertion_failed": false
+        }
+      ]
+    },
+    {
+      "cli_version": "0.164.0",
+      "source": "build/native-write-offline-no-daemon.jsonl",
+      "sha256": "b0cf07bea76cc02305eb012d973321506ad7b444ba0f83c616e2df203e33a20d",
+      "cases": [
+        {
+          "name": "patch_direct_no_daemon",
+          "status": "fail",
+          "seconds": 6.33,
+          "mxc_failed_to_write_file": true,
+          "host_file_assertion_failed": true
+        }
+      ]
+    }
+  ],
+  "fixed_command_control": {
+    "source": "build/mxc-filesystem-api-control.json",
+    "sha256": "08abd834c415e50bbc4af8f8360b99a37dbfd9f8d2787ef53f7c7eb81cd3c112",
+    "data": {
+      "kind": "fixed_command_filesystem_api_control",
+      "exit_code": 0,
+      "observed": {
+        "dotnet_error": "MethodInvocationNotSupportedInConstrainedLanguage",
+        "language_mode": "ConstrainedLanguage",
+        "cmdlet": true,
+        "dotnet": false,
+        "command_exit": 0
+      },
+      "host_files_updated": {
+        "dotnet.txt": false,
+        "cmdlet.txt": true,
+        "command.txt": true
+      },
+      "live_account": false,
+      "model_calls": 0
+    }
+  },
+  "default_regression": {
+    "source": "build/verification/20261026-224640-237/summary.json",
+    "sha256": "039e0f45e24fb03ed479b1c946b5dae7be158a6dfedc10fb092c48fb74ed5819",
+    "tests_passed": 65,
+    "tests_skipped": 0,
+    "race": "pass",
+    "vet": "pass",
+    "decoder_fuzz": "pass",
+    "includes_native_write_probe": false
+  },
+  "limitations": [
+    "Synthetic upstream and credentials; not real-service acceptance",
+    "Native fs-helper launch cause reproduced; candidate patched CLI has not been built or retested",
+    "Real 180-second timeout not reproduced or explained",
+    "PowerShell ConstrainedLanguage is separate from the confirmed missing helper environment variable",
+    "Early direct-route setup failure excluded from patch comparison"
+  ],
+  "diagnosis": {
+    "status": "native filesystem helper startup failure reproduced: missing SYSTEMROOT",
+    "upstream_repository": "https://github.com/openai/codex",
+    "upstream_tag": "rust-v0.164.0",
+    "upstream_commit": "6aaac694803004a63c6f393d153c96d22521a6b9",
+    "upstream_file": "codex-rs/exec-server/src/fs_sandbox.rs",
+    "reproduction_script": "contrib/codex-windows-mxc/reproduce.py",
+    "reproduction_script_sha256": "df8c7675925f7725ee2faf2a1bfa1744e5b94ba1ada8f0e9663b84b7f3f78643",
+    "reports": [
+      {
+        "source": "build/codex-windows-mxc/mxc-systemroot-20261026-155249-699088.json",
+        "sha256": "6e3c9b2df58777cf814a424665c2009e5dedfcafc32bd8309436469c6f0a1794",
+        "data": {
+          "kind": "codex_mxc_missing_systemroot_reproduction",
+          "client_version": "codex-cli 0.164.0",
+          "client_sha256": "6f267830b029ee25d9339864aa867cd45de9f8fd4c5ea007d2e63c13a0c66d36",
+          "live_account": false,
+          "model_calls": 0,
+          "max_concurrent_processes": 1,
+          "sandbox_permissions_unchanged_between_controls": true,
+          "native_rpc_problem_reproduced": true,
+          "environment_controls_passed": true,
+          "native_patch_compatibility_accepted": false,
+          "rpc": {
+            "write_response": {
+              "error": {
+                "code": -32603,
+                "message": "fs sandbox helper failed with status exit code: 1: MXC launcher: The supplied `process.env` cannot launch a Windows process container because it is missing the required variable(s): SYSTEMROOT. MXC uses your `process.env` (an environment of 5 variable(s)) verbatim when `process.inheritDefaultEnv` is false. Set `process.inheritDefaultEnv` to true to layer these entries on the default user environment. Alternatively, add the missing variable(s) to `process.env` — any value will do because the Windows requirement is presence-only — or omit `process.env` entirely to use the default user environment."
+              },
+              "id": 2
+            },
+            "host_file_updated": false
+          },
+          "controls": [
+            {
+              "case": "without_systemroot",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 1,
+              "host_file_updated": false,
+              "stdout": "",
+              "stderr": "MXC launcher: The supplied `process.env` cannot launch a Windows process container because it is missing the required variable(s): SYSTEMROOT. MXC uses your `process.env` (an environment of 5 variable(s)) verbatim when `process.inheritDefaultEnv` is false. Set `process.inheritDefaultEnv` to true to layer these entries on the default user environment. Alternatively, add the missing variable(s) to `process.env` — any value will do because the Windows requirement is presence-only — or omit `process.env` entirely to use the default user environment.\n"
+            },
+            {
+              "case": "with_systemroot",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "SYSTEMROOT",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 0,
+              "host_file_updated": true,
+              "stdout": "{\"status\":\"ok\",\"payload\":{\"operation\":\"fs/writeFile\",\"response\":{}}}\n",
+              "stderr": ""
+            },
+            {
+              "case": "with_systemroot_outside_write_root",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "SYSTEMROOT",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 0,
+              "host_file_updated": false,
+              "stdout": "{\"status\":\"error\",\"payload\":{\"code\":-32600,\"message\":\"拒绝访问。 (os error 5)\"}}\n",
+              "stderr": ""
+            }
+          ]
+        }
+      },
+      {
+        "source": "build/codex-windows-mxc/mxc-systemroot-20261026-155352-739479.json",
+        "sha256": "b0fdd7d46dcc22c5009a5d7e3d3e41cb5234f13a6d12a6f4da32d8ba7779b505",
+        "data": {
+          "kind": "codex_mxc_missing_systemroot_reproduction",
+          "client_version": "codex-cli 0.164.0-alpha.11.1",
+          "client_sha256": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+          "live_account": false,
+          "model_calls": 0,
+          "max_concurrent_processes": 1,
+          "sandbox_permissions_unchanged_between_controls": true,
+          "native_rpc_problem_reproduced": true,
+          "environment_controls_passed": true,
+          "native_patch_compatibility_accepted": false,
+          "rpc": {
+            "write_response": {
+              "error": {
+                "code": -32603,
+                "message": "fs sandbox helper failed with status exit code: 1: MXC launcher: The supplied `process.env` cannot launch a Windows process container because it is missing the required variable(s): SYSTEMROOT. MXC uses your `process.env` (an environment of 5 variable(s)) verbatim when `process.inheritDefaultEnv` is false. Set `process.inheritDefaultEnv` to true to layer these entries on the default user environment. Alternatively, add the missing variable(s) to `process.env` — any value will do because the Windows requirement is presence-only — or omit `process.env` entirely to use the default user environment."
+              },
+              "id": 2
+            },
+            "host_file_updated": false
+          },
+          "controls": [
+            {
+              "case": "without_systemroot",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 1,
+              "host_file_updated": false,
+              "stdout": "",
+              "stderr": "MXC launcher: The supplied `process.env` cannot launch a Windows process container because it is missing the required variable(s): SYSTEMROOT. MXC uses your `process.env` (an environment of 5 variable(s)) verbatim when `process.inheritDefaultEnv` is false. Set `process.inheritDefaultEnv` to true to layer these entries on the default user environment. Alternatively, add the missing variable(s) to `process.env` — any value will do because the Windows requirement is presence-only — or omit `process.env` entirely to use the default user environment.\n"
+            },
+            {
+              "case": "with_systemroot",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "SYSTEMROOT",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 0,
+              "host_file_updated": true,
+              "stdout": "{\"status\":\"ok\",\"payload\":{\"operation\":\"fs/writeFile\",\"response\":{}}}\n",
+              "stderr": ""
+            },
+            {
+              "case": "with_systemroot_outside_write_root",
+              "child_environment_keys": [
+                "LOCALAPPDATA",
+                "PATH",
+                "SYSTEMDRIVE",
+                "SYSTEMROOT",
+                "TEMP",
+                "TMP"
+              ],
+              "exit_code": 0,
+              "host_file_updated": false,
+              "stdout": "{\"status\":\"error\",\"payload\":{\"code\":-32600,\"message\":\"拒绝访问。 (os error 5)\"}}\n",
+              "stderr": ""
+            }
+          ]
+        }
+      }
+    ],
+    "candidate_patch": {
+      "path": "contrib/codex-windows-mxc/systemroot.patch",
+      "sha256": "2e2ce088a8a0cdd3d520a7bda3422fca1bf6b5996de4010b7bd49c4386aa5bcb",
+      "applies_to_pinned_upstream": true,
+      "applied_candidate_git_blob": "92afe8f2096cede276733841d9992e2023b119b8",
+      "rust_unit_test": "added, not run: Rust toolchain absent",
+      "patched_cli_build": "not performed",
+      "native_patch_retest": "not performed",
+      "published_or_submitted": false
+    },
+    "related_public_issue": "https://github.com/openai/codex/issues/56918",
+    "related_issue_same_root_cause_confirmed": false
+  }
+}

@@ -20,6 +20,8 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 
 上述自动回归使用隔离目录和模拟上游。后续原生 ChatGPT 登录实测中，关闭组正常完成；开启组观察到一次真实续接且文件评分 9/9，但会话达到 180 秒上限，尚未完整验收。见 [真实测试记录](docs/LIVE-SMOKE-2026-10-26.md)。生产配置未改，Desktop/dot 和质量改善结论仍待验证。
 
+另有单独运行的 Windows 原生文件编辑探针未通过：两版 Codex CLI 的 `apply_patch` 在经过和绕过 Reflow 时均写入失败，普通命令写入通过。默认 65 项回归不包含这一探针，不能据此宣称完整编辑兼容。见 [复现与限制](docs/NATIVE-WRITE-PROBE.md)。
+
 公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
