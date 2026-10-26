@@ -1,0 +1,249 @@
+{
+  "date_local": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "authorization": "one patched-client live diagnostic, concurrency 1",
+  "runner_source_commit": "4e5dd64",
+  "source_record": {
+    "path": "build/evaluations/20261026-193710-777779/results.json",
+    "sha256": "4d6cc5b8ee0fcfa5dee573a2342f46f4c442d7fc1fe3ade9917ef2cdd7768b54"
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "ndjson",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "ndjson",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 61.647,
+        "client_reported_usage": {
+          "input_tokens": 61841,
+          "cached_input_tokens": 58240,
+          "output_tokens": 1592,
+          "reasoning_output_tokens": 513
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 3,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 11.746,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 12.004,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 12.564,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 15.447,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 16.066,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 52.978,
+            "event": "item.started",
+            "kind": "file_change",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 53.181,
+            "event": "item.completed",
+            "kind": "file_change",
+            "status": "completed"
+          },
+          {
+            "at_seconds": 53.363,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 53.96,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 58.692,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "upstream_metrics": {
+          "requests": 4,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 4,
+          "failed": 0,
+          "usage_reports": 4,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 61841,
+          "output_tokens": 1592,
+          "cached_tokens": 58240,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 513,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 61841,
+          "output_tokens": 1592,
+          "cached_tokens": 58240,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 513
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "score": {
+          "status": "scored",
+          "total": 9,
+          "passed": 9,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "no_account_preflight": {
+    "path": "build/evaluations/20261026-193422-288367/summary.json",
+    "sha256": "5a012fc71781df050a4244d89d8efd1c91441263b265815420416656c8f6249f",
+    "data": {
+      "kind": "client_execution_preflight",
+      "live_account": false,
+      "model_calls": 0,
+      "binary_sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+      "source_sha256": {
+        "run.py": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+        "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+      },
+      "execution_preflight": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "code_mode_host_present": true,
+        "code_mode_host_launchable": true,
+        "command_write_verified": true,
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0,
+        "native_filesystem_write_verified": true,
+        "out_of_workspace_write_blocked": true,
+        "native_filesystem_reason": "pass"
+      },
+      "code_mode_host_sha256": "4d82e0157eba9afdb48650cb3bdd7c709d5bb1ce08ec661941ba74c605f2f0d3"
+    }
+  },
+  "production_invariants": {
+    "source_record": {
+      "path": "build/live-authorized-dev4-20261027/invariants.json",
+      "sha256": "64fe3f9de89fcc49f48902b10dc75b21d905c3067b5f1af005b423e125840f1c"
+    },
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_owned_client_or_proxy_processes": 0,
+    "process_cleanup_checked_using": "Win32_Process executable paths for the isolated client bundle and tested Reflow binary"
+  },
+  "accounting": {
+    "previous_sessions": 5,
+    "this_session": 1,
+    "cumulative_sessions": 6,
+    "previous_inference_requests": 31,
+    "this_session_inference_requests": 4,
+    "cumulative_inference_requests": 35,
+    "cumulative_continuations": 1,
+    "subscription_usage_not_usd": true
+  },
+  "acceptance": {
+    "native_real_inference": true,
+    "native_file_change_completed": true,
+    "artifact_changed_and_scored": true,
+    "normal_session_completion": true,
+    "real_continuation_in_this_session": false,
+    "continuation_then_successful_tool_then_normal_finish_verified": false,
+    "quality_or_speed_improvement_proven": false,
+    "previous_timeout_root_cause_proven": false,
+    "desktop_dot_or_refresh_tested": false
+  },
+  "interpretation": "The 4 fully observed Responses report 513 reasoning tokens in total. The fixed rule's lowest candidate is 516 per response. Zero continuations is consistent with that rule; per-response stop reasons were not recorded. No rule was changed to obtain a trigger."
+}
