@@ -17,11 +17,11 @@ import (
 	"github.com/chatwithgod/reflow/internal/testfixture"
 )
 
-func harness(t *testing.T, up http.Handler) (string, *Server) {
+func harness(t *testing.T, up http.Handler, metrics ...bool) (string, *Server) {
 	t.Helper()
 	upstream := httptest.NewServer(up)
 	t.Cleanup(upstream.Close)
-	s, err := New(Config{Upstream: upstream.URL + "/backend-api/codex", Fold: core.DefaultConfig()})
+	s, err := New(Config{Upstream: upstream.URL + "/backend-api/codex", Fold: core.DefaultConfig(), EnableMetrics: len(metrics) > 0 && metrics[0]})
 	if err != nil {
 		t.Fatal(err)
 	}

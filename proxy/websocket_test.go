@@ -79,7 +79,7 @@ func TestWebSocketWarmupFoldAndFollowingToolResult(t *testing.T) {
 				}
 			}
 		}
-	}))
+	}), true)
 	ctx, cancel := context.WithTimeout(context.Background(), 8*time.Second)
 	defer cancel()
 	c, _, err := websocket.Dial(ctx, "ws"+strings.TrimPrefix(url, "http")+"/responses", &websocket.DialOptions{HTTPHeader: http.Header{"Authorization": []string{"Bearer synthetic-only"}}})
@@ -129,6 +129,9 @@ func TestWebSocketWarmupFoldAndFollowingToolResult(t *testing.T) {
 	}
 	if requests[3]["previous_response_id"] != "last" {
 		t.Fatal("next tool reply has stale parent")
+	}
+	if m := readMetrics(t, url); m.ContinuedToolResponses != 1 || m.ContinuedToolCalls != 1 || m.ContinuedToolResults != 1 || m.ToolTrackingDrops != 0 {
+		t.Fatalf("WebSocket tool result was not correlated: %+v", m)
 	}
 }
 

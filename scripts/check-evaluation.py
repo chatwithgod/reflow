@@ -72,7 +72,7 @@ def main():
                                          "discover", "-s", "evaluations", "-p", "test_runner.py", "-v"])
             output = log.read_text(encoding="utf-8")
             count = re.search(r"Ran (\d+) tests? in", output)
-            if not count or int(count.group(1)) < 5 or "skipped=" in output:
+            if not count or int(count.group(1)) < (10 if os.name == "nt" else 5) or "skipped=" in output:
                 raise RuntimeError("evaluation process tests did not all run")
             summary["process_tests_passed"] = int(count.group(1))
             run("grader_self_test", [sys.executable, "evaluations/run.py", "--self-test"])

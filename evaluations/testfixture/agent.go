@@ -4,6 +4,8 @@
 package main
 
 import (
+	"bufio"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"net"
@@ -11,12 +13,87 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 )
 
+func preflight(home string) {
+	if _, err := os.Stat(filepath.Join(home, "auth.json")); !os.IsNotExist(err) {
+		os.Exit(3)
+	}
+	for _, arg := range os.Args[1:] {
+		if arg == "--help" {
+			return
+		}
+	}
+	profile := filepath.Dir(home)
+	work := filepath.Join(profile, "workspace")
+	if len(os.Args) > 1 && os.Args[1] == "exec-server" {
+		scanner := bufio.NewScanner(os.Stdin)
+		for scanner.Scan() {
+			var req struct {
+				ID     any            `json:"id"`
+				Method string         `json:"method"`
+				Params map[string]any `json:"params"`
+			}
+			if json.Unmarshal(scanner.Bytes(), &req) != nil || req.ID == nil {
+				continue
+			}
+			response := map[string]any{"id": req.ID, "result": map[string]any{}}
+			if req.Method == "initialize" {
+				response["result"] = map[string]any{"sessionId": "synthetic-preflight"}
+			} else if req.Method == "fs/writeFile" {
+				if strings.Contains(filepath.Base(os.Args[0]), "missing-systemroot") {
+					delete(response, "result")
+					response["error"] = map[string]any{"code": -32603, "message": "missing required SYSTEMROOT SYNTHETIC_PRIVATE_SENTINEL"}
+				} else {
+					path, _ := req.Params["path"].(string)
+					uri, err := url.Parse(path)
+					if err != nil || uri.Scheme != "file" || uri.Host != "" {
+						os.Exit(3)
+					}
+					filename := filepath.FromSlash(uri.Path)
+					if runtime.GOOS == "windows" && len(filename) > 2 && filename[2] == ':' {
+						filename = filename[1:]
+					}
+					allowed := filename == filepath.Join(work, "native-probe.txt")
+					if strings.Contains(filepath.Base(os.Args[0]), "unsafe-filesystem") && filename == filepath.Join(profile, "blocked-probe.txt") {
+						allowed = true
+					}
+					if allowed {
+						encoded, _ := req.Params["dataBase64"].(string)
+						data, err := base64.StdEncoding.DecodeString(encoded)
+						if err != nil || string(data) != "REFLOW_NATIVE_PREFLIGHT_OK\n" || os.WriteFile(filename, data, 0600) != nil {
+							os.Exit(3)
+						}
+					} else {
+						delete(response, "result")
+						response["error"] = map[string]any{"code": -32600, "message": "synthetic denied write SYNTHETIC_PRIVATE_SENTINEL"}
+					}
+				}
+			}
+			json.NewEncoder(os.Stdout).Encode(response)
+		}
+		return
+	}
+	for _, arg := range os.Args[1:] {
+		if arg == "sandbox" {
+			if os.WriteFile(filepath.Join(work, "probe.txt"), []byte("REFLOW_SANDBOX_OK\n"), 0600) != nil {
+				os.Exit(3)
+			}
+			return
+		}
+	}
+	os.Exit(3)
+}
+
 func main() {
 	home := os.Getenv("CODEX_HOME")
+	if strings.Contains(home, "preflight-") {
+		preflight(home)
+		return
+	}
 	if !strings.Contains(home, "trial-") {
 		os.Exit(2)
 	}

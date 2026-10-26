@@ -29,6 +29,7 @@ foreach ($platform in $platforms) {
     }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'adapters') -Destination $packageDir -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs') -Destination $packageDir -Recurse
+    Copy-Item -LiteralPath (Join-Path $projectRoot 'contrib') -Destination $packageDir -Recurse
     $pluginDocs = Join-Path $packageDir 'plugins/codex'
     New-Item -ItemType Directory -Path $pluginDocs | Out-Null
     Copy-Item -LiteralPath (Join-Path $projectRoot 'plugins/codex/README.md') -Destination $pluginDocs

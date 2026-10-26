@@ -13,27 +13,32 @@ import (
 // payloads. Usage is what observed streaming Responses replies reported, not
 // a monetary charge or an estimate of unreported canceled work.
 type Metrics struct {
-	Enabled              bool   `json:"enabled"`
-	Scope                string `json:"scope"`
-	Requests             int64  `json:"requests"`
-	Continuations        int64  `json:"continuations"`
-	Warmups              int64  `json:"warmups"`
-	Completed            int64  `json:"completed"`
-	Failed               int64  `json:"failed"`
-	UsageReports         int64  `json:"usage_reports"`
-	ParseErrors          int64  `json:"parse_errors"`
-	UnsupportedResponses int64  `json:"unsupported_responses"`
-	InputTokens          int64  `json:"input_tokens"`
-	OutputTokens         int64  `json:"output_tokens"`
-	CachedTokens         int64  `json:"cached_tokens"`
-	CacheWriteTokens     int64  `json:"cache_write_tokens"`
-	ReasoningTokens      int64  `json:"reasoning_tokens"`
-	UsageComplete        bool   `json:"usage_complete"`
+	Enabled                bool   `json:"enabled"`
+	Scope                  string `json:"scope"`
+	Requests               int64  `json:"requests"`
+	Continuations          int64  `json:"continuations"`
+	ContinuedToolResponses int64  `json:"continued_tool_responses"`
+	ContinuedToolCalls     int64  `json:"continued_tool_calls"`
+	ContinuedToolResults   int64  `json:"continued_tool_results"`
+	ToolTrackingDrops      int64  `json:"tool_tracking_drops"`
+	Warmups                int64  `json:"warmups"`
+	Completed              int64  `json:"completed"`
+	Failed                 int64  `json:"failed"`
+	UsageReports           int64  `json:"usage_reports"`
+	ParseErrors            int64  `json:"parse_errors"`
+	UnsupportedResponses   int64  `json:"unsupported_responses"`
+	InputTokens            int64  `json:"input_tokens"`
+	OutputTokens           int64  `json:"output_tokens"`
+	CachedTokens           int64  `json:"cached_tokens"`
+	CacheWriteTokens       int64  `json:"cache_write_tokens"`
+	ReasoningTokens        int64  `json:"reasoning_tokens"`
+	UsageComplete          bool   `json:"usage_complete"`
 }
 
 type metricsStore struct {
 	mu    sync.Mutex
 	value Metrics
+	tools map[[32]byte]*pendingTool
 }
 type metricRound struct {
 	store    *metricsStore

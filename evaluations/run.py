@@ -17,6 +17,7 @@ import time
 import urllib.request
 
 from tasks import ORACLES, STARTERS
+from client_preflight import code_mode_host_probe, filesystem_probe
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent
@@ -89,6 +90,10 @@ def execution_preflight(codex, report):
         env = trial_env(profile)
         work = profile / "workspace"
         work.mkdir()
+        host = code_mode_host_probe(codex, env, spawn_options, stop)
+        if not host["code_mode_host_launchable"]:
+            return {"kind": "windows_mxc", "status": "fail", "reason": "code_mode_host_unavailable", **host,
+                    "workspace_write_verified": False, "model_calls": 0}
         process = subprocess.Popen(
             [str(codex), "-c", 'windows.sandbox="mxc"', "sandbox", "--include-managed-config",
              "--permission-profile", ":workspace", "-C", str(work), "--", "cmd.exe", "/d", "/c",
@@ -104,9 +109,17 @@ def execution_preflight(codex, report):
             stop(process)
         probe = work / "probe.txt"
         written = probe.exists() and probe.read_text().strip() == "REFLOW_SANDBOX_OK"
-        return {"kind": "windows_mxc", "status": "pass" if process.returncode == 0 and written else "fail",
-                "workspace_write_verified": written, "exit_code": process.returncode,
-                "timed_out": timed_out, "model_calls": 0}
+        result = {"kind": "windows_mxc", "status": "fail", **host, "command_write_verified": written,
+                  "workspace_write_verified": False, "exit_code": process.returncode,
+                  "timed_out": timed_out, "model_calls": 0}
+        if process.returncode != 0 or not written:
+            result["reason"] = "command_write_failed"
+            return result
+        native = filesystem_probe(codex, profile, work, env, spawn_options, stop)
+        result.update(native)
+        result["workspace_write_verified"] = native["native_filesystem_write_verified"] and native["out_of_workspace_write_blocked"]
+        result["status"] = "pass" if result["workspace_write_verified"] else "fail"
+        return result
 
 
 def start_proxy(binary, maximum, env):
@@ -144,7 +157,9 @@ def read_metrics(endpoint):
                    "cache_write_tokens", "reasoning_tokens")
         if any(type(raw.get(key)) is not int or raw[key] < 0 for key in numbers):
             return None
-        return {**{key: raw[key] for key in numbers}, "usage_complete": raw.get("usage_complete") is True,
+        tool_numbers = ("continued_tool_responses", "continued_tool_calls", "continued_tool_results", "tool_tracking_drops")
+        tool_metrics = {key: raw[key] for key in tool_numbers} if all(type(raw.get(key)) is int and raw[key] >= 0 for key in tool_numbers) else {}
+        return {**{key: raw[key] for key in numbers}, **tool_metrics, "usage_complete": raw.get("usage_complete") is True,
                 "scope": "streaming_responses"}
     except Exception:
         return None
@@ -177,7 +192,8 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                        "-m", args.model, "-c", 'cli_auth_credentials_store="file"',
                        "-c", f'openai_base_url="{endpoint}"', "-c", f'model_reasoning_effort="{args.effort}"',
                        "-c", "features.memories=false", "-c", "features.apps=false",
-                       "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false"]
+                       "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false",
+                       "-c", "features.code_mode=true", "-c", "features.code_mode_host=true"]
             if os.name == "nt":
                 command += ["-c", 'windows.sandbox="mxc"']
             command.append(prompt)
@@ -254,6 +270,8 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
             record["upstream_reported_usage"] = {key: metrics[key] for key in ("input_tokens", "output_tokens", "cached_tokens", "cache_write_tokens", "reasoning_tokens")} if metrics and metrics["usage_complete"] else None
             record["model_evidence_valid"] = bool(metrics and metrics["requests"] > 0 and observed["completed_turns"] > 0)
             record["upstream_inference_observed"] = bool(metrics and metrics["completed"] > 0)
+            record["tool_roundtrip_metrics_available"] = bool(metrics and "continued_tool_results" in metrics)
+            record["continuation_tool_result_observed"] = bool(metrics and metrics.get("continued_tool_results", 0) > 0)
             record["mode"] = "live" if require_inference else "synthetic_runner_check"
             record["artifact_changed"] = solution.exists() and solution.read_bytes() != initial_solution
             if require_inference and record["status"] == "finished" and not record["model_evidence_valid"]:
@@ -279,8 +297,10 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--self-test", action="store_true")
-    parser.add_argument("--run-live", action="store_true")
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("--self-test", action="store_true")
+    mode.add_argument("--run-live", action="store_true")
+    mode.add_argument("--preflight-only", action="store_true", help="check the client without reading auth or making model calls")
     parser.add_argument("--codex", type=Path)
     parser.add_argument("--reflow", type=Path)
     parser.add_argument("--auth-file", type=Path)
@@ -298,8 +318,8 @@ def main():
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
     if not 0 <= args.interval_seconds <= 60:
         parser.error("interval-seconds must be 0..60")
-    if args.self_test and args.run_live:
-        parser.error("choose self-test or live execution")
+    if args.preflight_only and not args.codex:
+        parser.error("preflight requires --codex")
     if len(args.tasks) != len(set(args.tasks)):
         parser.error("task ids must be unique; use --repeats for repeated trials")
     if len(args.conditions) != len(set(args.conditions)):
@@ -307,6 +327,20 @@ def main():
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
+    if args.preflight_only:
+        codex = args.codex.resolve(strict=True)
+        summary = {"kind": "client_execution_preflight", "live_account": False, "model_calls": 0,
+                   "binary_sha256": fingerprint(codex),
+                   "source_sha256": {name: fingerprint(HERE / name) for name in ("run.py", "client_preflight.py")},
+                   "execution_preflight": execution_preflight(codex, report)}
+        host = codex.with_name("codex-code-mode-host" + (".exe" if os.name == "nt" else ""))
+        summary["code_mode_host_sha256"] = fingerprint(host) if host.is_file() else None
+        (report / "summary.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
+        status = summary["execution_preflight"]["status"]
+        print(f"Client preflight {status}; no auth read or model calls. Evidence: {report}")
+        if status == "fail":
+            raise SystemExit(1)
+        return
     if args.self_test:
         outcomes = {}
         for task in STARTERS:
@@ -340,10 +374,10 @@ def main():
     plan = {"kind": "paired_task_evaluation" if len(args.conditions) == 2 else "single_condition_diagnostic",
             "seed": args.seed, "model": args.model,
             "effort": args.effort, "timeout_seconds": args.timeout, "live_execution": args.run_live,
-            "trial_concurrency": 1, "native_subagents_enabled": False,
+            "trial_concurrency": 1, "native_subagents_enabled": False, "code_mode_enabled": True,
             "interval_seconds": args.interval_seconds,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):

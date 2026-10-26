@@ -378,4 +378,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	if stats.Requests != 3 || stats.Continuations != 1 || stats.InputTokens != 300 || stats.OutputTokens != 586 || !stats.UsageComplete {
 		t.Fatalf("native CLI upstream accounting mismatch: %+v", stats)
 	}
+	if stats.ContinuedToolResponses != 1 || stats.ContinuedToolCalls != 1 || stats.ContinuedToolResults != 1 || stats.ToolTrackingDrops != 0 {
+		t.Fatalf("native CLI continuation/tool correlation mismatch: %+v", stats)
+	}
 }

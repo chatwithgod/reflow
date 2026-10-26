@@ -94,7 +94,7 @@ func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
 				}
 			}
 		}
-	}))
+	}), true)
 	ctx, cancel := context.WithTimeout(context.Background(), 4*time.Second)
 	defer cancel()
 	down, _, err := websocket.Dial(ctx, "ws"+strings.TrimPrefix(url, "http")+"/responses", &websocket.DialOptions{HTTPHeader: http.Header{"Authorization": []string{"Bearer synthetic"}}})
@@ -129,6 +129,9 @@ func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
 	}
 	if requests.Load() != 3 {
 		t.Fatal("unexpected request count")
+	}
+	if m := readMetrics(t, url); m.Continuations != 1 || m.ContinuedToolResponses != 0 || m.ContinuedToolResults != 0 {
+		t.Fatalf("canceled continuation counted as a tool return: %+v", m)
 	}
 }
 

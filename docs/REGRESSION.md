@@ -1,12 +1,12 @@
 # 回归测试与离线流水线
 
-`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数、排除构件副本并增补 Code Mode 回归后的 dev.3 本地验收为 65 个通过项、0 跳过，见 [验证记录](VERIFICATION-0.1.0-dev.3.md)。
+`scripts/verify.ps1` 运行 Go 测试、race、vet 和解码器 fuzz。不提供 `CodexExe`、`PiCli` 或 `PluginMarketplace` 路径时，对应客户端测试会明确跳过；这种运行不能替代原生客户端联调。提供完整参数的 dev.4 本地验收为 76 个通过项、0 跳过，使用本地修复版 Codex 和模拟上游，见 [验证记录](VERIFICATION-0.1.0-dev.4.md)。此前 dev.3 的 65 项记录继续保留。
 
-默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。已测两版官方 Windows CLI 仍有失败记录；加入上游修复的本地构件已通过五个场景。不能把默认 65 项通过与这些定向结果混作同一次全量验收。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
+默认回归不包含 `native_write_probe` 标签下的原生文件编辑探针。已测两版官方 Windows CLI 仍有失败记录；加入上游修复的本地构件已通过五个场景。不能把默认 76 项通过与这些定向结果混作同一次全量验收。复现命令和对照结果见 [写入探针](NATIVE-WRITE-PROBE.md)。
 
 ## 评测自检
 
-在源码目录使用新增入口，会构建代理与合成 agent，然后运行 5 项进程检查和 4 项任务评分器自检：
+在源码目录使用新增入口，会构建代理与合成 agent，然后运行进程检查和 4 项任务评分器自检。Windows 共 10 项进程检查；其他平台只包含 5 项通用检查：
 
 ```sh
 python scripts/check-evaluation.py --go /absolute/path/to/go
@@ -15,6 +15,8 @@ python scripts/check-evaluation.py --go /absolute/path/to/go
 也可用 `--proxy /absolute/path/to/reflow` 检查已有构件。这两条路径均已在 Windows 通过。报告位于 `build/evaluation-process/`，含步骤退出码、二进制散列和测试日志。
 
 合成 agent 只接受测试凭据，通过本地健康接口检查参数，再写入参考解。它不是 Codex，不构成模型质量证据。自检不会读取真实账号或执行模型调用。
+
+Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失败、工作区外写入未被拦截时，在读取登录文件前停止。`python evaluations/run.py --preflight-only --codex /absolute/path/to/codex.exe` 可对指定客户端单独运行同一无账号检查；它不会进入模型试验。
 
 ## CI 草稿
 

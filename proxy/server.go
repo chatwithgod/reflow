@@ -159,6 +159,7 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "invalid Reflow request", 400)
 		return
 	}
+	s.metrics.toolResults(scope, body)
 	s.foldHTTP(w, r, scope, wire, fold)
 }
 
@@ -321,12 +322,16 @@ func (s *Server) foldHTTP(w http.ResponseWriter, r *http.Request, scope string, 
 			continue
 		}
 		rollback := s.cache.Remember(scope, decision.Result)
+		model, _ := wire["model"].(string)
+		finishTools := s.metrics.prepareTools(scope, model, decision.Result, decision.Events)
 		for _, event := range decision.Events {
 			if emit(event) != nil {
 				rollback()
+				finishTools(false)
 				return
 			}
 		}
+		finishTools(true)
 		_, _ = io.WriteString(w, "data: [DONE]\n\n")
 		_ = http.NewResponseController(w).Flush()
 		return

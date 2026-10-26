@@ -131,6 +131,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			l.fold = fold
 		}
 		delete(wire, "stream")
+		s.metrics.toolResults(scope, body)
 		l.metrics = s.metrics.begin(false, wire["generate"] == false)
 		return write(up, wire) == nil
 	}
@@ -309,12 +310,16 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 			rollback := cache.Remember(scope, d.Result)
+			model, _ := l.request["model"].(string)
+			finishTools := s.metrics.prepareTools(scope, model, d.Result, d.Events)
 			for _, event := range d.Events {
 				if emit(id, event) != nil {
 					rollback()
+					finishTools(false)
 					return
 				}
 			}
+			finishTools(true)
 			if !advance(id, l) {
 				return
 			}

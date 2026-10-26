@@ -50,4 +50,4 @@ go test -tags native_write_probe ./integration -run '^TestCodexNativeWriteProbe$
 
 五个场景串行执行。补丁失败会使此命令返回非零退出码，没有被改写为跳过或预期成功。测试仅使用临时目录内的合成登录信息；所选 CLI 及其配套组件决定实际结果。
 
-默认 `scripts/verify.ps1` 不包含这个显式构建标签。其最近一次完整结果为 65 个通过项、0 跳过，race/vet/fuzz 通过；本页写入探针和修复构件的定向回归另行记录，不能混作同一次全量测试。下一步仍需验证真实续接后的完整会话；真实调用须另行授权。
+默认 `scripts/verify.ps1` 不包含这个显式构建标签。dev.4 完整结果为 76 个通过项、0 跳过，race/vet/fuzz 通过；本页五个写入场景也已使用 dev.4 单独复测通过，不能混作同一次全量测试。新评测器还在读取账号前检查配套宿主和文件系统写入边界：原版准确报告 `missing_systemroot`，隔离修复版通过。见 [dev.4 记录](VERIFICATION-0.1.0-dev.4.md)。下一步仍需验证真实续接后的完整会话；真实调用须另行授权。

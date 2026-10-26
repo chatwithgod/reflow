@@ -1,0 +1,297 @@
+{
+  "version": "0.1.0-dev.4",
+  "date_local": "2026-10-27",
+  "live_account": false,
+  "live_model": false,
+  "production_modified": false,
+  "source_file_hashes": {
+    "VERSION": "40fb45e29fe8409de948de467d8a237dc78416df5c59ef751d18707d742e2625",
+    "internal/version/version.go": "514416fef9689600832ff82f46f6d956f7ef7801af9494b8ecb1512e4252656a",
+    "proxy/metrics.go": "95e1e26f1bc3ea9fea61f8173e2a4989ed490fdef70e9cdd5ad7466b63645d5e",
+    "proxy/tool_metrics.go": "bed94d07c0e4c6ae6e9fb8acb062b5257cadca35d3f8444504c71e782f187ee4",
+    "proxy/tool_metrics_test.go": "e48fe4e2fc7f87b2afa31451a2ddb9153aef5e0ac40c5f2c62b32254f823c48c",
+    "proxy/server.go": "672ed6a99ce473817acb9af02083e588155a8c76ce5a230669cee60bf346c39f",
+    "proxy/server_test.go": "700dd394e137ffcc0bdf9ee5e386515fa120d8946d2b15adab25a9792bc07b99",
+    "proxy/websocket.go": "b5df20698a5953f82cd4d6f081d9c74932def45e3439e3994da7ef90db24c018",
+    "proxy/websocket_test.go": "85ca40334aff3ec416bf7b41bdceed9eea6fcea33517c53770cfb9fd31165478",
+    "proxy/recovery_test.go": "3158c088fe17284d4efd6a7e4986bb78922d8a390d416589570d112dd3dbd80c",
+    "integration/codex_test.go": "0f0c60b86cf75453524e5bc3ed59342c99cd90ce4a0588816887e46c19986893",
+    "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+    "evaluations/run.py": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "evaluations/client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+    "evaluations/test_runner.py": "b89a57bb44efc721a545a4cfa73d94d8314550fecd1a8c2d64a28edd23222a17",
+    "evaluations/testfixture/agent.go": "af7d020790ed0568b6012118c4ccc57774a58b8a9008549bee31546da7d63f41",
+    "scripts/check-evaluation.py": "cd34d3ce86141405df61aa86546dce18104c5d655da0977ddb76c7fdfa05082b",
+    "scripts/build.ps1": "f8f5bf73862b57bbbb54412c07b27641c72f87d938ef3473daef62d9e68e379b",
+    "scripts/verify.ps1": "66fb1afd6a03528c00eb4a58f285e8dc51a9eb3c9a3678a113638c7bde13aa1b"
+  },
+  "full_suite": {
+    "path": "build/verification/20261027-031643-339/summary.json",
+    "sha256": "90a554c1ffaf029f224a4b02b6dae1896ec40daff7b5eb2de24ecef2f98b3ed0",
+    "summary": {
+      "created_utc": "2026-10-26T19:17:22.4927810Z",
+      "go_version": "go version go1.26.8 windows/amd64",
+      "tests_passed": 76,
+      "tests_skipped": 0,
+      "race": "pass",
+      "vet": "pass",
+      "decoder_fuzz": "pass",
+      "native_cli_synthetic_auth": true,
+      "native_workspace_write_probe": "excluded: run native_write_probe tag separately; see docs/NATIVE-WRITE-PROBE.md",
+      "native_cli_version": "codex-cli 0.164.0",
+      "pi_cli_synthetic_oauth": true,
+      "pi_cli_version": "1.4.0",
+      "proxy_binary_sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee",
+      "native_plugin_synthetic_auth": true,
+      "plugin_marketplace": "D:\\workspace\\reflow\\dist\\0.1.0-dev.4\\20261027-031626-715\\reflow_plugin_0.1.0-dev.4_windows_amd64",
+      "live_account": false,
+      "live_model": false,
+      "desktop_and_dot": "not tested",
+      "production_modified": false
+    }
+  },
+  "full_suite_logs": [
+    {
+      "path": "build/verification/20261027-031643-339/tests.jsonl",
+      "sha256": "2f80be62d2bab43ada461d2dd5ad1d3c5c7e577ce6b4b5617b1050db37738958"
+    },
+    {
+      "path": "build/verification/20261027-031643-339/race.jsonl",
+      "sha256": "029aba0b8df30a2931711ee8eb5f4193056d3845d661d50f3e7736961ded6cdd"
+    },
+    {
+      "path": "build/verification/20261027-031643-339/fuzz.txt",
+      "sha256": "a63de8c3f2b9c0627983f14e9430aba045f4b9cfda311f9870a0fb282722bc1b"
+    }
+  ],
+  "vet_log": {
+    "created": false,
+    "reason": "go vet emitted no output; verify.ps1 checked the zero exit status before writing its passing summary"
+  },
+  "evaluation_process": {
+    "path": "build/evaluation-process/20261026-191653-827550/summary.json",
+    "sha256": "6536176e80b3f1754f6dd6940e20a9cc27509a233377583303dbef9fcd034afc",
+    "summary": {
+      "live_account": false,
+      "live_model": false,
+      "production_modified": false,
+      "status": "pass",
+      "steps": [
+        {
+          "name": "build_synthetic_agent",
+          "exit_code": 0
+        },
+        {
+          "name": "runner_process_tests",
+          "exit_code": 0
+        },
+        {
+          "name": "grader_self_test",
+          "exit_code": 0
+        }
+      ],
+      "process_tests_passed": 10,
+      "proxy_sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "evaluation_log": {
+    "path": "build/evaluation-process/20261026-191653-827550/output.log",
+    "sha256": "1472472a16ad9a807b4bd1b7a7d7167f3e6a228a0df3a822e9bbb8c56377491a"
+  },
+  "grader_self_test": {
+    "path": "build/evaluations/20261026-191700-737871/summary.json",
+    "sha256": "b826066e06c58de3b304170c1c2e4d8efaaa57b29d83396bdf30f7f7857f3a5f",
+    "summary": {
+      "kind": "grader_self_test",
+      "model_calls": 0,
+      "tasks": {
+        "intervals": {
+          "oracle": {
+            "status": "scored",
+            "total": 8,
+            "passed": 8,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 8,
+            "passed": 1,
+            "failed": [
+              "test_generator",
+              "test_input_unchanged",
+              "test_negative_and_points",
+              "test_nested",
+              "test_reversed_rejected",
+              "test_touching",
+              "test_unsorted_overlap"
+            ]
+          }
+        },
+        "topo": {
+          "oracle": {
+            "status": "scored",
+            "total": 8,
+            "passed": 8,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 8,
+            "passed": 3,
+            "failed": [
+              "test_current_ready_order",
+              "test_cycle",
+              "test_dependency_only_and_duplicates",
+              "test_dependency_order",
+              "test_self_cycle"
+            ]
+          }
+        },
+        "ndjson": {
+          "oracle": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 9,
+            "passed": 6,
+            "failed": [
+              "test_final_line",
+              "test_unicode_separator_is_not_newline",
+              "test_utf8_byte_boundaries"
+            ]
+          }
+        },
+        "lru": {
+          "oracle": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "starter": {
+            "status": "scored",
+            "total": 9,
+            "passed": 3,
+            "failed": [
+              "test_capacity_one",
+              "test_eviction",
+              "test_hit_recency",
+              "test_keys_is_observation",
+              "test_negative",
+              "test_update_recency"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "native_write_probe": {
+    "path": "build/native-write-dev4-20261027-032000.jsonl",
+    "sha256": "6b855d9f583417fb3e315a2f87b6a4f6361daf63b8cbd6aa71e2d861f8d0d9fa",
+    "passed_cases": [
+      "TestCodexNativeWriteProbe/patch_via_reflow",
+      "TestCodexNativeWriteProbe/patch_direct",
+      "TestCodexNativeWriteProbe/patch_add_direct",
+      "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+      "TestCodexNativeWriteProbe/command_via_reflow"
+    ],
+    "excluded_from_default_suite": true
+  },
+  "native_preflight": {
+    "official_0.164.0": {
+      "path": "build/evaluations/20261026-191506-800698/summary.json",
+      "sha256": "915d2bacbdbe364c47b1468c4235247157806e24c26abe1a93df6132c2bd0d1b",
+      "summary": {
+        "kind": "client_execution_preflight",
+        "live_account": false,
+        "model_calls": 0,
+        "binary_sha256": "6f267830b029ee25d9339864aa867cd45de9f8fd4c5ea007d2e63c13a0c66d36",
+        "source_sha256": {
+          "run.py": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+          "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+        },
+        "execution_preflight": {
+          "kind": "windows_mxc",
+          "status": "fail",
+          "code_mode_host_present": true,
+          "code_mode_host_launchable": true,
+          "command_write_verified": true,
+          "workspace_write_verified": false,
+          "exit_code": 0,
+          "timed_out": false,
+          "model_calls": 0,
+          "native_filesystem_write_verified": false,
+          "out_of_workspace_write_blocked": false,
+          "native_filesystem_reason": "missing_systemroot"
+        },
+        "code_mode_host_sha256": "be52517ca0f9a8eb626ec065ed3a357b5ee150fe1934a254d0126e6d40f29b57"
+      }
+    },
+    "local_patched_0.164.0": {
+      "path": "build/evaluations/20261026-191514-292236/summary.json",
+      "sha256": "5a012fc71781df050a4244d89d8efd1c91441263b265815420416656c8f6249f",
+      "summary": {
+        "kind": "client_execution_preflight",
+        "live_account": false,
+        "model_calls": 0,
+        "binary_sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415",
+        "source_sha256": {
+          "run.py": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+          "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+        },
+        "execution_preflight": {
+          "kind": "windows_mxc",
+          "status": "pass",
+          "code_mode_host_present": true,
+          "code_mode_host_launchable": true,
+          "command_write_verified": true,
+          "workspace_write_verified": true,
+          "exit_code": 0,
+          "timed_out": false,
+          "model_calls": 0,
+          "native_filesystem_write_verified": true,
+          "out_of_workspace_write_blocked": true,
+          "native_filesystem_reason": "pass"
+        },
+        "code_mode_host_sha256": "4d82e0157eba9afdb48650cb3bdd7c709d5bb1ce08ec661941ba74c605f2f0d3"
+      }
+    }
+  },
+  "new_metrics": [
+    "continued_tool_responses",
+    "continued_tool_calls",
+    "continued_tool_results",
+    "tool_tracking_drops"
+  ],
+  "scope": "Only observed client API correlation; a returned tool error also counts. No quality or live-account acceptance claim.",
+  "native_client": {
+    "kind": "isolated source build with upstream patch, not official release",
+    "source_base": "6aaac694803004a63c6f393d153c96d22521a6b9",
+    "upstream_fix": "d4bdafd378a8e328a67a4cd3557b5fe634af378c",
+    "cli": {
+      "path": "build/codex-patched/20261026-172605-319799/codex.exe",
+      "sha256": "f8b4684f683a03841e90ef363044c12042e4eb37e59ab1b97ae1a11150d5f415"
+    },
+    "code_mode_host": {
+      "path": "build/codex-patched/20261026-172605-319799/codex-code-mode-host.exe",
+      "sha256": "4d82e0157eba9afdb48650cb3bdd7c709d5bb1ce08ec661941ba74c605f2f0d3"
+    }
+  },
+  "prior_live_calls_unchanged": {
+    "sessions": 5,
+    "observed_inference_requests": 31,
+    "continuations": 1
+  },
+  "not_accepted": [
+    "native real-account continuation followed by successful tools and normal completion",
+    "Desktop/dot",
+    "token refresh",
+    "Linux/macOS native execution",
+    "remote CI",
+    "public release"
+  ]
+}

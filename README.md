@@ -1,4 +1,4 @@
-# Reflow (0.1.0-dev.3)
+# Reflow (0.1.0-dev.4)
 
 Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
 
@@ -10,7 +10,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.3`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。排除构件副本并增补 Code Mode 回归后，源码范围的 65 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调。详细范围见 [dev.3 验证](docs/VERIFICATION-0.1.0-dev.3.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前开发版本为 `0.1.0-dev.4`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。源码范围的 76 个测试项、race、vet 和 fuzz 通过，包含打包程序与客户端联调；本轮 Codex 使用加入上游修复的隔离源码构件。详细范围见 [dev.4 验证](docs/VERIFICATION-0.1.0-dev.4.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
@@ -20,7 +20,7 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 
 上述自动回归使用隔离目录和模拟上游。后续原生 ChatGPT 登录实测中，关闭组正常完成；开启组观察到一次真实续接且文件评分 9/9，但会话达到 180 秒上限，尚未完整验收。见 [真实测试记录](docs/LIVE-SMOKE-2026-10-26.md)。生产配置未改，Desktop/dot 和质量改善结论仍待验证。
 
-已测两版官方 Windows CLI 的原生补丁写入存在客户端缺陷；加入上游修复的隔离源码构件已通过五个写入场景，以及原生协议、插件定向回归。默认 65 项回归不包含这一探针，真实账号整体验收仍未完成。见 [复现与限制](docs/NATIVE-WRITE-PROBE.md)。
+已测两版官方 Windows CLI 的原生补丁写入存在客户端缺陷；加入上游修复的隔离源码构件已通过五个写入场景，以及原生协议、插件回归。默认 76 项回归不包含这一探针，真实账号整体验收仍未完成。见 [复现与限制](docs/NATIVE-WRITE-PROBE.md)。
 
 公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 
@@ -51,6 +51,8 @@ reflow -metrics
 `GET http://127.0.0.1:18516/healthz`
 
 `-metrics` 默认关闭；启用后可读取 `/metrics` 的请求数、实际续接次数和上游报告的 token 总量。计数不包含账号、模型名、响应 ID 或正文，也不写入磁盘。预热单列；缺失或无法解析用量时 `usage_complete` 为 `false`。这些计数不代表美元费用，范围限于 Responses 流。
+
+dev.4 增加续接后工具响应、工具调用和匹配结果回传的数字计数。它们用于核对协议往返，不能单独证明工具成功或任务完成。保留的关联状态只有有上限、会过期的摘要；详情见 [评测说明](docs/EVALUATION.md)。
 
 ### 2. 客户端配置与还原
 

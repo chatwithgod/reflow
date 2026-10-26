@@ -68,3 +68,7 @@ SOFTWARE.
 The adapter patch context derives from [yetone/magpie](https://github.com/yetone/magpie) at `a1174674da9d1435443e95ffac7d0300ce8b59d6`, MIT, Copyright (c) 2026 yetone. Its full license is retained in [adapters/magpie/LICENSE.magpie](adapters/magpie/LICENSE.magpie). These are local development patches; no upstream acceptance or official plugin distribution is claimed.
 - Historical CPA SDK and YAML notices are retained for provenance; neither is a dependency of this standalone module.
 - Portable Go/LLVM-MinGW toolchains are development-only and are not included in release ZIPs.
+
+## Codex compatibility diagnostics
+
+The standalone package includes an unmodified backport of OpenAI Codex commit `d4bdafd378a8e328a67a4cd3557b5fe634af378c` (PR #56468, author jif) in `contrib/codex-windows-mxc/systemroot.patch`. The upstream Apache-2.0 license and notice are retained in `contrib/codex-windows-mxc/LICENSE.codex` and `NOTICE.codex`. This is an already-merged upstream fix, not a new Reflow contribution. Codex executables, its SDK and local build toolchains are not included in Reflow packages.
