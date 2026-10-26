@@ -65,7 +65,7 @@ def spawn_options():
 
 
 def trial_env(profile):
-    keep = {"PATH", "SYSTEMROOT", "WINDIR", "COMSPEC", "PATHEXT", "PROGRAMDATA",
+    keep = {"PATH", "SYSTEMROOT", "SYSTEMDRIVE", "WINDIR", "COMSPEC", "PATHEXT", "PROGRAMDATA",
             "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY"}
     env = {k: v for k, v in os.environ.items() if k.upper() in keep}
     for name, relative in {"HOME": "", "USERPROFILE": "", "APPDATA": "appdata",
@@ -76,6 +76,37 @@ def trial_env(profile):
         env[name] = str(directory)
     env.update(NO_PROXY="127.0.0.1,localhost", RUST_LOG="error")
     return env
+
+
+def execution_preflight(codex, report):
+    """Check workspace writes before copying auth or making any model request."""
+    if os.name != "nt":
+        return {"kind": "windows_mxc", "status": "not_applicable", "model_calls": 0}
+    with tempfile.TemporaryDirectory(prefix="preflight-", dir=report) as temporary:
+        profile = Path(temporary).resolve()
+        if not profile.is_relative_to(report.resolve()):
+            raise RuntimeError("preflight directory escaped its report directory")
+        env = trial_env(profile)
+        work = profile / "workspace"
+        work.mkdir()
+        process = subprocess.Popen(
+            [str(codex), "-c", 'windows.sandbox="mxc"', "sandbox", "--include-managed-config",
+             "--permission-profile", ":workspace", "-C", str(work), "--", "cmd.exe", "/d", "/c",
+             "echo REFLOW_SANDBOX_OK>probe.txt"],
+            cwd=work, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL, **spawn_options())
+        timed_out = False
+        try:
+            process.wait(timeout=30)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+        finally:
+            stop(process)
+        probe = work / "probe.txt"
+        written = probe.exists() and probe.read_text().strip() == "REFLOW_SANDBOX_OK"
+        return {"kind": "windows_mxc", "status": "pass" if process.returncode == 0 and written else "fail",
+                "workspace_write_verified": written, "exit_code": process.returncode,
+                "timed_out": timed_out, "model_calls": 0}
 
 
 def start_proxy(binary, maximum, env):
@@ -132,16 +163,22 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
         work.mkdir()
         solution = work / "solution.py"
         solution.write_text(STARTERS[trial["task"]], encoding="utf-8")
+        initial_solution = solution.read_bytes()
         (Path(env["CODEX_HOME"]) / "auth.json").write_text(auth, encoding="utf-8")
         usage = {key: 0 for key in ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens")}
-        observed = {"completed_turns": 0, "error_events": 0}
+        observed = {"completed_turns": 0, "error_events": 0, "command_events": 0,
+                    "file_change_events": 0, "tool_failure_events": 0, "rate_limit_detected": False}
         try:
             proxy_process, endpoint, listener = start_proxy(args.reflow, trial["max_continue"], env)
             command = [str(args.codex), "-a", "never", "exec", "--ignore-user-config", "--ignore-rules",
                        "--skip-git-repo-check", "--ephemeral", "--json", "-s", "workspace-write", "-C", str(work),
                        "-m", args.model, "-c", 'cli_auth_credentials_store="file"',
                        "-c", f'openai_base_url="{endpoint}"', "-c", f'model_reasoning_effort="{args.effort}"',
-                       "-c", "features.memories=false", "-c", "features.apps=false", prompt]
+                       "-c", "features.memories=false", "-c", "features.apps=false",
+                       "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false"]
+            if os.name == "nt":
+                command += ["-c", 'windows.sandbox="mxc"']
+            command.append(prompt)
             started = time.monotonic()
             agent = subprocess.Popen(command, cwd=work, env=env, stdin=subprocess.DEVNULL,
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **spawn_options())
@@ -165,6 +202,21 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                                 usage[key] += value
                     elif event.get("type") in ("error", "turn.failed"):
                         observed["error_events"] += 1
+                        error_text = json.dumps(event).lower()
+                        if any(marker in error_text for marker in ("429", "rate_limit", "rate limit", "too many requests")):
+                            observed["rate_limit_detected"] = True
+                            stop(agent)
+                    elif event.get("type") == "item.completed":
+                        item = event.get("item", {})
+                        kind = item.get("type")
+                        if kind == "command_execution":
+                            observed["command_events"] += 1
+                        elif kind == "file_change":
+                            observed["file_change_events"] += 1
+                        if kind in ("command_execution", "file_change", "mcp_tool_call") and (
+                                item.get("status") == "failed" or
+                                type(item.get("exit_code")) is int and item["exit_code"] != 0):
+                            observed["tool_failure_events"] += 1
 
             reader = threading.Thread(target=consume, daemon=True)
             reader.start()
@@ -178,11 +230,14 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
             record.update(status="agent_timeout" if timed_out else "finished" if agent.returncode == 0 else "agent_error",
                           exit_code=agent.returncode, elapsed_seconds=round(time.monotonic() - started, 3),
                           client_reported_usage=usage, **observed)
+            if observed["rate_limit_detected"]:
+                record["status"] = "rate_limited"
             metrics = read_metrics(endpoint)
             record["upstream_metrics"] = metrics
             record["upstream_reported_usage"] = {key: metrics[key] for key in ("input_tokens", "output_tokens", "cached_tokens", "cache_write_tokens", "reasoning_tokens")} if metrics and metrics["usage_complete"] else None
             record["model_evidence_valid"] = bool(metrics and metrics["requests"] > 0 and observed["completed_turns"] > 0)
             record["mode"] = "live" if require_inference else "synthetic_runner_check"
+            record["artifact_changed"] = solution.exists() and solution.read_bytes() != initial_solution
             if require_inference and record["status"] == "finished" and not record["model_evidence_valid"]:
                 record["status"] = "proxy_inference_unverified"
             record["score"] = grade(trial["task"], solution)
@@ -217,10 +272,13 @@ def main():
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-continue", type=int, default=3)
     parser.add_argument("--timeout", type=int, default=600)
+    parser.add_argument("--interval-seconds", type=int, default=30)
     parser.add_argument("--seed", type=int, default=17)
     args = parser.parse_args()
     if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
+    if not 0 <= args.interval_seconds <= 60:
+        parser.error("interval-seconds must be 0..60")
     if args.self_test and args.run_live:
         parser.error("choose self-test or live execution")
     if len(args.tasks) != len(set(args.tasks)):
@@ -258,18 +316,28 @@ def main():
                                "max_continue": args.max_continue if condition == "on" else 0})
     plan = {"kind": "paired_task_evaluation", "seed": args.seed, "model": args.model,
             "effort": args.effort, "timeout_seconds": args.timeout, "live_execution": args.run_live,
+            "trial_concurrency": 1, "native_subagents_enabled": False,
+            "interval_seconds": args.interval_seconds,
+            "runner_sha256": fingerprint(HERE / "run.py"),
             "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):
             parser.error("live execution requires --codex, --reflow, --auth-file and --model")
         args.codex, args.reflow = args.codex.resolve(strict=True), args.reflow.resolve(strict=True)
+        plan["execution_preflight"] = execution_preflight(args.codex, report)
+        if plan["execution_preflight"]["status"] == "fail":
+            plan["stopped_early"] = True
+            (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
+            raise SystemExit(f"Execution preflight failed; no auth copied or model calls made. Evidence: {report}")
         auth = args.auth_file.resolve(strict=True).read_text(encoding="utf-8-sig")
         parsed = json.loads(auth)
         if parsed.get("auth_mode") != "chatgpt" or not parsed.get("tokens", {}).get("access_token"):
             parser.error("an explicit native ChatGPT auth file is required")
         plan["binary_sha256"] = {"codex": fingerprint(args.codex), "reflow": fingerprint(args.reflow)}
-        for trial in trials:
+        for index, trial in enumerate(trials):
+            if index:
+                time.sleep(args.interval_seconds)
             result = run_trial(args, trial, prompts[trial["task"]], auth, report)
             plan["results"].append(result)
             (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
