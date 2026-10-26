@@ -311,14 +311,16 @@
       "stopped_early": true
     }
   },
-  "total_observed_inference_requests": 23,
+  "total_observed_inference_requests": 31,
   "total_continuations": 1,
   "observed_upstream_failures": 0,
   "production_invariants": {
     "auth_file_unchanged_in_both_batches": true,
     "config_file_unchanged_in_both_batches": true,
     "remaining_trial_directories": 0,
-    "remaining_owned_live_cli_processes": 0
+    "remaining_owned_live_cli_processes": 0,
+    "auth_file_unchanged_in_all_three_batches": true,
+    "config_file_unchanged_in_all_three_batches": true
   },
   "acceptance": {
     "native_login_inference_observed": true,
@@ -326,7 +328,9 @@
     "real_continuation_observed": true,
     "continuation_then_tool_then_normal_finish_verified": false,
     "quality_improvement_demonstrated": false,
-    "timeout_root_cause_identified": false
+    "timeout_root_cause_identified": false,
+    "single_diagnostic_finished": true,
+    "timeout_reproduced_in_additional_diagnostic": false
   },
   "offline_preflight": {
     "source_record": "build/evaluation-preflight-proof.json",
@@ -402,6 +406,228 @@
   },
   "planned_single_diagnostic": {
     "file": "build/evaluations/20261026-135317-199575/results.json",
-    "executed": false
-  }
+    "executed": true
+  },
+  "additional_single_diagnostic": {
+    "source_record": "build/evaluations/20261026-135823-318509/results.json",
+    "sha256": "8c35c69121288a90dc26e965fc1903342a5e50b09e92ec535a8c42ac9711f180",
+    "runner_commit": "a1598a6",
+    "data": {
+      "kind": "single_condition_diagnostic",
+      "seed": 17,
+      "model": "gpt-6.1-sol",
+      "effort": "high",
+      "timeout_seconds": 180,
+      "live_execution": true,
+      "trial_concurrency": 1,
+      "native_subagents_enabled": false,
+      "interval_seconds": 30,
+      "runner_sha256": "0158e127c896c45b2d372c1b26180d0efe53201534afb93ddda6d9dc49182473",
+      "task_sources": {
+        "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+        "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+        "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079"
+      },
+      "trials": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1
+        }
+      ],
+      "results": [
+        {
+          "task": "ndjson",
+          "repeat": 0,
+          "condition": "on",
+          "max_continue": 1,
+          "status": "finished",
+          "exit_code": 0,
+          "elapsed_seconds": 108.808,
+          "client_reported_usage": {
+            "input_tokens": 129846,
+            "cached_input_tokens": 119168,
+            "output_tokens": 2418,
+            "reasoning_output_tokens": 581
+          },
+          "completed_turns": 1,
+          "error_events": 0,
+          "command_events": 6,
+          "file_change_events": 2,
+          "tool_failure_events": 2,
+          "rate_limit_detected": false,
+          "event_trace": [
+            {
+              "at_seconds": 17.217,
+              "event": "item.completed",
+              "kind": "agent_message"
+            },
+            {
+              "at_seconds": 17.434,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 18.038,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 22.5,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 22.516,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 22.967,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 23.033,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 50.192,
+              "event": "item.started",
+              "kind": "file_change",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 50.298,
+              "event": "item.completed",
+              "kind": "file_change",
+              "status": "failed"
+            },
+            {
+              "at_seconds": 55.838,
+              "event": "item.started",
+              "kind": "file_change",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 55.955,
+              "event": "item.completed",
+              "kind": "file_change",
+              "status": "failed"
+            },
+            {
+              "at_seconds": 60.485,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 61.063,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 68.64,
+              "event": "item.completed",
+              "kind": "agent_message"
+            },
+            {
+              "at_seconds": 68.819,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 69.338,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 98.223,
+              "event": "item.started",
+              "kind": "command_execution",
+              "status": "in_progress"
+            },
+            {
+              "at_seconds": 99.095,
+              "event": "item.completed",
+              "kind": "command_execution",
+              "status": "completed",
+              "exit_code": 0
+            },
+            {
+              "at_seconds": 105.856,
+              "event": "item.completed",
+              "kind": "agent_message"
+            }
+          ],
+          "event_trace_truncated": false,
+          "upstream_metrics": {
+            "requests": 8,
+            "continuations": 0,
+            "warmups": 1,
+            "completed": 8,
+            "failed": 0,
+            "usage_reports": 8,
+            "parse_errors": 0,
+            "unsupported_responses": 0,
+            "input_tokens": 129846,
+            "output_tokens": 2418,
+            "cached_tokens": 119168,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 581,
+            "usage_complete": true,
+            "scope": "streaming_responses"
+          },
+          "upstream_reported_usage": {
+            "input_tokens": 129846,
+            "output_tokens": 2418,
+            "cached_tokens": 119168,
+            "cache_write_tokens": 0,
+            "reasoning_tokens": 581
+          },
+          "model_evidence_valid": true,
+          "upstream_inference_observed": true,
+          "mode": "live",
+          "artifact_changed": true,
+          "score": {
+            "status": "scored",
+            "total": 9,
+            "passed": 9,
+            "failed": []
+          },
+          "success": true
+        }
+      ],
+      "execution_preflight": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0
+      },
+      "binary_sha256": {
+        "codex": "1103e9e09c71fa2cd0afd6d8f3b9a2d63174fe8efd7cb5bd09f1cb14ef58a098",
+        "reflow": "aadff678fcc444baa098d48aad2cee4981a18d53835b6316360745906279aba6"
+      }
+    },
+    "user_authorized": true
+  },
+  "total_sessions": 5
 }
