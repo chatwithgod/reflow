@@ -17,7 +17,11 @@ parser.add_argument("--tags", default="nogui")
 parser.add_argument("--workspace", type=Path)
 parser.add_argument("--packages", nargs="+", default=["./..."])
 parser.add_argument("--run")
+parser.add_argument("--race", action="store_true", help="run the selected test suite with Go's race detector")
+parser.add_argument("--compiler", type=Path, help="C compiler for race checks, if not available on PATH")
 args = parser.parse_args()
+if args.race and args.phase != "suite":
+    parser.error("--race requires --phase suite")
 project = Path(__file__).resolve().parent.parent
 host = args.magpie.resolve(strict=True)
 go = args.go.resolve(strict=True)
@@ -28,6 +32,8 @@ command = [str(go), args.phase if args.phase != "suite" else "test"]
 if args.tags:
     command += ["-tags", args.tags]
 if args.phase == "suite":
+    if args.race:
+        command += ["-race"]
     command += ["-json", "-count=1", "-timeout=45m"]
     if args.run:
         command += ["-run", args.run]
@@ -45,13 +51,15 @@ env.update({
     "GOPATH": str(project / ".tools" / "gopath"),
     "GOMODCACHE": str(project / ".tools" / "gopath" / "pkg" / "mod"),
     "GOCACHE": str(project / ".tools" / "magpie-gocache"),
-    "GOTOOLCHAIN": "local", "GOENV": "off", "CGO_ENABLED": "0",
+    "GOTOOLCHAIN": "local", "GOENV": "off", "CGO_ENABLED": "1" if args.race else "0",
     "GOPROXY": "off",
     "GOWORK": str(args.workspace.resolve(strict=True)) if args.workspace else "off",
     "GIT_CONFIG_COUNT": "1", "GIT_CONFIG_KEY_0": "core.longpaths", "GIT_CONFIG_VALUE_0": "true",
 })
 if args.goos:
     env["GOOS"] = args.goos
+if args.compiler:
+    env["CC"] = str(args.compiler.resolve(strict=True))
 
 head = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=host, text=True).strip()
 paths = subprocess.check_output(["git", "ls-files", "--cached", "--others", "--exclude-standard", "-z"], cwd=host).split(b"\0")
@@ -81,7 +89,8 @@ with tempfile.TemporaryDirectory(prefix="rf-", dir=temporary_root) as profile:
     with (report / "output.log").open("w", encoding="utf-8") as log:
         result = subprocess.run(command, cwd=host, env=env, stdout=log, stderr=subprocess.STDOUT)
 
-summary = {"phase": args.phase, "command": command, "base_commit": head,
+summary = {"phase": args.phase, "race": args.race, "command": command, "base_commit": head,
+           "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
            "source_sha256": digest.hexdigest(), "exit_code": result.returncode,
            "goos": args.goos or "host", "live_account": False, "production_modified": False}
 if args.phase == "suite":

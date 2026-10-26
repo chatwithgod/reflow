@@ -29,3 +29,5 @@ Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失�
 仓库权限为只读 `contents`，不配置模型凭据，不包含发布步骤。工作流未提供客户端路径，因此会跳过 Codex、Pi 和原生插件三项测试。它已通过 actionlint 1.7.12，本地 Windows 执行了对应脚本；尚未推送或在 GitHub Actions 运行，不能作为 Linux/macOS 已运行的证据。
 
 首次本地离线脚本记为 78 个通过项、3 个客户端测试跳过，其中 20 个通过项来自 `dist` 中的适配器副本。现已添加模块边界排除生成目录，并重跑了完整客户端模拟验收。原始记录、计数更正和两种评测自检路径的证据见 [offline-ci-prep.json](evidence/offline-ci-prep.json)。CI 未执行的边界不因这次本地复查而改变。
+
+Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--compiler` 指定 C 编译器；仍保持临时用户目录和固定 Go 缓存。该入口已用于 Windows 夹具和 dev.4 桥接的 race 检查，完整命令及未通过项见 [Magpie 夹具记录](../adapters/magpie/WINDOWS-FIXTURES.md)。

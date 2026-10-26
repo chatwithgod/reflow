@@ -1,0 +1,839 @@
+{
+  "date_local": "2026-10-27",
+  "timezone": "Asia/Shanghai",
+  "live_account": false,
+  "production_modified": false,
+  "fixture_commit": "e69f473d157577054ccd48ee1cf77d7e3704ac78",
+  "fixture_base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+  "host_source_sha256_at_checks": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+  "reflow_version": "0.1.0-dev.4",
+  "reflow_repository_head_at_checks": "e014438",
+  "workspace_file": {
+    "path": ".tools/magpie-windows-fixtures.work",
+    "sha256": "abfb0670517c508f55c03c0c904978ef7f4950e49114d4697c8d7f040229e3ed"
+  },
+  "runs": {
+    "focused_before": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-195056-729609/summary.json",
+        "sha256": "dbd73f0705e4af68a2302f74978d25b04c555cb68bfd4c7708ca7ade39ea83c3"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-195056-729609/output.log",
+        "sha256": "32745a5eca42faa4a50f81757cfad5f2aead4851f42fda5989458bdfa7c340c1"
+      },
+      "data": {
+        "phase": "suite",
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(CodexSignedInInKeychain|CodexKeychain.*|CodexStoreNotReadIsLeftAlone|CodexSignInKnown|CodexSignInInKeychain|LodyImportHandoff)$",
+          "./internal/provider",
+          "./internal/agent",
+          "./internal/gui"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "source_sha256": "82e7cd1e421b38663bc78c011f5c828e416a7ba4bf9460781ae44c0fa1fe7646",
+        "exit_code": 1,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 2,
+          "skip": 1,
+          "fail": 12
+        },
+        "failures": [
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexSignedInInKeychain/keyring"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexSignedInInKeychain/auto"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexSignedInInKeychain"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainRefreshWritesItem"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainSwitch"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainAskedSeldom"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainPromptWaitedFor"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainRetry"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainSignOut"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexSignInKnown"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestLodyImportHandoff"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestCodexSignInInKeychain"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent"
+          }
+        ]
+      }
+    },
+    "focused_after": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-195250-524490/summary.json",
+        "sha256": "a03991aec3d9849f50a1dc46594c1c62702c37e7859f3590492ec7773e093e69"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-195250-524490/output.log",
+        "sha256": "e36b597db3cdb329564497cc7a7f6917121963cd146fa2a5de9b1589aa40d2da"
+      },
+      "data": {
+        "phase": "suite",
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(CodexSignedInInKeychain|CodexKeychain.*|CodexStoreNotReadIsLeftAlone|CodexSignInKnown|CodexSignInInKeychain|LodyImportHandoff)$",
+          "./internal/provider",
+          "./internal/agent",
+          "./internal/gui"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 14,
+          "skip": 1,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "fallback_negative": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-195520-949358/summary.json",
+        "sha256": "77b7d5732e1bcdefa9d8e04e823c19a1f3cc153a6a71ae0707f6e23b8803376a"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-195520-949358/output.log",
+        "sha256": "93b7ea04994e67734bb148d3aa87a801d1304b577b473be0dd9531ca419ab40e"
+      },
+      "data": {
+        "phase": "suite",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^TestCodexKeychainFallback$",
+          "./internal/provider"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "9559a8b34b7024841c66328c06804b709ccea669ab5fbe71c4fa03ef7f9cac61",
+        "exit_code": 1,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 0,
+          "skip": 0,
+          "fail": 1
+        },
+        "failures": [
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexKeychainFallback"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider"
+          }
+        ]
+      }
+    },
+    "focused_race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-195557-253296/summary.json",
+        "sha256": "15cf0a92e7f77680a88d9ecad70d8105fe142594a10218bb1778f94fba3d1285"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-195557-253296/output.log",
+        "sha256": "66ad7538d8002b077e593a3b745ceee423feb11fc386f9801197d8c7ae5db486"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(CodexSignedInInKeychain|CodexKeychain.*|CodexStoreNotReadIsLeftAlone|CodexSignInKnown|CodexSignInInKeychain|LodyImportHandoff)$",
+          "./internal/provider",
+          "./internal/agent",
+          "./internal/gui"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 14,
+          "skip": 1,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "full_nogui": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-195756-371681/summary.json",
+        "sha256": "de18ec7ccc62c9637bd177cb785afdc2495b1ecffda1ded54f6e585b0a2dc8bf"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-195756-371681/output.log",
+        "sha256": "d9c0885cbc6ba6da740a1cddad090e6e1dfd28a24405f9b2be5ad2d281378c21"
+      },
+      "data": {
+        "phase": "suite",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "./..."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 1,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 12204,
+          "skip": 615,
+          "fail": 36
+        },
+        "failures": [
+          {
+            "Package": "github.com/yetone/magpie/internal/sessions",
+            "Test": "TestAgySessions"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/sessions",
+            "Test": "TestAgyRowOnly"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestWorkBuddyRestartOnMac"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange/darwin"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestAsideOfflineDisconnectRestoresWithoutDaemon"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestCodexDaemonEnvIsTheTerminals"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/plugin",
+            "Test": "TestWindowPageStaysInside"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/sqlitedb",
+            "Test": "TestSQLiteSurvivesMalformedEnv"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/sqlitedb"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/plugin"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gateway",
+            "Test": "TestClaudeAsRootEnv"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gateway",
+            "Test": "TestSweepBridgeProjectsTakesOnlyTheBridgesFolders"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/sessions"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestGatewayHeldByAContainer"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/usage",
+            "Test": "TestDesktopSessionAccountMetadata"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/usage"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/library",
+            "Test": "TestRemoveFoundSkill"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageServedShutIn"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageReadsWhatItDeclared"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageNoAPI"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageWebGuard"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageActions"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestPluginPageWindowPolicy"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/library",
+            "Test": "TestGoneAgentListedToTakeOut"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider",
+            "Test": "TestSavedButSignedOut"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/provider"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestProxyCheckSaysAProxyPassedBy"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gateway",
+            "Test": "TestHandedOverGatewayFinishesItsStream"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestUpdateThatWontStart"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/library",
+            "Test": "TestCheckMixedServerEachSide"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestClaudeDesktopCarriesTheLanguage"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestCodexSyncMendsGoneCatalog/not_the_provider"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestCodexSyncMendsGoneCatalog"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestCopilotFolderFromAnIDEPluginIsNotTheCLI"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder-cn"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestOpenLodyRunsItsDesktopEntry"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent",
+            "Test": "TestDesktopExec"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gateway",
+            "Test": "TestAutoVisionDoesNotBuildListsAgain"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/library"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/agent"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gateway"
+          }
+        ]
+      }
+    },
+    "reflow_dev4_bridge_race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201900-888609/summary.json",
+        "sha256": "f6e6805ecb9a10f00c3a37fab4539802008b761f606725b35023dba62241794a"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201900-888609/output.log",
+        "sha256": "1299033dcbe5d3b3f96070c02f36ca3723a8aed154ae8c8c135a11a1f029a624"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui reflow",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(Reflow|ZeroDefault)",
+          "./internal/gateway",
+          "./plugins/reflow"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 7,
+          "skip": 0,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "gui_negative": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-202219-975266/summary.json",
+        "sha256": "9cf67edb888ab30376283ebbe3932108d4cef7694b8852f65dd3a846b8dc1efb"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-202219-975266/output.log",
+        "sha256": "7eb1b9c258f272f38cf1af98204a5f9fc02d546b5b653e9946dcc42ff4b478a0"
+      },
+      "data": {
+        "phase": "suite",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(LodyImportHandoff|AionUiImportRow|ImportStatusUnreadableIsUnknown)$",
+          "./internal/gui"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "69b1143abe748c81e8d2b6320e0ac7896a1bed841f2a060f6b09c483c3391032",
+        "exit_code": 1,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 0,
+          "skip": 0,
+          "fail": 3
+        },
+        "failures": [
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestLodyImportHandoff"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestImportStatusUnreadableIsUnknown"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui",
+            "Test": "TestAionUiImportRow"
+          },
+          {
+            "Package": "github.com/yetone/magpie/internal/gui"
+          }
+        ]
+      }
+    },
+    "additional_gui_race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-202231-216502/summary.json",
+        "sha256": "f16ed167c3d193d76e794d70fa05b25e992b0f40871b757cd4eae2adc2163895"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-202231-216502/output.log",
+        "sha256": "daf857180b33f47b7ce8aeba44ad39a52ced7aee947952d42993f258c9f96655"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-tags",
+          "nogui",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-run",
+          "^Test(AionUiImportRow|ImportStatusUnreadableIsUnknown)$",
+          "./internal/gui"
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "test_items": {
+          "pass": 2,
+          "skip": 0,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "build_check_1": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201513-616242/summary.json",
+        "sha256": "9aa55ffa37b4477e98f9f47a2862dbe328223d2a5282696762c3b4b792dd7f5a"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201513-616242/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "vet",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "vet",
+          "./..."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false
+      }
+    },
+    "build_check_2": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201533-140651/summary.json",
+        "sha256": "8f93c7cb506f46803e8e2aacb713cb5c2f2cdba084e241538c5d4ed556ca689f"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201533-140651/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "vet",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "vet",
+          "-tags",
+          "nogui",
+          "./..."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "linux",
+        "live_account": false,
+        "production_modified": false
+      }
+    },
+    "build_check_3": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201552-556249/summary.json",
+        "sha256": "fa5e3afd202ddb680fe13435e5aeb40c45a58cccf981a2921a8f42c515e7417a"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201552-556249/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-o",
+          "D:\\workspace\\reflow\\build\\magpie-verification\\20261026-201552-556249\\magpie.exe",
+          "."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false
+      }
+    },
+    "build_check_4": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201555-824873/summary.json",
+        "sha256": "16bc48101c2aa1e1b6adf5dd124392daf95fb948b2f14db8004157f90b0d8415"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201555-824873/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-tags",
+          "nogui",
+          "-o",
+          "D:\\workspace\\reflow\\build\\magpie-verification\\20261026-201555-824873\\magpie",
+          "."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "linux",
+        "live_account": false,
+        "production_modified": false
+      }
+    },
+    "build_check_5": {
+      "source_record": {
+        "path": "build/magpie-verification/20261026-201558-922975/summary.json",
+        "sha256": "714dec20f88903a0716843bd0156a4823d5b1b12a20495483923432bf837ed10"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261026-201558-922975/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "D:\\workspace\\cpa-plugin-codexreflow\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-tags",
+          "nogui reflow",
+          "-o",
+          "D:\\workspace\\reflow\\build\\magpie-verification\\20261026-201558-922975\\magpie.exe",
+          "."
+        ],
+        "base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+        "runner_sha256": "fd66c1582a5ddc658cbd0fe75dba81318ab1278270e5b9189d73d050007cf0be",
+        "source_sha256": "bbc18733f2e5fba2465a8406b0d8fdd638503966dbc4f669dcfea6e180f2d1b8",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false
+      }
+    }
+  },
+  "patch_validation": {
+    "path": "build/magpie-fixture-patch-validation.json",
+    "sha256": "cff1feb0f5ea70aaffa70835f88bf1518951038f5f4afe129ca2e96fca5f57cf",
+    "data": {
+      "base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+      "fixture_base_commit": "7833faf3df96ac1345966564426b1b5d2d951f36",
+      "fixture_commit": "e69f473d157577054ccd48ee1cf77d7e3704ac78",
+      "patch": "adapters\\magpie\\patches\\windows-test-fixtures.patch",
+      "patch_sha256": "5bd41b95beb1d995923f8b32108391cd85a70847f17385c549fe8aad1440aba1",
+      "apply_order": [
+        "00-cgroup-root.patch",
+        "host-execution.patch",
+        "reflow-bridge.patch",
+        "windows-test-fixtures.patch"
+      ],
+      "source_git_blob_matches": 22,
+      "test_files_changed": [
+        "internal/agent/codex_keychain_test.go",
+        "internal/gui/backup_test.go",
+        "internal/provider/codex_store_test.go"
+      ],
+      "runtime_source_changed_by_fixture_patch": false,
+      "live_account": false,
+      "production_modified": false
+    }
+  },
+  "prior_evidence": {
+    "path": "docs/evidence/magpie.json",
+    "sha256": "60ba544f3becd6337f21470712f217c1ce29944494f8fc548a8e2d51622754a7"
+  },
+  "comparison": {
+    "scope": "prior selected-failure recheck versus current full suite; causal checks are recorded separately",
+    "previous_failed_items": 50,
+    "current_failed_items": 36,
+    "previously_failed_now_passed": [
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestCodexSignInInKeychain"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestAionUiImportRow"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestImportStatusUnreadableIsUnknown"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestLodyImportHandoff"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainAskedSeldom"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainPromptWaitedFor"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainRefreshWritesItem"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainRetry"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainSignOut"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexKeychainSwitch"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexSignInKnown"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexSignedInInKeychain"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexSignedInInKeychain/auto"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/provider",
+        "Test": "TestCodexSignedInInKeychain/keyring"
+      }
+    ],
+    "new_failure_names": [],
+    "full_suite_passed": false,
+    "initial_full_run_environment_differed": true
+  },
+  "latest_upstream_code_check": {
+    "commit": "8ab4fd6120ad46f16e54d609072e4d01c3772818",
+    "files": [
+      "internal/provider/codex_store_test.go",
+      "internal/agent/codex_keychain_test.go",
+      "internal/gui/backup_test.go"
+    ],
+    "scope": "Only read the matching fixture code at this pinned current-main commit; no latest-head build or runtime check."
+  },
+  "publication": {
+    "pushed": false,
+    "pr_submitted": false,
+    "released": false
+  }
+}

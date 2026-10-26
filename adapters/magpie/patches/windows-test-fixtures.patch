@@ -1,0 +1,101 @@
+diff --git a/internal/agent/codex_keychain_test.go b/internal/agent/codex_keychain_test.go
+index 37a17017..9d1091ad 100644
+--- a/internal/agent/codex_keychain_test.go
++++ b/internal/agent/codex_keychain_test.go
+@@ -13,7 +13,7 @@ import (
+ // all the same, from the item (a fake: no test reads the real keychain);
+ // an API key kept there is told as a key.
+ func TestCodexSignInInKeychain(t *testing.T) {
+-	home, _ := codexHome(t, "", "cli_auth_credentials_store = \"keyring\"\n")
++	home, _ := codexHome(t, "", "cli_auth_credentials_store = \"keyring\"\n[features]\nsecret_auth_storage = false\n")
+ 	dir := filepath.Join(home, ".codex")
+ 	item := ""
+ 	defer provider.CodexKeychainForTest(func(service, account string) ([]byte, error) {
+diff --git a/internal/gui/backup_test.go b/internal/gui/backup_test.go
+index 8c1e026c..464588b2 100644
+--- a/internal/gui/backup_test.go
++++ b/internal/gui/backup_test.go
+@@ -31,8 +31,8 @@ func sandboxHome(t *testing.T) string {
+ 	for _, v := range agentenv.Vars {
+ 		t.Setenv(v, "")
+ 	}
+-	t.Setenv("APPDATA", "")
+-	t.Setenv("LOCALAPPDATA", "")
++	t.Setenv("APPDATA", filepath.Join(h, "AppData", "Roaming"))
++	t.Setenv("LOCALAPPDATA", filepath.Join(h, "AppData", "Local"))
+ 	return h
+ }
+ 
+diff --git a/internal/provider/codex_store_test.go b/internal/provider/codex_store_test.go
+index ea8cdaa9..49534820 100644
+--- a/internal/provider/codex_store_test.go
++++ b/internal/provider/codex_store_test.go
+@@ -113,6 +113,10 @@ func (k *fakeKeychain) item(account string) []byte {
+ 	return k.items[account]
+ }
+ 
++// keychainFeatures models macOS' keychain on every test host, including
++// Windows where Codex otherwise defaults to encrypted auth storage.
++const keychainFeatures = "\n[features]\nsecret_auth_storage = false\n"
++
+ // codexInKeychain moves signIn's auth.json into a fake keychain item, as
+ // Codex 0.162 does with cli_auth_credentials_store = store: the item on
+ // one line, with a field magpie doesn't know, and auth.json gone.
+@@ -128,7 +132,7 @@ func codexInKeychain(t *testing.T, home, store string) (*fakeKeychain, string) {
+ 	m["agent_identity"] = map[string]any{"kept": "as is"}
+ 	one, _ := json.Marshal(m)
+ 	os.Remove(filepath.Join(dir, "auth.json"))
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \""+store+"\"\n"), 0o600)
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \""+store+"\"\n"+keychainFeatures), 0o600)
+ 	k := &fakeKeychain{items: map[string][]byte{codexKeychainAccount(dir): one}}
+ 	codexKeychain, codexKeychainHere = k, true // isolate puts them back
+ 	resetCodexKeychain()
+@@ -200,22 +204,26 @@ func TestCodexKeychainFallback(t *testing.T) {
+ 	home := signIn(t)
+ 	dir := filepath.Join(home, ".codex")
+ 	codexKeychain, codexKeychainHere = &fakeKeychain{}, true
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"auto\"\n"), 0o600)
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"auto\"\n"+keychainFeatures), 0o600)
+ 	if _, ok := codexAccount(home); !ok {
+ 		t.Fatal("auto, no item: auth.json wasn't read")
+ 	}
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"), 0o600)
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"+keychainFeatures), 0o600)
+ 	resetCodexKeychain()
+ 	if _, ok := codexAccount(home); ok {
+ 		t.Fatal("keyring, no item: auth.json left beside it was taken for the sign-in")
+ 	}
+ 	// auto, the keychain refusing: Codex reads the file then too
+-	codexKeychain = &fakeKeychain{findErr: errKeychainRefused, items: map[string][]byte{codexKeychainAccount(dir): []byte(`{}`)}}
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"auto\"\n"), 0o600)
++	refused := &fakeKeychain{findErr: errKeychainRefused, items: map[string][]byte{codexKeychainAccount(dir): []byte(`{}`)}}
++	codexKeychain = refused
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"auto\"\n"+keychainFeatures), 0o600)
+ 	resetCodexKeychain()
+ 	if _, ok := codexAccount(home); !ok {
+ 		t.Fatal("auto, keychain refused: auth.json wasn't read")
+ 	}
++	if finds, _ := refused.counts(); finds == 0 {
++		t.Fatal("fallback did not ask the refusing keychain")
++	}
+ }
+ 
+ // A refresh's rotated tokens go back into the item they came from, on one
+@@ -317,7 +325,7 @@ func TestCodexStoreNotReadIsLeftAlone(t *testing.T) {
+ 		}
+ 	}
+ 	codexKeychainHere = false
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"), 0o600)
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"+keychainFeatures), 0o600)
+ 	if _, ok := codexAccount(home); ok {
+ 		t.Error("keychain not read here: read as signed in")
+ 	}
+@@ -581,7 +589,7 @@ func TestCodexSignInKnown(t *testing.T) {
+ 	check("logged out", false, true)
+ 
+ 	codexKeychain, codexKeychainHere = &fakeKeychain{}, true
+-	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"), 0o600)
++	os.WriteFile(filepath.Join(dir, "config.toml"), []byte("cli_auth_credentials_store = \"keyring\"\n"+keychainFeatures), 0o600)
+ 	resetCodexKeychain()
+ 	check("keyring, no item", false, true)
+ 	codexKeychain = &fakeKeychain{findErr: errKeychainRefused, items: map[string][]byte{codexKeychainAccount(dir): []byte(`{}`)}}

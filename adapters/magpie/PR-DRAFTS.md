@@ -21,3 +21,13 @@ The patch also labels WS-to-SSE responses correctly and reads validated aggregat
 Positive and race checks pass. Disabling the native wiring makes `TestExecutionExtensionThroughNativeCodexGateway` fail with one request and the first round visible. Windows normal/nogui and Linux nogui build/vet checks pass.
 
 The full host suite remains red: 12180 pass, 615 skip, 60 fail items. Selected-failure rechecks give the same 12 pass and 50 fail on clean upstream and the modified branch. This draft is not ready for upstream acceptance until remaining host failures are triaged; see [evidence](VERIFICATION.md).
+
+The later fixture-only patch below leaves 36 failures in a new full run. The original records above remain historical evidence; the execution extension still has no upstream acceptance claim.
+
+## test(provider, agent, gui): exercise keychain and config directory fixtures on Windows
+
+The fake macOS keychain fixtures inherit Codex's Windows encrypted-storage default, so several tests never reach the fake keychain. Select `secret_auth_storage=false` only in those synthetic configurations and require the fallback test to contact the refusing fake. Keep the GUI sandbox's `APPDATA` and `LOCALAPPDATA` inside its temporary home so Windows can resolve application config paths. Runtime defaults and production files are unchanged.
+
+At local commit `e69f473d157577054ccd48ee1cf77d7e3704ac78`, 14 previously failing items now pass. The initial focused selection passes 14 items with one existing symlink-permission skip, normally and with race; two additional GUI import cases pass with race. Removing the keychain fixture setting produces `fallback did not ask the refusing keychain`; restoring empty AppData makes all three GUI cases fail with `%AppData% is not defined`.
+
+The full `nogui` suite remains red: 12204 pass, 615 skip, 36 fail, all remaining failure names present in the earlier recheck. Windows normal and Linux nogui vet/build pass, Windows nogui Reflow builds, and seven dev.4 bridge/default-off checks pass with race. These are fixed-base local results, not latest-main runtime validation or native Linux/macOS acceptance. See [fixture evidence](WINDOWS-FIXTURES.md); nothing has been submitted.

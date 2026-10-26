@@ -21,6 +21,8 @@ Windows amd64 已原生运行。Linux/macOS 的 amd64、arm64 目前仅交叉编
 
 Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建通过。Magpie 全量 `nogui` 测试为 12180 个通过项、615 个跳过项、60 个失败项。改进隔离环境后，对原失败项进行复查，干净上游和修改版均为 12 通过、0 跳过、50 失败，失败集合相同。这是选定失败项的对照，不是双边全量通过，也未确定所有失败根因。见 [宿主证据](../adapters/magpie/VERIFICATION.md)。
 
+2026-10-27 的独立测试夹具补丁使 14 个旧失败项通过；新的全量为 12,204 通过、615 跳过、36 失败，剩余失败名称均已在旧记录出现。与 dev.4 结合的桥接/default-off 检查有 7 项通过 race；Windows/Linux 的上述构建和 vet 也重新通过。见 [后续证据](../adapters/magpie/WINDOWS-FIXTURES.md)。
+
 ## 尚未完成
 
 真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/macOS 原生运行、生产接入和公共发布尚未验收。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
