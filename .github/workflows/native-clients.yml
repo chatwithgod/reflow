@@ -9,8 +9,9 @@ permissions:
   contents: read
 
 concurrency:
-  group: native-clients-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  # The manually approved Linux host control shares this queue.
+  group: native-client-execution-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   native-clients:

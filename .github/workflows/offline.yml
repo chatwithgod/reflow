@@ -38,3 +38,5 @@ jobs:
         run: ./scripts/verify.ps1
       - name: Synthetic evaluation process and grader checks
         run: python scripts/check-evaluation.py
+      - name: Linux host-control orchestration without host changes
+        run: python scripts/test-linux-sandbox-control.py

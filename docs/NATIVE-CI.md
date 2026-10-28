@@ -57,6 +57,8 @@ macOS 原生任务首次因托管机容量不足、未获得 runner 而被平台
 
 机器可读结果、宿主观察、首次取消与单任务补跑记录见 [第四轮证据](evidence/native-ci-fourth-run-2026-10-29.json)。本轮真实模型调用为 0，系统策略和生产配置未修改。失败平台摘要中仍缺二进制未变与临时目录清理的最终确认，不能套用 macOS 的成功字段。
 
+后续已在本地准备 [Ubuntu 发行版依赖对照](LINUX-SANDBOX-CONTROL.md)：新建手动工作流，在同一临时 runner 上比较依赖安装及发行版 bwrap AppArmor 配置的影响，保留原生写入断言，并增加文件/网络边界检查。尚未推送或在 Ubuntu 上执行；这一步涉及临时宿主配置，不能复用此前只读诊断的授权。
+
 ## 执行内容
 
 1. 按 [依赖锁文件](../ci/native-clients/package-lock.json) 安装 Codex `0.165.0` 和 Pi `1.4.0`；Node 固定为 `24.17.0`。客户端安装在项目 `.tools/native-clients`，安装时禁用 lifecycle scripts。

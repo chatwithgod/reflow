@@ -1,0 +1,216 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "status": "prepared_locally_not_pushed_or_executed_on_ubuntu",
+  "source_base_commit": "92773f6b6848eeda0b4b0627a46472d9c14f5242",
+  "local_validation": {
+    "unit_tests": {
+      "pass": 15,
+      "fail": 0,
+      "skip": 0
+    },
+    "plan_check": {
+      "status": "plan_only",
+      "packages": [
+        "bubblewrap",
+        "apparmor-profiles",
+        "apparmor-utils"
+      ],
+      "profile_names": [
+        "bwrap",
+        "unpriv_bwrap"
+      ],
+      "global_sysctl_changes": false,
+      "model_calls": 0,
+      "host_changes_executed": false
+    },
+    "original_runtime_fixtures_evaluations_and_client_pins_unchanged": true,
+    "ubuntu_native_execution": false,
+    "host_policy_modified": false,
+    "live_model_calls": 0,
+    "test_log_sha256": "f05c530f5ba4a204a71480d5992f7e5775cfaeb2bb0d1501064327db9e49ebb5",
+    "tested_source_sha256": {
+      "scripts/check-linux-sandbox.py": "c75f2adfefc7971468cce9c50e731aa682351aab0df5928f157eccf606eccf64",
+      "scripts/test-linux-sandbox-control.py": "965f93886ab785636f80d6c5dfcf2206983678fdadfe9e0a4b674a57fcfcd148"
+    }
+  },
+  "workflow_validation": {
+    "status": "pass",
+    "yaml_documents": 3,
+    "manual_only": true,
+    "input_default": false,
+    "shared_native_queue": true,
+    "cancel_running_native_job": false,
+    "max_native_jobs": 1,
+    "original_native_workflow_installs_policy": false,
+    "actions_pinned": true,
+    "allow_failure_steps": 0
+  },
+  "source_files": [
+    {
+      "path": ".github/workflows/native-clients.yml",
+      "sha256": "eb1ae01faa2768ae33d5a1039bf1ea4d04b8b62520a77a3ab87f7b46d751384f",
+      "bytes": 1979
+    },
+    {
+      "path": ".github/workflows/linux-sandbox-control.yml",
+      "sha256": "50b33e76d98f693fe150f06753c77e32015c0065bfe3e9fb107aacc9b4d511f7",
+      "bytes": 2312
+    },
+    {
+      "path": ".github/workflows/offline.yml",
+      "sha256": "1dc6049ecd9ed15a49f195f8d59a4f943e2200a33cfa9ca0f0b0cafdf10d0cbd",
+      "bytes": 1169
+    },
+    {
+      "path": "scripts/check-linux-sandbox.py",
+      "sha256": "c75f2adfefc7971468cce9c50e731aa682351aab0df5928f157eccf606eccf64",
+      "bytes": 20857
+    },
+    {
+      "path": "scripts/test-linux-sandbox-control.py",
+      "sha256": "965f93886ab785636f80d6c5dfcf2206983678fdadfe9e0a4b674a57fcfcd148",
+      "bytes": 10969
+    },
+    {
+      "path": "scripts/check-native-clients.py",
+      "sha256": "5c5b7167ff5a033ef6e09afa100a74fa61e17afaaa97ffa220a65f6347f796bb",
+      "bytes": 24886
+    },
+    {
+      "path": "docs/LINUX-SANDBOX-CONTROL.md",
+      "sha256": "a76d574497e209b9e9baa733d6940f4a4412f7722aa7b48710402aaace2b24c1",
+      "bytes": 4806
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "build/linux-sandbox-control-preparation-20261029/unit-tests.log",
+      "sha256": "d505452120e2a6dd2ad9f3eed34822e1069eda639c731a323595d99021e273e8",
+      "bytes": 2076
+    },
+    {
+      "path": "build/linux-sandbox-control-preparation-20261029/local-validation.json",
+      "sha256": "a87229daa29a1f9541d67b191bf602511a9f0d1239f3bf49e2471987d7d83585",
+      "bytes": 660
+    },
+    {
+      "path": "build/linux-sandbox-control-preparation-20261029/workflow-validation.json",
+      "sha256": "79a2bb9494e2c3cf32dc8a6b317e70e53528a1237a0bae676933e0d5575d7b5b",
+      "bytes": 295
+    },
+    {
+      "path": "build/linux-sandbox-control-preparation-20261029/unit-tests-final.log",
+      "sha256": "f05c530f5ba4a204a71480d5992f7e5775cfaeb2bb0d1501064327db9e49ebb5",
+      "bytes": 2076
+    },
+    {
+      "path": "build/linux-sandbox-control-preparation-20261029/final-validation.json",
+      "sha256": "6cf377c057401e2b1c8ad8230d2c830b5ad69ba811511f8911ee447bd4132d88",
+      "bytes": 915
+    }
+  ],
+  "baseline_host_record": {
+    "path": "docs/evidence/native-ci-fourth-run-2026-10-29.json",
+    "sha256": "bbddddf2da50a0324c9577457adc304b198ca0c9f11915886c1b0180fc5e6dfe",
+    "bytes": 36962
+  },
+  "official_sources": [
+    {
+      "url": "https://learn.chatgpt.com/docs/sandboxing?surface=app&translationFallback=zh-Hans",
+      "used_for": "Linux distro bubblewrap prerequisite and Ubuntu 24.04 vendor AppArmor profile guidance"
+    },
+    {
+      "url": "https://manpages.ubuntu.com/manpages/noble/man8/apparmor_parser.8.html",
+      "used_for": "add refuses existing names; names, remove, skip-cache and compilation warning controls"
+    },
+    {
+      "url": "https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/launcher.rs",
+      "used_for": "pinned client prefers a compatible system bwrap over the bundled fallback"
+    }
+  ],
+  "codex_source_inspection": [
+    {
+      "source": "codex-rs/linux-sandbox/src/bundled_bwrap.rs",
+      "url": "https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/bundled_bwrap.rs",
+      "blob_sha": "29f6cbb10efbf529fc290544582a61dffb4c28e1",
+      "sha256": "f2825debef7272c72ae039d94d8bec7ca9e84e3ab534c3d59a9c26ae02a2ed80",
+      "bytes": 7090
+    },
+    {
+      "source": "codex-rs/linux-sandbox/src/linux_run_main.rs",
+      "url": "https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/linux_run_main.rs",
+      "blob_sha": "3ba283b37399861c3e5e71e797759bc82a3144bb",
+      "sha256": "2c8cdf628b8b8467cccf38227cada5295f5cb6a04888b860ea1b882fe2d19d53",
+      "bytes": 43570
+    },
+    {
+      "source": "codex-rs/linux-sandbox/src/bwrap.rs",
+      "url": "https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/bwrap.rs",
+      "blob_sha": "92ef9dd54b775a6dc729c77a0ca79c962abf70f3",
+      "sha256": "69a23ea16d525de5938c1fd47561c90d6047eb58f9864ca47749d696e5d9fa76",
+      "bytes": 57274
+    },
+    {
+      "source": "codex-rs/linux-sandbox/src/launcher.rs",
+      "url": "https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/launcher.rs",
+      "blob_sha": "b4455ff210c3c5bd26d4f648debc9d3befc6614d",
+      "sha256": "2121245986b3eace784d404d27cfe44612929206ebc008a7c617db05fa53151b",
+      "bytes": 8950
+    }
+  ],
+  "proposed_remote_scope": {
+    "workflow": "linux-sandbox-control.yml",
+    "dispatch_input": {
+      "allow_ephemeral_runner_setup": true
+    },
+    "runner": "ubuntu-24.04 GitHub hosted amd64 only",
+    "native_client_concurrency": 1,
+    "packages": [
+      "bubblewrap",
+      "apparmor-profiles",
+      "apparmor-utils"
+    ],
+    "package_metadata_recorded": [
+      "bubblewrap",
+      "apparmor",
+      "apparmor-profiles",
+      "apparmor-utils"
+    ],
+    "profile_source": "/usr/share/apparmor/extra-profiles/bwrap-userns-restrict",
+    "allowed_added_profile_names": [
+      "bwrap",
+      "unpriv_bwrap"
+    ],
+    "existing_profile_replacement": false,
+    "global_sysctl_write_commands": false,
+    "runtime_fixture_assertions_changed": false,
+    "new_boundary_gates": [
+      "workspace write succeeds",
+      "sibling write outside workspace and temporary roots is rejected",
+      "unsandboxed loopback reaches local listener",
+      "sandboxed loopback cannot reach same listener"
+    ],
+    "cleanup": "Remove only definitions loaded by this attempted add and verify recorded kernel settings; packages remain until the disposable runner is destroyed",
+    "baseline_cases": "Native and race must pass; only the previously observed five write failures plus direct namespace rejection allow setup; a fully passing baseline skips setup",
+    "final_gates": "All original native/race/write assertions, filesystem/network controls, and cleanup checks must pass",
+    "forced_job_termination_limit": "Python cleanup is not guaranteed on forced termination; disposable runner teardown is then required"
+  },
+  "limits": [
+    "Local unit controls do not execute Ubuntu, apt, sudo or AppArmor",
+    "No Ubuntu kernel/profile acceptance or native write fix has been established",
+    "Package installation effects are recorded separately from manual profile loading; do not infer a single cause from the combined setup",
+    "Existing three-platform native workflow does not automatically load any profile"
+  ],
+  "new_model_calls": 0,
+  "new_live_sessions": 0,
+  "existing_live_totals": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  },
+  "host_policy_modified": false,
+  "production_modified": false,
+  "remote_pushed": false,
+  "remote_control_executed": false
+}
