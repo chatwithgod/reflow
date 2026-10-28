@@ -1,0 +1,111 @@
+diff --git a/internal/gateway/masked_sent_test.go b/internal/gateway/masked_sent_test.go
+index 2100b635..92d31a22 100644
+--- a/internal/gateway/masked_sent_test.go
++++ b/internal/gateway/masked_sent_test.go
+@@ -49,7 +49,9 @@ func TestMaskedRecordKeepsSentAndBack(t *testing.T) {
+ 		t.Fatal("nothing recorded")
+ 	}
+ 	r, ok := maskrec.Get(rs[0].Key)
+-	if !ok || r.Back[p] != 2 || r.Took <= 0 {
++	// Two clock samples may be equal; sub-microsecond durations also round
++	// down to zero. Exact elapsed values are covered with a virtual clock.
++	if !ok || r.Back[p] != 2 || r.Took < 0 {
+ 		t.Fatalf("record: %+v", r)
+ 	}
+ 	sent, ok := maskrec.SentOf(r.Key)
+diff --git a/internal/gateway/masking_time_test.go b/internal/gateway/masking_time_test.go
+new file mode 100644
+index 00000000..76fd8aaa
+--- /dev/null
++++ b/internal/gateway/masking_time_test.go
+@@ -0,0 +1,90 @@
++package gateway
++
++import (
++	"context"
++	"net/http"
++	"net/http/httptest"
++	"testing"
++	"testing/synctest"
++	"time"
++
++	"github.com/yetone/magpie/internal/gwmw"
++	"github.com/yetone/magpie/internal/masking"
++	"github.com/yetone/magpie/internal/maskrec"
++	"github.com/yetone/magpie/internal/settings"
++)
++
++const timedPlaceholder = "{{WORD_12345678}}"
++
++// Delay only the virtual clock: no network, busy loop or real-time minimum.
++type timedMasker struct {
++	masking.Masker
++	delay time.Duration
++}
++
++func (m timedMasker) JSONHitsContext(context.Context, []byte) ([]byte, []gwmw.Hit) {
++	time.Sleep(m.delay)
++	return []byte(`{"text":"` + timedPlaceholder + `"}`), []gwmw.Hit{{Placeholder: timedPlaceholder, Kind: "WORD", By: "yours", Len: 7}}
++}
++
++func (m timedMasker) TextHitsContext(context.Context, string) (string, []gwmw.Hit) {
++	time.Sleep(m.delay)
++	return timedPlaceholder, []gwmw.Hit{{Placeholder: timedPlaceholder, Kind: "WORD", By: "yours", Len: 7}}
++}
++
++func (timedMasker) Writer(w http.ResponseWriter) (http.ResponseWriter, func()) {
++	return w, func() {}
++}
++
++// Both masking paths must measure elapsed time and preserve it in the record.
++// An actual clock may not advance between samples, and integer microseconds
++// must keep zero valid while still retaining a nonzero elapsed duration.
++func TestMaskingDurationPreserved(t *testing.T) {
++	for _, kind := range []string{"json", "text"} {
++		for _, tc := range []struct {
++			elapsed time.Duration
++			micros  int64
++		}{
++			{0, 0},
++			{500 * time.Nanosecond, 0},
++			{37 * time.Microsecond, 37},
++		} {
++			t.Run(kind+"/"+tc.elapsed.String(), func(t *testing.T) {
++				fresh(t)
++				if err := settings.Save(settings.Settings{Redact: true}); err != nil {
++					t.Fatal(err)
++				}
++				t.Cleanup(gwmw.Mask(timedMasker{delay: tc.elapsed}))
++				synctest.Test(t, func(t *testing.T) {
++					var hits maskHits
++					var sent string
++					if kind == "json" {
++						_, body, done, got, err := redactedHits(context.Background(), httptest.NewRecorder(), []byte(`{"text":"fixture"}`))
++						if err != nil {
++							t.Fatal(err)
++						}
++						done()
++						hits, sent = got, string(body)
++					} else {
++						_, text, got, err := maskTextHits(context.Background(), "fixture")
++						if err != nil {
++							t.Fatal(err)
++						}
++						hits, sent = got, text
++					}
++					if hits.n != 1 || hits.took != tc.elapsed {
++						t.Fatalf("masking: hits=%d elapsed=%s, want one hit and %s", hits.n, hits.took, tc.elapsed)
++					}
++					noted := noteMasked(nil, "chat", hits, sent, 0, "fixture", "fixture")
++					if noted == nil {
++						t.Fatal("no masking record")
++					}
++					record, ok := maskrec.Get(noted.Key)
++					if !ok || record.Took != tc.micros {
++						t.Fatalf("record: found=%t elapsed=%d microseconds, want %d", ok, record.Took, tc.micros)
++					}
++				})
++			})
++		}
++	}
++}

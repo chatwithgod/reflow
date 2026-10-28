@@ -30,6 +30,8 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 同日补充 [窗口夹具退出修正](../adapters/magpie/NIRI-FIXTURE.md)：稳定重现并修正已接受连接没有随模拟服务器清理关闭的问题。只改测试代码，原生窗口和 Desktop/dot 的验收状态不因此改变。
 
+2026-10-29 增加 [耗时检查修正](../adapters/magpie/MASKING-TIME.md)：直接核对原始计时与记录，接受合法零值，并用虚拟时钟和故障注入检查 JSON、文本两条路径及最终记录。生产计时未改动，完整宿主结果见该记录。
+
 ## 尚未完成
 
 真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/macOS 官方客户端与打包构件验收、生产接入和二进制发布尚未完成。源码已公开。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
