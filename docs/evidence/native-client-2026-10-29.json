@@ -1,0 +1,301 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "platform": "windows/amd64",
+  "source_commit": "3c76d3a08812100cb9ac00207cca5ba19b008138",
+  "scope": "targeted native client checks with synthetic auth and local fixture upstreams",
+  "clients": {
+    "official": {
+      "version": "0.165.0",
+      "cli_sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d",
+      "execution_preflight": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "code_mode_host_present": true,
+        "code_mode_host_launchable": true,
+        "command_write_verified": true,
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0,
+        "native_filesystem_write_verified": true,
+        "out_of_workspace_write_blocked": true,
+        "native_filesystem_reason": "pass"
+      },
+      "checks": {
+        "write": {
+          "race": false,
+          "exit_code": 0,
+          "test_items": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "passed_names": [
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe"
+          ],
+          "command": [
+            "go",
+            "test",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=5m",
+            "-tags",
+            "native_write_probe",
+            "-run",
+            "^TestCodexNativeWriteProbe$",
+            "./integration"
+          ],
+          "binaries_unchanged": true,
+          "isolated_home_removed": true,
+          "source_report": "build/native-client-20261029/20261028-174831-910661/summary.json"
+        },
+        "protocol": {
+          "race": true,
+          "exit_code": 0,
+          "test_items": {
+            "pass": 7,
+            "skip": 0,
+            "fail": 0
+          },
+          "passed_names": [
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "command": [
+            "go",
+            "test",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=5m",
+            "-race",
+            "-run",
+            "^TestCodex(NativeLoginOffline|AppServerOffline|PluginInstallAndStdioOffline)$",
+            "./integration"
+          ],
+          "binaries_unchanged": true,
+          "isolated_home_removed": true,
+          "source_report": "build/native-client-20261029/20261028-174854-397432/summary.json"
+        }
+      }
+    },
+    "app": {
+      "version": "0.165.0-alpha.1.2",
+      "cli_sha256": "5c1b55966bf9f757dcbf00065c9a6cb862ead55d34b015f1be1939ff18e43943",
+      "code_mode_host_sha256": "9ee661e9325915b56fb37660d5111e8a10cda5d93b3b25b04be810960a8b92b2",
+      "execution_preflight": {
+        "kind": "windows_mxc",
+        "status": "pass",
+        "code_mode_host_present": true,
+        "code_mode_host_launchable": true,
+        "command_write_verified": true,
+        "workspace_write_verified": true,
+        "exit_code": 0,
+        "timed_out": false,
+        "model_calls": 0,
+        "native_filesystem_write_verified": true,
+        "out_of_workspace_write_blocked": true,
+        "native_filesystem_reason": "pass"
+      },
+      "checks": {
+        "write": {
+          "race": false,
+          "exit_code": 0,
+          "test_items": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "passed_names": [
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe"
+          ],
+          "command": [
+            "go",
+            "test",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=5m",
+            "-tags",
+            "native_write_probe",
+            "-run",
+            "^TestCodexNativeWriteProbe$",
+            "./integration"
+          ],
+          "binaries_unchanged": true,
+          "isolated_home_removed": true,
+          "source_report": "build/native-client-20261029/20261028-175344-060291/summary.json"
+        },
+        "protocol": {
+          "race": true,
+          "exit_code": 0,
+          "test_items": {
+            "pass": 7,
+            "skip": 0,
+            "fail": 0
+          },
+          "passed_names": [
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "command": [
+            "go",
+            "test",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=5m",
+            "-race",
+            "-run",
+            "^TestCodex(NativeLoginOffline|AppServerOffline|PluginInstallAndStdioOffline)$",
+            "./integration"
+          ],
+          "binaries_unchanged": true,
+          "isolated_home_removed": true,
+          "source_report": "build/native-client-20261029/20261028-175359-537277/summary.json"
+        }
+      }
+    }
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "path": "dist/0.1.0-dev.4/20261027-032350-799/reflow_0.1.0-dev.4_windows_amd64/reflow.exe",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee",
+    "bytes": 10994688
+  },
+  "plugin_marketplace": "dist/0.1.0-dev.4/20261027-032350-799/reflow_plugin_0.1.0-dev.4_windows_amd64",
+  "source_sha256": {
+    "integration/codex_test.go": "006e1f5c47cb79e070f07ede7f493e70aeaade97e8c9e4c45f4deb9e462108bc",
+    "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+    "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+    "integration/plugin_test.go": "56cd21634c9390a7edf53dcfa873571644dff753bf3bb7260c6bb51c57b493a7"
+  },
+  "official_distribution": {
+    "install_scope": "isolated project tools directory; no global installation",
+    "npm_packages": {
+      "node_modules/@openai/codex": {
+        "version": "0.165.0",
+        "resolved": "https://registry.npmjs.org/@openai/codex/-/codex-0.165.0.tgz",
+        "integrity": "sha512-aiwtQVp2KBhJld966CuU5bVfQ46VNB4mNTl6giX3WGZdt4euI3tv2RUqJpnupPNA8DXHg2z+RoQ0Zfw87dy8Lw=="
+      },
+      "node_modules/@openai/codex-win32-x64": {
+        "version": "0.165.0-win32-x64",
+        "resolved": "https://registry.npmjs.org/@openai/codex/-/codex-0.165.0-win32-x64.tgz",
+        "integrity": "sha512-f5LMyugPSnAovnTnR1N+SNHSTfWZ+ym5A4H3zZHz/zhuMGMGZD8IxUdlSUlEbiENYyPXrJ8G3Jh+CLyzTfQB6Q=="
+      }
+    },
+    "official_changelog_url": "https://learn.chatgpt.com/docs/changelog",
+    "cached_changelog_sha256": "77b56948f77bda0b723325457b9cfc24d1232d42e4454c0d9f9de71f1cc29a7d"
+  },
+  "verification_runner": {
+    "path": "build/check-native-client-compat.py",
+    "sha256": "0073ad86bdeba45e1bb4e7803c1d9ae695fc54a5cc43a3e63e91bcd67151e008",
+    "bytes": 4566
+  },
+  "evidence_files": [
+    {
+      "path": "build/native-client-20261029/official-0.165-client.json",
+      "sha256": "c5a54a406ff9778a4d67ccb661a288af120fd180da73f3d10c3d96d21af8993f",
+      "bytes": 431
+    },
+    {
+      "path": "build/evaluations/20261028-174314-879682/summary.json",
+      "sha256": "d0f8156dd4766b33d428fda42f6b86949db1e6f95aceb1df24732d4425f86119",
+      "bytes": 922
+    },
+    {
+      "path": "build/native-client-20261029/20261028-174831-910661/summary.json",
+      "sha256": "83ddb2feacec3a867c97e79e70b94d8715c3758379dfbd7eb66d5164c186d655",
+      "bytes": 1910
+    },
+    {
+      "path": "build/native-client-20261029/20261028-174831-910661/output.log",
+      "sha256": "0ccd6287515de1bb2052748fba72791418168e39bfa3a14879d9beeeb37575a4",
+      "bytes": 7249
+    },
+    {
+      "path": "build/native-client-20261029/20261028-174854-397432/summary.json",
+      "sha256": "0d946ef939db05aabfe6f5c47dc63b8ed86df0f79bcceb806be1126eed30b54d",
+      "bytes": 1935
+    },
+    {
+      "path": "build/native-client-20261029/20261028-174854-397432/output.log",
+      "sha256": "4aa876b75233c195845854da7ec051726db9c831f56f24bcc6c1d9096d2dc4c7",
+      "bytes": 9360
+    },
+    {
+      "path": "build/native-client-20261029/installed-client.json",
+      "sha256": "c6fe1b3fc3d86f9c30d4544fa1de64adde69db5fe3ff1404ea0fafe7965c67ce",
+      "bytes": 390
+    },
+    {
+      "path": "build/evaluations/20261028-173410-132810/summary.json",
+      "sha256": "c86da50348e1ebb57e7b2e4782a5cf8bf66f0099e5dee8c32a1bfd7787776367",
+      "bytes": 922
+    },
+    {
+      "path": "build/native-client-20261029/20261028-175344-060291/summary.json",
+      "sha256": "69602cbb53771540627e5612806edb18c704b53abd2f689433c34d5db81d0613",
+      "bytes": 1803
+    },
+    {
+      "path": "build/native-client-20261029/20261028-175344-060291/output.log",
+      "sha256": "b4124242e188cb3f3cafffee5f84dfafb7c8b4908d8c06db42e81b3225c5f9a7",
+      "bytes": 7240
+    },
+    {
+      "path": "build/native-client-20261029/20261028-175359-537277/summary.json",
+      "sha256": "6c1db368cb58b9ab02e8e2021e337c4ea30442b43ed20706fe79d4b4232b30ed",
+      "bytes": 1828
+    },
+    {
+      "path": "build/native-client-20261029/20261028-175359-537277/output.log",
+      "sha256": "a7e1d10c154fb511503088f8dcdd24612adbb2d7b13903113917743e354bf430",
+      "bytes": 8747
+    }
+  ],
+  "invariants": {
+    "max_native_clients": 1,
+    "synthetic_auth": true,
+    "existing_login_read": false,
+    "new_live_sessions": 0,
+    "model_calls": 0,
+    "production_modified": false,
+    "clients_and_proxy_unchanged": true,
+    "isolated_test_homes_removed": true
+  },
+  "limits": [
+    "Not a new full-suite run; counts include Go parent tests and subtests",
+    "No real account, token refresh, Desktop/dot UI, or Linux/macOS native client acceptance",
+    "Runtime success does not identify which upstream source change fixed older observed failures",
+    "No claim that real continuation closure or quality improvement has been established"
+  ],
+  "existing_live_totals_unchanged": {
+    "sessions": 7,
+    "observed_inference_requests": 40,
+    "continuations": 1
+  }
+}

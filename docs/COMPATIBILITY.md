@@ -4,23 +4,23 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 
 | 接入方式 | 版本与范围 | 已验证行为 |
 | --- | --- | --- |
-| Codex CLI | 官方 `0.164.0-alpha.11.1`；本轮为本地 `0.164.0` 加上游 `d4bdafd` 修复 | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；本轮核对新增结果关联计数。原版写入失败另行保留 |
-| Codex app-server | 同一本地 `0.164.0` 修复构件；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
+| Codex CLI | 2026-10-29：官方 `0.165.0` 和应用附带的 `0.165.0-alpha.1.2` | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；五个原生写入场景通过。旧版失败记录保留 |
+| Codex app-server | 同上两版官方客户端；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的 `openai-codex` provider | 保留内置 OAuth 和模型目录，只改请求地址；SSE、WebSocket、工具执行与回传通过。新的 `openai` provider 未适配 |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过；可通过替代模块文件使用公开 Reflow 固定提交。补丁未提交上游 |
 
 Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在远程 CI 跳过。Linux/macOS 各架构的打包构件仍只有交叉编译记录，尚未逐一原生验收。见 [公开与 CI 范围](PUBLICATION-2026-10-28.md)。
 
-已测两版官方 Windows CLI 的 `apply_patch` 写入探针失败，原因是文件系统 helper 缺少 `SYSTEMROOT`。加入上游修复、补齐 Code Mode 宿主的本地 `0.164.0` 构件已通过五个写入场景及原生协议、插件定向回归。这是隔离源码构件的离线结果；官方已测版本仍保留失败记录，真实会话尚未完整验收。见 [复现与证据](NATIVE-WRITE-PROBE.md)。
+2026-10-26 测得官方 `0.164.0` 和应用附带的 `0.164.0-alpha.11.1` 写入失败；本地加入上游修复后通过，见 [历史复现](NATIVE-WRITE-PROBE.md)。2026-10-29，上表两版未修改的官方客户端均通过无账号预检、五个写入场景和协议/插件 race 定向检查。这是新版本的离线行为证据，真实会话仍未完整验收。见 [新版本复测](NATIVE-CLIENT-2026-10-29.md)。
 
 独立代理还覆盖 HTTP/SSE、预热、取消、gzip/zstd 请求、compact 透传、多轮恢复与缓存隔离。上述协议回归主要使用模拟客户端/上游，不能推导为 Desktop/dot 已验收。详情见 [dev.4 验证记录](VERIFICATION-0.1.0-dev.4.md)。
 
-最新源码全量回归为 79 个通过项、0 跳过，race、vet、fuzz 通过。新增 app-server 检查沿用 dev.4 构件，没有替换生产客户端，也没有新增真实账号调用。两种历史格式的证据与桌面隔离入口的只读调查见 [app-server 记录](APP-SERVER-2026-10-27.md)。
+2026-10-27 带完整客户端的本地全量回归为 79 个通过项、0 跳过，race、vet、fuzz 通过。当时的 app-server 检查沿用 dev.4 构件，没有替换生产客户端，也没有新增真实账号调用。两种历史格式的证据与桌面隔离入口的只读调查见 [app-server 记录](APP-SERVER-2026-10-27.md)。新客户端的定向检查单独记录，不混算为本次全量结果。
 
 ## Magpie 边界
 
-可信 Go 扩展 `gwexec` 只进入流式 Responses 兼容直通路径；跨协议、非流式和 compact 旁路。可选 `reflow` 构建标签启用桥接代码，`maxContinue` 默认 0，显式设置 1–7 才注册续接。尚无公开可引用的 Reflow Go 模块版本，当前通过本地 `go.work` 关联源码。
+可信 Go 扩展 `gwexec` 只进入流式 Responses 兼容直通路径；跨协议、非流式和 compact 旁路。可选 `reflow` 构建标签启用桥接代码，`maxContinue` 默认 0，显式设置 1–7 才注册续接。普通模块不依赖 Reflow；可选 `go.reflow.mod` 已固定公开模块版本，本地开发也可使用 `go.work`。
 
 Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建通过。Magpie 全量 `nogui` 测试为 12180 个通过项、615 个跳过项、60 个失败项。改进隔离环境后，对原失败项进行复查，干净上游和修改版均为 12 通过、0 跳过、50 失败，失败集合相同。这是选定失败项的对照，不是双边全量通过，也未确定所有失败根因。见 [宿主证据](../adapters/magpie/VERIFICATION.md)。
 
