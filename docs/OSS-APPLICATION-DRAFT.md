@@ -1,6 +1,6 @@
 # Codex for OSS 申请草稿
 
-表单字段于 2026-10-27 核对，项目事实于 2026-10-28 更新。草稿未提交；独立源码现已公开于 [chatwithgod/reflow](https://github.com/chatwithgod/reflow)，三平台离线 CI 记录见 [公开证据](PUBLICATION-2026-10-28.md)。带客户端的 Windows 回归基线为 `fa2c622`，真实调用累计数见 [拓扑排序诊断](LIVE-TOPO-2026-10-27.md)。个人资料仍未填写。
+表单字段于 2026-10-27 核对，项目事实于 2026-10-29 更新。草稿未提交；独立源码现已公开于 [chatwithgod/reflow](https://github.com/chatwithgod/reflow)，三平台离线 CI 记录见 [公开证据](PUBLICATION-2026-10-28.md)。带客户端的 Windows 回归基线为 `fa2c622`，真实调用累计数见 [官方版诊断](LIVE-OFFICIAL-0165-2026-10-29.md)。个人资料仍未填写。
 
 申请表要求公开的 GitHub 账号和仓库链接，选择主要或核心维护者身份；项目价值、API 额度用途和补充说明三段文字各限 500 字符。具体字段以提交时的 [官方申请表](https://openai.com/form/codex-for-oss/) 为准。[计划介绍](https://developers.openai.com/community/codex-for-oss)允许规模较小但有生态价值的项目说明理由，不代表一定入选。
 
@@ -20,7 +20,7 @@ Credits would fund planned maintenance: small-batch, budget-capped API runs chec
 
 ## 补充说明：467 字符
 
-The source is public; there is no packaged release or verified adoption data yet. Seven live sessions produced 40 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.
+The source is public; there is no packaged release or verified adoption data yet. Eight live sessions produced 46 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.
 
 中文意思：如实说明公开发布、社区采用和完整真实续接验收方面的缺口。超时的是包含续接的会话；后续修复版虽然完成任务，却没有触发续接。
 
@@ -31,9 +31,9 @@ The source is public; there is no packaged release or verified adoption data yet
 | 独立核心、客户端接入和插件入口 | [兼容性说明](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md) |
 | 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
 | 公开源码及三平台离线 CI | [仓库](https://github.com/chatwithgod/reflow)、[修复提交](https://github.com/chatwithgod/reflow/commit/23eb3bef11f2cb5951599d08ca6ecd76a946619d)、[通过的 CI](https://github.com/chatwithgod/reflow/actions/runs/40679721072)；各 69 个通过项，4 个客户端联调跳过 |
-| 7 次会话、40 次推理请求、1 次续接 | [最近实测](LIVE-TOPO-2026-10-27.md)及其关联的前序记录 |
+| 8 次会话、46 次推理请求、1 次续接 | [最近实测](LIVE-OFFICIAL-0165-2026-10-29.md)及其关联的前序记录；最新官方版 9/9、续接 0 次，包含一次命令失败 |
 | Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；公开模块及设置页检查见[最新记录](../adapters/magpie/PUBLIC-MODULE.md)，宿主全量仍未通过 |
 
-这些记录现在可以从公开仓库访问。申请时可引用上述固定提交及 CI 链接；Magpie 补丁仍未提交上游，不能写成已合并贡献。
+前序记录已公开；本轮新增实测记录暂存在本地，尚未公开。申请时可引用上述固定提交及 CI 链接；Magpie 补丁仍未提交上游，不能写成已合并贡献。
 
 公开仓库 URL 已补入草稿。提交前仍需填写姓名、ChatGPT 账号邮箱和 GitHub 账号，确认个人资料可见性、维护者身份、申请哪些支持及所需的组织信息。尚未收集独立版采用数据，相关指标暂不填写。Desktop/dot 暂留未验收，申请草稿没有改变工程验收状态。二进制发布、上游提交和正式申请仍按 [计划](../PLAN.md) 分别处理。

@@ -36,15 +36,15 @@ go test -p=1 -tags native_write_probe -run '^TestCodexNativeWriteProbe$' -count=
 go test -p=1 -race -run '^TestCodex(NativeLoginOffline|AppServerOffline|PluginInstallAndStdioOffline)$' -count=1 -timeout=5m ./integration
 ```
 
-## 下一次真实验证方案，尚未执行
+## 单次真实验证方案，已获批执行
 
-准备使用上述官方 `0.165.0` 和相同 Reflow dev.4，再执行一次 NDJSON 开启组诊断。这可以补充官方发行版的真实兼容性证据，减少对本地补丁构件的依赖。原提示、评分器和续接规则均保持不变。
+准备时确定使用上述官方 `0.165.0` 和相同 Reflow dev.4，执行一次 NDJSON 开启组诊断。方案用于补充官方发行版的真实兼容性证据，减少对本地补丁构件的依赖。原提示、评分器和续接规则均保持不变。
 
 - 模型 `gpt-6.1-sol/high`，仅一个会话，并发 1、禁用子代理；模型会话最多 180 秒，每轮最多续接一次。一个会话可能包含多次推理请求。
 - 无账号预检通过后，才检查现有原生 ChatGPT 登录的模式、令牌声明中的 issuer 和有效期，并复制到临时目录；这个检查不等同于验证令牌签名。不主动测试 Token 刷新。
 - 检测到限流即停止；不因没有触发续接而自动追加会话。一次性入口即使预检失败也消耗本次执行机会。
 - 不包含 Desktop/dot 界面、生产配置修改、客户端替换、服务重启、推送、发布或提交。
 
-参数、源码和构件散列见 [准备时的计划快照](evidence/next-live-official-0165-plan.json)。一次性入口为 `build/run-authorized-official-0165-live.py`：`--check-only` 只校验离线文件；实际执行需要用户针对本次方案的新授权。
+参数、源码和构件散列见 [准备时的计划快照](evidence/next-live-official-0165-plan.json)。用户随后明确授权，该方案已执行完毕。一次性入口 `build/run-authorized-official-0165-live.py` 对应的 `started.once` 已创建，不能再次用于执行；`--check-only` 仍只校验离线文件。
 
-本次是否触发续接不能保证。若续接为 0，只记录为未触发；若发生续接，还需核对后续工具成功和正常结束。它是单条件诊断，不能建立质量改善结论。当前仍累计 7 次真实会话、40 次观察到的推理请求、1 次续接；Desktop/dot 按用户决定继续保留未验收。
+实际在 61.101 秒正常结束，评分 9/9，6 次推理请求，续接 0 次；一次命令失败后继续完成任务，未检测到限流。单条件诊断不能建立质量改善结论，完整续接验收仍缺证据。结果与隔离核对见 [官方版实测](LIVE-OFFICIAL-0165-2026-10-29.md)。累计为 8 次真实会话、46 次观察到的推理请求、1 次续接；Desktop/dot 按用户决定继续保留未验收。

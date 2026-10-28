@@ -1,0 +1,312 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-28T22:11:23.199601+00:00",
+  "authorization": "one NDJSON on diagnostic, concurrency 1; explicitly authorized and now consumed",
+  "runner_source_commit": "ed695d8dace22de0584f2243dfd9926b79e93ce2",
+  "client": "unmodified official Codex CLI 0.165.0 in an isolated npm directory",
+  "source_record": {
+    "path": "build/evaluations/20261028-220713-615058/results.json",
+    "sha256": "cfdc0cdb80bc7084ee532b9efebc76f2805f60e294f9101f9dccc55bbf039123",
+    "bytes": 5793
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-official-0165-live.py",
+    "sha256": "f3ec7bb565a08123c258d96549c781ee44855bf03796a4f90938da444f3166d9",
+    "bytes": 6961
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-official-0165-plan.json",
+    "sha256": "b2e252fb9f319e2a3b2179d665f06790de53504ca3c28bccf95ffdef5ae639b8",
+    "bytes": 3085
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "ndjson",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "ndjson",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 61.101,
+        "client_reported_usage": {
+          "input_tokens": 96780,
+          "cached_input_tokens": 85760,
+          "output_tokens": 2287,
+          "reasoning_output_tokens": 367
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 5,
+        "file_change_events": 1,
+        "tool_failure_events": 1,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 8.932,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 9.153,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 9.824,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 13.453,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 13.469,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 13.966,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "failed",
+            "exit_code": 1
+          },
+          {
+            "at_seconds": 14.089,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 43.03,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 43.543,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 51.804,
+            "event": "item.started",
+            "kind": "file_change",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 52.003,
+            "event": "item.completed",
+            "kind": "file_change",
+            "status": "completed"
+          },
+          {
+            "at_seconds": 52.173,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 52.788,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 56.045,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "upstream_metrics": {
+          "requests": 6,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 6,
+          "failed": 0,
+          "usage_reports": 6,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 96780,
+          "output_tokens": 2287,
+          "cached_tokens": 85760,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 367,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 96780,
+          "output_tokens": 2287,
+          "cached_tokens": 85760,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 367
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "score": {
+          "status": "scored",
+          "total": 9,
+          "passed": 9,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "cleanup": {
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "process_inventory": {
+      "checked_utc": "2026-10-28T22:10:20.3788105Z",
+      "matching_executable_processes": {
+        "reflow": 0,
+        "cli": 0,
+        "host": 0
+      },
+      "method": "read-only process inventory filtered by the three exact isolated executable paths"
+    },
+    "binary_sha256_after": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    },
+    "binary_hashes_match_approved_inputs": true,
+    "evaluation_sources_unchanged": true
+  },
+  "concurrency_observation": {
+    "model_test_sessions": 1,
+    "native_subagents_enabled": false,
+    "peak_overlapping_local_command_events": 2,
+    "scope": "The approved concurrency limit applies to model test sessions. The client overlapped two local command executions; these are not two model sessions or subagents."
+  },
+  "nonfatal_command_failure": {
+    "events": [
+      {
+        "at_seconds": 13.966,
+        "event": "item.completed",
+        "kind": "command_execution",
+        "status": "failed",
+        "exit_code": 1
+      }
+    ],
+    "cause": "not established; command text and output were not retained",
+    "later_file_change_completed": true,
+    "session_finished": true
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-official-0165-20261029/authorization.json",
+      "sha256": "0f7ec84f0cedbfbee4d99d23e5bab4085eb0fad3b78fa638d35b2b97d840c3fc",
+      "bytes": 798
+    },
+    {
+      "path": "build/live-authorized-official-0165-20261029/started.once",
+      "sha256": "b90461b9e72da0176bbda5a653192e10416c8a975009a8c48ace9a4e5eda01cf",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-official-0165-20261029/invariants.json",
+      "sha256": "f2346e91ef07ec250c7620246fc29c2955a1e63e10ed2815c09f8594299e7f0c",
+      "bytes": 1826
+    },
+    {
+      "path": "build/live-authorized-official-0165-20261029/process-cleanup.json",
+      "sha256": "2e4c33bae716a2cb9bc73fc50129e2859f7514828a0bbddca104e96c81422e5a",
+      "bytes": 245
+    }
+  ],
+  "existing_live_totals_before": {
+    "sessions": 7,
+    "observed_inference_requests": 40,
+    "continuations": 1
+  },
+  "cumulative_live_totals": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  },
+  "limits": [
+    "No continuation occurred; the real continuation, successful subsequent tool use, and normal completion milestone remains unverified.",
+    "A command returned exit code 1; later execution and file modification completed and the grader passed 9/9. This is not a zero-tool-failure result.",
+    "Single-condition diagnostic only; no quality-improvement or timing comparison conclusion.",
+    "No Desktop/dot UI, active token-refresh test, other harness real account, or production deployment acceptance.",
+    "The single-use authorization is consumed; no automatic additional session."
+  ],
+  "new_live_sessions": 1,
+  "new_observed_inference_requests": 6,
+  "new_continuations": 0,
+  "production_modified": false,
+  "remote_pushed": false,
+  "binary_release_created": false
+}

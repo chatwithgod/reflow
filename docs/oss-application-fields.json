@@ -3,7 +3,7 @@
   "checked_date": "2026-10-27",
   "status": "local_draft_not_submitted",
   "technical_checkpoint": "fa2c622",
-  "latest_live_record": "evidence/live-topo-2026-10-27.json",
+  "latest_live_record": "evidence/live-official-0165-2026-10-29.json",
   "sources": {
     "program": "https://developers.openai.com/community/codex-for-oss",
     "form": "https://openai.com/form/codex-for-oss/"
@@ -19,7 +19,7 @@
       "characters": 373
     },
     "additional_context": {
-      "text": "The source is public; there is no packaged release or verified adoption data yet. Seven live sessions produced 40 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.",
+      "text": "The source is public; there is no packaged release or verified adoption data yet. Eight live sessions produced 46 inference requests and one continuation; that session timed out. A later patched-client run finished normally but triggered no continuation. We have not yet verified a live session that continues reasoning, executes a tool successfully, and ends normally. Desktop/dot UI acceptance is also pending. Local Magpie patches have not been submitted upstream.",
       "characters": 467
     }
   },
@@ -38,10 +38,12 @@
     "One prior real continuation occurred in a timed-out session",
     "The later successful patched-client session triggered zero continuations",
     "Desktop/dot UI remains unaccepted",
-    "Magpie patches are local, not submitted or merged"
+    "Magpie patches are local, not submitted or merged",
+    "The official 0.165.0 session passed 9/9 and ended normally with zero continuations, after one command failure"
   ],
-  "latest_offline_ci_record": "evidence/publication-2026-10-28.json",
+  "latest_offline_ci_record": "evidence/native-ci-fourth-run-2026-10-29.json",
   "verified_project_fields": {
     "public_github_repository_url": "https://github.com/chatwithgod/reflow"
-  }
+  },
+  "project_facts_updated": "2026-10-29"
 }
