@@ -1,6 +1,6 @@
 # Ubuntu 原生写入：发行版沙箱依赖对照
 
-状态：本地候选流程和控制测试已准备，尚未推送，也未在 Ubuntu 上执行。没有新增真实账号调用。
+状态：初版 `fdef7b5` 已公开并执行首轮 Ubuntu 对照，基线已复现，但安装前的软件包元数据采集失败，尚未执行宿主修正。采集器修正已在本地验证，等待新一轮推送与执行授权。没有新增真实账号调用。
 
 此前[第四轮宿主对照](NATIVE-CI.md)确认，Ubuntu runner 的独立 user namespace/UID 映射检查被拒绝，直接 Codex 沙箱命令也因 bubblewrap 权限失败。AppArmor 的全局 user namespace 限制值为 1。现有证据没有证明全部补丁失败都来自同一原因。
 
@@ -23,7 +23,7 @@
 
 ## 本地验证与范围
 
-控制测试使用固定的历史 CI 数字记录和替代操作对象，不执行 sudo、apt 或 AppArmor。覆盖未授权或不匹配环境拒绝、异常基线停止、原生断言缺失拒绝、已有配置保护、部分加载清理、候选仍失败、边界检查缺失或失败、全局设置变化和清理失败。另用本地短生命周期 Python 子进程验证输出内容不进入摘要，以及超时停止。
+控制测试使用固定的历史 CI 数字记录和替代操作对象，不执行 sudo、apt 或 AppArmor。覆盖未授权或不匹配环境拒绝、异常基线停止、原生断言缺失拒绝、已有配置保护、部分加载清理、候选仍失败、边界检查缺失或失败、全局设置变化和清理失败。另用本地短生命周期 Python 子进程验证输出内容不进入摘要，以及超时停止。元数据修正后，本机 Windows 为 20 项通过、1 项 Linux 专用检查跳过；Linux 专用检查只对临时目录中的合成 dpkg 数据库运行只读查询，不接触系统包数据库或安装软件。
 
 运行方式：
 
@@ -35,3 +35,15 @@ python scripts/check-linux-sandbox.py --check-only
 这些检查不能证明 Ubuntu 内核会接受发行版配置，也不能证明五个补丁场景会恢复。实际报告将分别记录安装软件包、加载配置和卸载配置的阶段；不能把整个依赖安装过程的效果都归因于单独一条 AppArmor 规则。任何最终原生断言、文件/网络边界或清理核对失败，新的手动任务仍判失败。原来的三平台原生流水线不自动加载配置，既有失败不会被隐藏。
 
 机器可读的准备记录见 [本地验证证据](evidence/linux-sandbox-control-preparation-2026-10-29.json)。AppArmor 的添加、拒绝覆盖及移除语义按 [Ubuntu 24.04 手册](https://manpages.ubuntu.com/manpages/noble/man8/apparmor_parser.8.html)核对。
+
+## 首轮执行与元数据修正
+
+`ed695d8`、`92773f6`、`fdef7b5` 获批推送后，[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40782918223) 三个平台全部通过，Go 普通/race 各 70 通过、4 跳过，初版 15 项控制测试也全部通过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40782918198) 的普通/race 均通过，macOS 五个写入场景通过，Ubuntu/托管 Windows 仍全部写入失败。
+
+[手动 Ubuntu 对照](https://github.com/chatwithgod/reflow/actions/runs/40783038407) 随后在同一串行队列执行，复现普通/race 各 10 通过、写入 0/5 通过及 namespace 拒绝。它在安装前的软件包信息采集阶段报 `package_metadata_invalid`：查询退出码为 1，随后停止。没有运行 apt，也没有加载或移除 AppArmor 配置，记录的三项内核设置未变。四个原生任务的实际执行区间没有重叠。完整结果见 [首轮公开记录](evidence/linux-sandbox-control-publication-2026-10-29.json)。
+
+原始包信息没有保存，无法确定本轮是哪一个字段被拒绝。离线构造对照确认，旧校验会把没有版本号的合法未安装记录当作异常；这属于采集器缺陷，但不能把构造输入当作本轮 CI 原始输出。
+
+修正版按 [dpkg-query 的状态和退出码定义](https://manpages.ubuntu.com/manpages/noble/man1/dpkg-query.1.html)逐个查询包，记录固定状态，再解释版本字段。安装前允许包不存在、未安装或仅留配置文件；安装后仍必须确认四个包都已安装、有有效版本且没有重装错误标志。数据库致命错误和未知格式继续使流程失败。只读查询固定系统数据库、关闭分页器并使用 C locale；原始输出仍不保存。
+
+修正只改变包信息采集函数并增加解析器，其他执行函数的 AST 与已公开版本一致，原生测试、特权操作和工作流均未改变。检查与限制见 [元数据修正证据](evidence/linux-sandbox-metadata-fix-2026-10-29.json)。Ubuntu 上的新查询、发行版依赖和 AppArmor 候选修正仍待实际验证。

@@ -34,6 +34,6 @@ The source is public; there is no packaged release or verified adoption data yet
 | 8 次会话、46 次推理请求、1 次续接 | [最近实测](LIVE-OFFICIAL-0165-2026-10-29.md)及其关联的前序记录；最新官方版 9/9、续接 0 次，包含一次命令失败 |
 | Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；公开模块及设置页检查见[最新记录](../adapters/magpie/PUBLIC-MODULE.md)，宿主全量仍未通过 |
 
-前序记录已公开；本轮新增实测记录暂存在本地，尚未公开。申请时可引用上述固定提交及 CI 链接；Magpie 补丁仍未提交上游，不能写成已合并贡献。
+官方版实测记录已随 [fdef7b5](https://github.com/chatwithgod/reflow/commit/fdef7b50c1fe93130f02bb500f16aa90c3a07562) 及其前序提交公开。申请时可引用上述固定提交及 CI 链接；最新宿主对照状态见 [Ubuntu 对照记录](LINUX-SANDBOX-CONTROL.md)。Magpie 补丁仍未提交上游，不能写成已合并贡献。
 
 公开仓库 URL 已补入草稿。提交前仍需填写姓名、ChatGPT 账号邮箱和 GitHub 账号，确认个人资料可见性、维护者身份、申请哪些支持及所需的组织信息。尚未收集独立版采用数据，相关指标暂不填写。Desktop/dot 暂留未验收，申请草稿没有改变工程验收状态。二进制发布、上游提交和正式申请仍按 [计划](../PLAN.md) 分别处理。

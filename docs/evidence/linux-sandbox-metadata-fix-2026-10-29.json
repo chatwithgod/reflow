@@ -1,0 +1,98 @@
+{
+  "date_local": "2026-10-29",
+  "status": "fixed_locally_not_pushed",
+  "source_base_commit": "fdef7b50c1fe93130f02bb500f16aa90c3a07562",
+  "actual_failed_run": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40783038407",
+    "error_code": "package_metadata_invalid",
+    "phase": "before package installation",
+    "dpkg_exit_code": 1,
+    "dpkg_stdout_bytes": 59,
+    "dpkg_stderr_bytes": 107,
+    "apt_or_apparmor_setup_started": false,
+    "exact_rejected_field_known": false
+  },
+  "synthetic_failure_control": {
+    "kind": "constructed missing-version input, not captured CI output",
+    "published_parser_rejected": true,
+    "error_code": "package_metadata_invalid",
+    "fixed_not_installed_state": {
+      "state": "not-installed",
+      "selection": "unknown",
+      "error": "none",
+      "version": null
+    },
+    "actual_dpkg_executed_locally": false
+  },
+  "local_tests": {
+    "total": 21,
+    "pass": 20,
+    "fail": 0,
+    "skip": 1,
+    "skipped_test": "real dpkg private-database fixture requires Linux"
+  },
+  "change_containment": {
+    "changed_existing_functions": [
+      "RunnerOperations.package_versions"
+    ],
+    "added_functions": [
+      "package_observation"
+    ],
+    "other_function_asts_identical": true,
+    "runtime_and_native_fixture_assertions_unchanged": true,
+    "workflows_and_privileged_operations_unchanged": true
+  },
+  "behavior": {
+    "query_packages_individually": true,
+    "read_status_before_interpreting_version": true,
+    "absent_and_uninstalled_allowed_before_setup": true,
+    "after_setup_all_four_must_be_installed_with_versions_and_no_error_flag": true,
+    "fatal_query_or_malformed_data_rejected": true,
+    "raw_query_output_retained": false
+  },
+  "source_files": [
+    {
+      "path": "scripts/check-linux-sandbox.py",
+      "sha256": "78203189085895157facab487dd31db5433682ee41f4eac2b2c3a3d91517bc28",
+      "bytes": 22868
+    },
+    {
+      "path": "scripts/test-linux-sandbox-control.py",
+      "sha256": "8ca378265df6f4fecc689350043173b4567b10dc1724b497d2f3eaeb58c9d072",
+      "bytes": 16754
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "build/linux-sandbox-metadata-fix-20261029/unit-tests.log",
+      "sha256": "cfdb6f82758a471647fbfdc4fea69b58553385c06c80e0b7d3e646659e51bf5c",
+      "bytes": 2842
+    },
+    {
+      "path": "build/linux-sandbox-metadata-fix-20261029/unit-tests-final.log",
+      "sha256": "2299e43c879f33f0737c564fddf440e34a46b819e470035820228d017f165c33",
+      "bytes": 3057
+    }
+  ],
+  "primary_reference": {
+    "url": "https://manpages.ubuntu.com/manpages/noble/man1/dpkg-query.1.html",
+    "used_for": "Known-but-not-installed rows, status abbreviation, configurable output, and distinction between not-found and fatal exit statuses"
+  },
+  "limits": [
+    "The exact rejected field in the previous CI output is unknown because raw package metadata was not retained",
+    "The old empty-version rejection is reproduced with a constructed fixture, not with a local Ubuntu process",
+    "The corrected query and host remedy still require a new authorized Ubuntu execution"
+  ],
+  "new_live_sessions": 0,
+  "new_model_calls": 0,
+  "host_policy_modified": false,
+  "production_modified": false,
+  "remote_pushed": false,
+  "linux_query_fixture": {
+    "system_database_used": false,
+    "private_status_database": true,
+    "sudo_or_package_install": false,
+    "executed_locally": false,
+    "scheduled_in_automatic_ci": true
+  }
+}

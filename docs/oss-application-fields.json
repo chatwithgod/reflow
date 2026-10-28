@@ -41,7 +41,7 @@
     "Magpie patches are local, not submitted or merged",
     "The official 0.165.0 session passed 9/9 and ended normally with zero continuations, after one command failure"
   ],
-  "latest_offline_ci_record": "evidence/native-ci-fourth-run-2026-10-29.json",
+  "latest_offline_ci_record": "evidence/linux-sandbox-control-publication-2026-10-29.json",
   "verified_project_fields": {
     "public_github_repository_url": "https://github.com/chatwithgod/reflow"
   },

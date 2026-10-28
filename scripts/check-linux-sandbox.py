@@ -27,6 +27,9 @@ WRITE_PASS = {'pass': 6, 'skip': 0, 'fail': 0}
 WRITE_FAIL = {'pass': 0, 'skip': 0, 'fail': 6}
 BOUNDARIES = {'workspace_write_verified', 'outside_workspace_write_blocked',
               'local_listener_reachable_without_sandbox', 'local_listener_blocked_in_sandbox'}
+PACKAGE_STATES = {'n': 'not-installed', 'c': 'config-files', 'H': 'half-installed', 'U': 'unpacked',
+                  'F': 'half-configured', 'W': 'triggers-awaited', 't': 'triggers-pending', 'i': 'installed'}
+PACKAGE_SELECTIONS = {'u': 'unknown', 'i': 'install', 'h': 'hold', 'r': 'remove', 'p': 'purge'}
 
 
 class ControlError(RuntimeError):
@@ -97,6 +100,29 @@ def validate_host(host, original_settings, *, sandbox_pass):
 def validate_boundaries(boundaries):
     require(set(boundaries) == BOUNDARIES and all(value is True for value in boundaries.values()),
             'sandbox_boundary_failed')
+
+
+def package_observation(exit_code, output):
+    """Interpret one dpkg query; absent or uninstalled packages are not malformed."""
+    require(exit_code in (0, 1), 'package_query_fatal')
+    if exit_code == 1:
+        require(output == b'', 'package_query_partial_output')
+        return {'state': 'not-found', 'selection': None, 'error': None, 'version': None}
+    require(len(output) <= 1024, 'package_metadata_too_large')
+    try:
+        lines = output.decode('ascii').splitlines()
+    except UnicodeDecodeError:
+        raise ControlError('package_metadata_encoding') from None
+    require(len(lines) == 1 and lines[0].count('\t') == 1, 'package_metadata_shape')
+    status, version = lines[0].split('\t')
+    require(len(status) == 3 and status[0] in PACKAGE_SELECTIONS and status[1] in PACKAGE_STATES
+            and status[2] in (' ', 'R'), 'package_status_invalid')
+    require(len(version) <= 128 and all(char.isalnum() or char in '.+~:-' for char in version),
+            'package_version_invalid')
+    state = PACKAGE_STATES[status[1]]
+    require(state != 'installed' or bool(version), 'installed_package_version_missing')
+    return {'state': state, 'selection': PACKAGE_SELECTIONS[status[0]],
+            'error': 'none' if status[2] == ' ' else 'reinstall-required', 'version': version or None}
 
 
 def execute_control(ops, report):
@@ -230,17 +256,24 @@ class RunnerOperations:
         self.report['system_bwrap_sha256'] = hashlib.sha256(Path('/usr/bin/bwrap').read_bytes()).hexdigest()
 
     def package_versions(self, label, *, complete):
-        result = self.command(label, ['dpkg-query', '--show', '--showformat=${binary:Package}=${Version}\n',
-                                      *DISTRO_PACKAGES], checked=False)
+        require(label in ('package_versions_before', 'package_versions_after'), 'package_stage_invalid')
+        states = {}
+        self.report[label.replace('_versions_', '_states_')] = states
         versions = {}
-        for line in result.stdout.decode().splitlines():
-            name, separator, version = line.partition('=')
-            name = name.split(':', 1)[0]
-            require(separator and name in DISTRO_PACKAGES and 0 < len(version) <= 128
-                    and all(char.isalnum() or char in '.+~:-' for char in version), 'package_metadata_invalid')
-            versions[name] = version
+        # Query separately so an absent package does not hide successful rows.
+        # These are unprivileged reads from the system package database, without
+        # a pager or locale-dependent presentation fields.
+        for name in DISTRO_PACKAGES:
+            result = self.command(label + '_' + name, [
+                '/usr/bin/env', 'LC_ALL=C', 'LANGUAGE=C', 'DPKG_COLORS=never',
+                '/usr/bin/dpkg-query', '--admindir=/var/lib/dpkg', '--no-pager', '--show',
+                '--showformat=${db:Status-Abbrev}\t${Version}\n', name], checked=False)
+            item = package_observation(result.returncode, result.stdout)
+            states[name] = item
+            if item['state'] == 'installed' and item['error'] == 'none':
+                versions[name] = item['version']
         if complete:
-            require(result.returncode == 0 and set(versions) == set(DISTRO_PACKAGES), 'package_install_incomplete')
+            require(set(versions) == set(DISTRO_PACKAGES), 'package_install_incomplete')
         return versions
 
     def profile_identity(self):

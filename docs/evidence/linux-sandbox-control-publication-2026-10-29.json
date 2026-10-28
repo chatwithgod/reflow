@@ -1,0 +1,656 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "repository": "https://github.com/chatwithgod/reflow",
+  "published_commit": "fdef7b50c1fe93130f02bb500f16aa90c3a07562",
+  "published_commits": [
+    "fdef7b50c1fe93130f02bb500f16aa90c3a07562",
+    "92773f6b6848eeda0b4b0627a46472d9c14f5242",
+    "ed695d8dace22de0584f2243dfd9926b79e93ce2"
+  ],
+  "remote_main_verified": "fdef7b50c1fe93130f02bb500f16aa90c3a07562",
+  "offline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40782918223",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "offline (ubuntu-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": 15,
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      },
+      {
+        "name": "offline (windows-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": 15,
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": 15,
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      }
+    ]
+  },
+  "native_baseline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40782918198",
+    "conclusion": "failure",
+    "platforms": {
+      "ubuntu": {
+        "status": "fail",
+        "platform": "linux/amd64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": false
+          },
+          "uid_is_root": false,
+          "kernel_release": "7.0.0-1017-azure",
+          "kernel_settings": {
+            "kernel/apparmor_restrict_unprivileged_userns": 1,
+            "kernel/unprivileged_userns_clone": 1,
+            "user/max_user_namespaces": 58109
+          },
+          "parent_apparmor_unconfined": true,
+          "namespace_controls": {
+            "user": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_mount": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_network": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            }
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 61,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "bubblewrap": 1
+            },
+            "workspace_marker_verified": false
+          }
+        },
+        "client_sha256": {
+          "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+          "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+        },
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false
+          }
+        }
+      },
+      "windows": {
+        "status": "fail",
+        "platform": "windows/amd64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": true,
+            "pwsh": true,
+            "powershell": true
+          },
+          "windows_version": {
+            "major": 10,
+            "minor": 0,
+            "build": 26100,
+            "product_type": 3
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 81,
+            "matching_output": {
+              "windows_mxc": 1,
+              "mxc_unavailable": 1
+            },
+            "workspace_marker_verified": false
+          },
+          "native_filesystem_rpc": {
+            "native_filesystem_write_verified": false,
+            "out_of_workspace_write_blocked": false,
+            "native_filesystem_reason": "filesystem_probe_failed"
+          }
+        },
+        "client_sha256": {
+          "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+          "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+        },
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false
+          }
+        }
+      },
+      "macos": {
+        "status": "pass",
+        "platform": "darwin/arm64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": true
+          },
+          "native_sandbox_command": {
+            "status": "pass",
+            "exit_code": 0,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "matching_output": {},
+            "workspace_marker_verified": true
+          }
+        },
+        "client_sha256": {
+          "codex": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+          "code_mode_host": "e723d01c65aba4b81451d486d57318232b2738889de67c35051734be917d96ba"
+        },
+        "client_binaries_unchanged": true,
+        "isolated_profile_removed": true,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          }
+        }
+      }
+    }
+  },
+  "linux_control_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40783038407",
+    "conclusion": "failure",
+    "summary": {
+      "status": "fail",
+      "model_calls": 0,
+      "existing_login_read": false,
+      "max_native_clients": 1,
+      "production_modified": false,
+      "packages_installed": false,
+      "source_commit": "fdef7b50c1fe93130f02bb500f16aa90c3a07562",
+      "source_sha256": {
+        "scripts/check-linux-sandbox.py": "c75f2adfefc7971468cce9c50e731aa682351aab0df5928f157eccf606eccf64",
+        "scripts/test-linux-sandbox-control.py": "965f93886ab785636f80d6c5dfcf2206983678fdadfe9e0a4b674a57fcfcd148",
+        "scripts/check-native-clients.py": "5c5b7167ff5a033ef6e09afa100a74fa61e17afaaa97ffa220a65f6347f796bb",
+        ".github/workflows/linux-sandbox-control.yml": "50b33e76d98f693fe150f06753c77e32015c0065bfe3e9fb107aacc9b4d511f7",
+        ".github/workflows/native-clients.yml": "eb1ae01faa2768ae33d5a1039bf1ea4d04b8b62520a77a3ab87f7b46d751384f",
+        ".github/workflows/offline.yml": "1dc6049ecd9ed15a49f195f8d59a4f943e2200a33cfa9ca0f0b0cafdf10d0cbd"
+      },
+      "original_kernel_settings": {
+        "kernel/apparmor_restrict_unprivileged_userns": 1,
+        "kernel/unprivileged_userns_clone": 1,
+        "user/max_user_namespaces": 58121
+      },
+      "commands": [
+        {
+          "stage": "baseline",
+          "exit_code": 1,
+          "stdout_bytes": 10041,
+          "stderr_bytes": 892
+        },
+        {
+          "stage": "package_versions_before",
+          "exit_code": 1,
+          "stdout_bytes": 59,
+          "stderr_bytes": 107
+        }
+      ],
+      "native_reports": {
+        "baseline": {
+          "path": "build/native-client-ci/20261028-225851-366500/summary.json",
+          "sha256": "c06154ebe82cd25d17ac81885703da7b7ea3f9080b3fcabb80956d3a27ebfe4c"
+        }
+      },
+      "global_kernel_settings_unchanged": true,
+      "error_type": "ControlError",
+      "error_code": "package_metadata_invalid"
+    },
+    "baseline": {
+      "status": "fail",
+      "platform": "linux/amd64",
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 61,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "bubblewrap": 1
+          },
+          "workspace_marker_verified": false
+        }
+      },
+      "client_sha256": null,
+      "client_binaries_unchanged": null,
+      "isolated_profile_removed": null,
+      "checks": {
+        "native": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "race": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "write": {
+          "status": "fail",
+          "tests": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 6
+          },
+          "missing_tests": [
+            "TestCodexNativeWriteProbe"
+          ],
+          "failed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "package_passed": false
+        }
+      }
+    },
+    "interpretation": "Stopped in the before-install package metadata parser. Neither apt nor AppArmor setup ran; the proposed host remedy has not been tested."
+  },
+  "execution_intervals": [
+    {
+      "workflow": "native",
+      "name": "native-clients (ubuntu-latest)",
+      "started_utc": "2026-10-28T22:49:54Z",
+      "completed_utc": "2026-10-28T22:51:58Z",
+      "conclusion": "failure"
+    },
+    {
+      "workflow": "native",
+      "name": "native-clients (windows-latest)",
+      "started_utc": "2026-10-28T22:52:01Z",
+      "completed_utc": "2026-10-28T22:55:35Z",
+      "conclusion": "failure"
+    },
+    {
+      "workflow": "native",
+      "name": "native-clients (macos-latest)",
+      "started_utc": "2026-10-28T22:55:38Z",
+      "completed_utc": "2026-10-28T22:58:24Z",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "linux-control",
+      "name": "linux-control",
+      "started_utc": "2026-10-28T22:58:28Z",
+      "completed_utc": "2026-10-28T23:00:02Z",
+      "conclusion": "failure"
+    }
+  ],
+  "observed_max_parallel_native_jobs": 1,
+  "evidence_files": [
+    {
+      "path": "build/linux-control-publication-20261029/authorization.json",
+      "sha256": "7398b0120472baa384df6b3edf52c904b834b41eeacc8eec632a67dc49b2bec6",
+      "bytes": 777
+    },
+    {
+      "path": "build/linux-control-publication-20261029/push-receipt.json",
+      "sha256": "9ce158d457369e2e8d814bba3b1e6b9b2a43fafd7001ee8bce37f985be955422",
+      "bytes": 323
+    },
+    {
+      "path": "build/linux-control-publication-20261029/dispatch-receipt.json",
+      "sha256": "76cc9ad01104838fc1290f8555a98bcfc7ece6b0bc2095cb9cc341297e510a19",
+      "bytes": 406
+    },
+    {
+      "path": "build/linux-control-publication-20261029/native-run.json",
+      "sha256": "4b0765d90355e2cdf5b31ffc71d7d64352ac0aa96d2c28f7171be394baa304b3",
+      "bytes": 12652
+    },
+    {
+      "path": "build/linux-control-publication-20261029/native-run.log",
+      "sha256": "8a8d5afabdd34b973422f18c1e16d61431f25442b13f3680d7c54f7e8e071fb8",
+      "bytes": 198343
+    },
+    {
+      "path": "build/linux-control-publication-20261029/offline-run.json",
+      "sha256": "ec00226f234e901a8a78970d728af67b375691cac1264077ad06e8803ee8a467",
+      "bytes": 10831
+    },
+    {
+      "path": "build/linux-control-publication-20261029/offline-run.log",
+      "sha256": "c59085e20c985cc5fd84ebc0d2523551e79521bd6225014272f58c102d43b79a",
+      "bytes": 732381
+    },
+    {
+      "path": "build/linux-control-publication-20261029/linux-control-run.json",
+      "sha256": "875f3b7736e5bbc66014ab80ed76b6da2f9ff842ae0a18f3097921fa127e4444",
+      "bytes": 4660
+    },
+    {
+      "path": "build/linux-control-publication-20261029/linux-control-run.log",
+      "sha256": "8fbb7941c8ffc42a3e61d4d5879569f53e5f858e43e19fe98c5f8cbe36004ee1",
+      "bytes": 56186
+    },
+    {
+      "path": "build/linux-control-publication-20261029/ubuntu/20261028-225026-361046/summary.json",
+      "sha256": "d846ab6199c3c2067fa695dfed338d6c0f22767ee6d9a765fecd2578f22f0ec5",
+      "bytes": 12381
+    },
+    {
+      "path": "build/linux-control-publication-20261029/windows/20261028-225301-226239/summary.json",
+      "sha256": "85c78abdfbcc79c4ddcaab54055efa0493cd2a23e8cff1e3284f5b927b73b256",
+      "bytes": 12008
+    },
+    {
+      "path": "build/linux-control-publication-20261029/macos/20261028-225622-394190/summary.json",
+      "sha256": "4eede3a4af73c740fb226fe37f5676efc1393eed2aa255d75bc240d486fe301b",
+      "bytes": 7376
+    },
+    {
+      "path": "build/linux-control-publication-20261029/control/linux-sandbox-control/20261028-225851-333331/summary.json",
+      "sha256": "dc261f4e9b839e0d6656c17ade748a036b2603dbf38507492694871ef15fa53e",
+      "bytes": 10764
+    },
+    {
+      "path": "build/linux-control-publication-20261029/control/native-client-ci/20261028-225851-366500/summary.json",
+      "sha256": "c06154ebe82cd25d17ac81885703da7b7ea3f9080b3fcabb80956d3a27ebfe4c",
+      "bytes": 12381
+    }
+  ],
+  "limits": [
+    "Automatic native protocol and race checks passed on all three systems; five writes passed only on macOS arm64.",
+    "The manual Ubuntu baseline reproduced the namespace denial and five write failures.",
+    "The parser rejected package metadata before installation; the original dpkg output was not retained, so the exact rejected field is not established.",
+    "An offline correction of the parser is separate from this failed remote run; no corrected remote result exists yet.",
+    "No new real account, token refresh, Desktop/dot, binary release, Magpie upstream or OSS submission acceptance."
+  ],
+  "new_live_sessions": 0,
+  "new_live_model_calls": 0,
+  "host_setup_started": false,
+  "production_modified": false,
+  "existing_live_totals": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  }
+}

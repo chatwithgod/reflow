@@ -3,7 +3,10 @@ import copy
 import importlib.util
 import json
 from pathlib import Path
+import shutil
+import subprocess
 import sys
+import tempfile
 import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -90,6 +93,102 @@ class FakeOperations:
 
 
 class ControlTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == 'linux' and shutil.which('dpkg-query'),
+                         'real dpkg private-database fixture requires Linux')
+    def test_real_dpkg_query_uses_only_a_private_status_database(self):
+        with tempfile.TemporaryDirectory(prefix='rf-dpkg-fixture-') as temporary:
+            database = Path(temporary).resolve()
+            (database / 'status').write_text(
+                'Package: bubblewrap\nStatus: unknown ok not-installed\nArchitecture: amd64\n\n'
+                'Package: apparmor\nStatus: install ok installed\nArchitecture: amd64\n'
+                'Version: 1.0-1\nMaintainer: Reflow Fixture <fixture@example.invalid>\n'
+                'Description: synthetic dpkg status fixture\n\n'
+                'Package: apparmor-utils\nStatus: deinstall ok config-files\nArchitecture: amd64\n'
+                'Version: 1.0-1\nMaintainer: Reflow Fixture <fixture@example.invalid>\n'
+                'Description: synthetic removed-package fixture\n\n', encoding='utf-8')
+            ops = control.RunnerOperations({})
+            command = ops.command
+
+            def private_query(label, argv, **kwargs):
+                self.assertIn('/usr/bin/dpkg-query', argv)
+                self.assertNotIn('sudo', argv)
+                self.assertEqual(argv.count('--admindir=/var/lib/dpkg'), 1)
+                argv = ['--admindir=' + str(database) if value == '--admindir=/var/lib/dpkg' else value for value in argv]
+                return command(label, argv, **kwargs)
+
+            ops.command = private_query
+            self.assertEqual(ops.package_versions('package_versions_before', complete=False), {'apparmor': '1.0-1'})
+            states = ops.report['package_states_before']
+            self.assertEqual(states['bubblewrap']['state'], 'not-installed')
+            self.assertIsNone(states['bubblewrap']['version'])
+            self.assertEqual(states['apparmor-utils']['state'], 'config-files')
+            self.assertEqual(states['apparmor-profiles']['state'], 'not-found')
+            with self.assertRaisesRegex(control.ControlError, 'package_install_incomplete'):
+                ops.package_versions('package_versions_after', complete=True)
+
+    def test_missing_and_uninstalled_package_states_are_valid(self):
+        missing = control.package_observation(1, b'')
+        self.assertEqual(missing['state'], 'not-found')
+        self.assertIsNone(missing['version'])
+        for status in (b'un ', b'pn ', b'rc '):
+            with self.subTest(status=status):
+                item = control.package_observation(0, status + b'\t\n')
+                self.assertNotEqual(item['state'], 'installed')
+                self.assertIsNone(item['version'])
+
+    def test_installed_and_held_package_versions_are_preserved(self):
+        for status in (b'ii ', b'hi '):
+            item = control.package_observation(0, status + b'\t1:0.9.0-1build1\n')
+            self.assertEqual(item['state'], 'installed')
+            self.assertEqual(item['error'], 'none')
+            self.assertEqual(item['version'], '1:0.9.0-1build1')
+        with self.assertRaisesRegex(control.ControlError, 'installed_package_version_missing'):
+            control.package_observation(0, b'ii \t\n')
+
+    def test_fatal_and_malformed_package_queries_fail_without_copying_content(self):
+        bad = [(2, b''), (1, b'CONTENT_CANARY'), (0, b''), (0, b'ii \t1.0\nextra'),
+               (0, b'ii \t1.0\textra'), (0, b'bad\t1.0\n'), (0, b'ii \tTOKEN_CANARY\n'),
+               (0, b'ii \t/path/private\n'), (0, b'ii \t\xff\n'), (0, b'x' * 1025)]
+        for exit_code, output in bad:
+            with self.subTest(exit_code=exit_code, output_size=len(output)), self.assertRaises(control.ControlError) as error:
+                control.package_observation(exit_code, output)
+            self.assertNotIn('CANARY', str(error.exception))
+            self.assertNotIn('/path/private', str(error.exception))
+
+    def test_per_package_collection_tolerates_absence_only_before_setup(self):
+        ops = control.RunnerOperations({})
+        calls = []
+        replies = {'bubblewrap': (0, b'un \t\n'), 'apparmor': (0, b'ii \t4.0.1-0ubuntu1\n'),
+                   'apparmor-profiles': (1, b''), 'apparmor-utils': (0, b'rc \t4.0.1-0ubuntu1\n')}
+
+        def command(label, argv, **kwargs):
+            calls.append(argv)
+            exit_code, output = replies[argv[-1]]
+            return subprocess.CompletedProcess(argv, exit_code, output, b'')
+
+        ops.command = command
+        versions = ops.package_versions('package_versions_before', complete=False)
+        self.assertEqual(versions, {'apparmor': '4.0.1-0ubuntu1'})
+        self.assertEqual(len(calls), 4)
+        self.assertEqual(set(ops.report['package_states_before']), set(control.DISTRO_PACKAGES))
+        self.assertTrue(all('/usr/bin/dpkg-query' in argv and 'sudo' not in argv and '--no-pager' in argv for argv in calls))
+        with self.assertRaisesRegex(control.ControlError, 'package_install_incomplete'):
+            ops.package_versions('package_versions_after', complete=True)
+
+    def test_complete_package_collection_rejects_reinstall_required(self):
+        ops = control.RunnerOperations({})
+        broken = False
+
+        def command(label, argv, **kwargs):
+            status = b'iiR' if broken and argv[-1] == 'apparmor' else b'ii '
+            return subprocess.CompletedProcess(argv, 0, status + b'\t1.0-1\n', b'')
+
+        ops.command = command
+        self.assertEqual(len(ops.package_versions('package_versions_after', complete=True)), 4)
+        broken = True
+        with self.assertRaisesRegex(control.ControlError, 'package_install_incomplete'):
+            ops.package_versions('package_versions_after', complete=True)
+
     def test_hosted_dispatch_guard_rejects_local_fork_pr_and_implicit_runs(self):
         workspace = ROOT
         env = {'GITHUB_ACTIONS': 'true', 'RUNNER_ENVIRONMENT': 'github-hosted', 'RUNNER_OS': 'Linux',
