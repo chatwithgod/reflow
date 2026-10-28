@@ -67,6 +67,8 @@ node --test --test-concurrency=1 internal/gui/tests/reflow-settings.test.cjs int
 
 超时栈已定位到 `fakeNiri` 测试夹具的清理：`niri_test.go:148` 关闭监听器后等待 goroutine，而该 goroutine 仍在 `niri_test.go:137` 读取已经接受的连接。相同未改动源码在旧 workspace 下带 race 连续检查 20 轮，两项窗口定位测试共 40 个通过项；这不能替代全量结果。该夹具尚未修正，也没有据此断言生产窗口存在同样故障。
 
+上段保留的是第五份补丁检查时的状态。其后的第六份补丁增加了稳定重现方式并修正测试夹具清理，见 [独立修正记录](NIRI-FIXTURE.md)；本页的原始全量失败及超时记录没有被覆盖。
+
 本次另外读取了上游 `56602426d3a26c0048d97bb0a4d91a77a566efc6` 的 [gateway middleware 文档](https://github.com/yetone/magpie/blob/56602426d3a26c0048d97bb0a4d91a77a566efc6/docs/subsystems/gateway-middleware.md)，其中仍描述 JS 钩子的时限。本轮没有将补丁移植到这个新提交并运行，兼容范围仍限定在上述固定基准。
 
 以后升级 Magpie 基准时，应从新的 `go.mod`、`go.sum` 重新生成替代模块文件、固定 Reflow 提交并重新验证，不能把当前文件当作适用于任意上游版本的通用锁文件。

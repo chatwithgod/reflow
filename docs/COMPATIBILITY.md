@@ -28,6 +28,8 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 2026-10-28 增加 [公开模块构建](../adapters/magpie/PUBLIC-MODULE.md)：无需本地 Reflow checkout，普通 Magpie 模块文件不变。补齐可选构建的测试兼容和四种语言翻译；Chromium/WebKit 的设置页及相邻插件页面测试通过。这是固定基准、模拟 API 的检查，不能替代真实账号、原生窗口或最新 Magpie 上游的验收；全量结果保留在该记录中。
 
+同日补充 [窗口夹具退出修正](../adapters/magpie/NIRI-FIXTURE.md)：稳定重现并修正已接受连接没有随模拟服务器清理关闭的问题。只改测试代码，原生窗口和 Desktop/dot 的验收状态不因此改变。
+
 ## 尚未完成
 
 真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/macOS 官方客户端与打包构件验收、生产接入和二进制发布尚未完成。源码已公开。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。

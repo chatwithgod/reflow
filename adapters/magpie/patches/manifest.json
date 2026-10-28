@@ -7,18 +7,21 @@
     "host-execution.patch",
     "reflow-bridge.patch",
     "windows-test-fixtures.patch",
-    "reflow-module.patch"
+    "reflow-module.patch",
+    "niri-fixture-shutdown.patch"
   ],
   "patches": {
     "00-cgroup-root.patch": "621114aca546d06f9efb3acaee1fe6621adfedb81269d2ca55d39824738ca346",
     "host-execution.patch": "79a2ac317f7dfd5a8917e2b9a4a466603b933e9baaa365d9f69363f4ea7215e8",
     "reflow-bridge.patch": "4422d8c8952e04cbf60f41d130c1b26020d9a98de3d43bc54f2333d5ef429a52",
     "windows-test-fixtures.patch": "5bd41b95beb1d995923f8b32108391cd85a70847f17385c549fe8aad1440aba1",
-    "reflow-module.patch": "6aa20997220ea408374fc6f2de1a7c8faa49f2d99f95ae7b9f95ffa61b6d5393"
+    "reflow-module.patch": "6aa20997220ea408374fc6f2de1a7c8faa49f2d99f95ae7b9f95ffa61b6d5393",
+    "niri-fixture-shutdown.patch": "3937fd29b1b011bef58f57335b2c7890f817bf5db32906977dc09405c72b2db7"
   },
   "published": false,
   "public_module_version": "v0.0.0-20261028113656-6d8e7a534060",
   "upstream_submitted": false,
   "magpie_binary_released": false,
-  "public_module_commit": "a85466613fc4ccfa308f8ef791968f2a1107e6e5"
+  "public_module_commit": "a85466613fc4ccfa308f8ef791968f2a1107e6e5",
+  "niri_fixture_shutdown_commit": "76504bcdadc329c6cc512af9961d5af59e43e051"
 }
