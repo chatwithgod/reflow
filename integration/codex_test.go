@@ -73,6 +73,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	var calls, wsCalls, httpCalls, chosenTools, discardedTools int
 	var authSeen, toolSeen, resumeSeen bool
 	var paths []string
+	var toolDiagnostics nativeToolDiagnostics
 
 	mcp := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != "POST" {
@@ -230,6 +231,9 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 					out, _ := json.Marshal(item["output"])
 					mu.Lock()
 					toolSeen = strings.Contains(string(out), "REFLOW_TOOL_OK")
+					if nativeWrite {
+						toolDiagnostics.observe(out)
+					}
 					mu.Unlock()
 				}
 			}
@@ -375,6 +379,10 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	}
 	mu.Lock()
 	defer mu.Unlock()
+	if nativeWrite {
+		encoded, _ := json.Marshal(toolDiagnostics)
+		t.Logf("REFLOW_NATIVE_TOOL_DIAGNOSTICS %s", encoded)
+	}
 	expectedCalls := 3
 	if mode.direct {
 		expectedCalls = 2

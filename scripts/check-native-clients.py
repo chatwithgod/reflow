@@ -47,6 +47,28 @@ FAILURE_SIGNALS = {
 NATIVE_COUNTS = re.compile(
     r'native CLI err=(.*?) calls=(\d+) WS=(\d+) HTTP=(\d+) auth=(true|false) '
     r'tool=(true|false) chosen=(\d+) discarded=(\d+)')
+TOOL_DIAGNOSTIC_MARKER = 'REFLOW_NATIVE_TOOL_DIAGNOSTICS '
+TOOL_SIGNAL_NAMES = set(FAILURE_SIGNALS) | {
+    'filesystem_error', 'missing_file_or_executable', 'unsupported_operation',
+    'approval_required', 'tool_unavailable', 'invalid_tool_arguments',
+}
+
+
+def tool_observation(output):
+    """Copy only bounded integers and fixed labels from the fixture marker."""
+    try:
+        data = json.loads(output.split(TOOL_DIAGNOSTIC_MARKER, 1)[1].strip())
+        fields = {key: data[key] for key in ('observed_outputs', 'empty_outputs')}
+        require(all(type(value) is int and 0 <= value <= 1_000_000 for value in fields.values()), 'invalid count')
+        signals = data['matching_outputs']
+        if signals is None:
+            signals = {}
+        require(isinstance(signals, dict), 'invalid signal map')
+        fields['matching_outputs'] = {key: value for key, value in signals.items()
+                                      if key in TOOL_SIGNAL_NAMES and type(value) is int and 0 <= value <= 1_000_000}
+        return fields
+    except (IndexError, KeyError, ValueError, TypeError, RuntimeError):
+        return None
 
 
 def require(condition, message):
@@ -102,11 +124,18 @@ def go_result(log, returncode, required):
         action, test = event.get('Action'), event.get('Test')
         if action == 'output' and test and isinstance(event.get('Output'), str):
             output = event['Output']
-            match = NATIVE_COUNTS.search(output)
-            signals = [name for name, markers in FAILURE_SIGNALS.items()
-                       if any(marker in output.lower() for marker in markers)]
-            if match or signals:
+            is_tool_trace = TOOL_DIAGNOSTIC_MARKER in output
+            match = None if is_tool_trace else NATIVE_COUNTS.search(output)
+            signals = [] if is_tool_trace else [name for name, markers in FAILURE_SIGNALS.items()
+                                                if any(marker in output.lower() for marker in markers)]
+            if match or signals or is_tool_trace:
                 observation = observations.setdefault(test, {'test': test, 'matching_log_lines': {}})
+                if is_tool_trace:
+                    classified = tool_observation(output)
+                    if classified is None:
+                        observation['tool_diagnostic_parse_failed'] = True
+                    else:
+                        observation['upstream_tool_output'] = classified
                 for name in signals:
                     observation['matching_log_lines'][name] = observation['matching_log_lines'].get(name, 0) + 1
                 if match:
