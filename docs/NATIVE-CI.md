@@ -40,13 +40,22 @@ runner 日志显示，Windows 使用 Server 2025 Datacenter，Ubuntu 使用 24.0
 
 Ubuntu 有通过 AppArmor 限制非特权 user namespace 的机制，见 [Ubuntu 官方说明](https://ubuntu.com/blog/ubuntu-23-10-restricted-unprivileged-user-namespaces)。这只是后续检查的背景，尚未证实本轮 runner 的具体限制。
 
-## 已准备的宿主对照
+## 第四轮：宿主对照
 
-下一版摘要在原测试前增加只读的宿主信息和无账号对照：Windows 记录系统类型、直接 MXC 命令启动和既有文件系统 RPC/边界探针；Linux 读取相关内核设置，分别尝试短生命周期的 user、mount、network namespace，再运行同一客户端的直接沙箱命令。原始输出不保存，只记录退出码、布尔值、字节数和固定标记。
+`3bd2b1c` 经授权推送，在原测试前增加只读的宿主信息和无账号对照：Windows 记录系统类型、直接 MXC 命令启动和既有文件系统 RPC/边界探针；Linux 读取相关内核设置，分别尝试短生命周期的 user、mount、network namespace，再运行同一客户端的直接沙箱命令。原始输出不保存，只记录退出码、布尔值、字节数和固定标记。
 
 对照只在隔离临时目录写固定标记，namespace 仅在子进程中存在；不执行 sandbox setup，不设置 sysctl、AppArmor、系统账号或防火墙。宿主探针是诊断上下文，不代替原有五个写入场景；原有失败仍使 CI 失败。
 
-本机 Windows 的直接命令和文件系统写入/越界拒绝检查通过，错误分类、脱敏和超时退出对照通过，分类单测普通/race 及 vet 通过；完整客户端正向检查仍为普通/race 各 10 通过、写入场景 5/5。Linux 控制尚未在本机执行。这些准备时结果见 [宿主探针验证](evidence/native-host-probes-2026-10-29.json)。新探针尚未推送，远程执行需对应授权。
+本机 Windows 的直接命令和文件系统写入/越界拒绝检查通过，错误分类、脱敏和超时退出对照通过，分类单测普通/race 及 vet 通过；完整客户端正向检查仍为普通/race 各 10 通过、写入场景 5/5。Linux 控制未在本机执行。这些准备时结果见 [宿主探针验证](evidence/native-host-probes-2026-10-29.json)，其中准备状态保留为当时的快照。
+
+[第四轮原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40773001439) 的 Ubuntu 和 Windows 任务已结束，客户端普通/race 各 10 项通过，五个写入场景仍全部失败。新增无账号对照得到以下结果：
+
+- Ubuntu：三种 `unshare --user --map-root-user` 对照均在 UID/GID 映射阶段被拒绝；直接 Codex 沙箱命令也出现 `bubblewrap` 与 `operation_not_permitted`。这说明存在不依赖 Reflow 或模型的基础隔离限制。AppArmor 的非特权 user namespace 限制值为 1，但尚未通过策略变更对照确定它的因果作用；不能将所有补丁失败归为同一原因。
+- 托管 Windows：直接 MXC 命令与保留轮次的命令工具结果均明确命中 `mxc_unavailable`，未命中 `custom_argv0`。该 runner 无法执行所选的 MXC 路径；这不是对所有 Windows 系统的结论。文件系统 RPC 在首次工作区写入时失败，尚未执行越界检查，摘要中的 `out_of_workspace_write_blocked: false` 不能解释为越界成功。
+
+macOS 原生任务首次因托管机容量不足、未获得 runner 而被平台取消，未执行任何步骤。在同一提交上仅补跑该任务一次，Ubuntu 和 Windows 没有重新执行。补跑后的 macOS arm64 普通/race 各 10 项通过，五个写入场景和直接沙箱命令通过；二进制未变和临时目录已清理的最终检查也通过。实际执行区间没有重叠，原生 CI 整体仍为失败。[同提交常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40773001510) 三个平台普通/race 各 70 通过、4 跳过，vet、fuzz 和合成评测自检通过。
+
+机器可读结果、宿主观察、首次取消与单任务补跑记录见 [第四轮证据](evidence/native-ci-fourth-run-2026-10-29.json)。本轮真实模型调用为 0，系统策略和生产配置未修改。失败平台摘要中仍缺二进制未变与临时目录清理的最终确认，不能套用 macOS 的成功字段。
 
 ## 执行内容
 
@@ -89,6 +98,6 @@ python scripts/check-native-clients.py
 
 ## 验收边界
 
-macOS arm64 的结果覆盖所测官方客户端、Pi 和 ZIP 解压包；Linux/托管 Windows 的写入问题仍待诊断，Linux arm64 和 macOS amd64 也未新增原生运行证据。即使三个系统均通过，也只证明所覆盖的官方客户端与打包构件在合成登录、本地上游下可用；真实续接后的工具成功和正常结束、真实 Token 刷新及 Desktop/dot 仍需各自的验收证据。
+macOS arm64 的结果覆盖所测官方客户端、Pi 和 ZIP 解压包；Linux/托管 Windows 的宿主执行限制已由直接对照复现，全部补丁失败的根因仍未确定，Linux arm64 和 macOS amd64 也未新增原生运行证据。即使三个系统均通过，也只证明所覆盖的官方客户端与打包构件在合成登录、本地上游下可用；真实续接后的工具成功和正常结束、真实 Token 刷新及 Desktop/dot 仍需各自的验收证据。
 
 原有 7 次真实会话、40 次观察到的推理请求、1 次续接的累计值不变。之前准备的官方 `0.165.0` 单次真实验证仍待单独授权；这条流水线不使用那份登录文件或一次性执行入口。

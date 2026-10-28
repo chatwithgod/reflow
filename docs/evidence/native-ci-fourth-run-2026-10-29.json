@@ -1,0 +1,978 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "repository": "https://github.com/chatwithgod/reflow",
+  "published_commit": "3bd2b1c0352fce7c6c94b00a132548ba5ecd3707",
+  "published_commits": [
+    "3bd2b1c0352fce7c6c94b00a132548ba5ecd3707"
+  ],
+  "remote_main_verified": "3bd2b1c0352fce7c6c94b00a132548ba5ecd3707",
+  "offline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40773001510",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "offline (ubuntu-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (windows-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      }
+    ]
+  },
+  "native_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40773001439",
+    "conclusion": "failure",
+    "platforms": {
+      "ubuntu": {
+        "status": "fail",
+        "platform": "linux/amd64",
+        "node": {
+          "platform": "linux",
+          "arch": "x64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": false
+          },
+          "uid_is_root": false,
+          "kernel_release": "7.0.0-1017-azure",
+          "kernel_settings": {
+            "kernel/apparmor_restrict_unprivileged_userns": 1,
+            "kernel/unprivileged_userns_clone": 1,
+            "user/max_user_namespaces": 58121
+          },
+          "parent_apparmor_unconfined": true,
+          "namespace_controls": {
+            "user": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_mount": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_network": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            }
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 61,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "bubblewrap": 1
+            },
+            "workspace_marker_verified": false
+          }
+        },
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "cdd110956720d39f547b2dfc6e78df60ba484a58731268b71fdafbe383c720ab"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "b5e050c4a4bc8780c51a79088dae5569e529ffe12bab47ac5164c12831a93922"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false,
+            "failure_observations": [
+              {
+                "test": "TestCodexNativeWriteProbe/command_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "bubblewrap": 1,
+                    "operation_not_permitted": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 1,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_add_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              }
+            ],
+            "status": "fail",
+            "log_sha256": "780a40934cf5cc21e2a1909d7693a476b2bcd1ec0784544b025502a397d7444e"
+          }
+        },
+        "client_sha256": {
+          "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+          "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "linux/amd64",
+            "archive": "reflow_0.1.0-dev.4_linux_amd64.zip",
+            "sha256": "c75c7497969fd70e5b7460d6e70dce16976383f738eb28ba480e634f53af5cab",
+            "binary_sha256": "63838ef7dc56b5103ca6b70dab21268121bd0a8d1f22d12efc8896dc3f0161ee",
+            "binary_path": "reflow",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-213439-624/reflow_0.1.0-dev.4_linux_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "linux/amd64",
+            "archive": "reflow_plugin_0.1.0-dev.4_linux_amd64.zip",
+            "sha256": "753f26f2b15abfb0c8e97950c2ddc06b05209716c6a1d357e7f8f41ce416b386",
+            "binary_sha256": "63838ef7dc56b5103ca6b70dab21268121bd0a8d1f22d12efc8896dc3f0161ee",
+            "binary_path": "plugins/reflow/bin/reflow",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-213439-624/reflow_plugin_0.1.0-dev.4_linux_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "host_interpretation": "Independent user-namespace UID/GID mapping controls failed, as did the direct Codex bubblewrap command; AppArmor restriction was enabled, but its causal role has not been tested by a policy-change control. Patch-tool failure remains separately classified as filesystem_error."
+      },
+      "windows": {
+        "status": "fail",
+        "platform": "windows/amd64",
+        "node": {
+          "platform": "win32",
+          "arch": "x64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": true,
+            "pwsh": true,
+            "powershell": true
+          },
+          "windows_version": {
+            "major": 10,
+            "minor": 0,
+            "build": 26100,
+            "product_type": 3
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 81,
+            "matching_output": {
+              "windows_mxc": 1,
+              "mxc_unavailable": 1
+            },
+            "workspace_marker_verified": false
+          },
+          "native_filesystem_rpc": {
+            "native_filesystem_write_verified": false,
+            "out_of_workspace_write_blocked": false,
+            "native_filesystem_reason": "filesystem_probe_failed"
+          }
+        },
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "627fc161eff065bca61229cef6e188e93d861c271a8a324dc1b10efb8ef8e95a"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "54fddf9a6432558449572040611106a5245e8e0dd235fcb46025d4fe46ebb075"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false,
+            "failure_observations": [
+              {
+                "test": "TestCodexNativeWriteProbe/command_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1,
+                  "mxc_unavailable": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "mxc_unavailable": 1,
+                    "unsupported_operation": 1,
+                    "windows_mxc": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_add_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              }
+            ],
+            "status": "fail",
+            "log_sha256": "7e04555d8d8afe74a546efea984b7817c6e3b3ce0e4285ef5c69c44e78a03ece"
+          }
+        },
+        "client_sha256": {
+          "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+          "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "windows/amd64",
+            "archive": "reflow_0.1.0-dev.4_windows_amd64.zip",
+            "sha256": "106bdda2ed3f5f0c8afddb95a063447a31600e11748a20b898058ce67a9710fe",
+            "binary_sha256": "3dea4789988c394207f05c0b68ab5ee6a625bbfe6339b745b3f2379f3cced03a",
+            "binary_path": "reflow.exe",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-213733-246/reflow_0.1.0-dev.4_windows_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "windows/amd64",
+            "archive": "reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+            "sha256": "caab0ff0f934d6ac2c758ac7f6f22b4581da68477134f4ceab01cc749aee6a6b",
+            "binary_sha256": "3dea4789988c394207f05c0b68ab5ee6a625bbfe6339b745b3f2379f3cced03a",
+            "binary_path": "plugins/reflow/bin/reflow.exe",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-213733-246/reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "host_interpretation": "The direct no-account command and retained command tool result both reported MXC unavailable on this executor; custom argv0 was not observed. Filesystem RPC failed before the outside-workspace boundary check, so its false field is not evidence of an escape.",
+        "filesystem_boundary_check_executed": false
+      },
+      "macos": {
+        "status": "pass",
+        "platform": "darwin/arm64",
+        "node": {
+          "platform": "darwin",
+          "arch": "arm64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": true
+          },
+          "native_sandbox_command": {
+            "status": "pass",
+            "exit_code": 0,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "matching_output": {},
+            "workspace_marker_verified": true
+          }
+        },
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "abf77857bb18324f13098cedaae18025e78fcf0e4e4f33a823e84db97d4cd61e"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "267d8e33439c489d69afefe5a2e9dc37a4ab6b85a3742e441f6c31758de9a289"
+          },
+          "write": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "5804675df54c95263a735d3265b823a0b15aa46b1f2a9291d72ded65c4ad3c9f"
+          }
+        },
+        "client_sha256": {
+          "codex": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+          "code_mode_host": "e723d01c65aba4b81451d486d57318232b2738889de67c35051734be917d96ba"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "darwin/arm64",
+            "archive": "reflow_0.1.0-dev.4_darwin_arm64.zip",
+            "sha256": "3788786f439a7d392990629dd8a8c3a6606970e84a1ea1aa2530c7a8aed5cd23",
+            "binary_sha256": "f7eb429f124621cf873c8c390c515124e8f8e49cd2fd9c56519237669dedda2b",
+            "binary_path": "reflow",
+            "runtime_tested": true,
+            "source_archive": "dist/0.1.0-dev.4/20261028-215946-552/reflow_0.1.0-dev.4_darwin_arm64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "darwin/arm64",
+            "archive": "reflow_plugin_0.1.0-dev.4_darwin_arm64.zip",
+            "sha256": "c6c8257f61c63c5ac185c30b1ca23bbf526f50791f4d810ac8db9357fa4b483c",
+            "binary_sha256": "f7eb429f124621cf873c8c390c515124e8f8e49cd2fd9c56519237669dedda2b",
+            "binary_path": "plugins/reflow/bin/reflow",
+            "runtime_tested": true,
+            "source_archive": "dist/0.1.0-dev.4/20261028-215946-552/reflow_plugin_0.1.0-dev.4_darwin_arm64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": true,
+        "isolated_profile_removed": true,
+        "host_interpretation": "Direct no-account sandbox command and all five original workspace-write scenarios passed on the recovered arm64 job."
+      }
+    },
+    "execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_utc": "2026-10-28T21:34:05Z",
+        "completed_utc": "2026-10-28T21:36:19Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_utc": "2026-10-28T21:36:22Z",
+        "completed_utc": "2026-10-28T21:40:00Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_utc": "2026-10-28T21:58:58Z",
+        "completed_utc": "2026-10-28T22:02:06Z",
+        "conclusion": "success"
+      }
+    ],
+    "observed_max_parallel_jobs": 1,
+    "run_attempt": 2,
+    "macos_infrastructure_recovery": {
+      "original_job_id": 123114874102,
+      "original_status": "cancelled_before_runner_acquisition",
+      "original_steps_executed": 0,
+      "reason": "GitHub hosted macOS arm64 capacity; no runner acquired",
+      "request": {
+        "requested_utc": "2026-10-28T21:58:50.687773+00:00",
+        "run_id": 40773001439,
+        "job_id": 123114874102,
+        "source_commit": "3bd2b1c0352fce7c6c94b00a132548ba5ecd3707",
+        "scope": "single macOS job previously cancelled before runner acquisition; no code or policy changes",
+        "max_recovery_attempts": 1,
+        "live_model_calls": 0,
+        "status": "requested",
+        "exit_code": 0
+      },
+      "ubuntu_and_windows_execution_repeated": false,
+      "recovered_job_id": 123126508743
+    }
+  },
+  "evidence_files": [
+    {
+      "path": "build/native-host-ci-publication-20261029/native-run.json",
+      "sha256": "cee735ff4b71416587247888fcd68bbc5a3b1274dbce7dc774d30dca80324673",
+      "bytes": 12652
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/native-run.log",
+      "sha256": "652f67ff9cbb0f60b31fdc6c80987c922a0250e44a5d7a67adea2827cac68de9",
+      "bytes": 170275
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/offline-run.json",
+      "sha256": "6f65f404b2a487218af1364e886ba77144dfdfb8287fd19ee417e8776debcaa1",
+      "bytes": 9961
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/offline-run.log",
+      "sha256": "a78b2098633a4fc21a2a8f560daccf6ef1188623c1c89b9a3a08544f486b748c",
+      "bytes": 714448
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/ubuntu/20261028-213437-915618/summary.json",
+      "sha256": "480f7ccc7680010f5991522577be981fc3c2c1986e07509cca3f7f68a3b5246b",
+      "bytes": 12381
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/windows/20261028-213728-753661/summary.json",
+      "sha256": "f8ae753c6cd47e377edade59abc504135c64aa9de28e8b733b9d63ee3892ac87",
+      "bytes": 12008
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/macos/20261028-215944-656817/summary.json",
+      "sha256": "6e9d9d308203ce256b4454f9211a396da90f1e66ab2155ffb9a94e0a6728521f",
+      "bytes": 7376
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/native-attempt-1.json",
+      "sha256": "88192a6686ab80ad9a5869beb169815e6a92b5dbe05bc5007ad1a3668b5ddb89",
+      "bytes": 8884
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/native-attempt-1-partial.log",
+      "sha256": "41d94a08a495c016999d3c7da9ebf5928f17fdbf0ea5b8ea8a18541f08908ede",
+      "bytes": 67048
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/macos-unstarted-job.json",
+      "sha256": "4cbcf10eb450d1e6285f30cd11dc312926d65953bef359bc90776e33b1c7ef5f",
+      "bytes": 993
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/macos-unstarted-check.json",
+      "sha256": "439e4cb423889dd7eba82688b00df304173fc1e74bcc2e78890101f4e74f921c",
+      "bytes": 3936
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/macos-unstarted-annotations.json",
+      "sha256": "a7f81043855a24957369adb64d5c47b59a0a5847fff96ec273644ff50d58d658",
+      "bytes": 1728
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/macos-recovery-request.json",
+      "sha256": "6c309fc5e0d8e8e4caf0ea336a3ef3d8cf269ca62edd2cfca3a678e0c20e97f6",
+      "bytes": 386
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/ubuntu-job.log",
+      "sha256": "70f672a77589f89cd99423ad9959eef1505b06efd20be85cb6cc84bbf7142441",
+      "bytes": 38297
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/windows-job.log",
+      "sha256": "278afb84f966c5682dd6ffa84078f4c7ebbfea11574a4757e0204b2c4c418675",
+      "bytes": 38459
+    },
+    {
+      "path": "build/native-host-ci-publication-20261029/native-run-rest.json",
+      "sha256": "ba56411b97cc255975507c21ee9271bba81e1426ebb96919f8257a0ce3b7d3df",
+      "bytes": 13969
+    }
+  ],
+  "limits": [
+    "Native CLI/app-server/Pi/plugin groups and race passed on all three CI platforms",
+    "All five workspace-write scenarios failed on Ubuntu and hosted Windows, including direct paths without Reflow",
+    "macOS arm64 passed the five write scenarios; local Windows success remains a separate observation",
+    "Host controls reproduce execution failures without Reflow or a model: Linux user-namespace UID/GID mapping is denied; this Windows executor reports MXC unavailable. This does not establish a common root cause for all patch failures or all hosts of either OS.",
+    "Failed summaries do not independently attest binary immutability or temporary profile cleanup",
+    "No real account, token refresh, Desktop/dot UI or quality-improvement acceptance"
+  ],
+  "host_configuration_modified": false,
+  "new_live_sessions": 0,
+  "live_model_calls": 0,
+  "production_modified": false,
+  "binary_release_created": false,
+  "magpie_upstream_submitted": false,
+  "oss_application_submitted": false
+}
