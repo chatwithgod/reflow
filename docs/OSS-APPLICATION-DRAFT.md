@@ -32,7 +32,7 @@ The source is public; there is no packaged release or verified adoption data yet
 | 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
 | 公开源码及三平台离线 CI | [仓库](https://github.com/chatwithgod/reflow)、[修复提交](https://github.com/chatwithgod/reflow/commit/23eb3bef11f2cb5951599d08ca6ecd76a946619d)、[通过的 CI](https://github.com/chatwithgod/reflow/actions/runs/40679721072)；各 69 个通过项，4 个客户端联调跳过 |
 | 7 次会话、40 次推理请求、1 次续接 | [最近实测](LIVE-TOPO-2026-10-27.md)及其关联的前序记录 |
-| Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；宿主全量仍有 36 个失败项 |
+| Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；公开模块及设置页检查见[最新记录](../adapters/magpie/PUBLIC-MODULE.md)，宿主全量仍未通过 |
 
 这些记录现在可以从公开仓库访问。申请时可引用上述固定提交及 CI 链接；Magpie 补丁仍未提交上游，不能写成已合并贡献。
 

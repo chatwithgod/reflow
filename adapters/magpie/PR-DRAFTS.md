@@ -1,6 +1,6 @@
 # Local PR drafts — not submitted
 
-These drafts describe the patches in [manifest.json](patches/manifest.json). They do not represent an upstream issue or review. The optional Reflow bridge is a separate development patch, currently requiring a local Go workspace.
+These drafts describe the patches in [manifest.json](patches/manifest.json). They do not represent an upstream issue or review. The optional Reflow bridge is a separate development patch; [the fifth patch](PUBLIC-MODULE.md) adds a pinned public module as an alternative to the local Go workspace, plus enabled-build test compatibility and settings translations. Full host acceptance remains incomplete.
 
 ## fix(cgroup): terminate parent walk at the host filesystem root
 

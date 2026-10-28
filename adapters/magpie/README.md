@@ -1,6 +1,6 @@
 # Reflow 的 Magpie 适配
 
-这是开发中的嵌入式适配，固定针对 `yetone/magpie` 的 `a1174674da9d1435443e95ffac7d0300ce8b59d6`，在独立分支验证，尚未推送或发布。
+这是开发中的嵌入式适配，固定针对 `yetone/magpie` 的 `a1174674da9d1435443e95ffac7d0300ce8b59d6`。本目录保存可审阅补丁，尚未提交 Magpie 上游或发布 Magpie 二进制。
 
 ## 接入方式
 
@@ -22,7 +22,7 @@ Magpie 现有 JS 中间件有 250ms / 50ms 的执行时限，Bun 的异步 `onRe
 
 ## 开发构建
 
-补丁位于 [patches](patches/manifest.json)，按清单顺序应用：`00-cgroup-root.patch` 修复上游 Windows 测试中的路径循环，`host-execution.patch` 提供宿主执行扩展，`reflow-bridge.patch` 提供可选适配。当前依赖两份本地源码，通过 `go.work` 关联，尚无可引用的公开 Go 模块版本。
+补丁位于 [patches](patches/manifest.json)，按清单顺序应用：`00-cgroup-root.patch` 修复上游 Windows 测试中的路径循环，`host-execution.patch` 提供宿主执行扩展，`reflow-bridge.patch` 提供可选适配。第五份 `reflow-module.patch` 提供独立的 `go.reflow.mod` 与校验文件，引用公开 Reflow 的固定提交；也补齐启用该构建时的测试兼容和设置页翻译。普通 Magpie 的依赖不变。构建与验证命令见 [公开模块接入](PUBLIC-MODULE.md)。本地联合开发仍可使用 `go.work`。
 
 第四份 `windows-test-fixtures.patch` 只修正 Windows 上的测试夹具，不改变运行逻辑。其正反检查及剩余失败见 [独立记录](WINDOWS-FIXTURES.md)。
 
@@ -43,3 +43,5 @@ plugins:
 联调修复了 Magpie 将 WebSocket 帧转成 SSE 时未标明 `Content-Type` 的问题。适配与取消回归已通过 race；完整宿主测试运行过但未通过，对原失败项的复查在干净上游和修改版得到相同失败集合。详情见 [验证记录](VERIFICATION.md)。真实账号验收尚未进行，上述结果不代表回答质量提高，也不代表已部署到生产 Magpie。
 
 2026-10-27 补充：加入测试夹具修正后，14 个原失败项通过，全量仍有 36 个失败项。使用 Reflow dev.4 的桥接与默认关闭检查再次通过 race，共 7 个通过项。历史记录没有被覆盖，见 [本轮记录](WINDOWS-FIXTURES.md)。
+
+2026-10-28 补充：[公开模块构建](PUBLIC-MODULE.md)消除了必须拥有本地 Reflow 源码的要求。可选构建原有的 10 个测试失败项已修正，另补齐设置页翻译与浏览器检查。完整宿主仍有未解决失败，最新结果单独记录；之前的 36 项不是对以后每次全量运行的保证。

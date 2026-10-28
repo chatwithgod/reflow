@@ -14,7 +14,9 @@ parser.add_argument("--go", type=Path, required=True)
 parser.add_argument("--phase", choices=["suite", "vet", "build"], required=True)
 parser.add_argument("--goos", choices=["windows", "linux", "darwin"])
 parser.add_argument("--tags", default="nogui")
-parser.add_argument("--workspace", type=Path)
+module_source = parser.add_mutually_exclusive_group()
+module_source.add_argument("--workspace", type=Path)
+module_source.add_argument("--modfile", type=Path, help="alternate .mod file inside --magpie; relative paths start there")
 parser.add_argument("--packages", nargs="+", default=["./..."])
 parser.add_argument("--run")
 parser.add_argument("--race", action="store_true", help="run the selected test suite with Go's race detector")
@@ -25,10 +27,20 @@ if args.race and args.phase != "suite":
 project = Path(__file__).resolve().parent.parent
 host = args.magpie.resolve(strict=True)
 go = args.go.resolve(strict=True)
+modfile = None
+module_inputs = {}
+if args.modfile:
+    modfile = (args.modfile if args.modfile.is_absolute() else host / args.modfile).resolve(strict=True)
+    if modfile.suffix != ".mod" or not modfile.is_relative_to(host):
+        parser.error("--modfile must be a .mod file inside --magpie")
+    for path in (host / "go.mod", host / "go.sum", modfile, modfile.with_suffix(".sum")):
+        module_inputs[path.relative_to(host).as_posix()] = hashlib.sha256(path.read_bytes()).hexdigest()
 stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
 report = project / "build" / "magpie-verification" / stamp
 report.mkdir(parents=True, exist_ok=False)
 command = [str(go), args.phase if args.phase != "suite" else "test"]
+if modfile:
+    command += ["-modfile=" + str(modfile), "-mod=readonly"]
 if args.tags:
     command += ["-tags", args.tags]
 if args.phase == "suite":
@@ -93,6 +105,13 @@ summary = {"phase": args.phase, "race": args.race, "command": command, "base_com
            "runner_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
            "source_sha256": digest.hexdigest(), "exit_code": result.returncode,
            "goos": args.goos or "host", "live_account": False, "production_modified": False}
+if modfile:
+    after = {name: hashlib.sha256((host / name).read_bytes()).hexdigest() for name in module_inputs}
+    summary.update(modfile=modfile.relative_to(host).as_posix(), module_files_before=module_inputs,
+                   module_files_after=after, module_lockfiles_unchanged=module_inputs == after)
+    if module_inputs != after:
+        summary.update(command_exit_code=result.returncode, exit_code=result.returncode or 1,
+                       validation_error="module_lockfiles_changed")
 if args.phase == "suite":
     counts = {"pass": 0, "skip": 0, "fail": 0}
     failures = []
@@ -109,4 +128,4 @@ if args.phase == "suite":
     summary.update(test_items=counts, failures=failures)
 (report / "summary.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 print(json.dumps(summary, ensure_ascii=False), flush=True)
-raise SystemExit(result.returncode)
+raise SystemExit(summary["exit_code"])

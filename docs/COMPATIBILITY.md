@@ -8,7 +8,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | Codex app-server | 同一本地 `0.164.0` 修复构件；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的 `openai-codex` provider | 保留内置 OAuth 和模型目录，只改请求地址；SSE、WebSocket、工具执行与回传通过。新的 `openai` provider 未适配 |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
-| Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过。补丁未提交上游 |
+| Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过；可通过替代模块文件使用公开 Reflow 固定提交。补丁未提交上游 |
 
 Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在远程 CI 跳过。Linux/macOS 各架构的打包构件仍只有交叉编译记录，尚未逐一原生验收。见 [公开与 CI 范围](PUBLICATION-2026-10-28.md)。
 
@@ -25,6 +25,8 @@ Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、
 Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建通过。Magpie 全量 `nogui` 测试为 12180 个通过项、615 个跳过项、60 个失败项。改进隔离环境后，对原失败项进行复查，干净上游和修改版均为 12 通过、0 跳过、50 失败，失败集合相同。这是选定失败项的对照，不是双边全量通过，也未确定所有失败根因。见 [宿主证据](../adapters/magpie/VERIFICATION.md)。
 
 2026-10-27 的独立测试夹具补丁使 14 个旧失败项通过；新的全量为 12,204 通过、615 跳过、36 失败，剩余失败名称均已在旧记录出现。与 dev.4 结合的桥接/default-off 检查有 7 项通过 race；Windows/Linux 的上述构建和 vet 也重新通过。见 [后续证据](../adapters/magpie/WINDOWS-FIXTURES.md)。
+
+2026-10-28 增加 [公开模块构建](../adapters/magpie/PUBLIC-MODULE.md)：无需本地 Reflow checkout，普通 Magpie 模块文件不变。补齐可选构建的测试兼容和四种语言翻译；Chromium/WebKit 的设置页及相邻插件页面测试通过。这是固定基准、模拟 API 的检查，不能替代真实账号、原生窗口或最新 Magpie 上游的验收；全量结果保留在该记录中。
 
 ## 尚未完成
 

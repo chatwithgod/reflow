@@ -16,7 +16,7 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复会话及配置还原通过；这是后端协议验证，Desktop/dot 界面仍未验收。
 - **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
 - **Codex 原生插件**：本地市场注册安装、缓存二进制、4 个 stdio MCP 工具，以及真实 Codex 会话通过 Code Mode 调用 `status` 均已验证。见 [插件说明](plugins/codex/README.md)。
-- **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；Windows 测试夹具补丁使 14 个旧失败项通过，宿主全量仍有 36 个失败项。见 [适配与补丁](adapters/magpie/README.md)。
+- **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；支持固定公开 Reflow 模块，设置页覆盖两种浏览器和五种语言。宿主全量仍未通过，见 [适配与补丁](adapters/magpie/README.md)。
 - **开关评测**：4 项任务、34 个评分检查点，评分器和进程管理自检通过，尚无真实模型质量结果。见 [评测说明](docs/EVALUATION.md)。
 
 上述自动回归使用隔离目录和模拟上游。后续原生 ChatGPT 登录实测中，关闭组正常完成；开启组观察到一次真实续接且文件评分 9/9，但会话达到 180 秒上限，尚未完整验收。见 [真实测试记录](docs/LIVE-SMOKE-2026-10-26.md)。生产配置未改，Desktop/dot 和质量改善结论仍待验证。
