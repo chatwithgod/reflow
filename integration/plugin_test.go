@@ -23,12 +23,12 @@ import (
 
 func isolatedCLIEnv(base, home string) []string {
 	var env []string
-	for _, key := range []string{"PATH", "SystemRoot", "WINDIR", "COMSPEC", "PATHEXT", "ProgramData"} {
+	for _, key := range []string{"PATH", "SystemRoot", "SystemDrive", "WINDIR", "COMSPEC", "PATHEXT", "ProgramData"} {
 		if value := os.Getenv(key); value != "" {
 			env = append(env, key+"="+value)
 		}
 	}
-	return append(env, "CODEX_HOME="+home, "REFLOW_CODEX_HOME="+home, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=error")
+	return append(env, "CODEX_HOME="+home, "REFLOW_CODEX_HOME="+home, "HOME="+base, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "TMPDIR="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=error")
 }
 
 func TestCodexPluginInstallAndStdioOffline(t *testing.T) {
@@ -51,7 +51,7 @@ func TestCodexPluginInstallAndStdioOffline(t *testing.T) {
 	defer cancel()
 	run := func(args ...string) []byte {
 		t.Helper()
-		all := append([]string{"-c", "chatgpt_base_url=\"" + cloud.URL + "\""}, args...)
+		all := append([]string{"-c", "cli_auth_credentials_store=\"file\"", "-c", "chatgpt_base_url=\"" + cloud.URL + "\""}, args...)
 		cmd := exec.CommandContext(ctx, cli, all...)
 		cmd.Env = env
 		cmd.Dir = work
@@ -283,6 +283,7 @@ func verifyNativePluginInvocation(t *testing.T, cli, home, work string, env []st
 	args := []string{"exec", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-s", "read-only", "-C", work, "-m", "gpt-6.1-sol",
 		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + upstream.URL + "/backend-api/codex\"", "-c", "chatgpt_base_url=\"" + cloud.URL + "\"",
 		"-c", "features.memories=false", "-c", "features.apps=false", "-c", "features.code_mode=false", "-c", "model_reasoning_effort=\"low\"",
+		"-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false",
 		"-c", "features.plugins=true",
 		"Use the installed Reflow plugin to check the supplied local fixture status, without changing any configuration."}
 	cmd := exec.CommandContext(ctx, cli, args...)

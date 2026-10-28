@@ -1,0 +1,254 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "source_base_commit": "b2bddbdbb49b1bd88953282c4a3112c0176db601",
+  "source_snapshot": "Working tree additions and fixture changes on the base commit; exact tested files are identified by summary.source_sha256.",
+  "remote_workflow_status": "prepared_not_pushed_or_executed",
+  "linux_macos_native_acceptance": "not yet verified",
+  "local_result": {
+    "status": "pass",
+    "created_utc": "2026-10-28T18:36:27.683281+00:00",
+    "source_commit": "b2bddbdbb49b1bd88953282c4a3112c0176db601",
+    "source_sha256": {
+      "scripts/check-native-clients.py": "ea33ddb456a8bc9dd1c600e2f01162f11ec5a130473adf026039e67631c38c5c",
+      "scripts/build.ps1": "0b92e009b636d668b2f7f6cc7c41fc656db04aea54126a7c0dd3738721bd73d3",
+      "scripts/archive.py": "7ec32e126fea3349338dc6cd1c53d8d83c4d60194257f2cdfa653d5fd486058f",
+      "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+      "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+      ".github/workflows/native-clients.yml": "710805695f988af562685165cdf2318b69f66ec5482c55c36df74e6e60d58ca6",
+      "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+      "plugins/codex/plugin.json": "0b2dca29709961ac31dc2cd8247a89a91e80b8de527e0b78612e128bc42b4c8e",
+      "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+      "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+      "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+      "VERSION": "40fb45e29fe8409de948de467d8a237dc78416df5c59ef751d18707d742e2625",
+      "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+      "integration/codex_test.go": "249caf06de48df570e10c2a3f359b68986e6bebdc502a9ead73ce782231a5c76",
+      "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+      "integration/pi_test.go": "5a5c6f13c89103e73fcd53710266c509f9dfc8e718f80baf89e21dc44b975113",
+      "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+      "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+    },
+    "checks": {
+      "native": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 10,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket"
+        ],
+        "package_passed": true,
+        "status": "pass",
+        "log_sha256": "1dfeb6a2dfae5f9d667b18e57e8f21f5d358ff1f9fa74c2ca80a8f1ac68eee45"
+      },
+      "race": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 10,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket"
+        ],
+        "package_passed": true,
+        "status": "pass",
+        "log_sha256": "e1f3ace3a1cece12d988e782bcbd76d5c2d2ab4a9bd5300af321030ca9fb23a6"
+      },
+      "write": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 6,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeWriteProbe"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexNativeWriteProbe",
+          "TestCodexNativeWriteProbe/command_via_reflow",
+          "TestCodexNativeWriteProbe/patch_add_direct",
+          "TestCodexNativeWriteProbe/patch_direct",
+          "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+          "TestCodexNativeWriteProbe/patch_via_reflow"
+        ],
+        "package_passed": true,
+        "status": "pass",
+        "log_sha256": "21f454c232713a4b3fa460545deb470ef3139bff22b8585806fb85ffcc4da6ef"
+      }
+    },
+    "max_native_clients": 1,
+    "synthetic_auth": true,
+    "model_calls": 0,
+    "existing_login_read": false,
+    "production_modified": false,
+    "desktop_dot_ui_tested": false,
+    "scope": "native extracted packages and local fixture upstreams only",
+    "platform": "windows/amd64",
+    "node": {
+      "platform": "win32",
+      "arch": "x64",
+      "version": "v24.17.0"
+    },
+    "codex_version": "codex-cli 0.165.0",
+    "pi_version": "1.4.0",
+    "client_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    },
+    "packages": [
+      {
+        "kind": "standalone",
+        "platform": "windows/amd64",
+        "archive": "reflow_0.1.0-dev.4_windows_amd64.zip",
+        "sha256": "56e538c198b14367ba0b47373a4e299f8cd7c5c9264ddc850e596ee2edb18a29",
+        "binary_sha256": "6583a03a2e68dcbc3e3a7ca665adf7fd2185b5bb242ea01befa95dcd83465e02",
+        "binary_path": "reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.4/20261029-023628-733/reflow_0.1.0-dev.4_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      },
+      {
+        "kind": "codex-plugin",
+        "platform": "windows/amd64",
+        "archive": "reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+        "sha256": "f2d1f21c2cf573f4a9d21583942130727739be9d4c317b6dd3ab5915a3fb5806",
+        "binary_sha256": "6583a03a2e68dcbc3e3a7ca665adf7fd2185b5bb242ea01befa95dcd83465e02",
+        "binary_path": "plugins/reflow/bin/reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.4/20261029-023628-733/reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      }
+    ],
+    "client_binaries_unchanged": true,
+    "isolated_profile_removed": true
+  },
+  "dependency_install": {
+    "exit_code": 0,
+    "profile_removed": true,
+    "lock_sha256": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+    "tracked_lock_matches": true,
+    "lifecycle_scripts_enabled": false,
+    "model_calls": 0
+  },
+  "failure_gate_checks": {
+    "status": "pass",
+    "classifier_cases": {
+      "complete_fixture_suite": "pass",
+      "skipped_native_tests": "fail",
+      "missing_plugin_test": "fail",
+      "nonzero_exit": "fail",
+      "failed_package_with_zero_exit": "fail",
+      "missing_package_completion": "fail",
+      "skipped_child_under_passed_parent": "fail"
+    },
+    "model_calls": 0,
+    "platform_flags": {
+      "conflict_rejected": true,
+      "build_outputs_unchanged": true
+    },
+    "missing_dependency": {
+      "exit_code": 1,
+      "status": "fail",
+      "error_type": "FileNotFoundError",
+      "checks_started": false
+    },
+    "archive_gate_cases": {
+      "valid": "accepted",
+      "missing_execute_bits": "rejected",
+      "symlink": "rejected",
+      "parent_escape": "rejected",
+      "binary_hash_mismatch": "rejected"
+    },
+    "integration_vet": "pass",
+    "isolated_static_profile_removed": true
+  },
+  "yaml_syntax": "parsed successfully with yaml 2.9.0; remote Actions execution not performed",
+  "evidence_files": [
+    {
+      "path": "build/native-client-ci/20261028-183627-682609/summary.json",
+      "sha256": "09bd2ad0a97b6739292f485ff523a264019b1c293ab1a8cd39be0d8ab3dfe623",
+      "bytes": 6566
+    },
+    {
+      "path": "build/native-client-ci/20261028-183627-682609/native.jsonl",
+      "sha256": "1dfeb6a2dfae5f9d667b18e57e8f21f5d358ff1f9fa74c2ca80a8f1ac68eee45",
+      "bytes": 12226
+    },
+    {
+      "path": "build/native-client-ci/20261028-183627-682609/race.jsonl",
+      "sha256": "e1f3ace3a1cece12d988e782bcbd76d5c2d2ab4a9bd5300af321030ca9fb23a6",
+      "bytes": 12214
+    },
+    {
+      "path": "build/native-client-ci/20261028-183627-682609/write.jsonl",
+      "sha256": "21f454c232713a4b3fa460545deb470ef3139bff22b8585806fb85ffcc4da6ef",
+      "bytes": 7247
+    },
+    {
+      "path": "build/native-client-ci/20261028-183627-682609/build.log",
+      "sha256": "a1d0478d3d7ade7f473a61bd352b8abf45221b5ddf5188d3c01d10a010e58045",
+      "bytes": 71
+    },
+    {
+      "path": "build/native-client-ci-gates-20261029.json",
+      "sha256": "aeeb9481fa7c190f53259b2c1d7d4da9eaa7bb4f848631c97ab8f09c77098041",
+      "bytes": 877
+    },
+    {
+      "path": "build/native-client-ci-install-20261029/summary.json",
+      "sha256": "43d913e0e009e6132301242ef9fbf6cffbdb70c1d88fa2cf167b0f9420911482",
+      "bytes": 231
+    }
+  ],
+  "limits": [
+    "Native client integration groups and write probes only; not a new full-project suite",
+    "Counts include Go parent tests and subtests",
+    "No real account, token refresh, Desktop/dot UI, binary release, or model quality conclusion",
+    "Original real-call proposal and its once-only guard remain unused"
+  ],
+  "existing_live_totals_unchanged": {
+    "sessions": 7,
+    "observed_inference_requests": 40,
+    "continuations": 1
+  }
+}

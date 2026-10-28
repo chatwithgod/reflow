@@ -1,0 +1,10 @@
+{
+  "name": "reflow-native-client-fixtures",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pinned clients for local synthetic protocol checks; no real account required",
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "1.4.0",
+    "@openai/codex": "0.165.0"
+  }
+}

@@ -40,7 +40,7 @@ func TestPiOAuthOffline(t *testing.T) {
 			base := t.TempDir()
 			agent := filepath.Join(base, "agent")
 			work := filepath.Join(base, "workspace")
-			for _, dir := range []string{agent, work} {
+			for _, dir := range []string{agent, work, filepath.Join(base, "temp")} {
 				if err := os.MkdirAll(dir, 0700); err != nil {
 					t.Fatal(err)
 				}
@@ -178,7 +178,7 @@ func TestPiOAuthOffline(t *testing.T) {
 					cmd.Env = append(cmd.Env, key+"="+value)
 				}
 			}
-			cmd.Env = append(cmd.Env, "PI_CODING_AGENT_DIR="+agent, "PI_OFFLINE=1", "PI_TELEMETRY=0", "REFLOW_URL="+url, "USERPROFILE="+base, "NO_PROXY=127.0.0.1,localhost")
+			cmd.Env = append(cmd.Env, "PI_CODING_AGENT_DIR="+agent, "PI_OFFLINE=1", "PI_TELEMETRY=0", "REFLOW_URL="+url, "HOME="+base, "USERPROFILE="+base, "TMPDIR="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost")
 			out, err := cmd.CombinedOutput()
 			mu.Lock()
 			defer mu.Unlock()

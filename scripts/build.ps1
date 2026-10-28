@@ -1,9 +1,19 @@
-param([string]$GoExe = 'go', [string]$PythonExe = 'python', [switch]$AllPlatforms, [switch]$WithCodexPlugin)
+param([string]$GoExe = 'go', [string]$PythonExe = 'python', [switch]$AllPlatforms, [switch]$WithCodexPlugin, [switch]$CurrentPlatform)
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
 Set-Location -LiteralPath $projectRoot
 $version = (Get-Content -LiteralPath (Join-Path $projectRoot 'VERSION') -Raw).Trim()
 if ($version -notmatch '^\d+\.\d+\.\d+[-.a-zA-Z0-9]*$') { throw 'Invalid version' }
+if ($CurrentPlatform -and $AllPlatforms) { throw 'Choose CurrentPlatform or AllPlatforms, not both' }
+$platforms = @('windows/amd64')
+if ($AllPlatforms) { $platforms += @('linux/amd64','linux/arm64','darwin/amd64','darwin/arm64') }
+if ($CurrentPlatform) {
+    $hostTarget = @(& $GoExe env GOHOSTOS GOHOSTARCH)
+    if ($LASTEXITCODE -ne 0 -or $hostTarget.Count -ne 2) { throw 'Cannot determine native Go platform' }
+    $nativePlatform = $hostTarget -join '/'
+    if ($nativePlatform -notmatch '^(windows|linux|darwin)/(amd64|arm64)$') { throw "Unsupported native platform: $nativePlatform" }
+    $platforms = @($nativePlatform)
+}
 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss-fff'
 $outputDir = Join-Path $projectRoot "dist/$version/$stamp"
 if (Test-Path -LiteralPath $outputDir) { throw 'Build directory already exists; refusing to overwrite' }
@@ -11,8 +21,6 @@ New-Item -ItemType Directory -Path $outputDir | Out-Null
 $env:GOPATH = Join-Path $projectRoot '.tools/gopath'
 $env:GOCACHE = Join-Path $projectRoot '.tools/gocache'
 $env:GOTOOLCHAIN = 'local'; $env:CGO_ENABLED = '0'
-$platforms = @('windows/amd64')
-if ($AllPlatforms) { $platforms += @('linux/amd64','linux/arm64','darwin/amd64','darwin/arm64') }
 $manifest = @()
 foreach ($platform in $platforms) {
     $parts = $platform.Split('/')

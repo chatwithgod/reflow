@@ -331,7 +331,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	}
 	args := []string{"-a", "never", "exec", "--ignore-user-config", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-C", work, "-m", "gpt-6.1-sol",
 		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + proxyURL + "\"", "-c", "chatgpt_base_url=\"" + chatgptURL + "\"",
-		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "model_reasoning_effort=\"low\"",
+		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false", "-c", "model_reasoning_effort=\"low\"",
 		"-c", "mcp_servers.reflow_fixture.url=\"" + mcp.URL + "\"",
 		"-c", "mcp_servers.reflow_fixture.tools.probe.approval_mode=\"approve\""}
 	if nativeWrite {
@@ -353,7 +353,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 			cmd.Env = append(cmd.Env, name+"="+value)
 		}
 	}
-	cmd.Env = append(cmd.Env, "CODEX_HOME="+home, "HOME="+base, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=warn")
+	cmd.Env = append(cmd.Env, "CODEX_HOME="+home, "HOME="+base, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "TMPDIR="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=warn")
 	if caPath != "" {
 		cmd.Env = append(cmd.Env, "CODEX_CA_CERTIFICATE="+caPath)
 	}
