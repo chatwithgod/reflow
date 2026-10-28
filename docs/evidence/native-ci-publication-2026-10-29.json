@@ -1,0 +1,520 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "repository": "https://github.com/chatwithgod/reflow",
+  "published_commit": "066973b1ead1bceff8bae00ccb38b58232e0ff8c",
+  "published_commits": [
+    "b2bddbdbb49b1bd88953282c4a3112c0176db601",
+    "066973b1ead1bceff8bae00ccb38b58232e0ff8c"
+  ],
+  "remote_main_verified": "066973b1ead1bceff8bae00ccb38b58232e0ff8c",
+  "offline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40749977201",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "offline (windows-latest)",
+        "normal": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "normal": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "normal": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 69,
+          "skip": 4,
+          "fail": 0
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      }
+    ]
+  },
+  "native_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40749977296",
+    "conclusion": "failure",
+    "platforms": {
+      "ubuntu": {
+        "status": "fail",
+        "platform": "linux/amd64",
+        "node": {
+          "platform": "linux",
+          "arch": "x64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "de272c453ea43357b335e8ae418de5d4fd0e84d9609cbcaf62c6e3c47bcf2526"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "567dec08b43ac3945aa99eeafe74a6901c722c322a61b282d1822696a548a221"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "package_passed": false,
+            "status": "fail",
+            "log_sha256": "6f0f514add1b5df189495ef9408ed36616dc4fcd8cb0a5de1646ca3100c89511"
+          }
+        },
+        "client_sha256": {
+          "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+          "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "linux/amd64",
+            "archive": "reflow_0.1.0-dev.4_linux_amd64.zip",
+            "sha256": "7d7829137b8a5a28ad16944987af28a7dd157dcef7c5dc7ccbb927e4773a68e6",
+            "binary_sha256": "f75a59d17817ddd72f964acf10dad704a10892745ea4d564eb7e8feba7340656",
+            "binary_path": "reflow",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-185838-781/reflow_0.1.0-dev.4_linux_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "linux/amd64",
+            "archive": "reflow_plugin_0.1.0-dev.4_linux_amd64.zip",
+            "sha256": "4cef9ab34666c932e579f4ca05d0248d9d78d4600091400906f482ee0022ecfd",
+            "binary_sha256": "f75a59d17817ddd72f964acf10dad704a10892745ea4d564eb7e8feba7340656",
+            "binary_path": "plugins/reflow/bin/reflow",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-185838-781/reflow_plugin_0.1.0-dev.4_linux_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "failure_cause": "not established; failure counts alone are insufficient"
+      },
+      "windows": {
+        "status": "fail",
+        "platform": "windows/amd64",
+        "node": {
+          "platform": "win32",
+          "arch": "x64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "a4138100b784cd5dc4a1c1092b88d79a23c190eba46be7bbc20a3f90a9491a39"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "60203353f67190b7469c41086529429efb80cdf3e43f6bdc870040db25c356d7"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "package_passed": false,
+            "status": "fail",
+            "log_sha256": "30d8e9b3c7529c4dff661e3e52e23a149cfb212c4e9e586ad5f50b0ae1d82ae6"
+          }
+        },
+        "client_sha256": {
+          "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+          "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "windows/amd64",
+            "archive": "reflow_0.1.0-dev.4_windows_amd64.zip",
+            "sha256": "e4608f649b045056498872cdd457ec76859e5b99003cf6e0c3ff8754fd4cabbb",
+            "binary_sha256": "4b934406dc417c8e2672e3fbbc93470c96056a2512d4103ca20a7e3aeade9719",
+            "binary_path": "reflow.exe",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-190121-813/reflow_0.1.0-dev.4_windows_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "windows/amd64",
+            "archive": "reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+            "sha256": "d14c13bbfd42763e5a7b6ca9250196454939835ef109649144d60855fafd9f9d",
+            "binary_sha256": "4b934406dc417c8e2672e3fbbc93470c96056a2512d4103ca20a7e3aeade9719",
+            "binary_path": "plugins/reflow/bin/reflow.exe",
+            "runtime_tested": false,
+            "source_archive": "dist/0.1.0-dev.4/20261028-190121-813/reflow_plugin_0.1.0-dev.4_windows_amd64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "failure_cause": "not established; failure counts alone are insufficient"
+      },
+      "macos": {
+        "status": "pass",
+        "platform": "darwin/arm64",
+        "node": {
+          "platform": "darwin",
+          "arch": "arm64",
+          "version": "v24.17.0"
+        },
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "0b5d63bbca6b580f151141bdd557cff89f62551165fab3ce930f157376e59455"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "4d30d86aac1bb44d39ce57d5b20aea2a7f0a5dc165b6888d2e0b8dfa116cad33"
+          },
+          "write": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": true,
+            "status": "pass",
+            "log_sha256": "7a43293cf9834aaef03031905cd4304c7655f4d6c8ceced99aa1b0eb3f017e56"
+          }
+        },
+        "client_sha256": {
+          "codex": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+          "code_mode_host": "e723d01c65aba4b81451d486d57318232b2738889de67c35051734be917d96ba"
+        },
+        "packages": [
+          {
+            "kind": "standalone",
+            "platform": "darwin/arm64",
+            "archive": "reflow_0.1.0-dev.4_darwin_arm64.zip",
+            "sha256": "6bf3a9bfb8251fbd9c1637287bf96aa2fb17ef0aa630f1eabfc2acb6d0ce2714",
+            "binary_sha256": "ff112fa0e0139465e74ce6c9489ec34110b126035bc41e6a96afb8d5bb955b36",
+            "binary_path": "reflow",
+            "runtime_tested": true,
+            "source_archive": "dist/0.1.0-dev.4/20261028-190426-680/reflow_0.1.0-dev.4_darwin_arm64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          },
+          {
+            "kind": "codex-plugin",
+            "platform": "darwin/arm64",
+            "archive": "reflow_plugin_0.1.0-dev.4_darwin_arm64.zip",
+            "sha256": "74d772746c085a6babb301b97f864c5c746ac4db083179b0caa8e490a1c29dcc",
+            "binary_sha256": "ff112fa0e0139465e74ce6c9489ec34110b126035bc41e6a96afb8d5bb955b36",
+            "binary_path": "plugins/reflow/bin/reflow",
+            "runtime_tested": true,
+            "source_archive": "dist/0.1.0-dev.4/20261028-190426-680/reflow_plugin_0.1.0-dev.4_darwin_arm64.zip",
+            "archive_hash_verified": true,
+            "extracted_binary_verified": true
+          }
+        ],
+        "client_binaries_unchanged": true,
+        "isolated_profile_removed": true,
+        "failure_cause": null
+      }
+    },
+    "execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_utc": "2026-10-28T18:58:03Z",
+        "completed_utc": "2026-10-28T19:00:13Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_utc": "2026-10-28T19:00:19Z",
+        "completed_utc": "2026-10-28T19:03:45Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_utc": "2026-10-28T19:03:48Z",
+        "completed_utc": "2026-10-28T19:06:30Z",
+        "conclusion": "success"
+      }
+    ],
+    "observed_max_parallel_jobs": 1
+  },
+  "evidence_files": [
+    {
+      "path": "build/native-client-ci-publication-20261029/native-run.json",
+      "sha256": "34d8e0b36397126b7f92ed8d0804a46826553092f2fc3280f766ef9cea9b8787",
+      "bytes": 12652
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/native-run.log",
+      "sha256": "d57f119f9049d314e844459382ea439e346c36df38130f27e31838cfd0297582",
+      "bytes": 189288
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/offline-run.json",
+      "sha256": "5c2e7f4f5ff3c1709f2f4c862540f63567d1ec67b8af28eba3b9ae72daebcd1e",
+      "bytes": 9961
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/offline-run.log",
+      "sha256": "75aaecb49006a9556e1082dd3e8516294d01db44d1fab87d94de3fc2861d71fc",
+      "bytes": 707983
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/ubuntu/20261028-185837-025969/summary.json",
+      "sha256": "2c2e456cb0a9a69e09ded32eb7281ad2170d4a9c77c8e7b80db4b48e8246e71d",
+      "bytes": 6210
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/windows/20261028-190119-977703/summary.json",
+      "sha256": "724c847521053161ac584e1d4c4376e05af178183f716824f8f0bc56ea57adfb",
+      "bytes": 6378
+    },
+    {
+      "path": "build/native-client-ci-publication-20261029/macos/20261028-190425-417091/summary.json",
+      "sha256": "b34f0564b2bddfece40736a92ab256ed9e721aafdd25012b22217f1c8adfe610",
+      "bytes": 6397
+    }
+  ],
+  "limits": [
+    "Native CLI/app-server/Pi/plugin groups and race passed on all three CI platforms",
+    "All five workspace-write scenarios failed on Ubuntu and hosted Windows, including direct paths without Reflow",
+    "macOS arm64 passed the five write scenarios; local Windows success remains a separate observation",
+    "Original failure reports lack startup, tool and sandbox diagnostic classifications; root causes remain unverified",
+    "Failed summaries do not independently attest binary immutability or temporary profile cleanup",
+    "No real account, token refresh, Desktop/dot UI or quality-improvement acceptance"
+  ],
+  "new_live_sessions": 0,
+  "live_model_calls": 0,
+  "production_modified": false,
+  "binary_release_created": false,
+  "magpie_upstream_submitted": false,
+  "oss_application_submitted": false
+}

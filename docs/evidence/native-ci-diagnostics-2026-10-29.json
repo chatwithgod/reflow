@@ -1,0 +1,67 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "status": "local_diagnostic_change_not_pushed",
+  "source_base_commit": "066973b1ead1bceff8bae00ccb38b58232e0ff8c",
+  "script_sha256": "d1ed5cfb6b37f2bf18df08f1e1e33fbdc56802deaea07eb5d656d47e109c0306",
+  "verification": {
+    "status": "pass",
+    "diagnostic_cases": {
+      "startup": {
+        "status": "pass",
+        "client_error_kind": "exit_status",
+        "signals": {
+          "permission_profile": 1,
+          "configuration_error": 1,
+          "workspace_file_not_updated": 1
+        },
+        "no_body_or_secret_retained": true
+      },
+      "tool_write": {
+        "status": "pass",
+        "client_error_kind": "none",
+        "signals": {
+          "permission_denied": 1,
+          "operation_not_permitted": 1,
+          "namespace_setup": 1,
+          "bubblewrap": 1,
+          "workspace_file_not_updated": 1
+        },
+        "no_body_or_secret_retained": true
+      },
+      "deadline": {
+        "status": "pass",
+        "client_error_kind": "deadline",
+        "signals": {
+          "process_launch_error": 1,
+          "code_mode_host": 1,
+          "workspace_file_not_updated": 1
+        },
+        "no_body_or_secret_retained": true
+      },
+      "unknown": {
+        "status": "pass",
+        "client_error_kind": "other",
+        "signals": {
+          "workspace_file_not_updated": 1
+        },
+        "no_body_or_secret_retained": true
+      }
+    },
+    "passing_warning_not_misclassified": true,
+    "prior_native_race_and_write_results_preserved": true,
+    "python_313_syntax": "pass",
+    "model_calls": 0
+  },
+  "validation_file": {
+    "path": "build/native-client-ci-diagnostics-20261029/validation.json",
+    "sha256": "ca2cea64ada03050c157d28ac5b80301afdd0c5a3e3939603338fc8b9823c49c"
+  },
+  "scope": "Add fixed diagnostic labels and numeric/boolean observations to failed-test summaries only",
+  "failure_cause_established": false,
+  "test_gates_relaxed": false,
+  "raw_error_or_payload_text_exported": false,
+  "new_native_client_executions": 0,
+  "model_calls": 0,
+  "production_modified": false
+}

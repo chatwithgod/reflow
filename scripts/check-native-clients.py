@@ -6,6 +6,7 @@ import hashlib
 import json
 import os
 from pathlib import Path, PurePosixPath
+import re
 import shutil
 import stat
 import subprocess
@@ -24,6 +25,28 @@ TARGETS = {
     ('darwin', 'x64'): ('darwin/amd64', 'x86_64-apple-darwin'),
     ('darwin', 'arm64'): ('darwin/arm64', 'aarch64-apple-darwin'),
 }
+
+# Fixed labels only. Matching a log line is an observation, not a root-cause
+# diagnosis. Never copy CLI errors, tool payloads, credentials, paths or text.
+FAILURE_SIGNALS = {
+    'permission_denied': ('permission denied', 'access is denied', 'access denied', 'eacces'),
+    'operation_not_permitted': ('operation not permitted', 'eperm'),
+    'namespace_setup': ('unshare', 'user namespace', 'creating new namespace'),
+    'bubblewrap': ('bwrap:', 'bubblewrap'),
+    'windows_mxc': ('windows_mxc', 'mxc'),
+    'hypervisor': ('hyper-v', 'hypervisor', 'virtualization'),
+    'macos_sandbox': ('sandbox-exec', 'seatbelt'),
+    'systemroot': ('systemroot',),
+    'permission_profile': ('permission profile', 'permission_profile', 'default_permissions'),
+    'configuration_error': ('error loading config', 'failed to load config', 'invalid value', 'unrecognized subcommand'),
+    'process_launch_error': ('failed to spawn', 'failed to start', 'failed to launch'),
+    'code_mode_host': ('code-mode-host', 'code_mode_host'),
+    'workspace_file_not_updated': ('native tool did not update its permitted workspace file',),
+    'discarded_write_observed': ('discarded native patch was executed',),
+}
+NATIVE_COUNTS = re.compile(
+    r'native CLI err=(.*?) calls=(\d+) WS=(\d+) HTTP=(\d+) auth=(true|false) '
+    r'tool=(true|false) chosen=(\d+) discarded=(\d+)')
 
 
 def require(condition, message):
@@ -67,6 +90,8 @@ def isolated_env(profile, compiler=''):
 def go_result(log, returncode, required):
     counts = Counter()
     passed = set()
+    failed = set()
+    observations = {}
     package_passed = False
     bad = False
     for line in log.read_text(encoding='utf-8', errors='replace').splitlines():
@@ -75,8 +100,29 @@ def go_result(log, returncode, required):
         except json.JSONDecodeError:
             continue
         action, test = event.get('Action'), event.get('Test')
+        if action == 'output' and test and isinstance(event.get('Output'), str):
+            output = event['Output']
+            match = NATIVE_COUNTS.search(output)
+            signals = [name for name, markers in FAILURE_SIGNALS.items()
+                       if any(marker in output.lower() for marker in markers)]
+            if match or signals:
+                observation = observations.setdefault(test, {'test': test, 'matching_log_lines': {}})
+                for name in signals:
+                    observation['matching_log_lines'][name] = observation['matching_log_lines'].get(name, 0) + 1
+                if match:
+                    error, requests, ws, http, auth, tool, chosen, discarded = match.groups()
+                    exit_match = re.fullmatch(r'exit status (\d+)', error)
+                    kind = ('none' if error == '<nil>' else 'exit_status' if exit_match else
+                            'deadline' if 'deadline exceeded' in error else 'other')
+                    observation.update(client_error_kind=kind,
+                                       client_exit_code=int(exit_match[1]) if exit_match else None,
+                                       upstream_requests=int(requests), websocket_requests=int(ws), http_requests=int(http),
+                                       auth_header_seen=auth == 'true', tool_result_seen=tool == 'true',
+                                       retained_tool_executions=int(chosen), discarded_tool_executions=int(discarded))
         if action == 'fail' or (test and action == 'skip'):
             bad = True
+        if action == 'fail' and test:
+            failed.add(test)
         if test and action in ('pass', 'skip', 'fail'):
             counts[action] += 1
         if action == 'pass':
@@ -86,7 +132,8 @@ def go_result(log, returncode, required):
                 package_passed = True
     result = {'exit_code': returncode, 'tests': {key: counts[key] for key in ('pass', 'skip', 'fail')},
               'required_tests': list(required), 'missing_tests': sorted(set(required) - passed),
-              'passed_names': sorted(passed), 'package_passed': package_passed}
+              'passed_names': sorted(passed), 'failed_names': sorted(failed), 'package_passed': package_passed,
+              'failure_observations': [observations[test] for test in sorted(observations) if test in failed]}
     result['status'] = 'pass' if returncode == 0 and not bad and package_passed and not result['missing_tests'] else 'fail'
     return result
 

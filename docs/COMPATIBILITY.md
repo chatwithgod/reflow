@@ -4,17 +4,17 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 
 | 接入方式 | 版本与范围 | 已验证行为 |
 | --- | --- | --- |
-| Codex CLI | 2026-10-29：官方 `0.165.0` 和应用附带的 `0.165.0-alpha.1.2` | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；五个原生写入场景通过。旧版失败记录保留 |
+| Codex CLI | 2026-10-29：官方 `0.165.0`；应用附带的 `0.165.0-alpha.1.2` 另在本机 Windows 验证 | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；写入结果依宿主环境而异，见下方 CI 记录。旧版失败记录保留 |
 | Codex app-server | 同上两版官方客户端；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的 `openai-codex` provider | 保留内置 OAuth 和模型目录，只改请求地址；SSE、WebSocket、工具执行与回传通过。新的 `openai` provider 未适配 |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过；可通过替代模块文件使用公开 Reflow 固定提交。补丁未提交上游 |
 
-Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在远程 CI 跳过。Linux/macOS 各架构的打包构件仍只有交叉编译记录，尚未逐一原生验收。见 [公开与 CI 范围](PUBLICATION-2026-10-28.md)。
+Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在当时的远程 CI 跳过。Linux/macOS 各架构的打包构件当时只有交叉编译记录，后续原生执行结果见下方。历史范围见 [公开与 CI 记录](PUBLICATION-2026-10-28.md)。
 
-2026-10-29 已准备 [原生客户端流水线](NATIVE-CI.md)：固定客户端依赖，按当前平台打包，并实际运行 ZIP 解压后的独立服务和插件。本机 Windows 的四组客户端普通/race 检查均为 10 通过、0 跳过，五个写文件场景通过。新流水线尚未推送，Linux/macOS runner 的结果仍待执行。
+2026-10-29，[原生客户端流水线](NATIVE-CI.md) 已公开并完成三平台执行：固定客户端依赖，按当前平台打包，并实际运行 ZIP 解压后的独立服务和插件。三个 runner 的四组客户端普通/race 检查均为 10 通过、0 跳过；macOS arm64 的五个写文件场景也通过。Ubuntu amd64 和托管 Windows 的五个写入场景全部失败，原因尚未确认；此前本机 Windows 的五场景成功记录单独保留。Linux arm64/macOS amd64 尚缺原生验证。
 
-2026-10-26 测得官方 `0.164.0` 和应用附带的 `0.164.0-alpha.11.1` 写入失败；本地加入上游修复后通过，见 [历史复现](NATIVE-WRITE-PROBE.md)。2026-10-29，上表两版未修改的官方客户端均通过无账号预检、五个写入场景和协议/插件 race 定向检查。这是新版本的离线行为证据，真实会话仍未完整验收。见 [新版本复测](NATIVE-CLIENT-2026-10-29.md)。
+2026-10-26 测得官方 `0.164.0` 和应用附带的 `0.164.0-alpha.11.1` 写入失败；本地加入上游修复后通过，见 [历史复现](NATIVE-WRITE-PROBE.md)。2026-10-29，上表两版未修改的官方客户端在本机 Windows 均通过无账号预检、五个写入场景和协议/插件 race 定向检查。这是本机新版本的离线行为证据，真实会话仍未完整验收。见 [新版本复测](NATIVE-CLIENT-2026-10-29.md)。
 
 独立代理还覆盖 HTTP/SSE、预热、取消、gzip/zstd 请求、compact 透传、多轮恢复与缓存隔离。上述协议回归主要使用模拟客户端/上游，不能推导为 Desktop/dot 已验收。详情见 [dev.4 验证记录](VERIFICATION-0.1.0-dev.4.md)。
 
