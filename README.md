@@ -10,7 +10,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.4`，已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口，尚未公开发布。最新源码回归为 79 个通过项、0 跳过，race、vet 和 fuzz 通过，包含打包程序与客户端联调；Codex 使用加入上游修复的隔离源码构件。详细范围见 [app-server 补充验证](docs/APP-SERVER-2026-10-27.md)、[dev.4 初始验证](docs/VERIFICATION-0.1.0-dev.4.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前开发版本为 `0.1.0-dev.4`，源码已在 [chatwithgod/reflow](https://github.com/chatwithgod/reflow) 公开，尚未发布二进制 Release。已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口。此前带客户端的 Windows 本地回归为 79 个通过项、0 跳过，Codex 使用加入上游修复的隔离源码构件。公开后的三平台离线 CI 均通过，各为 69 个通过项、4 个未配置客户端的测试跳过；race、vet、fuzz 和评测自检通过。范围见 [公开与 CI 记录](docs/PUBLICATION-2026-10-28.md)、[app-server 验证](docs/APP-SERVER-2026-10-27.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复会话及配置还原通过；这是后端协议验证，Desktop/dot 界面仍未验收。
@@ -88,11 +88,21 @@ reflow codex-config --action restore
 - **Pi CLI 1.4.0**：临时隔离环境配合合成 OAuth 凭证，跑通 SSE 与 WebSocket 双路径的续接流程。内置 `read` 工具读取合成文件，工具结果回传；被舍弃轮次的读操作没有执行。
 - **Codex CLI 0.164.0-alpha.11.1**：使用合成 ChatGPT 凭证，纯 WebSocket、无 HTTP 回退，实际执行一次本地只读 MCP 工具，并回传结果。此前 shell 工具测试有过断言误判，已修正并保留失败记录。
 
-Windows 构件已通过上述 CLI 验证；Linux/macOS 只做交叉编译，尚无原生运行证据。详细范围见 [dev.2 验证记录](docs/VERIFICATION-0.1.0-dev.2.md)，以及保留的 [dev.1 记录](docs/VERIFICATION-2026-10-26.md)。
+Windows 构件已通过上述 CLI 验证。Linux/macOS 现有源码离线 CI 的原生运行证据，但官方 Codex/Pi/插件联调和打包构件尚未在这些平台单独验收。最新范围见 [公开与 CI 记录](docs/PUBLICATION-2026-10-28.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
 
 这些测试只证明已覆盖场景的行为符合预期，不等同于真实线上账号的 OAuth 验收，也尚未验证真实 Token 自动刷新、Codex Desktop / dot、跨连接恢复的完整边界或实际模型输出质量。
 
 ## 开发与复现
+
+公开预览目前从源码构建，需要 Go 1.26：
+
+```sh
+git clone https://github.com/chatwithgod/reflow.git
+cd reflow
+go build ./cmd/reflow
+```
+
+Windows 生成 `reflow.exe`，其他系统生成 `reflow`。插件开发包可用下述构建脚本生成。
 
 需要 Go 1.26。核心及代理测试默认只调用回环模拟上游：
 

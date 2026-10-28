@@ -18,7 +18,7 @@ python scripts/check-evaluation.py --go /absolute/path/to/go
 
 Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失败、工作区外写入未被拦截时，在读取登录文件前停止。`python evaluations/run.py --preflight-only --codex /absolute/path/to/codex.exe` 可对指定客户端单独运行同一无账号检查；它不会进入模型试验。
 
-## CI 草稿
+## 公开 CI
 
 源码中的 `.github/workflows/offline.yml` 将上述入口接入 Ubuntu、Windows 和 macOS 的托管运行器矩阵，固定 Go 1.26.8、Python 3.13。三个 GitHub 官方 action 固定到已核对的 v7 提交：
 
@@ -26,8 +26,8 @@ Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失�
 - [setup-go](https://github.com/actions/setup-go)：`b7ad1dad31e06c5925ef5d2fc7ad053ef454303e`
 - [setup-python](https://github.com/actions/setup-python)：`6d4fd22b20465ccc0f7354476588e8df7c9ca0e0`
 
-仓库权限为只读 `contents`，不配置模型凭据，不包含发布步骤。工作流未提供客户端路径，因此会跳过 Codex CLI、Codex app-server、Pi 和原生插件四项测试。工作流文件此前已通过 actionlint 1.7.12，加入 app-server 后未改动；本地 Windows 执行了对应脚本，尚未推送或在 GitHub Actions 运行，不能作为 Linux/macOS 已运行的证据。
+仓库权限为只读 `contents`，不配置模型凭据，不包含发布步骤。工作流未提供客户端路径，因此会跳过 Codex CLI、Codex app-server、Pi 和原生插件四项测试。工作流文件此前已通过 actionlint 1.7.12；2026-10-28 已随公开源码实际运行。首次发现路径文字比较断言在 Windows/macOS 失败；改用目录身份比较后，三个平台均为 69 个通过项、4 个跳过项，race/vet/fuzz 和合成进程、评分器自检通过。见 [CI 与修复记录](PUBLICATION-2026-10-28.md)。
 
-首次本地离线脚本记为 78 个通过项、3 个客户端测试跳过，其中 20 个通过项来自 `dist` 中的适配器副本。现已添加模块边界排除生成目录，并重跑了完整客户端模拟验收。原始记录、计数更正和两种评测自检路径的证据见 [offline-ci-prep.json](evidence/offline-ci-prep.json)。CI 未执行的边界不因这次本地复查而改变。
+首次本地离线脚本记为 78 个通过项、3 个客户端测试跳过，其中 20 个通过项来自 `dist` 中的适配器副本。现已添加模块边界排除生成目录，并重跑了完整客户端模拟验收。原始记录、计数更正和两种评测自检路径的证据见 [offline-ci-prep.json](evidence/offline-ci-prep.json)。该文件是公开 CI 运行之前的历史记录。
 
 Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--compiler` 指定 C 编译器；仍保持临时用户目录和固定 Go 缓存。该入口已用于 Windows 夹具和 dev.4 桥接的 race 检查，完整命令及未通过项见 [Magpie 夹具记录](../adapters/magpie/WINDOWS-FIXTURES.md)。

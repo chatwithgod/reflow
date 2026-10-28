@@ -10,7 +10,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过。补丁未提交上游 |
 
-Windows amd64 已原生运行。Linux/macOS 的 amd64、arm64 目前仅交叉编译通过，尚未原生运行验收。
+Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在远程 CI 跳过。Linux/macOS 各架构的打包构件仍只有交叉编译记录，尚未逐一原生验收。见 [公开与 CI 范围](PUBLICATION-2026-10-28.md)。
 
 已测两版官方 Windows CLI 的 `apply_patch` 写入探针失败，原因是文件系统 helper 缺少 `SYSTEMROOT`。加入上游修复、补齐 Code Mode 宿主的本地 `0.164.0` 构件已通过五个写入场景及原生协议、插件定向回归。这是隔离源码构件的离线结果；官方已测版本仍保留失败记录，真实会话尚未完整验收。见 [复现与证据](NATIVE-WRITE-PROBE.md)。
 
@@ -28,7 +28,7 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 尚未完成
 
-真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/macOS 原生运行、生产接入和公共发布尚未验收。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/macOS 官方客户端与打包构件验收、生产接入和二进制发布尚未完成。源码已公开。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
 
 2026-10-26 补充：原生 ChatGPT 登录已完成真实推理请求和工作区代码修改。开启组观察到一次续接，但会话超时，尚未完成“续接、后续工具、正常结束”的整体验收。首次实测及其限制见 [真实测试记录](LIVE-SMOKE-2026-10-26.md)。
 

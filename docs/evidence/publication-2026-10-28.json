@@ -1,0 +1,188 @@
+{
+  "date_local": "2026-10-28",
+  "timezone": "Asia/Shanghai",
+  "repository": {
+    "created_at": "2026-10-28T11:12:07Z",
+    "default_branch": "main",
+    "full_name": "chatwithgod/reflow",
+    "html_url": "https://github.com/chatwithgod/reflow",
+    "private": false
+  },
+  "initial_publication_commit": "d5fea7d5d74400504e801ca00be9241b7b816871",
+  "initial_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40678141661",
+    "conclusion": "failure",
+    "jobs": [
+      {
+        "name": "offline (windows-latest)",
+        "conclusion": "failure"
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "conclusion": "success"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "conclusion": "failure"
+      }
+    ]
+  },
+  "fix_commit": "23eb3bef11f2cb5951599d08ca6ecd76a946619d",
+  "fixed_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40679721072",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "offline (ubuntu-latest)",
+        "conclusion": "success",
+        "normal_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "race_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (windows-latest)",
+        "conclusion": "success",
+        "normal_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "race_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "conclusion": "success",
+        "normal_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "race_test_entries": {
+          "passed": 69,
+          "skipped": [
+            "TestCodexAppServerOffline",
+            "TestCodexNativeLoginOffline",
+            "TestPiOAuthOffline",
+            "TestCodexPluginInstallAndStdioOffline"
+          ],
+          "failed": []
+        },
+        "vet": "pass",
+        "decoder_fuzz": "pass",
+        "synthetic_evaluation_process_and_grader": "pass"
+      }
+    ]
+  },
+  "failure": {
+    "test": "TestPluginHomeUsesOwningProfileAndRejectsUnknownLayout",
+    "cause": "raw path equality after symlink or Windows short-name resolution",
+    "fix": "compare directory identity with os.Stat and os.SameFile",
+    "runtime_source_changed": false,
+    "local_short_path_before": "fail",
+    "local_short_path_after": "pass"
+  },
+  "local_validation": {
+    "test_entries_passed": 69,
+    "client_tests_skipped": 4,
+    "race": "pass",
+    "vet": "pass",
+    "decoder_fuzz": "pass",
+    "evaluation_process_checks": 10
+  },
+  "sources": [
+    {
+      "path": "build/publication/20261028-first-ci/run.json",
+      "sha256": "476fd268364162311c211522e892058cd24166b863c63d81df531aa3f80ffd30"
+    },
+    {
+      "path": "build/publication/20261028-first-ci/run.log",
+      "sha256": "88807788056f68905519ca103488185ec0fd2df819cdb91e098f226037971996"
+    },
+    {
+      "path": "build/publication/20261028-fixed-ci/run.json",
+      "sha256": "7f8dcb83a6cffd5f0c895ab5f27d07c6b265dcb15208326e75e99a2e6867db3b"
+    },
+    {
+      "path": "build/publication/20261028-fixed-ci/run.log",
+      "sha256": "7fd0457dfc4e31ce4b052d118d69ec0b83a68beb341d66a1c6bcda05fd360a6b"
+    },
+    {
+      "path": "build/publication/20261028-fixed-ci/repository.json",
+      "sha256": "8bcd999a2853c94e24953deaef00f2f8551adccab0d4180460c435864939fce3"
+    },
+    {
+      "path": "build/publication/20261028-first-ci/path-alias-before.log",
+      "sha256": "327b1b116602b40aeaf5234b382f910110d4c14af38f6d73354e8109c459b2d8"
+    },
+    {
+      "path": "build/publication/20261028-first-ci/path-alias-after.log",
+      "sha256": "800a2d6fa0ef25f8ceecc8cbe5fee98e25549b96e6a43b085ec4333bfdd995f6"
+    },
+    {
+      "path": "build/verification/20261028-192002-409/summary.json",
+      "sha256": "d2593c0c255fe0f125eb833da917359b3da8511c20830def7289ae517e8e7652"
+    },
+    {
+      "path": "build/evaluation-process/20261028-112017-956148/summary.json",
+      "sha256": "fb45a718c9553c69398b03da0647c8c533fbdaefa144c18dd4518fffbb338cc0"
+    }
+  ],
+  "scope": {
+    "public_source_and_offline_ci": true,
+    "new_live_model_calls": 0,
+    "production_modified": false,
+    "binary_release_created": false,
+    "plugin_store_submission": false,
+    "upstream_pr_submission": false,
+    "oss_application_submitted": false
+  },
+  "remaining_acceptance": [
+    "real continuation then successful tool and normal completion",
+    "Desktop/dot UI",
+    "real token refresh",
+    "Linux/macOS native Codex/Pi/plugin integration",
+    "released-package native acceptance outside Windows"
+  ]
+}
