@@ -3,11 +3,13 @@ import argparse
 from collections import Counter
 from datetime import datetime, timezone
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path, PurePosixPath
 import re
 import shutil
+import signal
 import stat
 import subprocess
 import sys
@@ -43,6 +45,8 @@ FAILURE_SIGNALS = {
     'code_mode_host': ('code-mode-host', 'code_mode_host'),
     'workspace_file_not_updated': ('native tool did not update its permitted workspace file',),
     'discarded_write_observed': ('discarded native patch was executed',),
+    'mxc_unavailable': ('native mxc is unavailable', 'mxc is unavailable'),
+    'custom_argv0': ('custom argv0',),
 }
 NATIVE_COUNTS = re.compile(
     r'native CLI err=(.*?) calls=(\d+) WS=(\d+) HTTP=(\d+) auth=(true|false) '
@@ -52,6 +56,9 @@ TOOL_SIGNAL_NAMES = set(FAILURE_SIGNALS) | {
     'filesystem_error', 'missing_file_or_executable', 'unsupported_operation',
     'approval_required', 'tool_unavailable', 'invalid_tool_arguments',
 }
+HOST_SIGNALS = {**FAILURE_SIGNALS, 'unsupported_operation': ('not supported', 'unsupported', 'not implemented'),
+                'apparmor': ('apparmor',), 'mount_operation': ('mount', 'pivot_root'),
+                'uid_gid_mapping': ('uid map', 'gid map', 'uid_map', 'gid_map')}
 
 
 def tool_observation(output):
@@ -107,6 +114,113 @@ def isolated_env(profile, compiler=''):
     if compiler:
         env['CC'] = command_path(compiler)
     return env
+
+
+def probe_spawn_options():
+    return {'creationflags': subprocess.CREATE_NEW_PROCESS_GROUP} if os.name == 'nt' else {'start_new_session': True}
+
+
+def stop_probe_process(process):
+    if process is None or process.poll() is not None:
+        return
+    if os.name == 'nt':
+        subprocess.run(['taskkill', '/PID', str(process.pid), '/T', '/F'],
+                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=10)
+    else:
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    try:
+        process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=5)
+
+
+def command_observation(command, env, cwd, timeout=20):
+    """Execute a fixed no-account control; export no stdout/stderr or paths."""
+    process = None
+    timed_out = False
+    stdout = stderr = b''
+    try:
+        process = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, **probe_spawn_options())
+        try:
+            stdout, stderr = process.communicate(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            timed_out = True
+            stop_probe_process(process)
+            stdout, stderr = process.communicate(timeout=5)
+        text = (stdout + stderr).decode('utf-8', errors='replace').lower()
+        return {'status': 'pass' if process.returncode == 0 and not timed_out else 'fail',
+                'exit_code': process.returncode, 'timed_out': timed_out,
+                'stdout_bytes': len(stdout), 'stderr_bytes': len(stderr),
+                'matching_output': {name: 1 for name, markers in HOST_SIGNALS.items()
+                                    if any(marker in text for marker in markers)}}
+    except OSError as error:
+        return {'status': 'start_failed', 'error_type': type(error).__name__, 'errno': error.errno,
+                'exit_code': None, 'timed_out': False, 'matching_output': {}}
+    finally:
+        stop_probe_process(process)
+        if process is not None:
+            for stream in (process.stdout, process.stderr):
+                if stream is not None:
+                    stream.close()
+
+
+def host_diagnostics(codex, profile, env):
+    """Observe OS capabilities and an unchanged native sandbox, without setup."""
+    work = profile / 'native-host-probe'
+    work.mkdir()
+    record = {'model_calls': 0, 'existing_login_read': False, 'host_configuration_modified': False,
+              'purpose': 'diagnostic context only; original write-test gates remain mandatory',
+              'shells_available': {name: shutil.which(name, path=env.get('PATH')) is not None
+                                   for name in ('bash', 'sh', 'cmd', 'pwsh', 'powershell')}}
+    if sys.platform == 'win32':
+        version = sys.getwindowsversion()
+        record['windows_version'] = {key: getattr(version, key) for key in ('major', 'minor', 'build', 'product_type')}
+    elif sys.platform == 'linux':
+        record['uid_is_root'] = os.geteuid() == 0
+        record['kernel_release'] = os.uname().release
+        record['kernel_settings'] = {}
+        for name in ('kernel/apparmor_restrict_unprivileged_userns', 'kernel/unprivileged_userns_clone', 'user/max_user_namespaces'):
+            try:
+                record['kernel_settings'][name] = int((Path('/proc/sys') / name).read_text().strip())
+            except (OSError, ValueError):
+                record['kernel_settings'][name] = None
+        try:
+            record['parent_apparmor_unconfined'] = Path('/proc/self/attr/current').read_text().strip() == 'unconfined'
+        except OSError:
+            record['parent_apparmor_unconfined'] = None
+        unshare, true = shutil.which('unshare', path=env.get('PATH')), shutil.which('true', path=env.get('PATH'))
+        record['namespace_controls'] = {}
+        if unshare and true:
+            for name, options in [('user', []), ('user_mount', ['--mount']), ('user_network', ['--net'])]:
+                record['namespace_controls'][name] = command_observation(
+                    [unshare, '--user', '--map-root-user', *options, true], env, work, timeout=10)
+        else:
+            record['namespace_control_tools_available'] = False
+    command = [str(codex), '-c', 'cli_auth_credentials_store="file"']
+    if os.name == 'nt':
+        command += ['-c', 'windows.sandbox="mxc"']
+    command += ['sandbox', '--include-managed-config', '--permission-profile', ':workspace', '-C', str(work), '--']
+    command += (['cmd.exe', '/d', '/c', 'echo REFLOW_NATIVE_HOST_OK>host-probe.txt'] if os.name == 'nt' else
+                ['/bin/sh', '-c', "printf 'REFLOW_NATIVE_HOST_OK\\n' > host-probe.txt"])
+    result = command_observation(command, env, work)
+    marker = work / 'host-probe.txt'
+    result['workspace_marker_verified'] = marker.is_file() and marker.read_bytes().strip() == b'REFLOW_NATIVE_HOST_OK'
+    if not result['workspace_marker_verified']:
+        result['status'] = 'fail'
+    record['native_sandbox_command'] = result
+    if os.name == 'nt':
+        # Reuse the existing no-account filesystem/boundary probe unchanged.
+        spec = importlib.util.spec_from_file_location('native_host_preflight', ROOT / 'evaluations/client_preflight.py')
+        preflight = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(preflight)
+        record['native_filesystem_rpc'] = preflight.filesystem_probe(
+            codex, profile, work, env, probe_spawn_options, stop_probe_process)
+    return record
 
 
 def go_result(log, returncode, required):
@@ -227,6 +341,7 @@ def run_checks(args, report, summary):
         require(version == 'codex-cli ' + dependencies['@openai/codex'], 'Native Codex version does not match the pin')
         summary.update(platform=target, node=identity, codex_version=version,
                        pi_version=dependencies['@earendil-works/pi-coding-agent'], client_sha256=hashes_before)
+        summary['host_diagnostics'] = host_diagnostics(codex, profile, env)
 
         dist = ROOT / 'dist' / (ROOT / 'VERSION').read_text().strip()
         before = set(dist.glob('*/manifest.json'))
@@ -297,7 +412,8 @@ def main():
     sources = ['scripts/check-native-clients.py', 'scripts/build.ps1', 'scripts/archive.py',
                'ci/native-clients/package.json', 'ci/native-clients/package-lock.json',
                '.github/workflows/native-clients.yml', 'adapters/pi/reflow.ts',
-               'plugins/codex/plugin.json', 'plugins/codex/mcp.json', 'go.mod', 'go.sum', 'VERSION']
+               'plugins/codex/plugin.json', 'plugins/codex/mcp.json', 'evaluations/client_preflight.py',
+               'go.mod', 'go.sum', 'VERSION']
     sources += [path.relative_to(ROOT).as_posix() for path in sorted((ROOT / 'integration').glob('*.go'))]
     summary = {'status': 'running', 'created_utc': datetime.now(timezone.utc).isoformat(),
                'source_commit': subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),

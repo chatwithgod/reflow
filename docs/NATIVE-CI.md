@@ -28,7 +28,25 @@ CLI 阶段的摘要采集已在 `3a63ae8` 获批推送后执行，准备时的 [
 
 已在本地测试夹具增加工具结果分类：只在内存中匹配固定标记，输出数量及分类计数，再由摘要采集器按白名单接收。它不改变工具调用、权限或原有通过断言。为了验证采集点确实有效，用 Go overlay 将一个测试补丁的目标临时改成不存在的文件：原写入断言如期失败，摘要捕获到文件系统错误标记，测试用的正文、令牌和路径标记没有进入结果。验证脚本没有保存原始故障输出，只保留散列和分类结果。这个故障是诊断能力的对照，不是 CI 故障复现。
 
-新分类单测普通/race 各通过 1 项，vet 通过；本机 Windows 正向四组客户端普通/race 仍各通过 10 项，五个写入场景通过。源码与数字证据见 [工具结果诊断验证](evidence/native-tool-diagnostics-2026-10-29.json)。这份后续采集改动仍处于本地准备阶段，推送和新一轮 CI 需要对应授权。
+新分类单测普通/race 各通过 1 项，vet 通过；本机 Windows 正向四组客户端普通/race 仍各通过 10 项，五个写入场景通过。源码与数字证据见 [准备时的工具结果诊断验证](evidence/native-tool-diagnostics-2026-10-29.json)。该版本随后以 `0be9c34` 获批推送，实际结果如下。
+
+## 第三轮：工具结果分类
+
+[第三轮原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40760670272) 的通过范围仍与前两轮相同：三个系统的客户端普通/race 均通过，macOS 五个写入场景通过，Ubuntu/托管 Windows 写入失败。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40760670297) 普通/race 各为 70 通过、4 跳过；增加的一个通过项是分类与内容隔离单测，不是新增用户或真实模型任务。完整记录见 [第三轮证据](evidence/native-ci-third-run-2026-10-29.json)。
+
+这次从工具结果得到以下标记：Ubuntu 的命令写入同时出现 `bubblewrap` 和 `operation_not_permitted`；Windows 的命令写入同时出现 `windows_mxc` 和 `unsupported_operation`。两个系统的补丁场景均出现 `filesystem_error`。这些结果将调查方向缩小到原生执行路径，但不能证明命令与补丁失败都来自同一原因。
+
+runner 日志显示，Windows 使用 Server 2025 Datacenter，Ubuntu 使用 24.04.5，macOS 使用 26.6.2 arm64。MXC 需要实际设备能力支持，不能只靠系统名称或版本号判断；[官方说明](https://learn.chatgpt.com/docs/windows/windows-sandbox)提供了无账号的直接启动检查。另从 [Codex 0.165.0 源码](https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/exec-server/src/process_sandbox.rs)确认，MXC 不可用和自定义 argv0 不受支持是两个不同的拒绝分支。现有标记尚未区分它们。
+
+Ubuntu 有通过 AppArmor 限制非特权 user namespace 的机制，见 [Ubuntu 官方说明](https://ubuntu.com/blog/ubuntu-23-10-restricted-unprivileged-user-namespaces)。这只是后续检查的背景，尚未证实本轮 runner 的具体限制。
+
+## 已准备的宿主对照
+
+下一版摘要在原测试前增加只读的宿主信息和无账号对照：Windows 记录系统类型、直接 MXC 命令启动和既有文件系统 RPC/边界探针；Linux 读取相关内核设置，分别尝试短生命周期的 user、mount、network namespace，再运行同一客户端的直接沙箱命令。原始输出不保存，只记录退出码、布尔值、字节数和固定标记。
+
+对照只在隔离临时目录写固定标记，namespace 仅在子进程中存在；不执行 sandbox setup，不设置 sysctl、AppArmor、系统账号或防火墙。宿主探针是诊断上下文，不代替原有五个写入场景；原有失败仍使 CI 失败。
+
+本机 Windows 的直接命令和文件系统写入/越界拒绝检查通过，错误分类、脱敏和超时退出对照通过，分类单测普通/race 及 vet 通过；完整客户端正向检查仍为普通/race 各 10 通过、写入场景 5/5。Linux 控制尚未在本机执行。这些准备时结果见 [宿主探针验证](evidence/native-host-probes-2026-10-29.json)。新探针尚未推送，远程执行需对应授权。
 
 ## 执行内容
 

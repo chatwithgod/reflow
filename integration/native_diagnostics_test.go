@@ -29,6 +29,8 @@ var nativeToolSignals = map[string][]string{
 	"code_mode_host":             {"code-mode-host", "code_mode_host"},
 	"workspace_file_not_updated": {"native tool did not update its permitted workspace file"},
 	"discarded_write_observed":   {"discarded native patch was executed"},
+	"mxc_unavailable":            {"native mxc is unavailable", "mxc is unavailable"},
+	"custom_argv0":               {"custom argv0"},
 	"filesystem_error":           {"failed to write file", "failed_to_write_file", "failed to read file", "unable to write file", "cannot write file", "filesystem error"},
 	"missing_file_or_executable": {"no such file", "file not found", "cannot find the file", "cannot find the path", "path not found"},
 	"unsupported_operation":      {"not supported", "unsupported", "not implemented"},
@@ -61,7 +63,9 @@ func TestNativeToolDiagnostics(t *testing.T) {
 	observed.observe([]byte(`{"output":"bwrap: creating new namespace failed: Operation not permitted; SECRET_TOKEN_CANARY REQUEST_BODY_CANARY ANSWER_BODY_CANARY PRIVATE_PATH_CANARY"}`))
 	observed.observe([]byte(`null`))
 	observed.observe([]byte(`"REFLOW_TOOL_OK"`))
-	if observed.ObservedOutputs != 3 || observed.EmptyOutputs != 1 || observed.MatchingOutputs["namespace_setup"] != 1 || observed.MatchingOutputs["operation_not_permitted"] != 1 || observed.MatchingOutputs["bubblewrap"] != 1 {
+	observed.observe([]byte(`"MXC custom argv0 is not supported"`))
+	observed.observe([]byte(`"native MXC is unavailable on this executor"`))
+	if observed.ObservedOutputs != 5 || observed.EmptyOutputs != 1 || observed.MatchingOutputs["namespace_setup"] != 1 || observed.MatchingOutputs["operation_not_permitted"] != 1 || observed.MatchingOutputs["bubblewrap"] != 1 || observed.MatchingOutputs["custom_argv0"] != 1 || observed.MatchingOutputs["mxc_unavailable"] != 1 {
 		t.Fatal("native tool diagnostic counts do not distinguish failure, empty output and normal output")
 	}
 	encoded, err := json.Marshal(observed)
