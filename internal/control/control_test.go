@@ -101,8 +101,18 @@ func TestPluginHomeUsesOwningProfileAndRejectsUnknownLayout(t *testing.T) {
 	}
 	t.Setenv("PLUGIN_ROOT", root)
 	got, err := DefaultHome()
-	if err != nil || got != home {
-		t.Fatalf("home=%q err=%v", got, err)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Discovery resolves links and Windows short names; compare the owning
+	// directory rather than platform-dependent spellings of that directory.
+	wantInfo, err := os.Stat(home)
+	if err != nil {
+		t.Fatal(err)
+	}
+	gotInfo, err := os.Stat(got)
+	if err != nil || !os.SameFile(wantInfo, gotInfo) {
+		t.Fatalf("home=%q want=%q err=%v", got, home, err)
 	}
 	t.Setenv("PLUGIN_ROOT", t.TempDir())
 	if _, err := DefaultHome(); err == nil {
