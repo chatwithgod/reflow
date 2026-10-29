@@ -5,7 +5,7 @@ import tempfile
 import unittest
 
 import run as evaluation
-from scheduler_task import DEFECTS, ORACLE, STARTER, grid_oracle, job
+from scheduler_task import DEFECTS, ORACLE, STARTER, SKELETON, PROMPT, SKELETON_PROMPT, grid_oracle, job
 import workspace_fixture
 
 
@@ -26,6 +26,12 @@ class SchedulerGraderTests(unittest.TestCase):
                 self.assertEqual(grade["status"], "scored")
                 self.assertGreaterEqual(grade["passed"], 0)
                 self.assertLess(grade["passed"], 18)
+
+    def test_skeleton_has_no_solution_and_preserves_full_specification(self):
+        result = self.grade(SKELETON)
+        self.assertEqual((result["total"], result["passed"]), (18, 0))
+        original_spec = PROMPT.split("\n\n", 1)[1].replace("After repairing,", "After implementing,")
+        self.assertEqual(SKELETON_PROMPT.split("\n\n", 1)[1], original_spec)
 
     def test_grid_oracle_matches_direct_start_time_enumeration(self):
         for tasks, slots, memory in [

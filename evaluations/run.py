@@ -19,6 +19,7 @@ import urllib.request
 from tasks import ORACLES, STARTERS
 from ledger_task import PROMPT as LEDGER_PROMPT
 from scheduler_task import PROMPT as SCHEDULER_PROMPT
+from scheduler_task import SKELETON as SCHEDULER_SKELETON, SKELETON_PROMPT as SCHEDULER_SKELETON_PROMPT
 from event_diagnostics import EventDiagnostics
 import workspace_fixture
 import fold_diagnostics
@@ -182,8 +183,13 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
         work = profile / "workspace"
         work.mkdir()
         solution = work / "solution.py"
-        solution.write_text(STARTERS[trial["task"]], encoding="utf-8")
+        skeleton = getattr(args, "scheduler_skeleton", False)
+        if skeleton and trial["task"] != "scheduler":
+            raise ValueError("skeleton is only supported for scheduler")
+        solution.write_text(SCHEDULER_SKELETON if skeleton else STARTERS[trial["task"]], encoding="utf-8")
         initial_solution = solution.read_bytes()
+        record.update(starter_variant="skeleton" if skeleton else "seeded",
+                      initial_solution_sha256=hashlib.sha256(initial_solution).hexdigest())
         fixture_hash = workspace_fixture.prepare(work, trial["task"]) if getattr(args, "workspace_smoke_check", False) else None
         reader_hash = workspace_fixture.prepare_reader(work) if getattr(args, "fixed_workspace_commands", False) else None
         (Path(env["CODEX_HOME"]) / "auth.json").write_text(auth, encoding="utf-8")
@@ -338,6 +344,8 @@ def main():
                         help="supply an immutable local check and workspace facts for ledger or scheduler")
     parser.add_argument("--fixed-workspace-commands", action="store_true",
                         help="supply an immutable reader and fixed native-tool workflow for scheduler")
+    parser.add_argument("--scheduler-skeleton", action="store_true",
+                        help="implement the same scheduler specification from a skeleton; fixed commands required")
     args = parser.parse_args()
     if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
@@ -353,6 +361,8 @@ def main():
         parser.error("--workspace-smoke-check requires exactly --tasks ledger or --tasks scheduler")
     if args.fixed_workspace_commands and (not args.workspace_smoke_check or args.tasks != ["scheduler"]):
         parser.error("--fixed-workspace-commands requires --tasks scheduler --workspace-smoke-check")
+    if args.scheduler_skeleton and not args.fixed_workspace_commands:
+        parser.error("--scheduler-skeleton requires --fixed-workspace-commands")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
@@ -388,7 +398,7 @@ def main():
         return
     prompts = {item["id"]: item["prompt"] for item in json.loads((HERE / "prompts.json").read_text(encoding="utf-8"))}
     prompts["ledger"] = LEDGER_PROMPT
-    prompts["scheduler"] = SCHEDULER_PROMPT
+    prompts["scheduler"] = SCHEDULER_SKELETON_PROMPT if args.scheduler_skeleton else SCHEDULER_PROMPT
     if args.workspace_smoke_check:
         prompts[args.tasks[0]] += workspace_fixture.FIXED_GUIDANCE if args.fixed_workspace_commands else workspace_fixture.GUIDANCE
     trials = []
@@ -411,6 +421,7 @@ def main():
             "interval_seconds": args.interval_seconds,
             "workspace_smoke_check": args.workspace_smoke_check,
             "fixed_workspace_commands": args.fixed_workspace_commands,
+            "starter_variant": "skeleton" if args.scheduler_skeleton else "seeded",
             "runner_sha256": fingerprint(HERE / "run.py"),
             "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py", "scheduler_task.py")},
             "trials": trials, "results": []}

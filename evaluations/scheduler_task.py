@@ -16,6 +16,17 @@ Return a list of (name,start,end) tuples sorted by (start,name). First minimize 
 This is a bounded maintenance fixture. Read only the supplied workspace files; use native file tools or PowerShell, run tools serially, and use no subagents. After repairing, run python verify_fixture.py. It already handles expected exceptions in negative examples; do not run intentionally invalid calls as uncaught failing shell snippets. Keep verify_fixture.py unchanged. Finish with a short result summary. The independent final grader covers more cases than the supplied smoke check.
 """
 
+SKELETON = '''def schedule_builds(tasks, slots, memory_limit):
+    """Implement the bounded build planner described in the task."""
+    raise NotImplementedError("build planner is not implemented")
+'''
+SKELETON_PROMPT = (
+    "Implement schedule_builds(tasks, slots, memory_limit) in solution.py from the supplied function skeleton. "
+    "It plans a small build pipeline offline; never launch the planned jobs or access the network.\n"
+    "Preserve the function signature and use only the Python standard library. Implement solution.py, not the checker.\n\n"
+    + PROMPT.split("\n\n", 1)[1].replace("After repairing,", "After implementing,")
+)
+
 ORACLE = '''def schedule_builds(tasks, slots, memory_limit):
     if type(slots) is not int or slots < 1 or type(memory_limit) is not int or memory_limit < 1:
         raise ValueError("invalid capacities")
