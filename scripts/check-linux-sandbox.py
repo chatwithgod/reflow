@@ -32,6 +32,17 @@ PACKAGE_STATES = {'n': 'not-installed', 'c': 'config-files', 'H': 'half-installe
                   'F': 'half-configured', 'W': 'triggers-awaited', 't': 'triggers-pending', 'i': 'installed'}
 PACKAGE_SELECTIONS = {'u': 'unknown', 'i': 'install', 'h': 'hold', 'r': 'remove', 'p': 'purge'}
 PROFILE_WARNING_FLAGS = ('--warn=rule-not-enforced', '--Werror=rule-not-enforced')
+ABI4_COMPAT_FLAGS = ('--warn=rule-not-enforced',)
+APPARMOR_VERSION = '4.0.1really4.0.1-0ubuntu0.24.04.9'
+ABI4_IDENTITIES = {
+    'profile': (PROFILE, '11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9'),
+    'abi': (Path('/etc/apparmor.d/abi/4.0'), 'e510bb8f6788b45e48de2f859a6f94a7b8416cbac5a1051814cfce925fa911bd'),
+    'parser_config': (Path('/etc/apparmor/parser.conf'), 'f8586f1c3bfd7abac6a182c1b45d22a8397c0db5a737b54bc8f9fc48da53d5bd'),
+    'parser': (Path(PARSER), '85e67b4ebc2559cc84c7d256d14890b8a7521e0278aedd544e13a3204a387d05'),
+}
+APPARMOR_FEATURES = Path('/sys/kernel/security/apparmor/features')
+OPTIONAL_PROFILE_INCLUDES = (Path('/etc/apparmor.d/local/bwrap-userns-restrict'),
+                             Path('/etc/apparmor.d/local/unpriv_bwrap'))
 PROFILE_MESSAGE_SIGNALS = {
     'rule_not_enforced': ('not enforced', 'not supported'),
     'user_namespace': ('userns', 'user namespace'),
@@ -163,6 +174,35 @@ def profile_diagnostics(output):
     return counts
 
 
+def exact_abi4_warning(result, *, strict):
+    """Only accept the complete, known vendor warning; do not accept arbitrary text."""
+    prefix = 'Warning converted to Error' if strict else 'Warning'
+    names = {'bwrap'} if strict else PROFILE_NAMES
+    expected = {f'{prefix} from profile {name} ({PROFILE}): io_uring rules not enforced'.encode()
+                for name in names}
+    lines = result.stderr.splitlines()
+    return result.returncode == (1 if strict else 0) and result.stdout == b'' \
+        and len(lines) == len(expected) and set(lines) == expected
+
+
+def abi4_kernel_features(root):
+    def read(relative):
+        try:
+            with (root / relative).open('rb') as stream:
+                data = stream.read(65537)
+            require(len(data) <= 65536, 'kernel_feature_too_large')
+            return data.decode('ascii').strip()
+        except (OSError, UnicodeError):
+            raise ControlError('kernel_feature_unavailable') from None
+    userns = 'userns_create' in read('namespaces/mask').split()
+    stacking = read('domain/stack') == 'yes'
+    caps = read('caps/mask').split()
+    # The modern feature file names capabilities; old numeric forms are not guessed.
+    capability = 'sys_admin' in caps
+    return {'userns_create': userns, 'profile_stacking': stacking,
+            'sys_admin_capability': capability, 'io_uring_feature_present': (root / 'io_uring').exists()}
+
+
 def execute_control(ops, report):
     """An expected baseline failure is data; final native and boundary gates stay mandatory."""
     ops.guard()
@@ -191,8 +231,11 @@ def execute_control(ops, report):
             report['profile'] = ops.profile_identity()
             require(ops.loaded_profile_names() == set(), 'refuse_to_replace_existing_profiles')
             ops.compile_profile()
-            load_attempted = True
-            ops.load_profile()
+            try:
+                ops.load_profile()
+            finally:
+                load_attempted = ops.profile_load_attempted
+                report['profile_load_attempted'] = load_attempted
             require(ops.loaded_profile_names() == PROFILE_NAMES, 'profile_load_incomplete')
             report['after_profile'] = ops.host()
             validate_host(report['after_profile'], original, sandbox_pass=True)
@@ -228,8 +271,11 @@ def load_native_helpers():
 
 
 class RunnerOperations:
-    def __init__(self, report):
+    def __init__(self, report, *, allow_abi4_io_uring=False):
         self.report = report
+        self.allow_abi4_io_uring = allow_abi4_io_uring
+        self.abi4_preflight_verified = False
+        self.profile_load_attempted = False
         self.native_helpers = load_native_helpers()
         self.codex = ROOT / '.tools/native-clients/node_modules/@openai/codex-linux-x64/vendor/x86_64-unknown-linux-musl/bin/codex'
 
@@ -258,7 +304,7 @@ class RunnerOperations:
         observation = {
             'stage': label, 'exit_code': result.returncode,
             'stdout_bytes': len(result.stdout), 'stderr_bytes': len(result.stderr)}
-        if label in ('profile_compile', 'profile_add', 'profile_remove'):
+        if label in ('profile_compile', 'profile_compile_abi4_compat', 'profile_add', 'profile_remove'):
             observation['matching_output'] = profile_diagnostics(result.stdout + b'\n' + result.stderr)
         self.report.setdefault('commands', []).append(observation)
         if checked:
@@ -339,13 +385,58 @@ class RunnerOperations:
 
     def compile_profile(self):
         require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')
-        self.command('profile_compile', [PARSER, '--skip-kernel-load', '--skip-cache', '--jobs=1',
-                                         *PROFILE_WARNING_FLAGS, str(PROFILE)])
+        argv = [PARSER, '--skip-kernel-load', '--skip-cache', '--jobs=1', *PROFILE_WARNING_FLAGS, str(PROFILE)]
+        if not self.allow_abi4_io_uring:
+            self.command('profile_compile', argv)
+            return
+        self.verify_abi4_identity_and_features()
+        strict = self.command('profile_compile', argv, checked=False)
+        require(exact_abi4_warning(strict, strict=True), 'abi4_strict_warning_unexpected')
+        compatible = self.command('profile_compile_abi4_compat',
+            [PARSER, '--skip-kernel-load', '--skip-cache', '--jobs=1', *ABI4_COMPAT_FLAGS, str(PROFILE)], checked=False)
+        require(exact_abi4_warning(compatible, strict=False), 'abi4_compile_warning_unexpected')
+        self.abi4_preflight_verified = True
+        self.report['abi4_io_uring_exception'] = {
+            'explicitly_enabled': True, 'strict_preflight_failed_as_expected': True,
+            'compatibility_compile_passed': True, 'exact_vendor_warnings': 2,
+            'rule_not_enforced_Werror_omitted_in_compatibility_commands': True,
+        }
+
+    def verify_abi4_identity_and_features(self):
+        versions = self.report.get('package_versions_after', {})
+        require(all(versions.get(name) == APPARMOR_VERSION for name in ('apparmor', 'apparmor-profiles', 'apparmor-utils')),
+                'abi4_package_version_changed')
+        identities = {}
+        for label, (path, expected) in ABI4_IDENTITIES.items():
+            require(path.is_file() and not path.is_symlink(), 'abi4_vendor_file_missing')
+            info = path.stat()
+            require(info.st_uid == 0 and not info.st_mode & 0o022, 'abi4_vendor_file_not_root_owned')
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            require(digest == expected, 'abi4_vendor_file_changed')
+            identities[label] = digest
+        require(not any(path.exists() or path.is_symlink() for path in OPTIONAL_PROFILE_INCLUDES),
+                'abi4_local_profile_override_present')
+        features = abi4_kernel_features(APPARMOR_FEATURES)
+        require(features['userns_create'] and features['profile_stacking'] and features['sys_admin_capability'],
+                'abi4_required_kernel_feature_missing')
+        self.report['abi4_vendor_sha256'] = identities
+        self.report['abi4_kernel_features'] = features
 
     def load_profile(self):
         require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')
-        self.command('profile_add', ['sudo', '-n', PARSER, '--add', '--skip-cache', '--jobs=1',
-                                     *PROFILE_WARNING_FLAGS, str(PROFILE)])
+        require(self.loaded_profile_names() == set(), 'refuse_to_replace_existing_profiles')
+        if not self.allow_abi4_io_uring:
+            self.profile_load_attempted = True
+            self.command('profile_add', ['sudo', '-n', PARSER, '--add', '--skip-cache', '--jobs=1',
+                                         *PROFILE_WARNING_FLAGS, str(PROFILE)])
+            return
+        require(self.abi4_preflight_verified, 'abi4_preflight_required')
+        self.verify_abi4_identity_and_features()
+        self.profile_load_attempted = True
+        result = self.command('profile_add', ['sudo', '-n', PARSER, '--add', '--skip-cache', '--jobs=1',
+                                              *ABI4_COMPAT_FLAGS, str(PROFILE)], checked=False)
+        require(exact_abi4_warning(result, strict=False), 'abi4_load_warning_unexpected')
+        self.report['abi4_io_uring_exception']['load_returned_success_with_exact_warnings'] = True
 
     def remove_profile(self):
         require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')
@@ -429,7 +520,8 @@ def main():
     if args.check_only:
         print(json.dumps({'status': 'plan_only', 'packages': ['bubblewrap', 'apparmor-profiles', 'apparmor-utils'],
                           'profile_names': sorted(PROFILE_NAMES), 'global_sysctl_changes': False,
-                          'model_calls': 0, 'host_changes_executed': False}))
+                          'model_calls': 0, 'host_changes_executed': False,
+                          'abi4_io_uring_exception_default': False}))
         return
     report = {'status': 'running', 'model_calls': 0, 'existing_login_read': False,
               'max_native_clients': 1, 'production_modified': False, 'packages_installed': False,
@@ -441,7 +533,10 @@ def main():
     folder = ROOT / 'build/linux-sandbox-control' / datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')
     folder.mkdir(parents=True, exist_ok=False)
     try:
-        execute_control(RunnerOperations(report), report)
+        exception = os.environ.get('REFLOW_ALLOW_ABI4_IO_URING_WARNING', '0')
+        require(exception in ('0', '1'), 'invalid_abi4_exception_option')
+        report['abi4_io_uring_exception_requested'] = exception == '1'
+        execute_control(RunnerOperations(report, allow_abi4_io_uring=exception == '1'), report)
         report['status'] = 'pass'
     except Exception as error:
         report.update(status='fail', error_type=type(error).__name__,

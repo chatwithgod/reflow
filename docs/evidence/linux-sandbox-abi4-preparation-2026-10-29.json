@@ -1,0 +1,230 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "status": "prepared_locally_not_pushed_or_executed_remotely",
+  "source_base_commit": "e2f4dda881d3cc056c06704b89c04977689e1769",
+  "preceding_real_ci": "https://github.com/chatwithgod/reflow/actions/runs/40819656112",
+  "source_analysis": {
+    "version": "4.0.1really4.0.1-0ubuntu0.24.04.9",
+    "binary_packages": [
+      {
+        "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/apparmor_4.0.1really4.0.1-0ubuntu0.24.04.9_amd64.deb",
+        "sha256": "59af23f557d666039708ec176aa056d2fd85125dabd452accf6d86f5c608fb74",
+        "bytes": 639878,
+        "checksum_source": "measured from HTTPS download; no separate signed Packages index verification",
+        "selected_files": [
+          {
+            "path": "etc/apparmor/parser.conf",
+            "sha256": "f8586f1c3bfd7abac6a182c1b45d22a8397c0db5a737b54bc8f9fc48da53d5bd",
+            "bytes": 2270
+          },
+          {
+            "path": "etc/apparmor.d/abi/4.0",
+            "sha256": "e510bb8f6788b45e48de2f859a6f94a7b8416cbac5a1051814cfce925fa911bd",
+            "bytes": 2205
+          }
+        ]
+      },
+      {
+        "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/apparmor-profiles_4.0.1really4.0.1-0ubuntu0.24.04.9_all.deb",
+        "sha256": "90b02aa006eea7702cd4e851343e469e41365dda42145a3cb035de1d6c773b8c",
+        "bytes": 39592,
+        "checksum_source": "measured from HTTPS download; no separate signed Packages index verification",
+        "selected_files": [
+          {
+            "path": "usr/share/apparmor/extra-profiles/bwrap-userns-restrict",
+            "sha256": "11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9",
+            "bytes": 1936
+          }
+        ]
+      }
+    ],
+    "selected_source_patches_applied": [
+      "ubuntu/parser-add-support-for-prompting.patch"
+    ],
+    "packaged_profile_matches_ci_sha256": true,
+    "packaged_profile_matches_source": true,
+    "packaged_abi_matches_source": true,
+    "packaged_abi_has_io_uring": false,
+    "packaged_abi_has_userns_create": true,
+    "io_uring_allow_rules": 2,
+    "profile_abi": "4.0",
+    "effective_feature_requires_kernel_and_policy_support": true,
+    "abi_alone_is_sufficient_to_disable_io_uring_rule_emission": true,
+    "ci_installed_abi_hash_recorded": false,
+    "ci_actual_kernel_io_uring_support_known": false,
+    "system_settings_modified": false,
+    "packages_installed_locally": false,
+    "linux_binary_executed": false,
+    "model_calls": 0
+  },
+  "source_archive_checksums": [
+    {
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/apparmor_4.0.1really4.0.1.orig.tar.gz",
+      "path": "build/ubuntu-apparmor-source-20261029/apparmor_4.0.1really4.0.1.orig.tar.gz",
+      "sha256": "b0d72cedc48e533d189ea415bde721ad597101c77fa398fdd2858ec4f58f7e26",
+      "bytes": 6984984,
+      "dsc_checksum_verified": true
+    },
+    {
+      "url": "https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/apparmor_4.0.1really4.0.1-0ubuntu0.24.04.9.debian.tar.xz",
+      "path": "build/ubuntu-apparmor-source-20261029/apparmor_4.0.1really4.0.1-0ubuntu0.24.04.9.debian.tar.xz",
+      "sha256": "effdf47c19dd830409b12324aa987c080f1a2cad2a73725cb8d7486fff12fc92",
+      "bytes": 141000,
+      "dsc_checksum_verified": true
+    }
+  ],
+  "source_signature_verification": {
+    "dsc_pgp_verified": false,
+    "transport": "official Ubuntu archive HTTPS",
+    "tarball_sha256_checked_against_dsc": true
+  },
+  "pinned_runtime_files": {
+    "profile": {
+      "path": "/usr/share/apparmor/extra-profiles/bwrap-userns-restrict",
+      "sha256": "11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9"
+    },
+    "abi": {
+      "path": "/etc/apparmor.d/abi/4.0",
+      "sha256": "e510bb8f6788b45e48de2f859a6f94a7b8416cbac5a1051814cfce925fa911bd"
+    },
+    "parser_config": {
+      "path": "/etc/apparmor/parser.conf",
+      "sha256": "f8586f1c3bfd7abac6a182c1b45d22a8397c0db5a737b54bc8f9fc48da53d5bd"
+    },
+    "parser": {
+      "path": "/usr/sbin/apparmor_parser",
+      "sha256": "85e67b4ebc2559cc84c7d256d14890b8a7521e0278aedd544e13a3204a387d05"
+    }
+  },
+  "candidate_scope": {
+    "exception_default": false,
+    "separate_manual_input_required": true,
+    "strict_failure_reproduced_first": true,
+    "compatibility_compile_without_kernel_load": true,
+    "compatibility_compile_and_add_omit_rule_not_enforced_Werror": true,
+    "only_two_complete_exact_io_uring_warning_lines_accepted": true,
+    "unknown_output_nonzero_exit_or_changed_vendor_file_stops": true,
+    "profile_and_abi_not_modified": true,
+    "global_kernel_settings_not_modified": true,
+    "native_write_assertions_unchanged": true,
+    "boundary_assertions_unchanged": true,
+    "cleanup_after_attempted_add_required": true,
+    "other_loaded_profiles_preserved_on_rejection_before_add": true
+  },
+  "local_tests": {
+    "total": 34,
+    "pass": 31,
+    "skip": 3,
+    "fail": 0,
+    "linux_skipped": [
+      "private dpkg database",
+      "AppArmor warning flag recognition",
+      "compile-only synthetic kernel features with the pinned ABI"
+    ]
+  },
+  "remote_prerequisite_before_privileged_control": {
+    "ordinary_ci_all_three_platforms": "must pass",
+    "all_three_linux_fixtures": "must run and pass, no skips",
+    "expected_ubuntu_control_tests": {
+      "pass": 34,
+      "skip": 0,
+      "fail": 0
+    }
+  },
+  "unchanged_function_asts": [
+    "valid_native",
+    "validate_host",
+    "validate_boundaries",
+    "boundaries",
+    "native",
+    "install_packages",
+    "package_versions",
+    "remove_profile",
+    "eligible"
+  ],
+  "model_calls": 0,
+  "production_modified": false,
+  "remote_pushed": false,
+  "limits": [
+    "Package/source inspection establishes a policy-ABI reason for the observed warning; the previous CI did not record the installed ABI, parser-config, or parser-binary hashes or the actual io_uring kernel feature.",
+    "The new exception explicitly relaxes one compiler warning-as-error rule and requires new user authorization. It does not alter the vendor profile, global restrictions, native write assertions, or boundary gates.",
+    "Compatibility compile and load have not been tested on a Linux runner. The proposed third Linux fixture is skipped on local Windows.",
+    "If any pin, prerequisite, warning set, native write, boundary, or cleanup check fails, the control remains failed; no automatic fallback or retry is added.",
+    "No official API key reuse, new native-login session, Desktop/dot acceptance, release, Magpie upstream contribution, or OSS submission occurred."
+  ],
+  "evidence_files": [
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/source-manifest.json",
+      "sha256": "33a2baaca4152481762fbc8251a050094d69cbd6593254738a9d62a84e9ef2fa",
+      "bytes": 20777
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/abi-analysis.json",
+      "sha256": "38ea44631787e8ad2651ad757742a8fd1282d20ec216cb2732e966718503ba97",
+      "bytes": 2185
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/parser-binary-identity.json",
+      "sha256": "d2bc6032a563c17d0ab6b77380280ffe8dc5218a89b03879d697f36f50e91232",
+      "bytes": 183
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/binary-package-files/usr/share/apparmor/extra-profiles/bwrap-userns-restrict",
+      "sha256": "11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9",
+      "bytes": 1936
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/binary-package-files/etc/apparmor.d/abi/4.0",
+      "sha256": "e510bb8f6788b45e48de2f859a6f94a7b8416cbac5a1051814cfce925fa911bd",
+      "bytes": 2205
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/binary-package-files/etc/apparmor/parser.conf",
+      "sha256": "f8586f1c3bfd7abac6a182c1b45d22a8397c0db5a737b54bc8f9fc48da53d5bd",
+      "bytes": 2270
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/patched/parser/io_uring.cc",
+      "sha256": "7c0384ecef43dd93e9974804725624eaf6b6f0153e0fc8744cc142c89c3eaec8",
+      "bytes": 3483
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/patched/parser/parser_main.c",
+      "sha256": "c3b730d73f75b1c5c910d2395761bac1f192b0499d7e7169bcac97450e9bd54b",
+      "bytes": 50755
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/patched/parser/parser_common.c",
+      "sha256": "985586690444284ac23afed48ee4b1e9fafd5dd49027c28cdaedc516c172d36f",
+      "bytes": 7787
+    },
+    {
+      "path": "build/ubuntu-apparmor-source-20261029/patched/parser/parser_yacc.y",
+      "sha256": "7a0b52e0fb9d5a29b14bf69cc470a16203836a989a526a048da684c13dc747c1",
+      "bytes": 45449
+    },
+    {
+      "path": "build/linux-sandbox-abi4-preparation-20261029/unit-tests.log",
+      "sha256": "ef64a14f057f0d6afa43fcf6c48cfe854fb0f4c3b6ad0311f336b3c2d67b5cf9",
+      "bytes": 5379
+    }
+  ],
+  "source_files": [
+    {
+      "path": "scripts/check-linux-sandbox.py",
+      "sha256": "c07130334c89cdabc4706132816dd421ced63bd44c0e2c20170ea7890499b045",
+      "bytes": 31120
+    },
+    {
+      "path": "scripts/test-linux-sandbox-control.py",
+      "sha256": "def3e56c13d52c7a4ef3c3f3d34962a6b7f7a8e4ad7733d1123d0d1110d5ee7d",
+      "bytes": 35972
+    },
+    {
+      "path": ".github/workflows/linux-sandbox-control.yml",
+      "sha256": "16cabda9467492565c4d4be7e2005d40ca837f5c53f3756d1661e6fa49acbb29",
+      "bytes": 2669
+    }
+  ]
+}

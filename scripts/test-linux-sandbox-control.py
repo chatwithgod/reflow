@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -42,6 +43,7 @@ class FakeOperations:
         self.partial_load_failure = False
         self.compile_failure = False
         self.positive_control_failure = False
+        self.profile_load_attempted = False
         self.fail_cleanup = False
         self.change_global_policy = False
         self.boundary_result = dict.fromkeys(control.BOUNDARIES, True)
@@ -80,6 +82,7 @@ class FakeOperations:
 
     def load_profile(self):
         self.calls.append('load')
+        self.profile_load_attempted = True
         if self.partial_load_failure:
             self.loaded = {'bwrap'}
             raise control.ControlError('profile_add_failed')
@@ -109,6 +112,7 @@ class ControlTests(unittest.TestCase):
             ops.profile_hash = hashlib.sha256(profile.read_bytes()).hexdigest()
             calls = {}
             ops.command = lambda label, argv, **kwargs: calls.setdefault(label, argv)
+            ops.loaded_profile_names = lambda: set()
             with patch.object(control, 'PROFILE', profile):
                 ops.compile_profile()
                 ops.load_profile()
@@ -121,6 +125,221 @@ class ControlTests(unittest.TestCase):
             self.assertEqual([item for item in preflight if item.startswith(('--Werror', '--warn'))],
                              [item for item in load if item.startswith(('--Werror', '--warn'))])
             self.assertEqual(preflight[-1], load[-1])
+
+    def test_abi4_warning_exception_rejects_extra_unknown_or_changed_output(self):
+        def warning(name, strict=False):
+            prefix = 'Warning converted to Error' if strict else 'Warning'
+            return f'{prefix} from profile {name} ({control.PROFILE}): io_uring rules not enforced\n'.encode()
+        strict = subprocess.CompletedProcess([], 1, b'', warning('bwrap', True))
+        allowed = subprocess.CompletedProcess([], 0, b'', warning('bwrap') + warning('unpriv_bwrap'))
+        self.assertTrue(control.exact_abi4_warning(strict, strict=True))
+        self.assertTrue(control.exact_abi4_warning(allowed, strict=False))
+        cases = [
+            subprocess.CompletedProcess([], 0, b'UNKNOWN_CANARY', allowed.stderr),
+            subprocess.CompletedProcess([], 1, b'', allowed.stderr),
+            subprocess.CompletedProcess([], 0, b'', warning('bwrap') * 2),
+            subprocess.CompletedProcess([], 0, b'', warning('bwrap')),
+            subprocess.CompletedProcess([], 0, b'', allowed.stderr + b'UNKNOWN_CANARY\n'),
+            subprocess.CompletedProcess([], 0, b'', allowed.stderr.replace(b'io_uring', b'userns')),
+            subprocess.CompletedProcess([], 0, b'', allowed.stderr.replace(str(control.PROFILE).encode(), b'/untrusted')),
+            subprocess.CompletedProcess([], 0, b'', allowed.stderr.replace(b'unpriv_bwrap', b'OTHER_CANARY')),
+        ]
+        for result in cases:
+            with self.subTest(case=cases.index(result)):
+                self.assertFalse(control.exact_abi4_warning(result, strict=False))
+
+    def test_abi4_kernel_features_require_userns_stacking_and_capabilities(self):
+        with tempfile.TemporaryDirectory(prefix='rf-abi-features-') as temporary:
+            root = Path(temporary)
+            values = {'namespaces/mask': 'userns_create\n', 'domain/stack': 'yes\n', 'caps/mask': 'chown sys_admin\n'}
+            for name, value in values.items():
+                path = root / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(value, encoding='ascii')
+            observation = control.abi4_kernel_features(root)
+            self.assertEqual(observation, {'userns_create': True, 'profile_stacking': True,
+                                          'sys_admin_capability': True, 'io_uring_feature_present': False})
+            for name, field in [('namespaces/mask', 'userns_create'), ('domain/stack', 'profile_stacking'), ('caps/mask', 'sys_admin_capability')]:
+                (root / name).write_text('no\n', encoding='ascii')
+                self.assertFalse(control.abi4_kernel_features(root)[field])
+                (root / name).write_text(values[name], encoding='ascii')
+            (root / 'io_uring').mkdir()
+            self.assertTrue(control.abi4_kernel_features(root)['io_uring_feature_present'])
+            (root / 'namespaces/mask').unlink()
+            with self.assertRaisesRegex(control.ControlError, 'kernel_feature_unavailable'):
+                control.abi4_kernel_features(root)
+
+    def test_abi4_identity_rejects_different_files_versions_overrides_or_features(self):
+        class File:
+            def __init__(self, data=b'fixed public fixture'):
+                self.data, self.uid, self.mode, self.symlink = data, 0, 0o100644, False
+            def is_file(self): return True
+            def is_symlink(self): return self.symlink
+            def read_bytes(self): return self.data
+            def stat(self): return SimpleNamespace(st_uid=self.uid, st_mode=self.mode)
+        file = File()
+        identities = {'profile': (file, hashlib.sha256(file.data).hexdigest())}
+        report = {'package_versions_after': dict.fromkeys(('apparmor', 'apparmor-profiles', 'apparmor-utils'), control.APPARMOR_VERSION)}
+        features = {'userns_create': True, 'profile_stacking': True, 'sys_admin_capability': True, 'io_uring_feature_present': False}
+        ops = control.RunnerOperations(report, allow_abi4_io_uring=True)
+        with patch.object(control, 'ABI4_IDENTITIES', identities), patch.object(control, 'OPTIONAL_PROFILE_INCLUDES', ()), \
+                patch.object(control, 'abi4_kernel_features', return_value=features):
+            ops.verify_abi4_identity_and_features()
+            for attribute, bad in [('uid', 1000), ('mode', 0o100666), ('symlink', True), ('data', b'changed')]:
+                old = getattr(file, attribute)
+                setattr(file, attribute, bad)
+                with self.assertRaises(control.ControlError):
+                    ops.verify_abi4_identity_and_features()
+                setattr(file, attribute, old)
+            for key in ('userns_create', 'profile_stacking', 'sys_admin_capability'):
+                features[key] = False
+                with self.assertRaisesRegex(control.ControlError, 'abi4_required_kernel_feature_missing'):
+                    ops.verify_abi4_identity_and_features()
+                features[key] = True
+            report['package_versions_after']['apparmor'] = 'different'
+            with self.assertRaisesRegex(control.ControlError, 'abi4_package_version_changed'):
+                ops.verify_abi4_identity_and_features()
+            report['package_versions_after']['apparmor'] = control.APPARMOR_VERSION
+            override = SimpleNamespace(exists=lambda: True, is_symlink=lambda: False)
+            with patch.object(control, 'OPTIONAL_PROFILE_INCLUDES', (override,)):
+                with self.assertRaisesRegex(control.ControlError, 'abi4_local_profile_override_present'):
+                    ops.verify_abi4_identity_and_features()
+
+    def test_abi4_compatibility_requires_strict_failure_then_exact_compile_and_load_warnings(self):
+        with tempfile.TemporaryDirectory(prefix='rf-abi-profile-') as temporary:
+            profile = Path(temporary) / 'profile'
+            profile.write_bytes(b'public fixture')
+            ops = control.RunnerOperations({}, allow_abi4_io_uring=True)
+            ops.profile_hash = hashlib.sha256(profile.read_bytes()).hexdigest()
+            ops.verify_abi4_identity_and_features = lambda: None
+            ops.loaded_profile_names = lambda: set()
+            calls = []
+            def command(label, argv, **kwargs):
+                calls.append((label, argv))
+                strict = label == 'profile_compile'
+                names = ['bwrap'] if strict else sorted(control.PROFILE_NAMES)
+                prefix = 'Warning converted to Error' if strict else 'Warning'
+                stderr = ''.join(f'{prefix} from profile {name} ({profile}): io_uring rules not enforced\n' for name in names).encode()
+                return subprocess.CompletedProcess(argv, 1 if strict else 0, b'', stderr)
+            ops.command = command
+            with patch.object(control, 'PROFILE', profile):
+                with self.assertRaisesRegex(control.ControlError, 'abi4_preflight_required'):
+                    ops.load_profile()
+                self.assertFalse(ops.profile_load_attempted)
+                ops.compile_profile()
+                self.assertTrue(ops.abi4_preflight_verified)
+                ops.load_profile()
+            self.assertEqual([label for label, _ in calls], ['profile_compile', 'profile_compile_abi4_compat', 'profile_add'])
+            self.assertIn('--Werror=rule-not-enforced', calls[0][1])
+            for _, argv in calls[1:]:
+                self.assertNotIn('--Werror=rule-not-enforced', argv)
+            self.assertNotIn('sudo', calls[1][1])
+            self.assertIn('--skip-kernel-load', calls[1][1])
+            self.assertTrue(ops.profile_load_attempted)
+
+    def test_abi4_unexpected_preflight_stops_before_load(self):
+        with tempfile.TemporaryDirectory(prefix='rf-abi-negative-') as temporary:
+            profile = Path(temporary) / 'profile'
+            profile.write_bytes(b'public fixture')
+            for stage in ('strict', 'compatible'):
+                ops = control.RunnerOperations({}, allow_abi4_io_uring=True)
+                ops.profile_hash = hashlib.sha256(profile.read_bytes()).hexdigest()
+                ops.verify_abi4_identity_and_features = lambda: None
+                calls = []
+                def command(label, argv, **kwargs):
+                    calls.append(label)
+                    if stage == 'compatible' and label == 'profile_compile':
+                        return subprocess.CompletedProcess(argv, 1, b'',
+                            f'Warning converted to Error from profile bwrap ({profile}): io_uring rules not enforced\n'.encode())
+                    return subprocess.CompletedProcess(argv, 0, b'', b'UNRECOGNIZED_WARNING_CANARY')
+                ops.command = command
+                with patch.object(control, 'PROFILE', profile), self.assertRaises(control.ControlError):
+                    ops.compile_profile()
+                self.assertFalse(ops.abi4_preflight_verified)
+                self.assertFalse(ops.profile_load_attempted)
+                self.assertNotIn('CANARY', json.dumps(ops.report))
+                self.assertNotIn('profile_add', calls)
+
+    def test_rejection_before_add_does_not_remove_profiles_owned_by_someone_else(self):
+        ops, report = FakeOperations(), {}
+        def refusal():
+            ops.loaded = set(control.PROFILE_NAMES)
+            raise control.ControlError('refuse_to_replace_existing_profiles')
+        ops.load_profile = refusal
+        with self.assertRaisesRegex(control.ControlError, 'refuse_to_replace_existing_profiles'):
+            control.execute_control(ops, report)
+        self.assertFalse(report['profile_load_attempted'])
+        self.assertNotIn('remove', ops.calls)
+        self.assertEqual(ops.loaded, control.PROFILE_NAMES)
+
+    def test_abi4_full_control_keeps_native_gates_and_cleans_unexpected_load_warning(self):
+        with tempfile.TemporaryDirectory(prefix='rf-abi-flow-') as temporary:
+            profile = Path(temporary) / 'profile'
+            profile.write_bytes(b'fixed public fixture')
+            for bad_load_warning in (False, True):
+                fake, report = FakeOperations(), {}
+                ops = control.RunnerOperations(report, allow_abi4_io_uring=True)
+                ops.profile_hash = hashlib.sha256(profile.read_bytes()).hexdigest()
+                for name in ('guard', 'settings', 'native', 'install_packages', 'host', 'profile_identity', 'boundaries'):
+                    setattr(ops, name, getattr(fake, name))
+                ops.verify_abi4_identity_and_features = lambda: None
+                ops.loaded_profile_names = lambda: set(fake.loaded)
+                stages = []
+                def command(label, argv, **kwargs):
+                    stages.append(label)
+                    if label == 'profile_remove':
+                        fake.loaded.clear()
+                        return subprocess.CompletedProcess(argv, 0, b'', b'')
+                    if label == 'profile_add':
+                        fake.loaded = set(control.PROFILE_NAMES)
+                        if bad_load_warning:
+                            return subprocess.CompletedProcess(argv, 0, b'', b'UNEXPECTED_LOAD_CANARY')
+                    strict = label == 'profile_compile'
+                    names = ['bwrap'] if strict else sorted(control.PROFILE_NAMES)
+                    prefix = 'Warning converted to Error' if strict else 'Warning'
+                    warnings = ''.join(f'{prefix} from profile {name} ({profile}): io_uring rules not enforced\n' for name in names).encode()
+                    return subprocess.CompletedProcess(argv, 1 if strict else 0, b'', warnings)
+                ops.command = command
+                with patch.object(control, 'PROFILE', profile):
+                    if bad_load_warning:
+                        with self.assertRaisesRegex(control.ControlError, 'abi4_load_warning_unexpected'):
+                            control.execute_control(ops, report)
+                        self.assertNotIn('candidate', report)
+                        self.assertFalse(report['profile_positive_control_verified'])
+                    else:
+                        control.execute_control(ops, report)
+                        self.assertEqual(report['outcome'], 'profile_candidate_passed')
+                        self.assertEqual(report['candidate']['checks']['write']['tests'], control.WRITE_PASS)
+                        self.assertTrue(report['profile_reversal_reproduced'])
+                        self.assertEqual(set(report['boundaries']), control.BOUNDARIES)
+                self.assertIn('profile_remove', stages)
+                self.assertFalse(fake.loaded)
+                self.assertTrue(report['added_profiles_removed'])
+                self.assertNotIn('CANARY', json.dumps(report))
+
+    @unittest.skipUnless(sys.platform == 'linux' and Path(control.PARSER).is_file(),
+                         'ABI compile fixture requires the Linux parser')
+    def test_real_parser_abi4_warning_with_synthetic_kernel_features_never_loads_policy(self):
+        abi_path, expected_hash = control.ABI4_IDENTITIES['abi']
+        if not abi_path.is_file() or hashlib.sha256(abi_path.read_bytes()).hexdigest() != expected_hash:
+            self.skipTest('the pinned Ubuntu ABI 4.0 file is not installed')
+        abi = abi_path.read_text(encoding='ascii')
+        with tempfile.TemporaryDirectory(prefix='rf-abi-compile-only-') as temporary:
+            root = Path(temporary)
+            profile = root / 'two-profile-fixture'
+            profile.write_text('abi <abi/4.0>,\nprofile bwrap { allow io_uring, }\n'
+                               'profile unpriv_bwrap { allow io_uring, }\n', encoding='ascii')
+            kernel = root / 'synthetic-kernel-features'
+            for kernel_has_io_uring in (False, True):
+                kernel.write_text(abi + ('io_uring {mask {sqpoll override_creds\n}\n}\n' if kernel_has_io_uring else ''), encoding='ascii')
+                for strict in (True, False):
+                    flags = control.PROFILE_WARNING_FLAGS if strict else control.ABI4_COMPAT_FLAGS
+                    argv = [control.PARSER, '--skip-kernel-load', '--skip-cache', '--jobs=1',
+                            '--kernel-features=' + str(kernel), *flags, str(profile)]
+                    result = subprocess.run(argv, stdin=subprocess.DEVNULL, capture_output=True, timeout=15)
+                    with patch.object(control, 'PROFILE', profile):
+                        self.assertTrue(control.exact_abi4_warning(result, strict=strict),
+                                        f'kernel_io_uring={kernel_has_io_uring}, strict={strict}, code={result.returncode}, stdout_bytes={len(result.stdout)}, stderr_bytes={len(result.stderr)}')
 
     @unittest.skipUnless(sys.platform == 'linux' and Path(control.PARSER).is_file(),
                          'AppArmor argument check requires the Linux parser')

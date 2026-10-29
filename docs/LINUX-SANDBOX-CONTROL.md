@@ -23,7 +23,7 @@
 
 ## 本地验证与范围
 
-控制测试使用固定的历史 CI 数字记录和替代操作对象，不执行 sudo、apt 或加载 AppArmor 配置。覆盖未授权环境拒绝、异常基线停止、原生断言缺失拒绝、已有配置保护、部分加载清理、候选或边界检查失败、全局设置变化、编译预检失败和错误的反向对照标记。另验证内容隔离及超时停止。当前本机 Windows 为 24 项通过、2 项 Linux 专用检查跳过；Linux 检查分别使用私有 dpkg 数据库，以及只显示 AppArmor 帮助的参数识别操作，均不修改系统策略。
+控制测试使用固定的历史 CI 数字记录和替代操作对象，不执行 sudo、apt 或加载 AppArmor 配置。覆盖未授权环境拒绝、异常基线停止、原生断言缺失拒绝、已有配置保护、部分加载清理、候选或边界检查失败、全局设置变化、编译预检失败和错误的反向对照标记。另验证内容隔离及超时停止。新增 ABI 兼容候选后，当前本机 Windows 为 31 项通过、3 项 Linux 专用检查跳过；Linux 检查分别使用私有 dpkg 数据库、只显示 AppArmor 帮助的参数识别，以及不加载配置的 ABI 编译夹具，均不修改系统策略。
 
 运行方式：
 
@@ -73,3 +73,15 @@ python scripts/check-linux-sandbox.py --check-only
 这是本轮遇到的首个严格告警。它把失败范围缩小到 io_uring 规则未生效，但没有区分内核特性与有效策略 ABI 的具体原因，也不能排除后续还有其他告警。不能据此断言内核必然拒绝非严格加载。此次保留 `Werror`、发行版原文件、全局限制和全部写入断言。
 
 预检失败后未执行 `profile_add`、`profile_remove` 或 candidate 原生检查，也没有正向/反向对照或文件与网络边界的通过证据；记录的三项内核设置未变。[自动原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40819402621) 仍为三平台普通/race 各 10 项通过、macOS 写入 5/5、Ubuntu/托管 Windows 写入 0/5。四个原生任务的实际时间段没有重叠，全部使用合成登录，真实模型调用 0。完整数字与散列见 [第三轮执行记录](evidence/linux-sandbox-control-third-run-2026-10-29.json)。
+
+## 发行版 ABI 核对与待授权候选
+
+随后从 [Ubuntu 官方源包目录](https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/)读取 CI 对应的 `4.0.1really4.0.1-0ubuntu0.24.04.9` 源码包和二进制安装包，仅在本地解出所需文件，没有安装或执行 Linux 程序。源码归档的 SHA-256 与 `.dsc` 一致；未验证 `.dsc` 的 PGP 签名。安装包中的 bwrap 配置与 CI 记录的散列完全一致，其 ABI 4.0 和 parser.conf 也与对应源码文件一致。
+
+发行版 bwrap 配置声明 `abi <abi/4.0>`，两个 profile 各有一条 `allow io_uring`，但该 ABI 文件没有 `io_uring` 能力。核对发行版补丁后的编译器源码确认，它取内核能力与策略 ABI 的交集：只要 ABI 没有该能力，就不会生成这类规则，并发出第三轮观察到的告警。此结论可以解释固定发行版文件的行为；前轮没有保存 runner 上的 ABI、parser.conf 和编译器散列，也未直接检查内核的 io_uring 能力，不能补写为已经实测。
+
+新的 `allow_pinned_io_uring_abi_warning` 手动选项默认关闭。开启时先核对三个 AppArmor 包版本，以及编译器、配置、ABI、bwrap profile 四个文件的固定散列和权限；拒绝已有的 profile 局部覆盖文件，还要求内核声明 userns、profile stacking 和 `sys_admin` 能力。随后仍先复现严格编译的固定失败，再以跳过内核加载的方式编译兼容候选。
+
+**这个选项会明确省略兼容编译和加载命令中的 `Werror=rule-not-enforced`。** 它只接受两个指定 profile 各一条完整、完全匹配的 io_uring 告警，标准输出必须为空、退出码必须为 0；任何其他告警、错误、版本或文件变化都停止。发行版规则、全局 sysctl 和原生写入断言不变。加载成功后仍需通过原来的普通/race、五个写入场景、文件和网络边界，以及移除后的反向对照。发现同名配置已存在且尚未发起本次加载时，不执行移除。
+
+本地 31 项通过、3 项 Linux 检查跳过；新增 Linux 夹具用同一个 ABI 文件，分别构造含有和不含 io_uring 的内核能力文件，检查严格模式失败和兼容编译告警，始终跳过内核加载。这项真实编译夹具尚未在 Linux 运行。后续应先确认常规 CI 三平台通过、Ubuntu 三项专用检查全部执行且无跳过，再考虑单次手动对照。候选没有推送，也没有远程执行；它改变了编译告警的处理条件，需要针对这一变化的新授权。准备证据见 [ABI 兼容候选](evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。

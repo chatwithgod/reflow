@@ -8,6 +8,11 @@ on:
         required: true
         default: false
         type: boolean
+      allow_pinned_io_uring_abi_warning:
+        description: 'Explicitly allow only the two pinned Ubuntu ABI 4.0 io_uring warnings; all native and boundary gates remain required'
+        required: true
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -48,6 +53,7 @@ jobs:
       - name: Compare unchanged native gates before and after distro prerequisites
         env:
           REFLOW_ALLOW_EPHEMERAL_RUNNER_SETUP: '1'
+          REFLOW_ALLOW_ABI4_IO_URING_WARNING: ${{ inputs.allow_pinned_io_uring_abi_warning && '1' || '0' }}
         run: python scripts/check-linux-sandbox.py --execute-approved-runner-control
       - name: Preserve numeric summaries
         if: always()

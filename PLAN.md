@@ -38,3 +38,5 @@
 Ubuntu [发行版依赖对照](docs/LINUX-SANDBOX-CONTROL.md)已获批执行三轮。`aec9cf9` 已推送，常规 CI 三平台通过，Ubuntu 26 项控制测试全部通过，包含真实 dpkg 私有数据库及 AppArmor 参数检查。第三轮成功安装依赖后，在无内核加载的编译预检中捕获 `io_uring` 规则未生效告警，严格 `Werror` 使流程停止；没有尝试加载配置，尚无修正后的原生写入结果。记录的内核设置未变，四个原生任务实际无重叠，真实模型调用 0。尚不能区分内核能力与有效策略 ABI 的具体原因，原有写入断言保持不变。见 [第三轮证据](docs/evidence/linux-sandbox-control-third-run-2026-10-29.json)。
 
 同日另获用户提供的临时官方 API key 授权，独立完成一次 [API 流式与工具回传检查](docs/LIVE-API-KEY-2026-10-29.md)：`gpt-6.1-sol/high` 经 Reflow dev.4 的 2 次推理请求完成，固定本地工具执行一次，结果回传及最终答案核对通过，耗时 7.037 秒。推理 token 和续接均为 0；这是专用 Responses 客户端的 API 证据，原生登录的 8 次会话、46 次请求、1 次续接累计值保持单独记录。已通知用户可删除临时 key，不继续使用。
+
+后续无账号调查核对了同版本 Ubuntu 源码及安装包：bwrap profile 引用 ABI 4.0，但该 ABI 未声明 io_uring，足以导致已观察到的规则告警。准备了默认关闭、仅接受固定版本和两条精确告警的兼容选项；它会省略兼容编译/加载的这一项 `Werror`，原生写入、文件与网络边界及清理要求不变。本机 31 项通过、3 项 Linux 检查跳过，待新授权后先跑常规 CI，再决定是否执行临时 runner 对照；没有新的远程执行或真实调用。见 [准备记录](docs/evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。
