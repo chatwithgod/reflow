@@ -12,6 +12,7 @@ import unittest
 # The scorer runs with -I; load only this trusted, fixed fixture directory.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from ledger_task import LedgerCases
+from scheduler_task import SchedulerCases
 
 solution = None
 
@@ -175,6 +176,7 @@ class LRU(unittest.TestCase):
 
 CASES = {"intervals": Intervals, "topo": Topo, "ndjson": NDJSON, "lru": LRU}
 CASES["ledger"] = LedgerCases
+CASES["scheduler"] = SchedulerCases
 
 
 def main():
@@ -192,6 +194,7 @@ def main():
             solution = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(solution)
             LedgerCases.solution = solution
+            SchedulerCases.solution = solution
             suite.run(result)
         # A case with several failing subtests is still one failed scoring check.
         failures = sorted({getattr(case, "test_case", case)._testMethodName

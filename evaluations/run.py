@@ -18,6 +18,7 @@ import urllib.request
 
 from tasks import ORACLES, STARTERS
 from ledger_task import PROMPT as LEDGER_PROMPT
+from scheduler_task import PROMPT as SCHEDULER_PROMPT
 from event_diagnostics import EventDiagnostics
 import workspace_fixture
 import fold_diagnostics
@@ -183,7 +184,7 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
         solution = work / "solution.py"
         solution.write_text(STARTERS[trial["task"]], encoding="utf-8")
         initial_solution = solution.read_bytes()
-        fixture_hash = workspace_fixture.prepare(work) if getattr(args, "workspace_smoke_check", False) else None
+        fixture_hash = workspace_fixture.prepare(work, trial["task"]) if getattr(args, "workspace_smoke_check", False) else None
         (Path(env["CODEX_HOME"]) / "auth.json").write_text(auth, encoding="utf-8")
         usage = {key: 0 for key in ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens")}
         observed = {"completed_turns": 0, "error_events": 0, "command_events": 0,
@@ -320,7 +321,7 @@ def main():
     parser.add_argument("--auth-file", type=Path)
     parser.add_argument("--model")
     parser.add_argument("--effort", choices=["low", "medium", "high", "xhigh"], default="high")
-    parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(set(STARTERS) - {"ledger"}))
+    parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(set(STARTERS) - {"ledger", "scheduler"}))
     parser.add_argument("--conditions", nargs="+", choices=["off", "on"], default=["off", "on"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-continue", type=int, default=3)
@@ -328,7 +329,7 @@ def main():
     parser.add_argument("--interval-seconds", type=int, default=30)
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--workspace-smoke-check", action="store_true",
-                        help="supply an immutable local check and workspace facts for the ledger task")
+                        help="supply an immutable local check and workspace facts for ledger or scheduler")
     args = parser.parse_args()
     if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
@@ -340,8 +341,8 @@ def main():
         parser.error("task ids must be unique; use --repeats for repeated trials")
     if len(args.conditions) != len(set(args.conditions)):
         parser.error("conditions must be unique")
-    if args.workspace_smoke_check and args.tasks != ["ledger"]:
-        parser.error("--workspace-smoke-check requires exactly --tasks ledger")
+    if args.workspace_smoke_check and args.tasks not in (["ledger"], ["scheduler"]):
+        parser.error("--workspace-smoke-check requires exactly --tasks ledger or --tasks scheduler")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
@@ -377,8 +378,9 @@ def main():
         return
     prompts = {item["id"]: item["prompt"] for item in json.loads((HERE / "prompts.json").read_text(encoding="utf-8"))}
     prompts["ledger"] = LEDGER_PROMPT
+    prompts["scheduler"] = SCHEDULER_PROMPT
     if args.workspace_smoke_check:
-        prompts["ledger"] += workspace_fixture.GUIDANCE
+        prompts[args.tasks[0]] += workspace_fixture.GUIDANCE
     trials = []
     task_index = {task: index for index, task in enumerate(sorted(args.tasks))}
     rng = random.Random(args.seed)
@@ -399,7 +401,7 @@ def main():
             "interval_seconds": args.interval_seconds,
             "workspace_smoke_check": args.workspace_smoke_check,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py", "scheduler_task.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):

@@ -40,9 +40,18 @@ print(json.dumps({"smoke_checks": 6, "passed": 6}))
 '''
 
 
-def prepare(work):
+def checker(task):
+    if task == "ledger":
+        return CHECKER
+    if task == "scheduler":
+        from scheduler_task import CHECKER as scheduler_checker
+        return scheduler_checker
+    raise ValueError("workspace checker requires ledger or scheduler")
+
+
+def prepare(work, task="ledger"):
     path = work / FILENAME
-    path.write_text(CHECKER, encoding="utf-8", newline="\n")
+    path.write_text(checker(task), encoding="utf-8", newline="\n")
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 

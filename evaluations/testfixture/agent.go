@@ -146,7 +146,7 @@ func main() {
 		fmt.Println(`{"type":"item.completed","item":{"id":"SYNTHETIC_PRIVATE_SENTINEL","type":"command_execution","status":"failed","exit_code":1,"aggregated_output":"AssertionError: SYNTHETIC_PRIVATE_SENTINEL"}}`)
 	}
 	task := ""
-	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache", "ledger": "reconcile"} {
+	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache", "ledger": "reconcile", "scheduler": "schedule_builds"} {
 		if strings.Contains(prompt, name) {
 			task = id
 		}

@@ -1,0 +1,593 @@
+{
+  "date_local": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-29T23:08:49.557367+00:00",
+  "authorization": "standing native acceptance authorization from call_6d618f8753d948e5afeea9800383947e; this bounded attempt is complete, standing authorization remains",
+  "base_commit": "d09b0467f15d5ae36b2cd65dc1f16a475e9e6e75",
+  "source_state": "local additive evaluation changes frozen by file SHA256 before execution",
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.5",
+    "path": "dist/0.1.0-dev.5/20261030-061238-866/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+    "sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+  },
+  "source_record": {
+    "path": "build/evaluations/20261029-230652-789475/results.json",
+    "sha256": "ffaa221aaf1001d1bf85bbe6a0c86a485a8fa4ec75df49f5feb7fac295c2f18e",
+    "bytes": 14408
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-scheduler-dev5-official-0165-plan.json",
+    "sha256": "6a6fac3de625c399933d8a1d50a4e2317e8ec989fc3310bfed57ab2ad0bedcbe",
+    "bytes": 8836
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-scheduler-dev5-official-0165-live.py",
+    "sha256": "453c9f0b5b42501c2301ac5698dac610b9c5c881a004134b81fa2fa49f0dc071",
+    "bytes": 8760
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "runner_sha256": "85d773ed312bf705d801e8e0ca774bb29486e94d9385e1d21fd62b300fccb6b1",
+    "task_sources": {
+      "tasks.py": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c",
+      "score.py": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f",
+      "workspace_fixture.py": "4abf07a4ba030607d5623b9986d1487ddcde86ec209343f960aab3cf2f322a0b",
+      "fold_diagnostics.py": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877",
+      "scheduler_task.py": "730ce495ab6fd2f6cd1643132640662adfe7609ad36cf5f6954a91cffbf3bfd7"
+    },
+    "trials": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 86.967,
+        "client_reported_usage": {
+          "input_tokens": 128213,
+          "cached_input_tokens": 119680,
+          "output_tokens": 3038,
+          "reasoning_output_tokens": 1097
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 7,
+        "file_change_events": 0,
+        "tool_failure_events": 1,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 7.595,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 7.814,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 7.814,
+            "counter_probe_finished_seconds": 7.855,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 8.446,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.446,
+            "counter_probe_finished_seconds": 8.466,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 8.621,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 8.621,
+            "counter_probe_finished_seconds": 8.638,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 9.218,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 9.218,
+            "counter_probe_finished_seconds": 9.237,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 37.082,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 37.082,
+            "counter_probe_finished_seconds": 37.097,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 37.756,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "failure_markers": [
+              "unclassified"
+            ],
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 37.757,
+            "counter_probe_finished_seconds": 37.771,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "failed",
+            "exit_code": 1
+          },
+          {
+            "at_seconds": 41.425,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 41.425,
+            "counter_probe_finished_seconds": 41.439,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 4,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 42.079,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 42.079,
+            "counter_probe_finished_seconds": 42.095,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 4,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 43.789,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 5,
+            "counter_probe_started_seconds": 43.789,
+            "counter_probe_finished_seconds": 43.804,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 5,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 44.328,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 5,
+            "counter_probe_started_seconds": 44.328,
+            "counter_probe_finished_seconds": 44.342,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 5,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 75.196,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 75.428,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 6,
+            "counter_probe_started_seconds": 75.428,
+            "counter_probe_finished_seconds": 75.444,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 6,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 76.323,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 6,
+            "counter_probe_started_seconds": 76.323,
+            "counter_probe_finished_seconds": 76.337,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 6,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 79.16,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 7,
+            "counter_probe_started_seconds": 79.16,
+            "counter_probe_finished_seconds": 79.175,
+            "proxy_counters": {
+              "requests": 7,
+              "completed": 7,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 79.75,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 7,
+            "counter_probe_started_seconds": 79.75,
+            "counter_probe_finished_seconds": 79.777,
+            "proxy_counters": {
+              "requests": 8,
+              "completed": 7,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 84.62,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 14,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 1
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 8,
+          "continuations": 1,
+          "warmups": 1,
+          "completed": 8,
+          "failed": 0,
+          "usage_reports": 8,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 145627,
+          "output_tokens": 3316,
+          "cached_tokens": 131968,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 1097,
+          "continued_tool_responses": 1,
+          "continued_tool_calls": 1,
+          "continued_tool_results": 1,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 1,
+            "rule_not_matched": 7,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            516,
+            0,
+            13,
+            0,
+            435,
+            28,
+            105
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 145627,
+          "output_tokens": 3316,
+          "cached_tokens": 131968,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 1097
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": true,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+    }
+  },
+  "checks": {
+    "single_authorized_session_executed": true,
+    "no_auto_repeat": true,
+    "normal_finish": true,
+    "file_changed_and_all_grading_checks_passed": true,
+    "real_continuation_observed": true,
+    "matched_continued_tool_result_observed": true,
+    "no_observed_tool_or_client_error": false,
+    "no_rate_limit_or_upstream_error": true,
+    "complete_usage_observed": true,
+    "folded_client_usage_within_billed_totals": true,
+    "client_and_billed_usage_identical": false,
+    "event_trace_complete_and_balanced": true,
+    "max_observed_local_tool_overlap": 1,
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "codex": 0,
+      "reflow": 0,
+      "code_mode_host": 0
+    },
+    "binaries_and_task_sources_unchanged": true,
+    "temporary_api_key_reused": false,
+    "diagnostic_observations_complete": true,
+    "failure_marker_counts": {
+      "python_assertion": 0,
+      "python_syntax": 0,
+      "python_import": 0,
+      "python_name_or_type": 0,
+      "python_value_or_key": 0,
+      "powershell_parser": 0,
+      "command_unavailable": 0,
+      "permission_denied": 0,
+      "unclassified": 1
+    },
+    "diagnostic_observations_do_not_replace_strict_acceptance": true,
+    "supplied_workspace_checker_unchanged": true,
+    "fold_decision_diagnostics_valid": true,
+    "reasoning_sample_coverage_complete": true,
+    "reasoning_sample_sum_matches_total": true,
+    "continuation_tool_finish_acceptance": false,
+    "unmet_acceptance_checks": [
+      "no_observed_tool_or_client_error"
+    ]
+  },
+  "cumulative_native_login": {
+    "sessions": 15,
+    "observed_inference_requests": 89,
+    "continuations": 3
+  },
+  "official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "offline_evidence": {
+    "offline_process_checks": {
+      "path": "build/evaluation-process/20261029-230250-869910/summary.json",
+      "sha256": "7298643a0bd31cd3d0177b7d050e085a4f7e37a18ad90da09ea7cdf09ba25684",
+      "bytes": 471
+    },
+    "offline_preflight": {
+      "path": "build/evaluations/20261029-223053-926630/summary.json",
+      "sha256": "8287803fb249b7eaa06dd96f9a2faca29dcfbe12d6e6863457f1bfc8461f04ce",
+      "bytes": 922
+    },
+    "native_checker_preflight": {
+      "path": "build/scheduler-workspace-preparation-20261030/native-checker-preflight.json",
+      "sha256": "6da66d7494eb86d7f2cea8320c43b47960219e41dc6b83f891eeace6f8449a14",
+      "bytes": 329
+    },
+    "candidate_offline_evidence": {
+      "path": "docs/evidence/decision-diagnostics-dev5-2026-10-30.json",
+      "sha256": "35736f7102594370b28294296bec4ab27e31196b0644f019811c54946335484b",
+      "bytes": 5654
+    },
+    "packaged_metrics_preflight": {
+      "path": "build/decision-diagnostics-20261030/packaged-metrics-preflight.json",
+      "sha256": "37e3419fa1782bc13f0def9af6633990a95b229d7761d80e437d2cd0122cdcf2",
+      "bytes": 1079
+    }
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-scheduler-dev5-official-0165-20261030/authorization.json",
+      "sha256": "de7e9ee3ca367a905af8732884f33e912b700d1e9d5e998e2c3483db66ebad2a",
+      "bytes": 858
+    },
+    {
+      "path": "build/live-authorized-scheduler-dev5-official-0165-20261030/started.once",
+      "sha256": "ae591265a50757051eb1fe0d44f1462889380248f9aa1f9a252dc8119adec547",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-scheduler-dev5-official-0165-20261030/process-precheck.json",
+      "sha256": "9c0208983cd3e1234cc978c042926d692c92448176610ae214363111407ea0c1",
+      "bytes": 60
+    },
+    {
+      "path": "build/live-authorized-scheduler-dev5-official-0165-20261030/invariants.json",
+      "sha256": "44510191b6904362dd300fea8b17068154e0fbceaa26db3bbf2396111e18b8df",
+      "bytes": 2226
+    }
+  ],
+  "limits": [
+    "The task is an opt-in build-planner repair fixture with 18 frozen checks and an independent finite-time oracle, not an off/on quality comparison.",
+    "Continuation rules, native client and Reflow binaries were unchanged. A natural trigger is not guaranteed.",
+    "Matched tool-result metrics prove protocol correlation; execution success additionally requires zero observed tool/client failures and task completion.",
+    "A folded client may report less input/output than total upstream usage. Bounds and complete reporting do not independently prove every per-round sum.",
+    "No credentials, response text, tool command/output, or encrypted reasoning are retained in diagnostic artifacts.",
+    "No Desktop/dot, token refresh, Pi/Magpie live acceptance, production change, push, release or external submission is included."
+  ]
+}

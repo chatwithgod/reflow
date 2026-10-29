@@ -97,12 +97,15 @@ class RunnerProcessTests(unittest.TestCase):
     def test_ledger_workspace_tampering_stops_success_even_when_grade_passes(self):
         self.check_ledger_workspace(True)
 
-    def check_ledger_workspace(self, tamper):
+    def test_scheduler_workspace_check_and_grade_use_correct_task(self):
+        self.check_ledger_workspace(False, task="scheduler")
+
+    def check_ledger_workspace(self, tamper, task="ledger"):
         with tempfile.TemporaryDirectory(prefix="reflow-workspace-runner-") as temporary:
             args = self.args()
             args.workspace_smoke_check = True
-            record = evaluation.run_trial(args, {"task": "ledger", "condition": "on", "repeat": 0, "max_continue": 1},
-                ("SYNTHETIC_MUTATE_CHECKER " if tamper else "") + "reconcile",
+            record = evaluation.run_trial(args, {"task": task, "condition": "on", "repeat": 0, "max_continue": 1},
+                ("SYNTHETIC_MUTATE_CHECKER " if tamper else "") + ("reconcile" if task == "ledger" else "schedule_builds"),
                 '{"auth_mode":"chatgpt","tokens":{"access_token":"synthetic-evaluation-token"}}', Path(temporary),
                 require_inference=False)
             self.assertEqual(record["score"]["passed"], 18)

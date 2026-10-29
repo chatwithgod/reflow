@@ -1,0 +1,518 @@
+{
+  "date_local": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-29T22:44:35.422108+00:00",
+  "authorization": "standing native acceptance authorization from call_6d618f8753d948e5afeea9800383947e; this bounded attempt is complete, standing authorization remains",
+  "base_commit": "d09b0467f15d5ae36b2cd65dc1f16a475e9e6e75",
+  "source_state": "local additive evaluation changes frozen by file SHA256 before execution",
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.5",
+    "path": "dist/0.1.0-dev.5/20261030-061238-866/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+    "sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+  },
+  "source_record": {
+    "path": "build/evaluations/20261029-223449-114899/results.json",
+    "sha256": "6276bfa2ad9b7c9dd10c1a7c02011521d142ceeccaf7c1176e74df9acdc2bc8d",
+    "bytes": 11823
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-ledger-dev5-official-0165-plan.json",
+    "sha256": "39736e7769ea68c5e5f84839f5a7e8483fd27c16c8ff546eeb03044feda44a27",
+    "bytes": 9709
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-ledger-dev5-official-0165-live.py",
+    "sha256": "dba6c0a3756bc02c68283ec394d65ca1add19dc3ac81f34ef1fc7dbb03f5e2d3",
+    "bytes": 8746
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "runner_sha256": "6411739361accad9b14ec9e67a8b2ff33a2c765c8defd3a2c2a6f393d4e014b5",
+    "task_sources": {
+      "tasks.py": "ba2e02dab353349042d29175e24a186d75294f6daa53971666ba75f41e0bd0f2",
+      "score.py": "9a9911aa26d5e36b3bd10dbba1864a23e2bb11124ef022c67be86c4cb7cef5ce",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f",
+      "workspace_fixture.py": "bc55b32a6e58a6ceae2a6d90eb26f68b03e448960f9ad4eb29c241105d106abd",
+      "fold_diagnostics.py": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877"
+    },
+    "trials": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 120.566,
+        "client_reported_usage": {
+          "input_tokens": 137811,
+          "cached_input_tokens": 132224,
+          "output_tokens": 7928,
+          "reasoning_output_tokens": 619
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 4,
+        "file_change_events": 1,
+        "tool_failure_events": 1,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 10.934,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 11.15,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 11.15,
+            "counter_probe_finished_seconds": 11.178,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 11.729,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 11.729,
+            "counter_probe_finished_seconds": 11.743,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 64.448,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 64.448,
+            "counter_probe_finished_seconds": 64.467,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 64.661,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 64.661,
+            "counter_probe_finished_seconds": 64.678,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 66.57,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 66.57,
+            "counter_probe_finished_seconds": 66.583,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 4,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 67.092,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 67.092,
+            "counter_probe_finished_seconds": 67.107,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 4,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 90.395,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 90.674,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 90.674,
+            "counter_probe_finished_seconds": 90.687,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 5,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 91.357,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "failure_markers": [
+              "python_value_or_key"
+            ],
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 91.358,
+            "counter_probe_finished_seconds": 91.377,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 5,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "failed",
+            "exit_code": 1
+          },
+          {
+            "at_seconds": 110.474,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 5,
+            "counter_probe_started_seconds": 110.474,
+            "counter_probe_finished_seconds": 110.494,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 6,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 111.157,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 5,
+            "counter_probe_started_seconds": 111.157,
+            "counter_probe_finished_seconds": 111.175,
+            "proxy_counters": {
+              "requests": 6,
+              "completed": 6,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 117.355,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 10,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 1,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 7,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 7,
+          "failed": 0,
+          "usage_reports": 7,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 137811,
+          "output_tokens": 7928,
+          "cached_tokens": 132224,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 619,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 0,
+            "rule_not_matched": 7,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            410,
+            10,
+            0,
+            24,
+            100,
+            75
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 137811,
+          "output_tokens": 7928,
+          "cached_tokens": 132224,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 619
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "61daf6e7765e0b8e761e4dc33f7c450d60c54d1b943a5d00d5ca33c2df840b8b",
+          "unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+    }
+  },
+  "checks": {
+    "single_authorized_session_executed": true,
+    "no_auto_repeat": true,
+    "normal_finish": true,
+    "file_changed_and_all_grading_checks_passed": true,
+    "real_continuation_observed": false,
+    "matched_continued_tool_result_observed": false,
+    "no_observed_tool_or_client_error": false,
+    "no_rate_limit_or_upstream_error": true,
+    "complete_usage_observed": true,
+    "folded_client_usage_within_billed_totals": true,
+    "client_and_billed_usage_identical": true,
+    "event_trace_complete_and_balanced": true,
+    "max_observed_local_tool_overlap": 1,
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "codex": 0,
+      "reflow": 0,
+      "code_mode_host": 0
+    },
+    "binaries_and_task_sources_unchanged": true,
+    "temporary_api_key_reused": false,
+    "diagnostic_observations_complete": true,
+    "failure_marker_counts": {
+      "python_assertion": 0,
+      "python_syntax": 0,
+      "python_import": 0,
+      "python_name_or_type": 0,
+      "python_value_or_key": 1,
+      "powershell_parser": 0,
+      "command_unavailable": 0,
+      "permission_denied": 0,
+      "unclassified": 0
+    },
+    "diagnostic_observations_do_not_replace_strict_acceptance": true,
+    "supplied_workspace_checker_unchanged": true,
+    "fold_decision_diagnostics_valid": true,
+    "reasoning_sample_coverage_complete": true,
+    "reasoning_sample_sum_matches_total": true,
+    "continuation_tool_finish_acceptance": false,
+    "unmet_acceptance_checks": [
+      "real_continuation_observed",
+      "matched_continued_tool_result_observed",
+      "no_observed_tool_or_client_error"
+    ]
+  },
+  "cumulative_native_login": {
+    "sessions": 14,
+    "observed_inference_requests": 81,
+    "continuations": 2
+  },
+  "official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "offline_evidence": {
+    "offline_process_checks": {
+      "path": "build/evaluation-process/20261029-221707-086422/summary.json",
+      "sha256": "d13e804fa12bf6705d56ecf7ac3ccec60ede484d8a4a6bcb24a9a52a0f7bd57c",
+      "bytes": 471
+    },
+    "offline_preflight": {
+      "path": "build/evaluations/20261029-223053-926630/summary.json",
+      "sha256": "8287803fb249b7eaa06dd96f9a2faca29dcfbe12d6e6863457f1bfc8461f04ce",
+      "bytes": 922
+    },
+    "native_checker_preflight": {
+      "path": "build/ledger-workspace-preparation-20261030/native-checker-preflight.json",
+      "sha256": "6da66d7494eb86d7f2cea8320c43b47960219e41dc6b83f891eeace6f8449a14",
+      "bytes": 329
+    },
+    "candidate_offline_evidence": {
+      "path": "docs/evidence/decision-diagnostics-dev5-2026-10-30.json",
+      "sha256": "35736f7102594370b28294296bec4ab27e31196b0644f019811c54946335484b",
+      "bytes": 5654
+    },
+    "packaged_metrics_preflight": {
+      "path": "build/decision-diagnostics-20261030/packaged-metrics-preflight.json",
+      "sha256": "37e3419fa1782bc13f0def9af6633990a95b229d7761d80e437d2cd0122cdcf2",
+      "bytes": 1079
+    }
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-ledger-dev5-official-0165-20261030/authorization.json",
+      "sha256": "0a7d0c0007ebd4d17031109db036131be0f2665768724a2f80da13a4f444a255",
+      "bytes": 930
+    },
+    {
+      "path": "build/live-authorized-ledger-dev5-official-0165-20261030/started.once",
+      "sha256": "2274903e31814be1be2f16db4eb80701737d50812409296d23af2e9e5729f4e4",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-ledger-dev5-official-0165-20261030/process-precheck.json",
+      "sha256": "9c0208983cd3e1234cc978c042926d692c92448176610ae214363111407ea0c1",
+      "bytes": 60
+    },
+    {
+      "path": "build/live-authorized-ledger-dev5-official-0165-20261030/invariants.json",
+      "sha256": "36fd1657d1102c10a7033bb51724c887f1b1ed54f4a36e3f9a9e160d055bd1fa",
+      "bytes": 2226
+    }
+  ],
+  "limits": [
+    "The task is an opt-in maintenance fixture with 18 frozen checks, not an off/on quality comparison.",
+    "Continuation rules, native client and Reflow binaries were unchanged. A natural trigger is not guaranteed.",
+    "Matched tool-result metrics prove protocol correlation; execution success additionally requires zero observed tool/client failures and task completion.",
+    "A folded client may report less input/output than total upstream usage. Bounds and complete reporting do not independently prove every per-round sum.",
+    "No credentials, response text, tool command/output, or encrypted reasoning are retained in diagnostic artifacts.",
+    "No Desktop/dot, token refresh, Pi/Magpie live acceptance, production change, push, release or external submission is included."
+  ]
+}
