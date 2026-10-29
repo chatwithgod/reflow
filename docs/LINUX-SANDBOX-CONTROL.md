@@ -58,8 +58,18 @@ python scripts/check-linux-sandbox.py --check-only
 
 旧摘要把这种“加载失败后仍被拒绝”的情况误标为 `profile_reversal_reproduced: true`。没有成功的正向条件，就不能证明反向恢复。本轮[派生记录](evidence/linux-sandbox-control-second-run-2026-10-29.json)明确作废这一字段，原始报告保留不改；本地修正只有在确认加载后的直接命令通过后，才允许记录有效反向对照。
 
-## 已准备的编译诊断
+## 编译诊断的准备依据
 
 [上游 AppArmor 4.0.1 的警告函数](https://gitlab.com/apparmor/apparmor/-/blob/b0eb95457bc2de401920308869d016e696c73664/parser/parser_common.c)分别控制文字输出和错误退出；[默认警告集合](https://gitlab.com/apparmor/apparmor/-/blob/b0eb95457bc2de401920308869d016e696c73664/parser/parser.h)不包含这类规则告警。本地保留原函数构建的便携对照复现了：只启用 `Werror` 时静默退出 1，开启相同类别的警告后输出诊断，仍退出 1。这是函数级复现，不是 Ubuntu 二进制或内核实测，具体触发规则尚未确定。
 
 新版增加不加载内核配置的编译预检，并保留原严格失败条件。诊断只匹配警告正文中的固定标记，忽略文件名和配置名称，避免 `bwrap-userns-restrict` 路径被误当作 user namespace 告警。编译不通过就停止，不尝试特权加载。实现、控制测试和边界见 [编译诊断准备记录](evidence/linux-sandbox-profile-diagnostics-2026-10-29.json)。
+
+## 第三轮：捕获 io_uring 告警，加载前停止
+
+`aec9cf9` 获批推送后，[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40819402600) 三平台全部通过。Go 普通/race 各 70 通过、4 跳过，vet、fuzz 和合成评测通过；Ubuntu 的 26 项控制测试全部执行通过，包含真实 dpkg 私有数据库与 AppArmor 参数识别检查，Windows/macOS 各 24 通过、2 项按平台跳过。
+
+确认上述条件后，只触发一次 [Ubuntu 手动诊断](https://github.com/chatwithgod/reflow/actions/runs/40819656112)，其 `run_attempt` 为 1。依赖安装成功，版本与第二轮相同；安装后直接沙箱命令仍被拒绝。随后无 sudo、跳过内核加载的严格编译返回 1，标准输出 0 字节、错误输出 134 字节；固定分类记录各一个 `warning_as_error`、`rule_not_enforced`、`io_uring` 标记。
+
+这是本轮遇到的首个严格告警。它把失败范围缩小到 io_uring 规则未生效，但没有区分内核特性与有效策略 ABI 的具体原因，也不能排除后续还有其他告警。不能据此断言内核必然拒绝非严格加载。此次保留 `Werror`、发行版原文件、全局限制和全部写入断言。
+
+预检失败后未执行 `profile_add`、`profile_remove` 或 candidate 原生检查，也没有正向/反向对照或文件与网络边界的通过证据；记录的三项内核设置未变。[自动原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40819402621) 仍为三平台普通/race 各 10 项通过、macOS 写入 5/5、Ubuntu/托管 Windows 写入 0/5。四个原生任务的实际时间段没有重叠，全部使用合成登录，真实模型调用 0。完整数字与散列见 [第三轮执行记录](evidence/linux-sandbox-control-third-run-2026-10-29.json)。

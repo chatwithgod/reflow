@@ -1,0 +1,196 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "status": "executed_pass_no_continuation",
+  "result": {
+    "status": "pass",
+    "started_utc": "2026-10-29T05:02:44.592369+00:00",
+    "authorization": "User supplied this temporary official API key and explicitly authorized testing in the active chat.",
+    "kind": "official_api_stream_and_controlled_function_roundtrip",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "concurrency": 1,
+    "native_subagents": false,
+    "downstream_request_limit": 2,
+    "max_continue_per_request": 1,
+    "upstream_request_limit": 4,
+    "max_output_tokens_per_upstream_request": 2048,
+    "service_tier": "default",
+    "store": false,
+    "automatic_retries": 0,
+    "api_origin": "https://api.openai.com/v1",
+    "key_written_to_file": false,
+    "proxy_sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee",
+    "wrapper_sha256": "3f4ca5f43d354fec6b9e126362ff63e4b97c5b6a514cf432e178e562806052b0",
+    "turns": [
+      {
+        "index": 1,
+        "request_bytes": 821,
+        "sse_events": 14,
+        "terminal_count": 1,
+        "http_status": 200,
+        "terminal_type": "response.completed",
+        "status": "completed",
+        "usage": {
+          "input_tokens": 168,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 23,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 191
+        },
+        "proxy_rounds": [
+          {
+            "reasoning_tokens": 0,
+            "round": 1
+          }
+        ],
+        "proxy_stopped_reason": "rule_not_matched",
+        "proxy_billed_usage": {
+          "input_tokens": 168,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 23,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 191
+        }
+      },
+      {
+        "index": 2,
+        "request_bytes": 1152,
+        "sse_events": 23,
+        "terminal_count": 1,
+        "http_status": 200,
+        "terminal_type": "response.completed",
+        "status": "completed",
+        "usage": {
+          "input_tokens": 224,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 19,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 243
+        },
+        "proxy_rounds": [
+          {
+            "reasoning_tokens": 0,
+            "round": 1
+          }
+        ],
+        "proxy_stopped_reason": "rule_not_matched",
+        "proxy_billed_usage": {
+          "input_tokens": 224,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 19,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 243
+        }
+      }
+    ],
+    "tool_executions": 1,
+    "controlled_tool_write_verified": true,
+    "native_login_used": false,
+    "production_auth_files_hashed_only": true,
+    "raw_bodies_saved": false,
+    "user_supplied_key_available": true,
+    "model_preflight": {
+      "http_status": 200,
+      "requested_model_returned": true
+    },
+    "tool_result_roundtrip_verified": true,
+    "final_answer_verified": true,
+    "upstream_metrics": {
+      "enabled": true,
+      "scope": "streaming_responses",
+      "requests": 2,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 2,
+      "failed": 0,
+      "usage_reports": 2,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 392,
+      "output_tokens": 42,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": true
+    },
+    "finished_utc": "2026-10-29T05:02:51.630046+00:00",
+    "elapsed_seconds": 7.037,
+    "protected_files_unchanged": true,
+    "proxy_binary_unchanged": true,
+    "owned_proxy_stopped": true,
+    "temporary_tool_directory_removed": true
+  },
+  "checks": {
+    "model_metadata_requests": 1,
+    "streaming_inference_requests": 2,
+    "max_observed_concurrent_inference": 1,
+    "local_function_executed_once": true,
+    "tool_result_replayed": true,
+    "terminal_and_usage_totals_reconciled": true,
+    "normal_finish": true,
+    "native_codex_client_used": false,
+    "user_notified_key_can_be_deleted": true,
+    "no_further_key_use_planned": true
+  },
+  "standard_token_cost_estimate": {
+    "usd": "0.001204",
+    "input_usd_per_million": 2,
+    "output_usd_per_million": 10,
+    "cached_input_tokens": 0,
+    "cache_write_tokens": 0,
+    "source": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+    "actual_billing_or_promotional_balance_checked": false
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-api-key-smoke-20261029/results.json",
+      "sha256": "bb19a4c2fa5e14f8c6993343690aba69ab33cfec00a0567d06a716561a65145d",
+      "bytes": 3979
+    },
+    {
+      "path": "build/run-authorized-api-smoke.py",
+      "sha256": "3f4ca5f43d354fec6b9e126362ff63e4b97c5b6a514cf432e178e562806052b0",
+      "bytes": 16595
+    }
+  ],
+  "existing_native_login_totals_unchanged": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  },
+  "new_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "limits": [
+    "This is one official API-key session through Reflow dev.4, using a small purpose-built Responses client, not native Codex or OAuth acceptance.",
+    "The tool implementation is a fixed local NDJSON fixture reader with a controlled temporary-file write; the model did not author an NDJSON implementation or execute a native Codex shell command.",
+    "Both requests reported zero reasoning tokens and zero automatic continuations. No real continuation-to-tool-to-finish closure or encrypted reasoning replay was verified.",
+    "High effort was requested; the zero reasoning usage is the observed API result and is not evidence of a reasoning-quality improvement.",
+    "Only this test process used the supplied key in memory. The key was not copied to project files or reports; the user owns revocation of the key already present in their chat message.",
+    "Token-price arithmetic is an estimate, not a billing or promotional-credit statement."
+  ]
+}

@@ -9,6 +9,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | Pi | `1.4.0` 的 `openai-codex` provider | 保留内置 OAuth 和模型目录，只改请求地址；SSE、WebSocket、工具执行与回传通过。新的 `openai` provider 未适配 |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过；可通过替代模块文件使用公开 Reflow 固定提交。补丁未提交上游 |
+| 官方 OpenAI API | Reflow dev.4；`gpt-6.1-sol/high`；专用小型 Responses 客户端 | 用户授权的临时 API key 下，两次 SSE 请求、一次固定本地函数执行、结果回传及最终答案核对通过。推理 token 与续接均为 0；不属于原生 Codex/OAuth 验收 |
 
 Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、macOS 源码离线 CI 均通过，覆盖模拟协议和合成评测进程；Codex CLI、app-server、Pi 与插件四项联调在当时的远程 CI 跳过。Linux/macOS 各架构的打包构件当时只有交叉编译记录，后续原生执行结果见下方。历史范围见 [公开与 CI 记录](PUBLICATION-2026-10-28.md)。
 
@@ -45,3 +46,5 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 同日后续拓扑排序诊断正常结束，评分 8/8，5 次推理请求，工具失败 0 次，续接仍为 0 次。它补充了原生登录的任务覆盖，没有完成真实续接闭环或 Desktop/dot 界面验收。见 [本次结果](LIVE-TOPO-2026-10-27.md)。
 
 2026-10-29 补充：未修改的官方 CLI `0.165.0` 在本机 Windows 的单次原生登录 NDJSON 诊断中正常结束，评分 9/9，6 次推理请求、续接 0 次。一次命令失败后继续完成任务；没有新增完整续接证据。见 [官方版实测](LIVE-OFFICIAL-0165-2026-10-29.md)。
+
+同日的 [官方 API key 检查](LIVE-API-KEY-2026-10-29.md)另行记录：2 次推理请求完成、固定本地工具执行一次、续接 0 次。它补充了独立 Reflow 对官方 API 的实际流式与工具回传证据；原生登录、真实续接、Desktop/dot 和其他 OAuth harness 的未验收项保持不变。
