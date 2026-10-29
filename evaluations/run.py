@@ -20,6 +20,7 @@ from tasks import ORACLES, STARTERS
 from ledger_task import PROMPT as LEDGER_PROMPT
 from event_diagnostics import EventDiagnostics
 import workspace_fixture
+import fold_diagnostics
 from client_preflight import code_mode_host_probe, filesystem_probe
 
 HERE = Path(__file__).resolve().parent
@@ -162,7 +163,7 @@ def read_metrics(endpoint, timeout=3):
             return None
         tool_numbers = ("continued_tool_responses", "continued_tool_calls", "continued_tool_results", "tool_tracking_drops")
         tool_metrics = {key: raw[key] for key in tool_numbers} if all(type(raw.get(key)) is int and raw[key] >= 0 for key in tool_numbers) else {}
-        return {**{key: raw[key] for key in numbers}, **tool_metrics, "usage_complete": raw.get("usage_complete") is True,
+        return {**{key: raw[key] for key in numbers}, **tool_metrics, **fold_diagnostics.extract(raw), "usage_complete": raw.get("usage_complete") is True,
                 "scope": "streaming_responses"}
     except Exception:
         return None
@@ -398,7 +399,7 @@ def main():
             "interval_seconds": args.interval_seconds,
             "workspace_smoke_check": args.workspace_smoke_check,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):

@@ -1,4 +1,4 @@
-# Reflow (0.1.0-dev.4)
+# Reflow (0.1.0-dev.5 候选)
 
 Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
 
@@ -10,7 +10,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
 
-当前开发版本为 `0.1.0-dev.4`，源码已在 [chatwithgod/reflow](https://github.com/chatwithgod/reflow) 公开，尚未发布二进制 Release。已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口。此前带客户端的 Windows 本地回归为 79 个通过项、0 跳过，Codex 使用加入上游修复的隔离源码构件。公开后的三平台离线 CI 均通过，各为 69 个通过项、4 个未配置客户端的测试跳过；race、vet、fuzz 和评测自检通过。范围见 [公开与 CI 记录](docs/PUBLICATION-2026-10-28.md)、[app-server 验证](docs/APP-SERVER-2026-10-27.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+当前本地候选为 `0.1.0-dev.5`，新增[续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)，尚未推送或发布。已在 [chatwithgod/reflow](https://github.com/chatwithgod/reflow) 公开的基线仍为 dev.4，尚无二进制 Release。已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口。此前带客户端的 Windows 本地回归为 79 个通过项、0 跳过，Codex 使用加入上游修复的隔离源码构件。公开后的三平台离线 CI 均通过，各为 69 个通过项、4 个未配置客户端的测试跳过；race、vet、fuzz 和评测自检通过。范围见 [公开与 CI 记录](docs/PUBLICATION-2026-10-28.md)、[app-server 验证](docs/APP-SERVER-2026-10-27.md)与[兼容性说明](docs/COMPATIBILITY.md)。
 
 - **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复会话及配置还原通过；这是后端协议验证，Desktop/dot 界面仍未验收。
@@ -66,6 +66,8 @@ reflow -metrics
 `-metrics` 默认关闭；启用后可读取 `/metrics` 的请求数、实际续接次数和上游报告的 token 总量。计数不包含账号、模型名、响应 ID 或正文，也不写入磁盘。预热单列；缺失或无法解析用量时 `usage_complete` 为 `false`。这些计数不代表美元费用，范围限于 Responses 流。
 
 dev.4 增加续接后工具响应、工具调用和匹配结果回传的数字计数。它们用于核对协议往返，不能单独证明工具成功或任务完成。保留的关联状态只有有上限、会过期的摘要；详情见 [评测说明](docs/EVALUATION.md)。
+
+dev.5 候选补充实际续接或停止的固定原因计数，以及最多 64 个推理 token 数字样本；核心规则没有改变。字段与局限见[决策诊断说明](docs/DECISION-DIAGNOSTICS.md)。
 
 ### 2. 客户端配置与还原
 

@@ -1,0 +1,161 @@
+{
+  "date_local": "2026-10-30",
+  "version": "0.1.0-dev.5",
+  "status": "local_candidate_offline_verified_not_published",
+  "base_commit": "2e6f6554693cdbd65ebf5b3135024d98cf8833be",
+  "core_source_unchanged": true,
+  "model_calls": 0,
+  "existing_login_read": false,
+  "production_modified": false,
+  "ordinary": {
+    "pass": 79,
+    "skip": 4
+  },
+  "race": {
+    "pass": 79,
+    "skip": 4
+  },
+  "vet": "pass",
+  "fuzz": "pass",
+  "native_windows": {
+    "normal": {
+      "pass": 10,
+      "skip": 0,
+      "fail": 0
+    },
+    "race": {
+      "pass": 10,
+      "skip": 0,
+      "fail": 0
+    },
+    "write_scenarios_passed": 5,
+    "write_parent_inclusive_count": 6,
+    "max_native_clients": 1
+  },
+  "evaluation_compatibility": {
+    "dev4_process_checks_passed": 26,
+    "dev5_process_checks_passed": 26,
+    "packaged_metrics_version": 1
+  },
+  "packages": [
+    {
+      "kind": "standalone",
+      "platform": "windows/amd64",
+      "archive": "reflow_0.1.0-dev.5_windows_amd64.zip",
+      "sha256": "c30faaa7d8d697d912e6766359617a57c188a23beadb9927ca8d59dc74c30055",
+      "binary_sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558",
+      "binary_path": "reflow.exe",
+      "runtime_tested": true,
+      "source_archive": "dist/0.1.0-dev.5/20261030-061238-866/reflow_0.1.0-dev.5_windows_amd64.zip",
+      "archive_hash_verified": true,
+      "extracted_binary_verified": true
+    },
+    {
+      "kind": "codex-plugin",
+      "platform": "windows/amd64",
+      "archive": "reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+      "sha256": "6fd61b639a379cff6bc26fc3d63df2c733d7e3aba72832efbe39eb2f7e585176",
+      "binary_sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558",
+      "binary_path": "plugins/reflow/bin/reflow.exe",
+      "runtime_tested": true,
+      "source_archive": "dist/0.1.0-dev.5/20261030-061238-866/reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+      "archive_hash_verified": true,
+      "extracted_binary_verified": true
+    }
+  ],
+  "implementation_files": [
+    {
+      "path": "proxy/metrics.go",
+      "sha256": "2c8923b3b935bdf5a3cbd7ca633f347fe84bb8696b009aa1ae1b3f39cb97f1a1",
+      "bytes": 7558
+    },
+    {
+      "path": "proxy/server.go",
+      "sha256": "0028214479662cea0c0d57b7798e71a3c9591d693a7a70a6a32b34622a514ebd",
+      "bytes": 11518
+    },
+    {
+      "path": "proxy/websocket.go",
+      "sha256": "578f0a77ab53f6963de9994b748b4fd20b48998aba73ee2e5795a555d37c6576",
+      "bytes": 7872
+    },
+    {
+      "path": "proxy/metrics_test.go",
+      "sha256": "56230e978455f67a9c5fed08bf232c8d25425ed45f9c3b3c44766510109c3d1f",
+      "bytes": 6291
+    },
+    {
+      "path": "proxy/decision_metrics_test.go",
+      "sha256": "edada91c08835643d0a15433700e22b6ee56034d89b4f673d84f376f54e97a86",
+      "bytes": 4851
+    },
+    {
+      "path": "evaluations/run.py",
+      "sha256": "6411739361accad9b14ec9e67a8b2ff33a2c765c8defd3a2c2a6f393d4e014b5",
+      "bytes": 24114
+    },
+    {
+      "path": "evaluations/fold_diagnostics.py",
+      "sha256": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877",
+      "bytes": 1372
+    },
+    {
+      "path": "evaluations/test_fold_diagnostics.py",
+      "sha256": "7db86a3c83191ac85f2e03204b8ca06f4f0c0cfd44e6e6ce617efa992445b4ed",
+      "bytes": 1967
+    },
+    {
+      "path": "VERSION",
+      "sha256": "55c9a5e5bdfccaaf47aad734f2045b22d176fdaa9779a02376a8129a0568b4b8",
+      "bytes": 12
+    },
+    {
+      "path": "internal/version/version.go",
+      "sha256": "b141e130ed7abcb26011f0d13137d5c9efc662cc81ba1c056dfff7dc61e78a6d",
+      "bytes": 124
+    },
+    {
+      "path": "plugins/codex/plugin.json",
+      "sha256": "bd179745267766316269ba79ddafa756c6060e485bce4bbc881f6f8a6c5c1b36",
+      "bytes": 587
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "build/decision-diagnostics-20261030/source-verification/summary.json",
+      "sha256": "ff55c40eff789ccb69489bfd5b76a013f7661ffea9a723610926325e75388819",
+      "bytes": 1317
+    },
+    {
+      "path": "build/decision-diagnostics-20261030/source-verification/source-manifest.json",
+      "sha256": "e1220b8ab2a8fdbe6b5c0bd903187dc1db3eedfabe9844356200216916e218cb",
+      "bytes": 25802
+    },
+    {
+      "path": "build/native-client-ci/20261029-221236-672375/summary.json",
+      "sha256": "dcddb4208a6f66d855035e7a5e41766871da92701a324f9031337e1f74d2737f",
+      "bytes": 7990
+    },
+    {
+      "path": "build/evaluation-process/20261029-221015-028523/summary.json",
+      "sha256": "f12bc55e554b1838fb0ea5fb84d01473e506c996e8b2b5218d64113938fafe5e",
+      "bytes": 471
+    },
+    {
+      "path": "build/evaluation-process/20261029-221707-086422/summary.json",
+      "sha256": "d13e804fa12bf6705d56ecf7ac3ccec60ede484d8a4a6bcb24a9a52a0f7bd57c",
+      "bytes": 471
+    },
+    {
+      "path": "build/decision-diagnostics-20261030/packaged-metrics-preflight.json",
+      "sha256": "37e3419fa1782bc13f0def9af6633990a95b229d7761d80e437d2cd0122cdcf2",
+      "bytes": 1079
+    }
+  ],
+  "initial_local_verification_failure": "Ignored historical Magpie fault snippets under build/ were scanned by go test ./...; they were retained. All current tracked and nonignored new source was hash-checked in a clean temporary copy and tested with the full ./... commands.",
+  "limits": [
+    "Native packaged runtime verification is Windows amd64 only; other platforms have not run this candidate.",
+    "No real-account run, Desktop/dot acceptance, remote push or release is included.",
+    "Counters observe actual core decisions and a bounded numeric sample. They do not change continuation eligibility or restore missing historical observations."
+  ]
+}

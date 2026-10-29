@@ -297,6 +297,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			if err != nil {
 				return
 			}
+			s.metrics.decision(d)
 			if d.Next != nil {
 				d.Next["type"] = "response.create"
 				delete(d.Next, "stream")

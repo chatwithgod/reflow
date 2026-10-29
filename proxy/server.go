@@ -317,6 +317,7 @@ func (s *Server) foldHTTP(w http.ResponseWriter, r *http.Request, scope string, 
 			_ = emit(fold.Abort("upstream_error"))
 			return
 		}
+		s.metrics.decision(decision)
 		if decision.Next != nil {
 			wire = decision.Next
 			continue

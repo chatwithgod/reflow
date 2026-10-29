@@ -71,6 +71,15 @@ func TestHTTPMetricsCountUpstreamWhenFoldingOnAndOff(t *testing.T) {
 			if stats.Requests != want || stats.Continuations != int64(maximum) || stats.Completed != want || stats.InputTokens != 100*want || stats.OutputTokens != 526+30*int64(maximum) || !stats.UsageComplete {
 				t.Fatalf("incorrect upstream totals: %+v", stats)
 			}
+			if stats.DiagnosticsVersion != 1 || len(stats.ReasoningTokenSamples) != int(want) || stats.ReasoningTokenSamples[0] != 516 {
+				t.Fatalf("reasoning samples mismatch: %+v", stats)
+			}
+			if maximum == 0 && stats.FoldDecisions != (FoldDecisions{}) {
+				t.Fatal("pass-through fabricated a fold decision")
+			}
+			if maximum == 1 && (stats.FoldDecisions.Continue != 1 || stats.FoldDecisions.RuleNotMatched != 1 || stats.ReasoningTokenSamples[1] != 20) {
+				t.Fatalf("actual fold decisions not observed: %+v", stats.FoldDecisions)
+			}
 		})
 	}
 }
@@ -163,5 +172,9 @@ func TestWebSocketMetricsExcludeWarmupAndCountHiddenRound(t *testing.T) {
 	stats := readMetrics(t, url)
 	if stats.Requests != 2 || stats.Warmups != 1 || stats.Continuations != 1 || stats.InputTokens != 200 || stats.OutputTokens != 556 || !stats.UsageComplete {
 		t.Fatalf("WS metrics mismatch: %+v", stats)
+	}
+	if stats.DiagnosticsVersion != 1 || stats.FoldDecisions.Continue != 1 || stats.FoldDecisions.RuleNotMatched != 1 ||
+		len(stats.ReasoningTokenSamples) != 2 || stats.ReasoningTokenSamples[0] != 516 || stats.ReasoningTokenSamples[1] != 20 {
+		t.Fatalf("warmup leaked into fold diagnostics or decision not observed: %+v", stats)
 	}
 }

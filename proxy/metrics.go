@@ -13,27 +13,47 @@ import (
 // payloads. Usage is what observed streaming Responses replies reported, not
 // a monetary charge or an estimate of unreported canceled work.
 type Metrics struct {
-	Enabled                bool   `json:"enabled"`
-	Scope                  string `json:"scope"`
-	Requests               int64  `json:"requests"`
-	Continuations          int64  `json:"continuations"`
-	ContinuedToolResponses int64  `json:"continued_tool_responses"`
-	ContinuedToolCalls     int64  `json:"continued_tool_calls"`
-	ContinuedToolResults   int64  `json:"continued_tool_results"`
-	ToolTrackingDrops      int64  `json:"tool_tracking_drops"`
-	Warmups                int64  `json:"warmups"`
-	Completed              int64  `json:"completed"`
-	Failed                 int64  `json:"failed"`
-	UsageReports           int64  `json:"usage_reports"`
-	ParseErrors            int64  `json:"parse_errors"`
-	UnsupportedResponses   int64  `json:"unsupported_responses"`
-	InputTokens            int64  `json:"input_tokens"`
-	OutputTokens           int64  `json:"output_tokens"`
-	CachedTokens           int64  `json:"cached_tokens"`
-	CacheWriteTokens       int64  `json:"cache_write_tokens"`
-	ReasoningTokens        int64  `json:"reasoning_tokens"`
-	UsageComplete          bool   `json:"usage_complete"`
+	Enabled                 bool          `json:"enabled"`
+	Scope                   string        `json:"scope"`
+	Requests                int64         `json:"requests"`
+	Continuations           int64         `json:"continuations"`
+	ContinuedToolResponses  int64         `json:"continued_tool_responses"`
+	ContinuedToolCalls      int64         `json:"continued_tool_calls"`
+	ContinuedToolResults    int64         `json:"continued_tool_results"`
+	ToolTrackingDrops       int64         `json:"tool_tracking_drops"`
+	Warmups                 int64         `json:"warmups"`
+	Completed               int64         `json:"completed"`
+	Failed                  int64         `json:"failed"`
+	UsageReports            int64         `json:"usage_reports"`
+	ParseErrors             int64         `json:"parse_errors"`
+	UnsupportedResponses    int64         `json:"unsupported_responses"`
+	InputTokens             int64         `json:"input_tokens"`
+	OutputTokens            int64         `json:"output_tokens"`
+	CachedTokens            int64         `json:"cached_tokens"`
+	CacheWriteTokens        int64         `json:"cache_write_tokens"`
+	ReasoningTokens         int64         `json:"reasoning_tokens"`
+	UsageComplete           bool          `json:"usage_complete"`
+	DiagnosticsVersion      int           `json:"diagnostics_version,omitempty"`
+	FoldDecisions           FoldDecisions `json:"fold_decisions"`
+	ReasoningTokenSamples   []int64       `json:"reasoning_token_samples,omitempty"`
+	ReasoningSampleDrops    int64         `json:"reasoning_sample_drops"`
+	ReasoningMissingReports int64         `json:"reasoning_missing_reports"`
 }
+
+// Fixed labels from actual core decisions. These counters do not decide whether
+// to continue, and never copy arbitrary upstream strings or identifiers.
+type FoldDecisions struct {
+	Continue                    int64 `json:"continue"`
+	RuleNotMatched              int64 `json:"rule_not_matched"`
+	NoEncryptedContent          int64 `json:"no_encrypted_content"`
+	MaxContinue                 int64 `json:"max_continue"`
+	UnresolvedParent            int64 `json:"unresolved_parent"`
+	UpstreamToolAlreadyExecuted int64 `json:"upstream_tool_already_executed"`
+	UpstreamTerminal            int64 `json:"upstream_terminal"`
+	Other                       int64 `json:"other"`
+}
+
+const maxReasoningSamples = 64
 
 type metricsStore struct {
 	mu    sync.Mutex
@@ -72,8 +92,41 @@ func (s *metricsStore) snapshot() Metrics {
 	v := s.value
 	v.Enabled = true
 	v.Scope = "streaming_responses"
+	v.DiagnosticsVersion = 1
+	v.ReasoningTokenSamples = append([]int64(nil), v.ReasoningTokenSamples...)
 	v.UsageComplete = v.UsageReports == v.Requests && v.Failed == 0 && v.ParseErrors == 0 && v.UnsupportedResponses == 0
 	return v
+}
+
+// decision observes a successful Finish call only. Pass-through, prewarm and
+// aborted streams do not fabricate a decision that the core never made.
+func (s *metricsStore) decision(d core.Decision) {
+	if s == nil {
+		return
+	}
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	counts := &s.value.FoldDecisions
+	if d.Next != nil {
+		counts.Continue++
+		return
+	}
+	switch d.Result.StopReason {
+	case "rule_not_matched":
+		counts.RuleNotMatched++
+	case "no_encrypted_content":
+		counts.NoEncryptedContent++
+	case "max_continue":
+		counts.MaxContinue++
+	case "unresolved_parent":
+		counts.UnresolvedParent++
+	case "upstream_tool_already_executed":
+		counts.UpstreamToolAlreadyExecuted++
+	case "upstream_terminal":
+		counts.UpstreamTerminal++
+	default:
+		counts.Other++
+	}
 }
 
 func (r *metricRound) failed() {
@@ -153,6 +206,13 @@ func (r *metricRound) event(event core.Object) {
 	r.store.value.CachedTokens += cached
 	r.store.value.CacheWriteTokens += written
 	r.store.value.ReasoningTokens += reason
+	if _, present := reasoning["reasoning_tokens"]; !present {
+		r.store.value.ReasoningMissingReports++
+	} else if len(r.store.value.ReasoningTokenSamples) < maxReasoningSamples {
+		r.store.value.ReasoningTokenSamples = append(r.store.value.ReasoningTokenSamples, reason)
+	} else {
+		r.store.value.ReasoningSampleDrops++
+	}
 }
 
 type meteredBody struct {
