@@ -1,0 +1,288 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-29T05:56:50.149060+00:00",
+  "authorization": "one native-login LRU on session; user confirmation repeated for the same one session, now consumed",
+  "runner_source_commit": "9f3c504e1a4a5d38e96436729610e25f6bf7de1b",
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "source_record": {
+    "path": "build/evaluations/20261029-055452-658494/results.json",
+    "sha256": "2fe9e85bfd1e1f9ade65b9c39568a6e1d3378c085ae5468fbfc24ecc0bfcfb84",
+    "bytes": 5062
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-lru-official-0165-plan.json",
+    "sha256": "1b05319e88dbac7fcf6b53b9b654a3bb98b45c1e498c91d7abc85e6a6235a030",
+    "bytes": 4315
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-lru-official-0165-live.py",
+    "sha256": "173aab601072e76e472ee24bc47f976e0795d897846a85465bc92dcbffc6df5f",
+    "bytes": 6990
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "lru",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "lru",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 43.533,
+        "client_reported_usage": {
+          "input_tokens": 77318,
+          "cached_input_tokens": 73472,
+          "output_tokens": 1304,
+          "reasoning_output_tokens": 16
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 3,
+        "file_change_events": 1,
+        "tool_failure_events": 1,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 9.636,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 9.857,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 10.512,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "failed",
+            "exit_code": 1
+          },
+          {
+            "at_seconds": 13.639,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 14.269,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 19.977,
+            "event": "item.started",
+            "kind": "file_change",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 20.171,
+            "event": "item.completed",
+            "kind": "file_change",
+            "status": "completed"
+          },
+          {
+            "at_seconds": 32.548,
+            "event": "item.started",
+            "kind": "command_execution",
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 33.25,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 37.56,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "upstream_metrics": {
+          "requests": 5,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 5,
+          "failed": 0,
+          "usage_reports": 5,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 77318,
+          "output_tokens": 1304,
+          "cached_tokens": 73472,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 16,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 77318,
+          "output_tokens": 1304,
+          "cached_tokens": 73472,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 16
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "score": {
+          "status": "scored",
+          "total": 9,
+          "passed": 9,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "checks": {
+    "single_authorized_session_executed": true,
+    "no_auto_repeat": true,
+    "normal_finish": true,
+    "file_changed_and_original_grader_passed": true,
+    "reported_usage_reconciled": true,
+    "tool_failure_events": 1,
+    "max_observed_local_tool_overlap": 1,
+    "continuation_tool_finish_acceptance": false,
+    "reason_for_no_acceptance": "zero real continuations and zero continued-tool results; one command failure also occurred",
+    "exact_failed_command_cause_known": false,
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "code_mode_host": 0,
+      "reflow": 0,
+      "codex": 0
+    },
+    "approved_binaries_and_sources_unchanged": true,
+    "temporary_api_key_reused": false
+  },
+  "cumulative_native_login": {
+    "sessions": 9,
+    "observed_inference_requests": 51,
+    "continuations": 1
+  },
+  "official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-lru-official-0165-20261029/authorization.json",
+      "sha256": "a321ee18300651439912feebc9639556e1c4db3b71e25abc535d7c325d676731",
+      "bytes": 744
+    },
+    {
+      "path": "build/live-authorized-lru-official-0165-20261029/started.once",
+      "sha256": "3a65e95fd5f5760d92299b36a5b6df8a316c249756f4d879f7d325e521a16e7e",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-lru-official-0165-20261029/process-precheck.json",
+      "sha256": "9c0208983cd3e1234cc978c042926d692c92448176610ae214363111407ea0c1",
+      "bytes": 60
+    },
+    {
+      "path": "build/live-authorized-lru-official-0165-20261029/invariants.json",
+      "sha256": "ba417049f64f60cca0490f6ba9f73c4d84d7723230c4c3dd95669a5e068311e0",
+      "bytes": 1823
+    },
+    {
+      "path": "build/live-authorized-lru-official-0165-20261029/process-cleanup.json",
+      "sha256": "162f6ccffc328a938c701ac98b66b703925142573044100cbd1486655fb89876",
+      "bytes": 456
+    }
+  ],
+  "limits": [
+    "The one real continuation in the cumulative native-login history remains the earlier timed-out session. This LRU session did not trigger continuation.",
+    "The file grade and normal exit establish this task result, not a continuation-to-successful-tool-to-normal-finish closure or a paired quality comparison.",
+    "One command exited 1 at 10.512 seconds; its command and output were not retained, so its exact cause is unknown. Later command events and file modification completed successfully.",
+    "Only fixed event labels and numeric summaries were kept; no chat body, tool command/output, credential, or encrypted reasoning is included.",
+    "No Desktop/dot, active token refresh, Pi real-account, production change, remote push, binary release, Magpie upstream, or OSS submission acceptance was added."
+  ]
+}
