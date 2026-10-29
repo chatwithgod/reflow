@@ -146,7 +146,7 @@ func main() {
 		fmt.Println(`{"type":"item.completed","item":{"id":"SYNTHETIC_PRIVATE_SENTINEL","type":"command_execution","status":"failed","exit_code":1,"aggregated_output":"AssertionError: SYNTHETIC_PRIVATE_SENTINEL"}}`)
 	}
 	task := ""
-	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache"} {
+	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache", "ledger": "reconcile"} {
 		if strings.Contains(prompt, name) {
 			task = id
 		}
@@ -162,6 +162,11 @@ func main() {
 	}
 	if err := os.WriteFile(filepath.Join(work, "solution.py"), []byte(oracles[task]), 0600); err != nil {
 		os.Exit(2)
+	}
+	if strings.Contains(prompt, "SYNTHETIC_MUTATE_CHECKER") {
+		if err := os.WriteFile(filepath.Join(work, "verify_fixture.py"), []byte("# changed synthetic checker\n"), 0600); err != nil {
+			os.Exit(2)
+		}
 	}
 	fmt.Println(`{"type":"item.completed","item":{"type":"agent_message","text":"SYNTHETIC_PRIVATE_SENTINEL"}}`)
 	fmt.Printf("{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":10,\"cached_input_tokens\":2,\"output_tokens\":%d,\"reasoning_output_tokens\":1}}\n", 5+health.MaxContinue)

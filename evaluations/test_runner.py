@@ -91,6 +91,26 @@ class RunnerProcessTests(unittest.TestCase):
             self.assertLessEqual(event["at_seconds"], event["counter_probe_started_seconds"])
             self.assertLessEqual(event["counter_probe_started_seconds"], event["counter_probe_finished_seconds"])
 
+    def test_ledger_workspace_check_survives_normal_agent(self):
+        self.check_ledger_workspace(False)
+
+    def test_ledger_workspace_tampering_stops_success_even_when_grade_passes(self):
+        self.check_ledger_workspace(True)
+
+    def check_ledger_workspace(self, tamper):
+        with tempfile.TemporaryDirectory(prefix="reflow-workspace-runner-") as temporary:
+            args = self.args()
+            args.workspace_smoke_check = True
+            record = evaluation.run_trial(args, {"task": "ledger", "condition": "on", "repeat": 0, "max_continue": 1},
+                ("SYNTHETIC_MUTATE_CHECKER " if tamper else "") + "reconcile",
+                '{"auth_mode":"chatgpt","tokens":{"access_token":"synthetic-evaluation-token"}}', Path(temporary),
+                require_inference=False)
+            self.assertEqual(record["score"]["passed"], 18)
+            self.assertEqual(record["success"], not tamper)
+            self.assertEqual(record["status"], "fixture_changed" if tamper else "finished")
+            self.assertEqual(record["workspace_fixture"]["unchanged"], not tamper)
+            self.assertEqual(list(Path(temporary).iterdir()), [])
+
 
 if os.name == "nt":
     @unittest.skipUnless(os.environ.get("REFLOW_EVAL_FAKE_CODEX") and os.environ.get("REFLOW_EVAL_REFLOW_BIN"),
