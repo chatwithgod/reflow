@@ -1,0 +1,112 @@
+{
+  "status": "awaiting_new_explicit_authorization",
+  "prepared_date": "2026-10-29",
+  "prepared_source_commit": "010c00b8e2f23598c68f3417b6498f43de65aab7",
+  "source_plan": {
+    "path": "build/evaluations/20261029-055139-561433/results.json",
+    "sha256": "e1ba5f25bef44f9b13ea2d359a5a9ca051e3cc0ea0c6421f25907f77b7e6afed",
+    "bytes": 902
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "a54da941cf7f5abacfcbdd5af5d8c6b5744383919c94f6c992da7dad52194790",
+    "task_sources": {
+      "tasks.py": "61e44f73c699f0a39267b697600e7bb82c067c7c8aa085f9365862efef8b428c",
+      "score.py": "1b4d150b3555c71f05daaabe0e2f91a89609d591562ae09cdbd9c01012d2e9cc",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    "trials": [
+      {
+        "task": "lru",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-lru-official-0165-live.py",
+    "sha256": "173aab601072e76e472ee24bc47f976e0795d897846a85465bc92dcbffc6df5f",
+    "bytes": 6990
+  },
+  "execution_guard": "build/live-authorized-lru-official-0165-20261029/started.once",
+  "offline_preflight": {
+    "path": "build/evaluations/20261029-055139-804473/summary.json",
+    "sha256": "d0f8156dd4766b33d428fda42f6b86949db1e6f95aceb1df24732d4425f86119",
+    "bytes": 922
+  },
+  "execution_preflight": {
+    "kind": "windows_mxc",
+    "status": "pass",
+    "code_mode_host_present": true,
+    "code_mode_host_launchable": true,
+    "command_write_verified": true,
+    "workspace_write_verified": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "model_calls": 0,
+    "native_filesystem_write_verified": true,
+    "out_of_workspace_write_blocked": true,
+    "native_filesystem_reason": "pass"
+  },
+  "original_runner_and_task_hashes_unchanged": true,
+  "grader_checks": 9,
+  "allowed_scope_if_approved": [
+    "one existing LRU on session with gpt-6.1-sol/high; no prompt, grader, or continuation-rule changes",
+    "one native client at a time; native subagents disabled",
+    "180-second model-session timeout; at most one continuation per response round",
+    "native ChatGPT login copied into a temporary profile after no-account preflight",
+    "stop on detected rate limit; no automatic rerun for zero continuations"
+  ],
+  "excluded_scope": [
+    "temporary official API key reuse",
+    "Desktop/dot UI",
+    "production configuration, installed client replacement or service restart",
+    "remote publication or submission",
+    "active token-refresh test",
+    "additional sessions"
+  ],
+  "acceptance_checks": [
+    "at least one real continuation and matched subsequent tool result",
+    "normal client exit with a completed turn and valid upstream inference evidence",
+    "file changed and all original LRU grading checks passed",
+    "no observed tool failure, rate limit, upstream failure, parse error or tracking drop",
+    "complete reported usage and cleanup/protected-file invariants verified"
+  ],
+  "continuation_guaranteed": false,
+  "more_likely_to_continue_than_other_tasks": "not established",
+  "quality_comparison": false,
+  "one_session_may_make_multiple_inference_requests": true,
+  "new_model_calls": 0,
+  "native_login_read_in_preparation": false,
+  "existing_native_login_totals": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  },
+  "existing_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  }
+}

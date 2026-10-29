@@ -42,3 +42,5 @@ Ubuntu [发行版依赖对照](docs/LINUX-SANDBOX-CONTROL.md)已获批执行三�
 后续无账号调查核对了同版本 Ubuntu 源码及安装包：bwrap profile 引用 ABI 4.0，但该 ABI 未声明 io_uring，足以导致已观察到的规则告警。默认关闭的兼容选项只接受固定版本和两条精确告警，会省略兼容编译/加载的这一项 `Werror`；原生写入、文件与网络边界及清理要求不变。历史准备范围见 [准备记录](docs/evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。
 
 该候选及前轮/API 证据提交 `e2f4dda`、`d86ac49` 已获授权推送。常规 CI 三平台通过，Ubuntu 34 项控制测试全部执行通过后，单次 [第四轮 Ubuntu 对照](https://github.com/chatwithgod/reflow/actions/runs/40824531617)成功：同一 runner 原有五个写入场景从 0/5 变为 5/5，普通/race 各 10 项、文件/网络边界、配置清理及直接命令反向对照通过；全局设置、客户端二进制和原断言未变。默认自动 CI 的 Ubuntu/托管 Windows 写入失败保留，四个原生任务实际串行，真实模型调用 0，API key 未再次使用。完整来源见 [第四轮证据](docs/evidence/linux-sandbox-control-fourth-run-2026-10-29.json)。这补齐了固定配置下的 Ubuntu 离线验收，没有完成原生真实续接或 Desktop/dot 验收。
+
+下一次原生登录候选已冻结为 [LRU 单次开启组](docs/evidence/next-live-lru-official-0165-plan.json)：官方 CLI `0.165.0`、dev.4、`gpt-6.1-sol/high`，并发 1、禁用子代理、180 秒、每轮最多续接一次。无账号预检与文件散列检查通过，原始任务和 9 项评分检查不变；尚未获得本轮真实调用授权，准备过程调用模型 0 次。自然续接仍不保证，官方 API key 不再使用。
