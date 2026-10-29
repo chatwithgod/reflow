@@ -15,6 +15,8 @@ Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、
 
 2026-10-29，[原生客户端流水线](NATIVE-CI.md) 已公开并完成三平台执行：固定客户端依赖，按当前平台打包，并实际运行 ZIP 解压后的独立服务和插件。三个 runner 的四组客户端普通/race 检查均为 10 通过、0 跳过；macOS arm64 的五个写文件场景也通过。Ubuntu amd64 和托管 Windows 的五个写入场景全部失败。后续无账号对照确认，Ubuntu 的独立 user namespace/UID 映射命令被拒绝，该 Windows runner 的 MXC 不可用；这些证据尚不能解释全部补丁失败。此前本机 Windows 的五场景成功记录单独保留。Linux arm64/macOS amd64 尚缺原生验证。
 
+后续单独授权的 [Ubuntu 兼容对照](LINUX-SANDBOX-CONTROL.md)在同一 runner 证明：只安装依赖时直接沙箱命令仍失败，加载固定发行版配置并接受精确 ABI 告警后，普通/race 各 10 项、五个原有写入场景及文件/网络边界全部通过；移除配置后直接命令再次被拒绝。全局限制和客户端二进制未变。Ubuntu 的通过范围依赖这些明确前提，默认原生 CI 和托管 Windows 的写入失败仍保留。
+
 2026-10-26 测得官方 `0.164.0` 和应用附带的 `0.164.0-alpha.11.1` 写入失败；本地加入上游修复后通过，见 [历史复现](NATIVE-WRITE-PROBE.md)。2026-10-29，上表两版未修改的官方客户端在本机 Windows 均通过无账号预检、五个写入场景和协议/插件 race 定向检查。这是本机新版本的离线行为证据，真实会话仍未完整验收。见 [新版本复测](NATIVE-CLIENT-2026-10-29.md)。
 
 独立代理还覆盖 HTTP/SSE、预热、取消、gzip/zstd 请求、compact 透传、多轮恢复与缓存隔离。上述协议回归主要使用模拟客户端/上游，不能推导为 Desktop/dot 已验收。详情见 [dev.4 验证记录](VERIFICATION-0.1.0-dev.4.md)。
@@ -37,7 +39,7 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 尚未完成
 
-真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、Linux/托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入和二进制发布尚未完成。源码已公开，macOS arm64 已有上文所列离线客户端和构件证据。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入和二进制发布尚未完成。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
 
 2026-10-26 补充：原生 ChatGPT 登录已完成真实推理请求和工作区代码修改。开启组观察到一次续接，但会话超时，尚未完成“续接、后续工具、正常结束”的整体验收。首次实测及其限制见 [真实测试记录](LIVE-SMOKE-2026-10-26.md)。
 

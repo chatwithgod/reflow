@@ -33,10 +33,12 @@
 
 2026-10-29 最新实测：官方 `0.165.0` 的单次 NDJSON 诊断在 61.101 秒正常结束，评分 9/9，6 次推理请求，续接 0 次；出现一次命令失败，后续完成文件修改。未检测到限流，生产配置与登录文件未变，临时目录及本轮进程已清理。累计 8 次真实会话、46 次推理请求、1 次续接，见 [官方版实测](docs/LIVE-OFFICIAL-0165-2026-10-29.md)。这次一次性授权已使用完。Desktop/dot 按用户决定暂留未验收，不自动追加界面或模型测试。
 
-剩余关键验收是原生真实续接完整会话及 Desktop/dot 界面。真实 Token 刷新、其他 harness 的真实账号、CI 写入失败原因及其余平台/构件仍需验证。公开源码和常规离线 CI 已完成，新原生客户端 CI 部分通过；二进制发布、商店、上游提交及 OSS 申请仍分别处理。申请文案见 [本地草稿](docs/OSS-APPLICATION-DRAFT.md)，不得把测试计数当作社区使用数据。
+剩余关键验收是原生真实续接完整会话及 Desktop/dot 界面。真实 Token 刷新、其他 harness 的真实账号、托管 Windows 写入问题及其余平台/构件仍需验证；Ubuntu 的条件性通过范围见下文。公开源码和常规离线 CI 已完成，新原生客户端 CI 部分通过；二进制发布、商店、上游提交及 OSS 申请仍分别处理。申请文案见 [本地草稿](docs/OSS-APPLICATION-DRAFT.md)，不得把测试计数当作社区使用数据。
 
 Ubuntu [发行版依赖对照](docs/LINUX-SANDBOX-CONTROL.md)已获批执行三轮。`aec9cf9` 已推送，常规 CI 三平台通过，Ubuntu 26 项控制测试全部通过，包含真实 dpkg 私有数据库及 AppArmor 参数检查。第三轮成功安装依赖后，在无内核加载的编译预检中捕获 `io_uring` 规则未生效告警，严格 `Werror` 使流程停止；没有尝试加载配置，尚无修正后的原生写入结果。记录的内核设置未变，四个原生任务实际无重叠，真实模型调用 0。尚不能区分内核能力与有效策略 ABI 的具体原因，原有写入断言保持不变。见 [第三轮证据](docs/evidence/linux-sandbox-control-third-run-2026-10-29.json)。
 
 同日另获用户提供的临时官方 API key 授权，独立完成一次 [API 流式与工具回传检查](docs/LIVE-API-KEY-2026-10-29.md)：`gpt-6.1-sol/high` 经 Reflow dev.4 的 2 次推理请求完成，固定本地工具执行一次，结果回传及最终答案核对通过，耗时 7.037 秒。推理 token 和续接均为 0；这是专用 Responses 客户端的 API 证据，原生登录的 8 次会话、46 次请求、1 次续接累计值保持单独记录。已通知用户可删除临时 key，不继续使用。
 
-后续无账号调查核对了同版本 Ubuntu 源码及安装包：bwrap profile 引用 ABI 4.0，但该 ABI 未声明 io_uring，足以导致已观察到的规则告警。准备了默认关闭、仅接受固定版本和两条精确告警的兼容选项；它会省略兼容编译/加载的这一项 `Werror`，原生写入、文件与网络边界及清理要求不变。本机 31 项通过、3 项 Linux 检查跳过，待新授权后先跑常规 CI，再决定是否执行临时 runner 对照；没有新的远程执行或真实调用。见 [准备记录](docs/evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。
+后续无账号调查核对了同版本 Ubuntu 源码及安装包：bwrap profile 引用 ABI 4.0，但该 ABI 未声明 io_uring，足以导致已观察到的规则告警。默认关闭的兼容选项只接受固定版本和两条精确告警，会省略兼容编译/加载的这一项 `Werror`；原生写入、文件与网络边界及清理要求不变。历史准备范围见 [准备记录](docs/evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。
+
+该候选及前轮/API 证据提交 `e2f4dda`、`d86ac49` 已获授权推送。常规 CI 三平台通过，Ubuntu 34 项控制测试全部执行通过后，单次 [第四轮 Ubuntu 对照](https://github.com/chatwithgod/reflow/actions/runs/40824531617)成功：同一 runner 原有五个写入场景从 0/5 变为 5/5，普通/race 各 10 项、文件/网络边界、配置清理及直接命令反向对照通过；全局设置、客户端二进制和原断言未变。默认自动 CI 的 Ubuntu/托管 Windows 写入失败保留，四个原生任务实际串行，真实模型调用 0，API key 未再次使用。完整来源见 [第四轮证据](docs/evidence/linux-sandbox-control-fourth-run-2026-10-29.json)。这补齐了固定配置下的 Ubuntu 离线验收，没有完成原生真实续接或 Desktop/dot 验收。

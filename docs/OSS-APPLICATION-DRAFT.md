@@ -32,7 +32,8 @@ The source is public; there is no packaged release or verified adoption data yet
 | 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
 | 公开源码及三平台离线 CI | [仓库](https://github.com/chatwithgod/reflow)、[修复提交](https://github.com/chatwithgod/reflow/commit/23eb3bef11f2cb5951599d08ca6ecd76a946619d)、[通过的 CI](https://github.com/chatwithgod/reflow/actions/runs/40679721072)；各 69 个通过项，4 个客户端联调跳过 |
 | 原生登录 8 次会话、46 次推理请求、1 次续接 | [原生登录实测](LIVE-OFFICIAL-0165-2026-10-29.md)及其关联的前序记录；最新官方版 9/9、续接 0 次，包含一次命令失败 |
-| 官方 API 1 次会话、2 次推理请求、0 次续接 | [API 流式与工具回传](LIVE-API-KEY-2026-10-29.md)；专用 Responses 客户端，固定本地函数执行与最终答案核对通过；本地记录尚未推送 |
+| 官方 API 1 次会话、2 次推理请求、0 次续接 | [API 流式与工具回传](LIVE-API-KEY-2026-10-29.md)；专用 Responses 客户端，固定本地函数执行与最终答案核对通过；记录已随 `e2f4dda` 公开 |
+| Ubuntu 固定配置下的离线写入恢复 | [获批手动对照](https://github.com/chatwithgod/reflow/actions/runs/40824531617)；同一 runner 写入 0/5 到 5/5，隔离边界和清理通过；明确 ABI 告警例外，默认 CI 失败保留 |
 | Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；公开模块及设置页检查见[最新记录](../adapters/magpie/PUBLIC-MODULE.md)，宿主全量仍未通过 |
 
 官方版实测记录已随 [fdef7b5](https://github.com/chatwithgod/reflow/commit/fdef7b50c1fe93130f02bb500f16aa90c3a07562) 及其前序提交公开。申请时可引用上述固定提交及 CI 链接；最新宿主对照状态见 [Ubuntu 对照记录](LINUX-SANDBOX-CONTROL.md)。Magpie 补丁仍未提交上游，不能写成已合并贡献。

@@ -42,7 +42,7 @@
     "The official 0.165.0 session passed 9/9 and ended normally with zero continuations, after one command failure",
     "One separately authorized official API session completed two streaming requests and a fixed local function roundtrip, with zero reasoning tokens and zero continuations; native-login totals remain separate."
   ],
-  "latest_offline_ci_record": "evidence/linux-sandbox-control-third-run-2026-10-29.json",
+  "latest_offline_ci_record": "evidence/linux-sandbox-control-fourth-run-2026-10-29.json",
   "verified_project_fields": {
     "public_github_repository_url": "https://github.com/chatwithgod/reflow"
   },

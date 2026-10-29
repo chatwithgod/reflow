@@ -1,19 +1,19 @@
 # Ubuntu 原生写入：发行版沙箱依赖对照
 
-状态：`cf500dd` 已公开并完成第二轮对照，软件包采集修正及依赖安装已在 Ubuntu 验证。严格模式的 AppArmor 加载失败，尚未运行修正后的原生写入检查。新增编译诊断和摘要修正已在本地准备，等待新授权。没有新增真实账号调用。
+状态：`d86ac49` 已公开，第四轮获批兼容对照通过。同一台 Ubuntu runner 上，安装发行版依赖并加载固定 AppArmor 配置后，原有五个写入场景从 0/5 变为 5/5，普通/race、文件与网络边界、配置移除及直接命令反向对照均通过。兼容告警选项仍默认关闭；默认原生 CI 的失败记录保留，没有新增真实账号调用。
 
-此前[第四轮宿主对照](NATIVE-CI.md)确认，Ubuntu runner 的独立 user namespace/UID 映射检查被拒绝，直接 Codex 沙箱命令也因 bubblewrap 权限失败。AppArmor 的全局 user namespace 限制值为 1。现有证据没有证明全部补丁失败都来自同一原因。
+此前[第四轮宿主对照](NATIVE-CI.md)确认，Ubuntu runner 的独立 user namespace/UID 映射检查被拒绝，直接 Codex 沙箱命令也因 bubblewrap 权限失败。AppArmor 的全局 user namespace 限制值为 1。当时的证据尚不能解释全部补丁失败；本页后续在同一 runner 的完整对照补充了发行版配置对五个写入场景的实际效果。
 
 [OpenAI 官方说明](https://learn.chatgpt.com/docs/sandboxing?surface=app&translationFallback=zh-Hans)建议在 Linux 安装发行版 `bubblewrap`；Ubuntu 24.04 可能还需要加载发行版附带的 `bwrap-userns-restrict` 配置。[Codex 0.165.0 的启动代码](https://github.com/openai/codex/blob/rust-v0.165.0/codex-rs/linux-sandbox/src/launcher.rs)也优先选择系统 bwrap，并检查其支持的选项。此次候选对照依据这一路径，不修改 Reflow、Codex 二进制或原有五个写入场景。
 
-## 准备的执行流程
+## 执行流程
 
 单独的 [Linux 工作流](../.github/workflows/linux-sandbox-control.yml)只接受手动触发，确认开关默认为关闭。脚本还检查仓库、工作流名称、手动事件、GitHub 托管环境、Ubuntu 24.04 amd64 和非 root 用户。与原生客户端工作流共用串行队列，跨工作流也只运行一个原生客户端任务。
 
 1. 在同一临时 runner 先运行原来的完整客户端检查。若已经全部通过，仅补查文件和网络边界，不安装软件或加载配置。
 2. 只有普通/race 均通过、五个写入场景全部失败，并复现原先的 bubblewrap/UID 映射拒绝时，才继续尝试发行版依赖。其他失败直接停止。
 3. 在该临时 runner 安装 `bubblewrap`、`apparmor-profiles`、`apparmor-utils`，记录安装前后的相关软件包版本与系统 bwrap 散列，再进行无账号对照。若安装软件包已解决直接启动问题，不额外加载配置。
-4. 若仍失败，只读取发行版原文件，确认它声明的配置名称恰好是 `bwrap` 和 `unpriv_bwrap`，且同名配置尚未加载。新版先进行无 sudo、跳过内核加载和缓存的编译预检；通过后才用 `apparmor_parser --add` 加载。编译和加载均保留 `Werror`，同时开启对应警告的文字输出，只提取固定标记及计数。拒绝覆盖已有配置，不复制自定义规则到系统目录，也不修改全局 sysctl。
+4. 若仍失败，只读取发行版原文件，确认它声明的配置名称恰好是 `bwrap` 和 `unpriv_bwrap`，且同名配置尚未加载。先进行无 sudo、跳过内核加载和缓存的编译预检；通过后才用 `apparmor_parser --add` 加载。默认路径保留 `Werror`；单独授权的 ABI 兼容选项及其精确限制见后文。只记录固定告警标记和计数，拒绝覆盖已有配置，不复制自定义规则到系统目录，也不修改全局 sysctl。
 5. 再运行原来的普通、race 和五个写入场景，所有断言仍必须通过。另用无账号直接命令检查工作区可写、工作区外写入被拒绝，以及普通进程可连接的本地监听端口在沙箱内不可连接。
 6. 正常或异常退出时，移除本次尝试加载的两项配置，包括部分加载的情况；核对配置确已移除、记录的三项内核设置未变。若手动加载解决了直接启动问题，卸载后还必须再次复现原先的拒绝，才能完成前后对照。
 
@@ -74,7 +74,7 @@ python scripts/check-linux-sandbox.py --check-only
 
 预检失败后未执行 `profile_add`、`profile_remove` 或 candidate 原生检查，也没有正向/反向对照或文件与网络边界的通过证据；记录的三项内核设置未变。[自动原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40819402621) 仍为三平台普通/race 各 10 项通过、macOS 写入 5/5、Ubuntu/托管 Windows 写入 0/5。四个原生任务的实际时间段没有重叠，全部使用合成登录，真实模型调用 0。完整数字与散列见 [第三轮执行记录](evidence/linux-sandbox-control-third-run-2026-10-29.json)。
 
-## 发行版 ABI 核对与待授权候选
+## 发行版 ABI 核对与兼容选项
 
 随后从 [Ubuntu 官方源包目录](https://archive.ubuntu.com/ubuntu/pool/main/a/apparmor/)读取 CI 对应的 `4.0.1really4.0.1-0ubuntu0.24.04.9` 源码包和二进制安装包，仅在本地解出所需文件，没有安装或执行 Linux 程序。源码归档的 SHA-256 与 `.dsc` 一致；未验证 `.dsc` 的 PGP 签名。安装包中的 bwrap 配置与 CI 记录的散列完全一致，其 ABI 4.0 和 parser.conf 也与对应源码文件一致。
 
@@ -84,4 +84,23 @@ python scripts/check-linux-sandbox.py --check-only
 
 **这个选项会明确省略兼容编译和加载命令中的 `Werror=rule-not-enforced`。** 它只接受两个指定 profile 各一条完整、完全匹配的 io_uring 告警，标准输出必须为空、退出码必须为 0；任何其他告警、错误、版本或文件变化都停止。发行版规则、全局 sysctl 和原生写入断言不变。加载成功后仍需通过原来的普通/race、五个写入场景、文件和网络边界，以及移除后的反向对照。发现同名配置已存在且尚未发起本次加载时，不执行移除。
 
-本地 31 项通过、3 项 Linux 检查跳过；新增 Linux 夹具用同一个 ABI 文件，分别构造含有和不含 io_uring 的内核能力文件，检查严格模式失败和兼容编译告警，始终跳过内核加载。这项真实编译夹具尚未在 Linux 运行。后续应先确认常规 CI 三平台通过、Ubuntu 三项专用检查全部执行且无跳过，再考虑单次手动对照。候选没有推送，也没有远程执行；它改变了编译告警的处理条件，需要针对这一变化的新授权。准备证据见 [ABI 兼容候选](evidence/linux-sandbox-abi4-preparation-2026-10-29.json)。
+准备时本地 31 项通过、3 项 Linux 检查跳过；新增 Linux 夹具用同一个 ABI 文件，分别构造含有和不含 io_uring 的内核能力文件，检查严格模式失败和兼容编译告警，始终跳过内核加载。候选及边界的历史快照见 [ABI 兼容准备](evidence/linux-sandbox-abi4-preparation-2026-10-29.json)，其后经单独授权完成了下面的远程验证。
+
+## 第四轮：原有五个写入场景全部通过
+
+用户授权推送 `e2f4dda`、`d86ac49`，并明确允许本轮启用固定 ABI 告警例外。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40824258479) 三平台全部通过：Go 普通/race 各 70 通过、4 跳过，vet、fuzz 和合成评测通过；Ubuntu 34 项控制测试全部执行通过，三项专用检查没有跳过。Windows/macOS 各为 31 通过、3 项按平台跳过。确认前置条件后只触发一次 [手动兼容对照](https://github.com/chatwithgod/reflow/actions/runs/40824531617)，`run_attempt` 为 1，最终成功。
+
+| 同一 runner 的阶段 | 直接沙箱命令 | 原有五个写入场景 |
+| --- | --- | --- |
+| 原始基线 | 拒绝 | 0/5 |
+| 只安装发行版依赖 | 仍拒绝 | 此阶段未重跑完整五场景 |
+| 加载固定发行版配置 | 通过 | 5/5 |
+| 移除本次配置 | 再次拒绝 | 此阶段未重跑完整五场景 |
+
+三个 AppArmor 包版本及四个文件散列均匹配候选，runner 的 io_uring 特性路径确实存在，安装的 ABI 4.0 则与不含 io_uring 的固定文件一致。严格编译如预期退出 1；兼容编译和加载均退出 0，分别只产生两条精确 io_uring 告警。软件包版本仍为 bubblewrap `0.9.0-1ubuntu0.3`、AppArmor `4.0.1really4.0.1-0ubuntu0.24.04.9`。
+
+加载后的完整客户端普通/race 各 10 项通过，五个写入场景及父测试共 6 项通过；前后客户端二进制散列一致，候选测试临时目录已清理。额外边界检查确认工作区可写、工作区外写入被阻止，普通进程可连接的本机监听端口在沙箱内不可连接。移除命令退出 0，随后确认两个 profile 均不存在；直接沙箱命令重新出现原来的拒绝。三项内核设置全程未变，独立 user namespace 探针全程仍被拒绝。
+
+这次证明了固定发行版配置在该 runner 上能恢复原有五个写入场景；没有逐条隔离 profile 中每条规则对各写入路径的作用。反向对照使用直接沙箱命令，没有再跑一次完整五场景。固定版本、明确告警例外和临时宿主设置是成功的前提，不能推广成所有 Linux 宿主默认可用。
+
+[自动原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40824258517) 仍保持原配置：三平台普通/race 通过，macOS 写入 5/5，Ubuntu/托管 Windows 写入 0/5，整体按原断言判失败。自动三平台任务与手动对照四段实际执行时间无重叠；真实模型调用 0，未再使用临时 API key，本机生产配置未改。完整来源、数字和散列见 [第四轮结果](evidence/linux-sandbox-control-fourth-run-2026-10-29.json)。

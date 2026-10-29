@@ -29,6 +29,8 @@ Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取
 
 此前官方 `0.164.0` 和 `0.164.0-alpha.11.1` 的 Windows 原生补丁写入失败；加入上游修复的隔离源码构件通过了五个写入场景，以及原生协议、插件回归，见 [历史复现](docs/NATIVE-WRITE-PROBE.md)。后续 `0.165.0` 和 `0.165.0-alpha.1.2` 已通过本机 Windows 的定向离线检查，见 [官方客户端复测](docs/NATIVE-CLIENT-2026-10-29.md)。三平台原生 CI 的客户端普通/race 均通过，macOS arm64 写入通过，Ubuntu/托管 Windows 写入仍失败；[宿主对照](docs/NATIVE-CI.md)已复现对应基础隔离限制。
 
+后续获批的 [Ubuntu 兼容对照](docs/LINUX-SANDBOX-CONTROL.md)已使同一 runner 的五个写入场景从 0/5 变为 5/5，文件/网络边界及配置清理也通过。成功依赖固定发行版配置和明确的 ABI 告警例外；该选项默认关闭，原有自动 CI 失败记录保留。托管 Windows 和完整真实续接验收仍待完成。
+
 公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
@@ -90,7 +92,7 @@ reflow codex-config --action restore
 - **Pi CLI 1.4.0**：临时隔离环境配合合成 OAuth 凭证，跑通 SSE 与 WebSocket 双路径的续接流程。内置 `read` 工具读取合成文件，工具结果回传；被舍弃轮次的读操作没有执行。
 - **Codex CLI 0.164.0-alpha.11.1**：使用合成 ChatGPT 凭证，纯 WebSocket、无 HTTP 回退，实际执行一次本地只读 MCP 工具，并回传结果。此前 shell 工具测试有过断言误判，已修正并保留失败记录。
 
-Windows amd64 本机与 macOS arm64 CI 已有原生客户端和打包构件的离线执行证据。三平台 CI 的协议/插件/Pi 普通及 race 检查通过；五个写文件场景在 macOS 通过，Ubuntu/托管 Windows 失败，Linux arm64/macOS amd64 尚缺原生验证。最新范围见 [原生 CI 记录](docs/NATIVE-CI.md)与[兼容性](docs/COMPATIBILITY.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
+Windows amd64 本机、macOS arm64 CI，以及采用上述固定发行版配置的 Ubuntu amd64 已有原生客户端和打包构件的离线执行证据。默认三平台 CI 的协议/插件/Pi 普通及 race 检查通过；其 Ubuntu/托管 Windows 写入失败仍保留，Linux arm64/macOS amd64 尚缺原生验证。最新范围见 [原生 CI 记录](docs/NATIVE-CI.md)与[兼容性](docs/COMPATIBILITY.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
 
 这些测试只证明已覆盖场景的行为符合预期，不等同于真实线上账号的 OAuth 验收，也尚未验证真实 Token 自动刷新、Codex Desktop / dot、跨连接恢复的完整边界或实际模型输出质量。
 

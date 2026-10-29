@@ -1,0 +1,1270 @@
+{
+  "date_local": "2026-10-29",
+  "timezone": "Asia/Shanghai",
+  "repository": "https://github.com/chatwithgod/reflow",
+  "published_commit": "d86ac492d88926fe4c735cd7816af373d05af3ca",
+  "published_commits": [
+    "e2f4dda881d3cc056c06704b89c04977689e1769",
+    "d86ac492d88926fe4c735cd7816af373d05af3ca"
+  ],
+  "remote_main_verified": "d86ac492d88926fe4c735cd7816af373d05af3ca",
+  "offline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40824258479",
+    "conclusion": "success",
+    "jobs": [
+      {
+        "name": "offline (windows-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": {
+          "total": 34,
+          "pass": 31,
+          "skip": 3,
+          "fail": 0
+        },
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": {
+          "total": 34,
+          "pass": 34,
+          "skip": 0,
+          "fail": 0
+        },
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      },
+      {
+        "name": "offline (macos-latest)",
+        "normal": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "race": {
+          "pass": 70,
+          "skip": 4,
+          "fail": 0
+        },
+        "control_unit_tests": {
+          "total": 34,
+          "pass": 31,
+          "skip": 3,
+          "fail": 0
+        },
+        "vet": "pass",
+        "fuzz": "pass",
+        "synthetic_evaluation": "pass"
+      }
+    ]
+  },
+  "native_baseline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40824258517",
+    "conclusion": "failure",
+    "platforms": {
+      "ubuntu": {
+        "status": "fail",
+        "platform": "linux/amd64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": false
+          },
+          "uid_is_root": false,
+          "kernel_release": "7.0.0-1017-azure",
+          "kernel_settings": {
+            "kernel/apparmor_restrict_unprivileged_userns": 1,
+            "kernel/unprivileged_userns_clone": 1,
+            "user/max_user_namespaces": 58121
+          },
+          "parent_apparmor_unconfined": true,
+          "namespace_controls": {
+            "user": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_mount": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            },
+            "user_network": {
+              "status": "fail",
+              "exit_code": 1,
+              "timed_out": false,
+              "stdout_bytes": 0,
+              "stderr_bytes": 66,
+              "matching_output": {
+                "operation_not_permitted": 1,
+                "namespace_setup": 1,
+                "uid_gid_mapping": 1
+              }
+            }
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 61,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "bubblewrap": 1
+            },
+            "workspace_marker_verified": false
+          }
+        },
+        "client_sha256": {
+          "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+          "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+        },
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false
+          }
+        }
+      },
+      "windows": {
+        "status": "fail",
+        "platform": "windows/amd64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": true,
+            "pwsh": true,
+            "powershell": true
+          },
+          "windows_version": {
+            "major": 10,
+            "minor": 0,
+            "build": 26100,
+            "product_type": 3
+          },
+          "native_sandbox_command": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 81,
+            "matching_output": {
+              "windows_mxc": 1,
+              "mxc_unavailable": 1
+            },
+            "workspace_marker_verified": false
+          },
+          "native_filesystem_rpc": {
+            "native_filesystem_write_verified": false,
+            "out_of_workspace_write_blocked": false,
+            "native_filesystem_reason": "filesystem_probe_failed"
+          }
+        },
+        "client_sha256": {
+          "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+          "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+        },
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false
+          }
+        }
+      },
+      "macos": {
+        "status": "pass",
+        "platform": "darwin/arm64",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "host_diagnostics": {
+          "model_calls": 0,
+          "existing_login_read": false,
+          "host_configuration_modified": false,
+          "purpose": "diagnostic context only; original write-test gates remain mandatory",
+          "shells_available": {
+            "bash": true,
+            "sh": true,
+            "cmd": false,
+            "pwsh": true,
+            "powershell": true
+          },
+          "native_sandbox_command": {
+            "status": "pass",
+            "exit_code": 0,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 0,
+            "matching_output": {},
+            "workspace_marker_verified": true
+          }
+        },
+        "client_sha256": {
+          "codex": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+          "code_mode_host": "e723d01c65aba4b81451d486d57318232b2738889de67c35051734be917d96ba"
+        },
+        "client_binaries_unchanged": true,
+        "isolated_profile_removed": true,
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "missing_tests": [],
+            "failed_names": [],
+            "package_passed": true
+          }
+        }
+      }
+    }
+  },
+  "linux_control_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40824531617",
+    "conclusion": "success",
+    "summary": {
+      "status": "pass",
+      "model_calls": 0,
+      "existing_login_read": false,
+      "max_native_clients": 1,
+      "production_modified": false,
+      "packages_installed": true,
+      "source_commit": "d86ac492d88926fe4c735cd7816af373d05af3ca",
+      "source_sha256": {
+        "scripts/check-linux-sandbox.py": "c07130334c89cdabc4706132816dd421ced63bd44c0e2c20170ea7890499b045",
+        "scripts/test-linux-sandbox-control.py": "def3e56c13d52c7a4ef3c3f3d34962a6b7f7a8e4ad7733d1123d0d1110d5ee7d",
+        "scripts/check-native-clients.py": "5c5b7167ff5a033ef6e09afa100a74fa61e17afaaa97ffa220a65f6347f796bb",
+        ".github/workflows/linux-sandbox-control.yml": "16cabda9467492565c4d4be7e2005d40ca837f5c53f3756d1661e6fa49acbb29",
+        ".github/workflows/native-clients.yml": "eb1ae01faa2768ae33d5a1039bf1ea4d04b8b62520a77a3ab87f7b46d751384f",
+        ".github/workflows/offline.yml": "1dc6049ecd9ed15a49f195f8d59a4f943e2200a33cfa9ca0f0b0cafdf10d0cbd"
+      },
+      "abi4_io_uring_exception_requested": true,
+      "original_kernel_settings": {
+        "kernel/apparmor_restrict_unprivileged_userns": 1,
+        "kernel/unprivileged_userns_clone": 1,
+        "user/max_user_namespaces": 58121
+      },
+      "commands": [
+        {
+          "stage": "baseline",
+          "exit_code": 1,
+          "stdout_bytes": 10041,
+          "stderr_bytes": 892
+        },
+        {
+          "stage": "package_versions_before_bubblewrap",
+          "exit_code": 1,
+          "stdout_bytes": 0,
+          "stderr_bytes": 50
+        },
+        {
+          "stage": "package_versions_before_apparmor",
+          "exit_code": 0,
+          "stdout_bytes": 38,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "package_versions_before_apparmor-profiles",
+          "exit_code": 1,
+          "stdout_bytes": 0,
+          "stderr_bytes": 57
+        },
+        {
+          "stage": "package_versions_before_apparmor-utils",
+          "exit_code": 0,
+          "stdout_bytes": 5,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "apt_update",
+          "exit_code": 0,
+          "stdout_bytes": 1694,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "apt_install",
+          "exit_code": 0,
+          "stdout_bytes": 3339,
+          "stderr_bytes": 237
+        },
+        {
+          "stage": "package_versions_after_bubblewrap",
+          "exit_code": 0,
+          "stdout_bytes": 21,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "package_versions_after_apparmor",
+          "exit_code": 0,
+          "stdout_bytes": 38,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "package_versions_after_apparmor-profiles",
+          "exit_code": 0,
+          "stdout_bytes": 38,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "package_versions_after_apparmor-utils",
+          "exit_code": 0,
+          "stdout_bytes": 38,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "profile_names",
+          "exit_code": 0,
+          "stdout_bytes": 19,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "loaded_profiles",
+          "exit_code": 0,
+          "stdout_bytes": 3595,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "profile_compile",
+          "exit_code": 1,
+          "stdout_bytes": 0,
+          "stderr_bytes": 134,
+          "matching_output": {
+            "warning_as_error": 1,
+            "rule_not_enforced": 1,
+            "io_uring": 1
+          }
+        },
+        {
+          "stage": "profile_compile_abi4_compat",
+          "exit_code": 0,
+          "stdout_bytes": 0,
+          "stderr_bytes": 237,
+          "matching_output": {
+            "rule_not_enforced": 2,
+            "io_uring": 2
+          }
+        },
+        {
+          "stage": "loaded_profiles",
+          "exit_code": 0,
+          "stdout_bytes": 3595,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "profile_add",
+          "exit_code": 0,
+          "stdout_bytes": 0,
+          "stderr_bytes": 237,
+          "matching_output": {
+            "rule_not_enforced": 2,
+            "io_uring": 2
+          }
+        },
+        {
+          "stage": "loaded_profiles",
+          "exit_code": 0,
+          "stdout_bytes": 3634,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "candidate",
+          "exit_code": 0,
+          "stdout_bytes": 7509,
+          "stderr_bytes": 0
+        },
+        {
+          "stage": "profile_remove",
+          "exit_code": 0,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {}
+        },
+        {
+          "stage": "loaded_profiles",
+          "exit_code": 0,
+          "stdout_bytes": 3595,
+          "stderr_bytes": 0
+        }
+      ],
+      "native_reports": {
+        "baseline": {
+          "path": "build/native-client-ci/20261029-054414-390317/summary.json",
+          "sha256": "b89efb1436b4754689b6009e21a948d754663267c67136cdab88eaa180b29601"
+        },
+        "candidate": {
+          "path": "build/native-client-ci/20261029-054559-745228/summary.json",
+          "sha256": "747a31cd05ea571ed7cac3f7d4b133fc88242a166d9f57c3a5dd6fde017e7ba5"
+        }
+      },
+      "package_states_before": {
+        "bubblewrap": {
+          "state": "not-found",
+          "selection": null,
+          "error": null,
+          "version": null
+        },
+        "apparmor": {
+          "state": "installed",
+          "selection": "install",
+          "error": "none",
+          "version": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+        },
+        "apparmor-profiles": {
+          "state": "not-found",
+          "selection": null,
+          "error": null,
+          "version": null
+        },
+        "apparmor-utils": {
+          "state": "not-installed",
+          "selection": "unknown",
+          "error": "none",
+          "version": null
+        }
+      },
+      "package_versions_before": {
+        "apparmor": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+      },
+      "package_states_after": {
+        "bubblewrap": {
+          "state": "installed",
+          "selection": "install",
+          "error": "none",
+          "version": "0.9.0-1ubuntu0.3"
+        },
+        "apparmor": {
+          "state": "installed",
+          "selection": "install",
+          "error": "none",
+          "version": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+        },
+        "apparmor-profiles": {
+          "state": "installed",
+          "selection": "install",
+          "error": "none",
+          "version": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+        },
+        "apparmor-utils": {
+          "state": "installed",
+          "selection": "install",
+          "error": "none",
+          "version": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+        }
+      },
+      "package_versions_after": {
+        "bubblewrap": "0.9.0-1ubuntu0.3",
+        "apparmor": "4.0.1really4.0.1-0ubuntu0.24.04.9",
+        "apparmor-profiles": "4.0.1really4.0.1-0ubuntu0.24.04.9",
+        "apparmor-utils": "4.0.1really4.0.1-0ubuntu0.24.04.9"
+      },
+      "system_bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+      "after_packages": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 61,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "bubblewrap": 1
+          },
+          "workspace_marker_verified": false
+        }
+      },
+      "profile": {
+        "sha256": "11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9",
+        "profile_names": [
+          "bwrap",
+          "unpriv_bwrap"
+        ],
+        "source": "Ubuntu apparmor-profiles package; unmodified vendor file"
+      },
+      "abi4_vendor_sha256": {
+        "profile": "11d39094f044f0cda0febb3ad517b830301da6b2ce929664af09ee9e4dd264f9",
+        "abi": "e510bb8f6788b45e48de2f859a6f94a7b8416cbac5a1051814cfce925fa911bd",
+        "parser_config": "f8586f1c3bfd7abac6a182c1b45d22a8397c0db5a737b54bc8f9fc48da53d5bd",
+        "parser": "85e67b4ebc2559cc84c7d256d14890b8a7521e0278aedd544e13a3204a387d05"
+      },
+      "abi4_kernel_features": {
+        "userns_create": true,
+        "profile_stacking": true,
+        "sys_admin_capability": true,
+        "io_uring_feature_present": true
+      },
+      "abi4_io_uring_exception": {
+        "explicitly_enabled": true,
+        "strict_preflight_failed_as_expected": true,
+        "compatibility_compile_passed": true,
+        "exact_vendor_warnings": 2,
+        "rule_not_enforced_Werror_omitted_in_compatibility_commands": true,
+        "load_returned_success_with_exact_warnings": true
+      },
+      "profile_load_attempted": true,
+      "after_profile": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      },
+      "boundaries": {
+        "workspace_write_verified": true,
+        "outside_workspace_write_blocked": true,
+        "local_listener_reachable_without_sandbox": true,
+        "local_listener_blocked_in_sandbox": true
+      },
+      "outcome": "profile_candidate_passed",
+      "profile_removal_exit_code": 0,
+      "added_profiles_removed": true,
+      "after_profile_removal": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 61,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "bubblewrap": 1
+          },
+          "workspace_marker_verified": false
+        }
+      },
+      "profile_positive_control_verified": true,
+      "profile_reversal_tested": true,
+      "profile_reversal_reproduced": true,
+      "global_kernel_settings_unchanged": true
+    },
+    "baseline": {
+      "status": "fail",
+      "platform": "linux/amd64",
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 61,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "bubblewrap": 1
+          },
+          "workspace_marker_verified": false
+        }
+      },
+      "client_sha256": {
+        "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+        "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+      },
+      "client_binaries_unchanged": null,
+      "isolated_profile_removed": null,
+      "checks": {
+        "native": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "race": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "write": {
+          "status": "fail",
+          "tests": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 6
+          },
+          "missing_tests": [
+            "TestCodexNativeWriteProbe"
+          ],
+          "failed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "package_passed": false
+        }
+      }
+    },
+    "candidate": {
+      "status": "pass",
+      "platform": "linux/amd64",
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1017-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      },
+      "client_sha256": {
+        "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+        "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+      },
+      "client_binaries_unchanged": true,
+      "isolated_profile_removed": true,
+      "checks": {
+        "native": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "race": {
+          "status": "pass",
+          "tests": {
+            "pass": 10,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        },
+        "write": {
+          "status": "pass",
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "missing_tests": [],
+          "failed_names": [],
+          "package_passed": true
+        }
+      }
+    },
+    "interpretation": "On the same disposable Ubuntu runner, installing distro packages alone did not fix the direct sandbox command. With the exact pinned ABI-warning exception and vendor profiles loaded, all original native protocol/race and five write scenarios passed. File/network boundary controls passed, and removing the profiles restored the direct-command denial without changing recorded global restrictions.",
+    "same_client_binary_hashes_before_after": true,
+    "positive_direct_control_verified": true,
+    "negative_direct_control_after_removal_verified": true,
+    "full_five_write_suite_after_removal_executed": false
+  },
+  "execution_intervals": [
+    {
+      "workflow": "native",
+      "name": "native-clients (ubuntu-latest)",
+      "started_utc": "2026-10-29T05:35:23Z",
+      "completed_utc": "2026-10-29T05:37:26Z",
+      "conclusion": "failure"
+    },
+    {
+      "workflow": "native",
+      "name": "native-clients (windows-latest)",
+      "started_utc": "2026-10-29T05:37:30Z",
+      "completed_utc": "2026-10-29T05:40:46Z",
+      "conclusion": "failure"
+    },
+    {
+      "workflow": "native",
+      "name": "native-clients (macos-latest)",
+      "started_utc": "2026-10-29T05:40:51Z",
+      "completed_utc": "2026-10-29T05:43:36Z",
+      "conclusion": "success"
+    },
+    {
+      "workflow": "linux-control",
+      "name": "linux-control",
+      "started_utc": "2026-10-29T05:43:41Z",
+      "completed_utc": "2026-10-29T05:46:22Z",
+      "conclusion": "success"
+    }
+  ],
+  "observed_max_parallel_native_jobs": 1,
+  "manual_control_dispatches": 1,
+  "manual_control_attempts": 1,
+  "new_live_sessions": 0,
+  "new_live_model_calls": 0,
+  "temporary_api_key_reused": false,
+  "production_modified": false,
+  "evidence_files": [
+    {
+      "path": "build/linux-control-fourth-publication-20261029/authorization.json",
+      "sha256": "d5d33d16a278f6e6ee566596c8b6196104adf6aa0f24e1ce2d815c763533c4c0",
+      "bytes": 842
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/push-receipt.json",
+      "sha256": "5c9050ab72c4aefadf5f66a4367b04a2d3587fe1d7459a41a817f9355e5df9a1",
+      "bytes": 274
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/dispatch-receipt.json",
+      "sha256": "201cca0f893746a0c02b7cd46dff6a3873299d89f0236c84207ca9e09ea6bbda",
+      "bytes": 548
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/dispatch-prerequisite.json",
+      "sha256": "7637e004e515b2ce54d1269673e03fa8a422e9056a2be09827659f24948ec04b",
+      "bytes": 586
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/ubuntu-offline-job.log",
+      "sha256": "f1af09f96ddc3960addcc98a42e4df02851d2b22a7dcbab9e695a5bb57bbf2fb",
+      "bytes": 251253
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/offline-summary.json",
+      "sha256": "272fb89c83f916f01dc61c1b858d44f18f6d854f3254a040d7aff63485f353a5",
+      "bytes": 1444
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/offline-run.json",
+      "sha256": "3d79ac07d574141f8d0212716ae737f957935e4b5a70331600d4336f42ee6199",
+      "bytes": 10831
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/offline-run.log",
+      "sha256": "77a77ac6f65b5c4a0f6a4cc098af707c8f70d643ca40df8937cf969e9e26ca46",
+      "bytes": 748154
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/native-run.json",
+      "sha256": "4a43753fea6b29a5f43024c74616d10bdc20aa038587d5c1a16d9b571332edec",
+      "bytes": 12652
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/native-run.log",
+      "sha256": "a647724455b8e8abe2e305e7d57fc188370abf885d0546c2fc877b45acf8e362",
+      "bytes": 198340
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/linux-control-run.json",
+      "sha256": "f1c168b5b9ee43d4a6e9b5567eeb7c0bb3935bcc8ac25a570ad45112513a1fc9",
+      "bytes": 4660
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/linux-control-run.log",
+      "sha256": "b08f6bd99b0ec8d6bef81deea26333534b9edf72add65669aeb2a86aa7487422",
+      "bytes": 61560
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/remote-run-attempt.json",
+      "sha256": "1f2cfc57c538f5a476fad40434dc706d8f189767842d4f7fe9b3d789f81e3078",
+      "bytes": 192
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/ubuntu/20261029-053548-304230/summary.json",
+      "sha256": "66347d5d681613d622e25e9653ccf6761915ec00b971e8c88af8b7d13d56e974",
+      "bytes": 12381
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/windows/20261029-053832-611828/summary.json",
+      "sha256": "55735847e5094cba6e5bce5a1a6f82f6ca59bf43c0fa4edaecaade08d8d8409d",
+      "bytes": 12008
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/macos/20261029-054138-417487/summary.json",
+      "sha256": "4a192fd8119f48af809825202e0b5bce9efe732ae16ad03bcfc0760a4bf51fe8",
+      "bytes": 7376
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/control/linux-sandbox-control/20261029-054414-340679/summary.json",
+      "sha256": "736db5902514c8459df30f76de4f869bd15ec6435c9dea0b57b96883486beef8",
+      "bytes": 27704
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/control/native-client-ci/20261029-054414-390317/summary.json",
+      "sha256": "b89efb1436b4754689b6009e21a948d754663267c67136cdab88eaa180b29601",
+      "bytes": 12381
+    },
+    {
+      "path": "build/linux-control-fourth-publication-20261029/control/native-client-ci/20261029-054559-745228/summary.json",
+      "sha256": "747a31cd05ea571ed7cac3f7d4b133fc88242a166d9f57c3a5dd6fde017e7ba5",
+      "bytes": 8597
+    }
+  ],
+  "limits": [
+    "Ubuntu success is conditional on the approved pinned distro configuration and explicit warning exception on this disposable runner; the unchanged default native workflow still fails its Ubuntu write checks.",
+    "Compatibility compile and load omitted rule-not-enforced Werror only after strict failure and exact fixed-warning/identity checks; global policy and original write assertions were not relaxed.",
+    "The io_uring kernel feature path was present and the installed ABI hash matched the file that excludes io_uring; this is not a comprehensive test of kernel io_uring operations.",
+    "The five write scenarios were rerun after profile installation, while reversal after removal used the no-account direct sandbox probe, not another complete five-write suite.",
+    "This one-run intervention supports the distro-profile prerequisite as the effective fix for this runner; it does not isolate which individual profile rule governs each previously failing write path.",
+    "The stock hosted Windows write failure remains; macOS arm64 and local Windows successes retain their previously stated scope.",
+    "Native client calls used synthetic login and local mock upstreams. No real continuation, token-refresh, Desktop/dot, Pi real-account, release, Magpie upstream, or OSS submission acceptance was added."
+  ],
+  "existing_native_login_totals_unchanged": {
+    "sessions": 8,
+    "observed_inference_requests": 46,
+    "continuations": 1
+  },
+  "existing_official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  }
+}
