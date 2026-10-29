@@ -46,8 +46,9 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 type nativeLoginMode struct {
 	codeMode, nativeWrite, direct, command, add, noDaemon, appServer, paginated bool
 	// Optional fixed synthetic command and in-memory JSON observer for opt-in diagnostics.
-	probeCommand  string
-	observeOutput func(*testing.T, []byte)
+	probeCommand    string
+	observeOutput   func(*testing.T, []byte)
+	reasoningEffort string
 }
 
 func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
@@ -75,7 +76,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		t.Fatal(err)
 	}
 	var mu sync.Mutex
-	var calls, wsCalls, httpCalls, chosenTools, discardedTools int
+	var calls, wsCalls, httpCalls, chosenTools, discardedTools, effortMatches int
 	var authSeen, toolSeen, resumeSeen bool
 	var paths []string
 	var toolDiagnostics nativeToolDiagnostics
@@ -140,6 +141,9 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		calls++
 		n := calls
 		authSeen = authSeen || header.Get("Authorization") == "Bearer "+jwt
+		if reasoning, ok := body["reasoning"].(map[string]any); ok && mode.reasoningEffort != "" && reasoning["effort"] == mode.reasoningEffort {
+			effortMatches++
+		}
 		mu.Unlock()
 		var events []core.Object
 		if (n <= 2 && !mode.direct) || (n == 1 && mode.direct) {
@@ -341,9 +345,13 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	if nativeWrite {
 		prompt = "Synthetic local protocol test. You may modify only probe.txt and discarded.txt in this temporary workspace. Use the read-only fixture tool to read the retained marker, then finish."
 	}
+	effort := "low"
+	if mode.reasoningEffort != "" {
+		effort = mode.reasoningEffort
+	}
 	args := []string{"-a", "never", "exec", "--ignore-user-config", "--ignore-rules", "--skip-git-repo-check", "--ephemeral", "--json", "-C", work, "-m", "gpt-6.1-sol",
 		"-c", "cli_auth_credentials_store=\"file\"", "-c", "openai_base_url=\"" + proxyURL + "\"", "-c", "chatgpt_base_url=\"" + chatgptURL + "\"",
-		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false", "-c", "model_reasoning_effort=\"low\"",
+		"-c", "features.memories=false", "-c", "features.apps=false", "-c", fmt.Sprintf("features.code_mode=%t", codeMode), "-c", "features.multi_agent=false", "-c", "features.multi_agent_v2=false", "-c", fmt.Sprintf("model_reasoning_effort=%q", effort),
 		"-c", "mcp_servers.reflow_fixture.url=\"" + mcp.URL + "\"",
 		"-c", "mcp_servers.reflow_fixture.tools.probe.approval_mode=\"approve\""}
 	if nativeWrite {
@@ -409,6 +417,12 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	}
 	if mode.appServer && !resumeSeen {
 		t.Fatal("app-server resume did not return retained tool history and the prior final message")
+	}
+	if mode.reasoningEffort != "" {
+		if effortMatches != expectedCalls {
+			t.Fatalf("reasoning effort preserved in %d of %d synthetic requests", effortMatches, expectedCalls)
+		}
+		t.Logf("REFLOW_NATIVE_EFFORT matched=%d expected=%d effort=%s", effortMatches, expectedCalls, mode.reasoningEffort)
 	}
 	t.Logf("installed CLI: %d synthetic inference calls via WebSocket, 1 real read-only MCP invocation, discarded call not executed, result returned; no HTTP fallback", calls)
 	if mode.direct {

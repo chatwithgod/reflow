@@ -85,3 +85,7 @@ func TestCodexNativeEventProbe(t *testing.T) {
 		})
 	}
 }
+
+func TestCodexXHighOffline(t *testing.T) {
+	verifyNativeLoginOffline(t, nativeLoginMode{codeMode: true, reasoningEffort: "xhigh"})
+}

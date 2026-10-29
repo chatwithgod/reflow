@@ -1,0 +1,207 @@
+{
+  "status": "awaiting_new_explicit_authorization",
+  "prepared_date": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "prepared_source_commit": "c94b7ce6ef22cce0fc0dc7042dfee2037eb7bb78",
+  "source_plan": {
+    "path": "build/evaluations/20261029-214653-847481/results.json",
+    "sha256": "daa95af6a6ceea58100002f20cfd9f79b46c161c90e8eb5e837844dee25e6adc",
+    "bytes": 1225
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "xhigh",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "runner_sha256": "c61e2f5157e0a5f37861913320e470790afebf73f07d967c5cb3ae5610e4925f",
+    "task_sources": {
+      "tasks.py": "ba2e02dab353349042d29175e24a186d75294f6daa53971666ba75f41e0bd0f2",
+      "score.py": "9a9911aa26d5e36b3bd10dbba1864a23e2bb11124ef022c67be86c4cb7cef5ce",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f",
+      "workspace_fixture.py": "bc55b32a6e58a6ceae2a6d90eb26f68b03e448960f9ad4eb29c241105d106abd"
+    },
+    "trials": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-ledger-xhigh-official-0165-live.py",
+    "sha256": "9ced93130c10b308cf42d1e57a783892f06b4c03864b2393112414b73a37fedc",
+    "bytes": 8750
+  },
+  "execution_guard": "build/live-authorized-ledger-xhigh-official-0165-20261030/started.once",
+  "offline_process_checks": {
+    "path": "build/evaluation-process/20261029-213322-058546/summary.json",
+    "sha256": "822c5558f60db0a4ba91e849a50b520bda1dc63d5d3b56c97256e186e6c0009b",
+    "bytes": 471
+  },
+  "offline_preflight": {
+    "path": "build/evaluations/20261029-213510-610563/summary.json",
+    "sha256": "3f2bea010183ca7e212331ce8d76076b883871dd42f62dc13b6bef7daf4d86bf",
+    "bytes": 922
+  },
+  "execution_preflight": {
+    "kind": "windows_mxc",
+    "status": "pass",
+    "code_mode_host_present": true,
+    "code_mode_host_launchable": true,
+    "command_write_verified": true,
+    "workspace_write_verified": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "model_calls": 0,
+    "native_filesystem_write_verified": true,
+    "out_of_workspace_write_blocked": true,
+    "native_filesystem_reason": "pass"
+  },
+  "validation_source_files": [
+    {
+      "path": "evaluations/test_runner.py",
+      "sha256": "0bb3638b89b8e362e6da29f73a9e485ea4eebb7b22439dc331c5a3600f0e873a",
+      "bytes": 11176
+    },
+    {
+      "path": "evaluations/test_event_diagnostics.py",
+      "sha256": "ca17bf3e2702b68a47999a0e646d44a3b3568e5c91da9e3396cc7304545f9989",
+      "bytes": 5250
+    },
+    {
+      "path": "evaluations/test_ledger_task.py",
+      "sha256": "638fac057b412bd6f2557343aada1d7e2b2f563e0b8a56c0e234069f3241b380",
+      "bytes": 2498
+    },
+    {
+      "path": "evaluations/test_workspace_fixture.py",
+      "sha256": "4e674b89134fbb64328fed34fb18ecd0331fa207b9c99a4a0c199dc94117cd5a",
+      "bytes": 1665
+    },
+    {
+      "path": "evaluations/testfixture/agent.go",
+      "sha256": "44f574ab39e0bdb156b6a21e634ed6e9ff69e268ad591b2c41c7d236e36bc1ad",
+      "bytes": 5865
+    },
+    {
+      "path": "scripts/check-evaluation.py",
+      "sha256": "ac115be5a54a7f616e861cc37c056c4c9efdd328cbb7d562de757dd7b6ddfb79",
+      "bytes": 4450
+    },
+    {
+      "path": "integration/codex_test.go",
+      "sha256": "3bd4c71ddc3049bb5e858d96535a6bca854003ad1c1b2b5721c37350256b2d44",
+      "bytes": 17552
+    },
+    {
+      "path": "integration/native_event_probe_test.go",
+      "sha256": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+      "bytes": 3760
+    }
+  ],
+  "unchanged_task_and_grader": true,
+  "grader_checks": 18,
+  "offline_checks_passed": 23,
+  "previous_session": {
+    "path": "docs/evidence/live-ledger-workspace-official-0165-2026-10-30.json",
+    "requests": 5,
+    "continuations": 0,
+    "continued_tool_results": 0,
+    "tool_failure_events": 0,
+    "finished": true,
+    "score": "18/18",
+    "strict_acceptance": false
+  },
+  "diagnostic_changes": [
+    "fixed failure markers from in-memory tool output; no text retained",
+    "bounded numeric tool ordinals; missing, duplicate and overflow identifiers reported",
+    "up to 80 local counter probes at tool events, 0.2-second timeout, disabled after first failure",
+    "probe timestamps are recorded separately; snapshots are not atomic tool-success proof"
+  ],
+  "allowed_scope_if_approved": [
+    "one new native ChatGPT-login ledger on session; gpt-6.1-sol/xhigh",
+    "official Codex 0.165.0 and Reflow dev.4; continuation rules unchanged",
+    "one client, no native subagents, 180-second timeout, max one continuation per response",
+    "stop on detected rate limit; no automatic repeat; native login copied only after no-account preflight",
+    "append truthful workspace context and supply immutable verify_fixture.py; normal native tools remain enabled"
+  ],
+  "excluded_scope": [
+    "temporary API key reuse",
+    "Desktop/dot UI",
+    "production change or service restart",
+    "push, release, upstream submission or OSS application",
+    "additional live sessions",
+    "active token refresh test"
+  ],
+  "acceptance_checks": [
+    "real continuation and matched subsequent tool result",
+    "normal exit and completed turn; artifact changed; all 18 grading checks pass",
+    "no tool failure, rate limit, upstream failure, parse error or tracking drop",
+    "complete usage, event trace and cleanup/protected-file invariants",
+    "supplied verification file remains byte-for-byte unchanged"
+  ],
+  "continuation_guaranteed": false,
+  "quality_comparison": false,
+  "new_model_calls_in_preparation": 0,
+  "native_login_read_in_preparation": false,
+  "existing_native_login_totals": {
+    "sessions": 12,
+    "observed_inference_requests": 69,
+    "continuations": 2
+  },
+  "existing_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "native_checker_preflight": {
+    "path": "build/ledger-workspace-preparation-20261030/native-checker-preflight.json",
+    "sha256": "6da66d7494eb86d7f2cea8320c43b47960219e41dc6b83f891eeace6f8449a14",
+    "bytes": 329
+  },
+  "workspace_changes": {
+    "extra_file": "verify_fixture.py",
+    "smoke_checks": 6,
+    "checker_sha256": "61daf6e7765e0b8e761e4dc33f7c450d60c54d1b943a5d00d5ca33c2df840b8b",
+    "guidance_sha256": "b5697bdf1f08c2ecd52941c6e92d402c255fe91a0dab633712e43bebaf816020",
+    "original_algorithm_specification_unchanged": true,
+    "original_18_grading_checks_unchanged": true,
+    "guidance_appended_to_prompt": true,
+    "checker_edit_or_removal_rejects_success": true,
+    "prior_tool_failures_explained_or_fixed": false,
+    "changed_from_previous_workspace_trial": false
+  },
+  "effort_forwarding_evidence": {
+    "path": "docs/evidence/native-xhigh-preparation-2026-10-30.json",
+    "sha256": "f42229eaeb64380dc892d03b436aac8fc7678cfc0a244d319659be5d34d5acde",
+    "bytes": 1680
+  },
+  "change_from_previous": {
+    "effort": {
+      "from": "high",
+      "to": "xhigh"
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "date_local": "2026-10-30",
+  "official_client": "0.165.0",
+  "reflow_version": "0.1.0-dev.4",
+  "real_model_calls": 0,
+  "trial_concurrency": 1,
+  "ordinary_xhigh_case_passed": true,
+  "race_xhigh_case_passed": true,
+  "existing_native_baseline_cases_passed": 2,
+  "matched_requests_per_xhigh_case": 3,
+  "synthetic_continuation_and_retained_tool_roundtrip_passed": true,
+  "logs": [
+    {
+      "path": "build/native-xhigh-preparation-20261030/ordinary.log",
+      "sha256": "accb858aee46703a295b43f7cced72636ac781a8741552b607829e979f1c4ac5",
+      "bytes": 1056
+    },
+    {
+      "path": "build/native-xhigh-preparation-20261030/race.log",
+      "sha256": "03ebbc419bb5a0de9413c87501f1f660974f17aba8d5df26f75207b3e6e5fa37",
+      "bytes": 392
+    }
+  ],
+  "source_files": [
+    {
+      "path": "integration/codex_test.go",
+      "sha256": "3bd4c71ddc3049bb5e858d96535a6bca854003ad1c1b2b5721c37350256b2d44",
+      "bytes": 17552
+    },
+    {
+      "path": "integration/native_event_probe_test.go",
+      "sha256": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+      "bytes": 3760
+    }
+  ],
+  "official_sources_checked": [
+    {
+      "url": "https://developers.openai.com/api/docs/models/gpt-6.1-sol",
+      "fact": "xhigh is a supported reasoning effort"
+    },
+    {
+      "url": "https://developers.openai.com/api/docs/guides/reasoning",
+      "fact": "reasoning is adaptive; effort does not guarantee a token boundary"
+    }
+  ],
+  "limits": [
+    "Synthetic replay verifies forwarding, not acceptance by the real account backend.",
+    "No claim that xhigh guarantees continuation or improves quality; latency and token use may increase."
+  ]
+}
