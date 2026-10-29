@@ -6,7 +6,12 @@ import importlib.util
 import json
 import os
 from pathlib import Path
+import sys
 import unittest
+
+# The scorer runs with -I; load only this trusted, fixed fixture directory.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from ledger_task import LedgerCases
 
 solution = None
 
@@ -169,6 +174,7 @@ class LRU(unittest.TestCase):
 
 
 CASES = {"intervals": Intervals, "topo": Topo, "ndjson": NDJSON, "lru": LRU}
+CASES["ledger"] = LedgerCases
 
 
 def main():
@@ -185,8 +191,11 @@ def main():
             spec = importlib.util.spec_from_file_location("solution", args.solution.resolve(strict=True))
             solution = importlib.util.module_from_spec(spec)
             spec.loader.exec_module(solution)
+            LedgerCases.solution = solution
             suite.run(result)
-        failures = [case.id().split(".")[-1] for case, _ in result.failures + result.errors]
+        # A case with several failing subtests is still one failed scoring check.
+        failures = sorted({getattr(case, "test_case", case)._testMethodName
+                           for case, _ in result.failures + result.errors})
         report = {"status": "scored", "total": total, "passed": result.testsRun - len(failures), "failed": failures}
     except BaseException as exc:
         report = {"status": "load_error", "total": total, "passed": 0, "error_type": type(exc).__name__}

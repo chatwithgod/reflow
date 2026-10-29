@@ -1,4 +1,5 @@
 """Small, deterministic maintenance tasks; these are not model-quality results."""
+from ledger_task import STARTER as LEDGER_STARTER, ORACLE as LEDGER_ORACLE
 
 STARTERS = {
     "intervals": "def merge_intervals(intervals):\n    return sorted(intervals)\n",
@@ -84,3 +85,6 @@ class LRUCache:
         return list(self.data)
 """,
 }
+
+STARTERS["ledger"] = LEDGER_STARTER
+ORACLES["ledger"] = LEDGER_ORACLE

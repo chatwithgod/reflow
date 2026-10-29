@@ -1,0 +1,120 @@
+{
+  "status": "authorized_prepared",
+  "prepared_date": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "prepared_source_commit": "d0f1be6101fc81a48de422cd740b4ae44879e919",
+  "source_plan": {
+    "path": "build/evaluations/20261029-205307-597076/results.json",
+    "sha256": "053915b81993bf57bd815dc6741044bb5790552277a86111317277510fca2513",
+    "bytes": 996
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "b87d8de8708876802b7196cd7e4bc1ebdda515132579fd2b60c5dcc5aefcce4d",
+    "task_sources": {
+      "tasks.py": "ba2e02dab353349042d29175e24a186d75294f6daa53971666ba75f41e0bd0f2",
+      "score.py": "9a9911aa26d5e36b3bd10dbba1864a23e2bb11124ef022c67be86c4cb7cef5ce",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08"
+    },
+    "trials": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-ledger-official-0165-live.py",
+    "sha256": "7690e7545a8a8ce05b32283d4cd3ff5887e42aa51f7f31690a7944cf85564e6a",
+    "bytes": 8519
+  },
+  "execution_guard": "build/live-authorized-ledger-official-0165-20261030/started.once",
+  "offline_process_checks": {
+    "path": "build/evaluation-process/20261029-205148-011690/summary.json",
+    "sha256": "110a2acf41dc1d8aed799b46cc904d37b421c3a82fdc822877eff45b935e9c70",
+    "bytes": 471
+  },
+  "offline_preflight": {
+    "path": "build/evaluations/20261029-205148-129919/summary.json",
+    "sha256": "754f9420238c1772ac905c95fd3d4b3d2d095fb07c91358615efb24128857c36",
+    "bytes": 922
+  },
+  "grader_self_check": {
+    "path": "build/evaluations/20261029-205148-081435/summary.json",
+    "sha256": "36521f778c962278978a985a9911d313465119e91044e2e95240f97494e859b5",
+    "bytes": 3150
+  },
+  "execution_preflight": {
+    "kind": "windows_mxc",
+    "status": "pass",
+    "code_mode_host_present": true,
+    "code_mode_host_launchable": true,
+    "command_write_verified": true,
+    "workspace_write_verified": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "model_calls": 0,
+    "native_filesystem_write_verified": true,
+    "out_of_workspace_write_blocked": true,
+    "native_filesystem_reason": "pass"
+  },
+  "grader_checks": 18,
+  "grader_mutation_controls": 8,
+  "allowed_scope": [
+    "one native ChatGPT-login ledger on session with gpt-6.1-sol/high",
+    "official Codex 0.165.0 and Reflow dev.4; original continuation rules unchanged",
+    "one client, no native subagents, 180-second timeout, max one continuation per response",
+    "native login copied only after no-account preflight; detected rate limit stops session; no auto-repeat"
+  ],
+  "excluded_scope": [
+    "temporary API key reuse",
+    "Desktop/dot UI",
+    "production change or service restart",
+    "push, release, upstream submission or OSS application",
+    "additional live sessions",
+    "active token refresh test"
+  ],
+  "acceptance_checks": [
+    "real continuation and matched subsequent tool result",
+    "normal exit and completed turn; artifact changed; all 18 grading checks pass",
+    "no tool failure, rate limit, upstream failure, parse error or tracking drop",
+    "complete usage, event trace and cleanup/protected-file invariants"
+  ],
+  "continuation_guaranteed": false,
+  "quality_comparison": false,
+  "new_model_calls_in_preparation": 0,
+  "native_login_read_in_preparation": false,
+  "existing_native_login_totals": {
+    "sessions": 9,
+    "observed_inference_requests": 51,
+    "continuations": 1
+  },
+  "existing_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  }
+}

@@ -17,6 +17,7 @@ import time
 import urllib.request
 
 from tasks import ORACLES, STARTERS
+from ledger_task import PROMPT as LEDGER_PROMPT
 from client_preflight import code_mode_host_probe, filesystem_probe
 
 HERE = Path(__file__).resolve().parent
@@ -306,7 +307,7 @@ def main():
     parser.add_argument("--auth-file", type=Path)
     parser.add_argument("--model")
     parser.add_argument("--effort", choices=["low", "medium", "high", "xhigh"], default="high")
-    parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(STARTERS))
+    parser.add_argument("--tasks", nargs="+", choices=sorted(STARTERS), default=sorted(set(STARTERS) - {"ledger"}))
     parser.add_argument("--conditions", nargs="+", choices=["off", "on"], default=["off", "on"])
     parser.add_argument("--repeats", type=int, default=1)
     parser.add_argument("--max-continue", type=int, default=3)
@@ -358,6 +359,7 @@ def main():
         print(f"Grader self-test passed for {len(outcomes)} tasks; no model calls. Evidence: {report}")
         return
     prompts = {item["id"]: item["prompt"] for item in json.loads((HERE / "prompts.json").read_text(encoding="utf-8"))}
+    prompts["ledger"] = LEDGER_PROMPT
     trials = []
     task_index = {task: index for index, task in enumerate(sorted(args.tasks))}
     rng = random.Random(args.seed)
@@ -377,7 +379,7 @@ def main():
             "trial_concurrency": 1, "native_subagents_enabled": False, "code_mode_enabled": True,
             "interval_seconds": args.interval_seconds,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):

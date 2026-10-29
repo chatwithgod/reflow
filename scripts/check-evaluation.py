@@ -69,7 +69,7 @@ def main():
                                           "./evaluations/testfixture/agent.go"])
             env.update(REFLOW_EVAL_FAKE_CODEX=str(fixture), REFLOW_EVAL_REFLOW_BIN=str(proxy))
             run("runner_process_tests", [sys.executable, "-W", "error::ResourceWarning", "-m", "unittest",
-                                         "discover", "-s", "evaluations", "-p", "test_runner.py", "-v"])
+                                         "discover", "-s", "evaluations", "-p", "test_*.py", "-v"])
             output = log.read_text(encoding="utf-8")
             count = re.search(r"Ran (\d+) tests? in", output)
             if not count or int(count.group(1)) < (10 if os.name == "nt" else 5) or "skipped=" in output:
