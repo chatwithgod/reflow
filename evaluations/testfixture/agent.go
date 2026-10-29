@@ -141,6 +141,10 @@ func main() {
 		time.Sleep(10 * time.Second)
 		os.Exit(1)
 	}
+	if strings.Contains(prompt, "SYNTHETIC_TOOL_ERRORS") {
+		fmt.Println(`{"type":"item.started","item":{"id":"SYNTHETIC_PRIVATE_SENTINEL","type":"command_execution","status":"in_progress","command":"SYNTHETIC_PRIVATE_SENTINEL"}}`)
+		fmt.Println(`{"type":"item.completed","item":{"id":"SYNTHETIC_PRIVATE_SENTINEL","type":"command_execution","status":"failed","exit_code":1,"aggregated_output":"AssertionError: SYNTHETIC_PRIVATE_SENTINEL"}}`)
+	}
 	task := ""
 	for id, name := range map[string]string{"intervals": "merge_intervals", "topo": "topological_order", "ndjson": "parse_chunks", "lru": "LRUCache"} {
 		if strings.Contains(prompt, name) {

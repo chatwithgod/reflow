@@ -74,6 +74,23 @@ class RunnerProcessTests(unittest.TestCase):
         self.assertTrue(record["rate_limit_detected"])
         self.assertFalse(record["success"])
 
+    def test_failed_tool_has_numeric_snapshot_and_fixed_marker_only(self):
+        record = self.execute("on", "SYNTHETIC_TOOL_ERRORS merge_intervals")
+        self.assertEqual(record["tool_failure_events"], 1)
+        diagnostics = record["event_diagnostics"]
+        self.assertEqual(diagnostics["counter_probes"], 2)
+        self.assertEqual(diagnostics["counter_probe_errors"], 0)
+        self.assertEqual(diagnostics["tool_id_tracking_drops"], 0)
+        self.assertEqual(diagnostics["failure_marker_counts"]["python_assertion"], 1)
+        tools = [item for item in record["event_trace"] if item["kind"] == "command_execution"]
+        self.assertEqual(len(tools), 2)
+        self.assertEqual(tools[0]["tool_ordinal"], tools[1]["tool_ordinal"])
+        self.assertEqual(tools[1]["failure_markers"], ["python_assertion"])
+        for event in tools:
+            self.assertEqual(event["proxy_counters"]["continuations"], 0)
+            self.assertLessEqual(event["at_seconds"], event["counter_probe_started_seconds"])
+            self.assertLessEqual(event["counter_probe_started_seconds"], event["counter_probe_finished_seconds"])
+
 
 if os.name == "nt":
     @unittest.skipUnless(os.environ.get("REFLOW_EVAL_FAKE_CODEX") and os.environ.get("REFLOW_EVAL_REFLOW_BIN"),

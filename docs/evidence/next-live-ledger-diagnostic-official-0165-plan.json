@@ -1,0 +1,160 @@
+{
+  "status": "awaiting_new_explicit_authorization",
+  "prepared_date": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "prepared_source_commit": "418c539cafeeab991289f3848572d373e5c376da",
+  "source_plan": {
+    "path": "build/evaluations/20261029-211104-327507/results.json",
+    "sha256": "29b5dddfc54788ec0eda1ec880a3634e4779c435f45ec9ca23a1d5e1f2ec6432",
+    "bytes": 1093
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "9a6cb52a6ca19f584c0d1b9b06f0b4fa7e9ffa905040c4319046061462e7e93e",
+    "task_sources": {
+      "tasks.py": "ba2e02dab353349042d29175e24a186d75294f6daa53971666ba75f41e0bd0f2",
+      "score.py": "9a9911aa26d5e36b3bd10dbba1864a23e2bb11124ef022c67be86c4cb7cef5ce",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f"
+    },
+    "trials": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-ledger-diagnostic-official-0165-live.py",
+    "sha256": "0e231963a18dec7d236f6a855494233e11e41add35184f48d6e6854d4341ce43",
+    "bytes": 8700
+  },
+  "execution_guard": "build/live-authorized-ledger-diagnostic-official-0165-20261030/started.once",
+  "offline_process_checks": {
+    "path": "build/evaluation-process/20261029-211024-418285/summary.json",
+    "sha256": "18facdf39ed381152ee79d419a3998dd26510911912e9fa590fd811e77494096",
+    "bytes": 471
+  },
+  "offline_preflight": {
+    "path": "build/evaluations/20261029-211102-794951/summary.json",
+    "sha256": "7049a8e65518cb2d7d503bc53b7d96d97bf20efd468251c1452a3f2c3d5d2825",
+    "bytes": 922
+  },
+  "execution_preflight": {
+    "kind": "windows_mxc",
+    "status": "pass",
+    "code_mode_host_present": true,
+    "code_mode_host_launchable": true,
+    "command_write_verified": true,
+    "workspace_write_verified": true,
+    "exit_code": 0,
+    "timed_out": false,
+    "model_calls": 0,
+    "native_filesystem_write_verified": true,
+    "out_of_workspace_write_blocked": true,
+    "native_filesystem_reason": "pass"
+  },
+  "validation_source_files": [
+    {
+      "path": "evaluations/test_runner.py",
+      "sha256": "09dd7fead42aefd49172170674b73d6aed30849d8d68c00bec638cf51d837a2c",
+      "bytes": 10011
+    },
+    {
+      "path": "evaluations/test_event_diagnostics.py",
+      "sha256": "ca17bf3e2702b68a47999a0e646d44a3b3568e5c91da9e3396cc7304545f9989",
+      "bytes": 5250
+    },
+    {
+      "path": "evaluations/test_ledger_task.py",
+      "sha256": "638fac057b412bd6f2557343aada1d7e2b2f563e0b8a56c0e234069f3241b380",
+      "bytes": 2498
+    },
+    {
+      "path": "evaluations/testfixture/agent.go",
+      "sha256": "2ed070bf42cbee9fa3773d8cbb44ba7b75cb1e28c5ab4a869d6e4ded41629d40",
+      "bytes": 5634
+    },
+    {
+      "path": "scripts/check-evaluation.py",
+      "sha256": "ac115be5a54a7f616e861cc37c056c4c9efdd328cbb7d562de757dd7b6ddfb79",
+      "bytes": 4450
+    }
+  ],
+  "unchanged_task_and_grader": true,
+  "grader_checks": 18,
+  "offline_checks_passed": 19,
+  "previous_session": {
+    "path": "docs/evidence/live-ledger-official-0165-2026-10-30.json",
+    "requests": 8,
+    "continuations": 1,
+    "continued_tool_results": 1,
+    "tool_failure_events": 2,
+    "finished": true,
+    "score": "18/18",
+    "strict_acceptance": false
+  },
+  "diagnostic_changes": [
+    "fixed failure markers from in-memory tool output; no text retained",
+    "bounded numeric tool ordinals; missing, duplicate and overflow identifiers reported",
+    "up to 80 local counter probes at tool events, 0.2-second timeout, disabled after first failure",
+    "probe timestamps are recorded separately; snapshots are not atomic tool-success proof"
+  ],
+  "allowed_scope_if_approved": [
+    "one new native ChatGPT-login ledger on session; gpt-6.1-sol/high",
+    "official Codex 0.165.0 and Reflow dev.4; continuation rules unchanged",
+    "one client, no native subagents, 180-second timeout, max one continuation per response",
+    "stop on detected rate limit; no automatic repeat; native login copied only after no-account preflight"
+  ],
+  "excluded_scope": [
+    "temporary API key reuse",
+    "Desktop/dot UI",
+    "production change or service restart",
+    "push, release, upstream submission or OSS application",
+    "additional live sessions",
+    "active token refresh test"
+  ],
+  "acceptance_checks": [
+    "real continuation and matched subsequent tool result",
+    "normal exit and completed turn; artifact changed; all 18 grading checks pass",
+    "no tool failure, rate limit, upstream failure, parse error or tracking drop",
+    "complete usage, event trace and cleanup/protected-file invariants"
+  ],
+  "continuation_guaranteed": false,
+  "quality_comparison": false,
+  "new_model_calls_in_preparation": 0,
+  "native_login_read_in_preparation": false,
+  "existing_native_login_totals": {
+    "sessions": 10,
+    "observed_inference_requests": 59,
+    "continuations": 2
+  },
+  "existing_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  }
+}

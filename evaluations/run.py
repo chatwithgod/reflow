@@ -18,6 +18,7 @@ import urllib.request
 
 from tasks import ORACLES, STARTERS
 from ledger_task import PROMPT as LEDGER_PROMPT
+from event_diagnostics import EventDiagnostics
 from client_preflight import code_mode_host_probe, filesystem_probe
 
 HERE = Path(__file__).resolve().parent
@@ -146,10 +147,10 @@ def start_proxy(binary, maximum, env):
         raise RuntimeError("proxy_start_failed") from None
 
 
-def read_metrics(endpoint):
+def read_metrics(endpoint, timeout=3):
     try:
         opener = urllib.request.build_opener(urllib.request.ProxyHandler({}))
-        with opener.open(endpoint + "/metrics", timeout=3) as response:
+        with opener.open(endpoint + "/metrics", timeout=timeout) as response:
             raw = json.loads(response.read(8192))
         if raw.get("enabled") is not True or raw.get("scope") != "streaming_responses":
             return None
@@ -199,6 +200,7 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                 command += ["-c", 'windows.sandbox="mxc"']
             command.append(prompt)
             started = time.monotonic()
+            diagnostics = EventDiagnostics(lambda: read_metrics(endpoint, timeout=0.2), started)
             agent = subprocess.Popen(command, cwd=work, env=env, stdin=subprocess.DEVNULL,
                                      stdout=subprocess.PIPE, stderr=subprocess.STDOUT, **spawn_options())
 
@@ -229,9 +231,11 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                     elif event.get("type") in ("item.started", "item.completed"):
                         item = event.get("item", {})
                         kind = item.get("type")
+                        observed_at = round(time.monotonic() - started, 3)
+                        extra = diagnostics.observe(event["type"], item, capture=len(event_trace) < 80)
                         if kind in ("command_execution", "file_change", "mcp_tool_call", "agent_message", "reasoning"):
-                            entry = {"at_seconds": round(time.monotonic() - started, 3),
-                                     "event": event["type"], "kind": kind}
+                            entry = {"at_seconds": observed_at,
+                                     "event": event["type"], "kind": kind, **extra}
                             if item.get("status") in ("in_progress", "completed", "failed"):
                                 entry["status"] = item["status"]
                             if type(item.get("exit_code")) is int:
@@ -264,6 +268,7 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                           exit_code=agent.returncode, elapsed_seconds=round(time.monotonic() - started, 3),
                           client_reported_usage=usage, **observed)
             record.update(event_trace=event_trace, event_trace_truncated=trace_truncated)
+            record["event_diagnostics"] = diagnostics.summary()
             if observed["rate_limit_detected"]:
                 record["status"] = "rate_limited"
             metrics = read_metrics(endpoint)
@@ -379,7 +384,7 @@ def main():
             "trial_concurrency": 1, "native_subagents_enabled": False, "code_mode_enabled": True,
             "interval_seconds": args.interval_seconds,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):

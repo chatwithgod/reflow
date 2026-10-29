@@ -1,0 +1,430 @@
+{
+  "date_local": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-29T21:14:40.164055+00:00",
+  "authorization": "one additional native-login ledger diagnostic explicitly authorized in call_6f493cd35fc64b7e9ebc5eef7b343c27; consumed",
+  "base_commit": "418c539cafeeab991289f3848572d373e5c376da",
+  "source_state": "local additive evaluation changes frozen by file SHA256 before execution",
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.4",
+    "sha256": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+  },
+  "source_record": {
+    "path": "build/evaluations/20261029-211244-433095/results.json",
+    "sha256": "a249c0b94e40346281b73a2fdfc1d0dbd0ae551ace51bfb0f944f0ad7894caf6",
+    "bytes": 9535
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-ledger-diagnostic-official-0165-plan.json",
+    "sha256": "670441501f7101996fd128c68d1fa3eee39a6ab5d30ef3d274a951cf5dbebde9",
+    "bytes": 6042
+  },
+  "wrapper_record": {
+    "path": "build/run-authorized-ledger-diagnostic-official-0165-live.py",
+    "sha256": "0e231963a18dec7d236f6a855494233e11e41add35184f48d6e6854d4341ce43",
+    "bytes": 8700
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "runner_sha256": "9a6cb52a6ca19f584c0d1b9b06f0b4fa7e9ffa905040c4319046061462e7e93e",
+    "task_sources": {
+      "tasks.py": "ba2e02dab353349042d29175e24a186d75294f6daa53971666ba75f41e0bd0f2",
+      "score.py": "9a9911aa26d5e36b3bd10dbba1864a23e2bb11124ef022c67be86c4cb7cef5ce",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f"
+    },
+    "trials": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "ledger",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 79.142,
+        "client_reported_usage": {
+          "input_tokens": 84856,
+          "cached_input_tokens": 80512,
+          "output_tokens": 4501,
+          "reasoning_output_tokens": 359
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 3,
+        "file_change_events": 1,
+        "tool_failure_events": 1,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 7.616,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 7.834,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 7.834,
+            "counter_probe_finished_seconds": 7.861,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 8.436,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.436,
+            "counter_probe_finished_seconds": 8.453,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 10.566,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 10.566,
+            "counter_probe_finished_seconds": 10.588,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 11.246,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "failure_markers": [
+              "unclassified"
+            ],
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 11.248,
+            "counter_probe_finished_seconds": 11.261,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "failed",
+            "exit_code": 1
+          },
+          {
+            "at_seconds": 40.539,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 40.539,
+            "counter_probe_finished_seconds": 40.556,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 40.739,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 40.739,
+            "counter_probe_finished_seconds": 40.753,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 69.914,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 70.205,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 70.205,
+            "counter_probe_finished_seconds": 70.22,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 4,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 70.862,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 4,
+            "counter_probe_started_seconds": 70.862,
+            "counter_probe_finished_seconds": 70.883,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 4,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 75.667,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 8,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 1
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 5,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 5,
+          "failed": 0,
+          "usage_reports": 5,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 84856,
+          "output_tokens": 4501,
+          "cached_tokens": 80512,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 359,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 84856,
+          "output_tokens": 4501,
+          "cached_tokens": 80512,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 359
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "4e82a9db2c46d967650bc936edae46bb8eb705f8efc135f1f13ecc7179aea3ee"
+    }
+  },
+  "checks": {
+    "single_authorized_session_executed": true,
+    "no_auto_repeat": true,
+    "normal_finish": true,
+    "file_changed_and_all_grading_checks_passed": true,
+    "real_continuation_observed": false,
+    "matched_continued_tool_result_observed": false,
+    "no_observed_tool_or_client_error": false,
+    "no_rate_limit_or_upstream_error": true,
+    "complete_usage_observed": true,
+    "folded_client_usage_within_billed_totals": true,
+    "client_and_billed_usage_identical": true,
+    "event_trace_complete_and_balanced": true,
+    "max_observed_local_tool_overlap": 1,
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "codex": 0,
+      "reflow": 0,
+      "code_mode_host": 0
+    },
+    "binaries_and_task_sources_unchanged": true,
+    "temporary_api_key_reused": false,
+    "diagnostic_observations_complete": true,
+    "failure_marker_counts": {
+      "python_assertion": 0,
+      "python_syntax": 0,
+      "python_import": 0,
+      "python_name_or_type": 0,
+      "python_value_or_key": 0,
+      "powershell_parser": 0,
+      "command_unavailable": 0,
+      "permission_denied": 0,
+      "unclassified": 1
+    },
+    "diagnostic_observations_do_not_replace_strict_acceptance": true,
+    "continuation_tool_finish_acceptance": false,
+    "unmet_acceptance_checks": [
+      "real_continuation_observed",
+      "matched_continued_tool_result_observed",
+      "no_observed_tool_or_client_error"
+    ]
+  },
+  "cumulative_native_login": {
+    "sessions": 11,
+    "observed_inference_requests": 64,
+    "continuations": 2
+  },
+  "official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "offline_evidence": {
+    "offline_process_checks": {
+      "path": "build/evaluation-process/20261029-211024-418285/summary.json",
+      "sha256": "18facdf39ed381152ee79d419a3998dd26510911912e9fa590fd811e77494096",
+      "bytes": 471
+    },
+    "offline_preflight": {
+      "path": "build/evaluations/20261029-211102-794951/summary.json",
+      "sha256": "7049a8e65518cb2d7d503bc53b7d96d97bf20efd468251c1452a3f2c3d5d2825",
+      "bytes": 922
+    }
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-ledger-diagnostic-official-0165-20261030/authorization.json",
+      "sha256": "d4e9582f13485d213619c386e68dec212faef863dd1d56c698657792dd02998e",
+      "bytes": 657
+    },
+    {
+      "path": "build/live-authorized-ledger-diagnostic-official-0165-20261030/started.once",
+      "sha256": "af9fd3c52ea3936147a68047ae8ffcad452c6fd5ea7f8e36d2b03115dc71c34d",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-ledger-diagnostic-official-0165-20261030/process-precheck.json",
+      "sha256": "9c0208983cd3e1234cc978c042926d692c92448176610ae214363111407ea0c1",
+      "bytes": 60
+    },
+    {
+      "path": "build/live-authorized-ledger-diagnostic-official-0165-20261030/invariants.json",
+      "sha256": "d596e7409242fcef26e507716d9cfe9a698f2b94250db6ac466a3fb8fb5c5e02",
+      "bytes": 2226
+    }
+  ],
+  "limits": [
+    "The task is an opt-in maintenance fixture with 18 frozen checks, not an off/on quality comparison.",
+    "Continuation rules, native client and Reflow binaries were unchanged. A natural trigger is not guaranteed.",
+    "Matched tool-result metrics prove protocol correlation; execution success additionally requires zero observed tool/client failures and task completion.",
+    "A folded client may report less input/output than total upstream usage. Bounds and complete reporting do not independently prove every per-round sum.",
+    "No credentials, response text, tool command/output, or encrypted reasoning are retained in diagnostic artifacts.",
+    "No Desktop/dot, token refresh, Pi/Magpie live acceptance, production change, push, release or external submission is included."
+  ]
+}
