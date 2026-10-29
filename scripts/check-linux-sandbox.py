@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import re
 import shutil
 import socket
 import stat
@@ -30,6 +31,22 @@ BOUNDARIES = {'workspace_write_verified', 'outside_workspace_write_blocked',
 PACKAGE_STATES = {'n': 'not-installed', 'c': 'config-files', 'H': 'half-installed', 'U': 'unpacked',
                   'F': 'half-configured', 'W': 'triggers-awaited', 't': 'triggers-pending', 'i': 'installed'}
 PACKAGE_SELECTIONS = {'u': 'unknown', 'i': 'install', 'h': 'hold', 'r': 'remove', 'p': 'purge'}
+PROFILE_WARNING_FLAGS = ('--warn=rule-not-enforced', '--Werror=rule-not-enforced')
+PROFILE_MESSAGE_SIGNALS = {
+    'rule_not_enforced': ('not enforced', 'not supported'),
+    'user_namespace': ('userns', 'user namespace'),
+    'io_uring': ('io_uring', 'io uring'),
+    'message_queue': ('mqueue', 'message queue'),
+    'dbus': ('dbus',),
+    'network': ('network', 'af_unix'),
+    'unix_socket': ('unix rules', 'unix socket'),
+    'mount': ('mount', 'pivot_root'),
+    'file': ('file rule', 'file permission'),
+    'capability': ('capability', 'capabilities'),
+    'signal': ('signal rule',),
+    'ptrace': ('ptrace',),
+    'policy_abi': ('abi',),
+}
 
 
 class ControlError(RuntimeError):
@@ -125,6 +142,27 @@ def package_observation(exit_code, output):
             'error': 'none' if status[2] == ' ' else 'reinstall-required', 'version': version or None}
 
 
+def profile_diagnostics(output):
+    """Classify warning bodies only; filenames can themselves contain userns."""
+    counts = {}
+    for line in output.decode('utf-8', errors='replace').lower().splitlines():
+        converted = line.startswith('warning converted to error from profile ')
+        if not converted and not line.startswith('warning from profile '):
+            if line.startswith('apparmor parser error'):
+                counts['parser_error'] = counts.get('parser_error', 0) + 1
+            continue
+        _, separator, body = line.partition('): ')
+        if not separator:
+            continue
+        if converted:
+            counts['warning_as_error'] = counts.get('warning_as_error', 0) + 1
+        for name, markers in PROFILE_MESSAGE_SIGNALS.items():
+            matched = bool(re.search(r'\babi\b', body)) if name == 'policy_abi' else any(marker in body for marker in markers)
+            if matched:
+                counts[name] = counts.get(name, 0) + 1
+    return counts
+
+
 def execute_control(ops, report):
     """An expected baseline failure is data; final native and boundary gates stay mandatory."""
     ops.guard()
@@ -141,6 +179,7 @@ def execute_control(ops, report):
         return
     validate_host(baseline['host_diagnostics'], original, sandbox_pass=False)
     load_attempted = False
+    positive_control_verified = False
     try:
         ops.install_packages()
         report['packages_installed'] = True
@@ -151,11 +190,13 @@ def execute_control(ops, report):
         if not packages_fixed_it:
             report['profile'] = ops.profile_identity()
             require(ops.loaded_profile_names() == set(), 'refuse_to_replace_existing_profiles')
+            ops.compile_profile()
             load_attempted = True
             ops.load_profile()
             require(ops.loaded_profile_names() == PROFILE_NAMES, 'profile_load_incomplete')
             report['after_profile'] = ops.host()
             validate_host(report['after_profile'], original, sandbox_pass=True)
+            positive_control_verified = True
         candidate, exit_code = ops.native('candidate')
         report['candidate'] = candidate
         valid_native(candidate, exit_code)
@@ -172,7 +213,9 @@ def execute_control(ops, report):
             require(report['added_profiles_removed'], 'profile_cleanup_failed')
             report['after_profile_removal'] = ops.host()
             validate_host(report['after_profile_removal'], original, sandbox_pass=False)
-            report['profile_reversal_reproduced'] = True
+            report['profile_positive_control_verified'] = positive_control_verified
+            report['profile_reversal_tested'] = positive_control_verified
+            report['profile_reversal_reproduced'] = positive_control_verified
         report['global_kernel_settings_unchanged'] = ops.settings() == original
         require(report['global_kernel_settings_unchanged'], 'global_host_policy_changed')
 
@@ -212,9 +255,12 @@ class RunnerOperations:
             self.native_helpers.stop_probe_process(process)
             process.stdout.close()
             process.stderr.close()
-        self.report.setdefault('commands', []).append({
+        observation = {
             'stage': label, 'exit_code': result.returncode,
-            'stdout_bytes': len(result.stdout), 'stderr_bytes': len(result.stderr)})
+            'stdout_bytes': len(result.stdout), 'stderr_bytes': len(result.stderr)}
+        if label in ('profile_compile', 'profile_add', 'profile_remove'):
+            observation['matching_output'] = profile_diagnostics(result.stdout + b'\n' + result.stderr)
+        self.report.setdefault('commands', []).append(observation)
         if checked:
             require(result.returncode == 0, label + '_failed')
         return result
@@ -291,10 +337,15 @@ class RunnerOperations:
         names = {line.rsplit(' (', 1)[0] for line in result.stdout.decode().splitlines()}
         return names & PROFILE_NAMES
 
+    def compile_profile(self):
+        require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')
+        self.command('profile_compile', [PARSER, '--skip-kernel-load', '--skip-cache', '--jobs=1',
+                                         *PROFILE_WARNING_FLAGS, str(PROFILE)])
+
     def load_profile(self):
         require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')
         self.command('profile_add', ['sudo', '-n', PARSER, '--add', '--skip-cache', '--jobs=1',
-                                     '--Werror=rule-not-enforced', str(PROFILE)])
+                                     *PROFILE_WARNING_FLAGS, str(PROFILE)])
 
     def remove_profile(self):
         require(hashlib.sha256(PROFILE.read_bytes()).hexdigest() == self.profile_hash, 'profile_changed')

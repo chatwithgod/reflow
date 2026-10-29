@@ -1,5 +1,6 @@
 """Offline failure controls for the privileged CI orchestration; no sudo or accounts."""
 import copy
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -8,6 +9,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('linux_control', ROOT / 'scripts/check-linux-sandbox.py')
@@ -38,6 +40,8 @@ class FakeOperations:
         self.packages_sufficient = False
         self.fail_guard = False
         self.partial_load_failure = False
+        self.compile_failure = False
+        self.positive_control_failure = False
         self.fail_cleanup = False
         self.change_global_policy = False
         self.boundary_result = dict.fromkeys(control.BOUNDARIES, True)
@@ -62,7 +66,7 @@ class FakeOperations:
         self.installed = True
 
     def host(self):
-        passed = self.packages_sufficient or self.loaded == control.PROFILE_NAMES
+        passed = self.packages_sufficient or self.loaded == control.PROFILE_NAMES and not self.positive_control_failure
         result = native(passed)['host_diagnostics']
         result['kernel_settings'] = self.settings()
         return result
@@ -81,6 +85,10 @@ class FakeOperations:
             raise control.ControlError('profile_add_failed')
         self.loaded = set(control.PROFILE_NAMES)
 
+    def compile_profile(self):
+        self.calls.append('compile')
+        control.require(not self.compile_failure, 'profile_compile_failed')
+
     def remove_profile(self):
         self.calls.append('remove')
         if not self.fail_cleanup:
@@ -93,6 +101,67 @@ class FakeOperations:
 
 
 class ControlTests(unittest.TestCase):
+    def test_compile_preflight_has_no_privilege_or_kernel_load_and_keeps_strict_flags(self):
+        with tempfile.TemporaryDirectory(prefix='rf-profile-args-') as temporary:
+            profile = Path(temporary) / 'synthetic-profile'
+            profile.write_bytes(b'synthetic profile content for argument capture only')
+            ops = control.RunnerOperations({})
+            ops.profile_hash = hashlib.sha256(profile.read_bytes()).hexdigest()
+            calls = {}
+            ops.command = lambda label, argv, **kwargs: calls.setdefault(label, argv)
+            with patch.object(control, 'PROFILE', profile):
+                ops.compile_profile()
+                ops.load_profile()
+            preflight, load = calls['profile_compile'], calls['profile_add']
+            self.assertNotIn('sudo', preflight)
+            self.assertIn('--skip-kernel-load', preflight)
+            self.assertIn('--skip-cache', preflight)
+            self.assertIn('--Werror=rule-not-enforced', preflight)
+            self.assertIn('--warn=rule-not-enforced', preflight)
+            self.assertEqual([item for item in preflight if item.startswith(('--Werror', '--warn'))],
+                             [item for item in load if item.startswith(('--Werror', '--warn'))])
+            self.assertEqual(preflight[-1], load[-1])
+
+    @unittest.skipUnless(sys.platform == 'linux' and Path(control.PARSER).is_file(),
+                         'AppArmor argument check requires the Linux parser')
+    def test_real_parser_accepts_strict_warning_flags_without_loading_policy(self):
+        result = subprocess.run([control.PARSER, *control.PROFILE_WARNING_FLAGS, '--help=warn'],
+                                stdin=subprocess.DEVNULL, capture_output=True, timeout=10)
+        self.assertEqual(result.returncode, 0)
+        self.assertIn(b'rule-not-enforced', result.stdout + result.stderr)
+
+    def test_profile_warning_labels_ignore_filename_and_remove_contents(self):
+        output = (b'Warning converted to Error from profile bwrap (/private/USERNS_HEADER_CANARY): '
+                  b'io_uring rules not enforced CONTENT_CANARY\n')
+        labels = control.profile_diagnostics(output)
+        self.assertEqual(labels, {'warning_as_error': 1, 'rule_not_enforced': 1, 'io_uring': 1})
+        self.assertNotIn('CANARY', json.dumps(labels))
+        self.assertEqual(control.profile_diagnostics(b'raw userns CONTENT_CANARY\n'), {})
+        unix = control.profile_diagnostics(b'Warning converted to Error from profile bwrap (stdin): unix rules not enforced\n')
+        self.assertEqual(unix, {'warning_as_error': 1, 'rule_not_enforced': 1, 'unix_socket': 1})
+        caps = control.profile_diagnostics(b'Warning converted to Error from profile bwrap (stdin): capabilities not enforced\n')
+        self.assertEqual(caps, {'warning_as_error': 1, 'rule_not_enforced': 1, 'capability': 1})
+
+    def test_compile_failure_does_not_attempt_privileged_load(self):
+        ops, report = FakeOperations(), {}
+        ops.compile_failure = True
+        with self.assertRaisesRegex(control.ControlError, 'profile_compile_failed'):
+            control.execute_control(ops, report)
+        self.assertIn('compile', ops.calls)
+        self.assertNotIn('load', ops.calls)
+        self.assertNotIn('remove', ops.calls)
+        self.assertNotIn('profile_reversal_reproduced', report)
+
+    def test_failed_positive_control_cannot_be_reported_as_reversal(self):
+        ops, report = FakeOperations(), {}
+        ops.positive_control_failure = True
+        with self.assertRaisesRegex(control.ControlError, 'unexpected_direct_sandbox_result'):
+            control.execute_control(ops, report)
+        self.assertIn('remove', ops.calls)
+        self.assertFalse(report['profile_positive_control_verified'])
+        self.assertFalse(report['profile_reversal_tested'])
+        self.assertFalse(report['profile_reversal_reproduced'])
+
     @unittest.skipUnless(sys.platform == 'linux' and shutil.which('dpkg-query'),
                          'real dpkg private-database fixture requires Linux')
     def test_real_dpkg_query_uses_only_a_private_status_database(self):
@@ -218,10 +287,12 @@ class ControlTests(unittest.TestCase):
     def test_expected_failure_then_profile_success_and_reversal(self):
         ops, report = FakeOperations(), {}
         control.execute_control(ops, report)
-        self.assertEqual(ops.calls, ['guard', 'baseline', 'install', 'identity', 'load', 'candidate', 'boundaries', 'remove'])
+        self.assertEqual(ops.calls, ['guard', 'baseline', 'install', 'identity', 'compile', 'load', 'candidate', 'boundaries', 'remove'])
         self.assertEqual(report['outcome'], 'profile_candidate_passed')
         self.assertTrue(report['added_profiles_removed'])
         self.assertTrue(report['profile_reversal_reproduced'])
+        self.assertTrue(report['profile_positive_control_verified'])
+        self.assertTrue(report['profile_reversal_tested'])
         self.assertTrue(report['global_kernel_settings_unchanged'])
 
     def test_already_passing_baseline_changes_nothing(self):
@@ -279,6 +350,7 @@ class ControlTests(unittest.TestCase):
         self.assertIn('remove', ops.calls)
         self.assertEqual(ops.loaded, set())
         self.assertTrue(report['added_profiles_removed'])
+        self.assertFalse(report['profile_reversal_reproduced'])
 
     def test_original_candidate_write_failure_still_fails(self):
         ops = FakeOperations()

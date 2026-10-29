@@ -1,0 +1,161 @@
+{
+  "date_local": "2026-10-29",
+  "status": "prepared_locally_not_pushed",
+  "source_base_commit": "cf500dd57193542ae67acb511d54045e1aa39861",
+  "actual_failed_run": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/40788980877",
+    "package_install_succeeded": true,
+    "profile_add_exit_code": 1,
+    "profile_add_stdout_bytes": 0,
+    "profile_add_stderr_bytes": 0,
+    "positive_profile_control_observed": false,
+    "candidate_native_tests_executed": false,
+    "target_profiles_absent_after_cleanup": true,
+    "recorded_kernel_settings_unchanged": true
+  },
+  "upstream_function_control": {
+    "kind": "portable function-level reproduction, not an Ubuntu kernel or binary test",
+    "upstream_tag": "v4.0.1",
+    "upstream_commit": "b0eb95457bc2de401920308869d016e696c73664",
+    "function": "common_warn_once",
+    "function_sha256": "029fe9ab4a792661cda63cd7cf4cae9c21c21140c6fa775d263e8244a10d01bf",
+    "harness_sha256": "0c3f2afcbcb7538063bba137f62c2ac0f91d2a4669024c64b3ebde1d7d5d47b2",
+    "binary_sha256": "5b072bed08a3f45b02d3d8bc16ce32152c5f0fece55fdc4feb91e9e1de6c1440",
+    "results": {
+      "warning_disabled": {
+        "exit_code": 1,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "warning_error_marker": false,
+        "synthetic_message_visible": false
+      },
+      "warning_enabled": {
+        "exit_code": 1,
+        "stdout_bytes": 0,
+        "stderr_bytes": 89,
+        "warning_error_marker": true,
+        "synthetic_message_visible": true
+      }
+    },
+    "hard_failure_retained": true,
+    "exact_remote_rule_not_identified": true,
+    "model_calls": 0,
+    "host_policy_modified": false
+  },
+  "changes": {
+    "strict_Werror_flag_preserved": true,
+    "matching_warning_output_enabled": true,
+    "preflight_runs_without_sudo": true,
+    "preflight_skip_kernel_load": true,
+    "preflight_skip_cache": true,
+    "failed_preflight_stops_before_profile_add": true,
+    "profile_file_unmodified": true,
+    "diagnostics_only_fixed_labels_and_counts": true,
+    "feature_labels_ignore_warning_header_paths": true,
+    "reversal_requires_a_verified_positive_control": true,
+    "policy_abi_label_requires_whole_word": true
+  },
+  "local_tests": {
+    "total": 26,
+    "pass": 24,
+    "skip": 2,
+    "fail": 0,
+    "skipped": [
+      "Linux dpkg private-database query",
+      "Linux AppArmor argument recognition without kernel load"
+    ]
+  },
+  "source_files": [
+    {
+      "path": "scripts/check-linux-sandbox.py",
+      "sha256": "e3ac9cc800a30327f798a82613380f5ff2ec3e54396b4b2716d5dda94fa6b8be",
+      "bytes": 25351
+    },
+    {
+      "path": "scripts/test-linux-sandbox-control.py",
+      "sha256": "c7ed977ff0208cfa58c14ee37f71844594b4a3144475a375f7ff17d3b56bffb1",
+      "bytes": 21163
+    }
+  ],
+  "evidence_files": [
+    {
+      "path": "build/linux-sandbox-profile-diagnostics-20261029/unit-tests.log",
+      "sha256": "df4cf8ac2758e0999113c31810b85bfeeebefc646503ae37c7c5d6352cbd0d77",
+      "bytes": 3924
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/source.json",
+      "sha256": "7662c59e8d49f1193b2ad517256ae7f5a8a5e4f3fb8073d08421a4c810e424d7",
+      "bytes": 371
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/additional-sources.json",
+      "sha256": "29fbaca1c2b6d85eb1d2641293a516512e8b82d16afaa68e3b788126fcc75f70",
+      "bytes": 745
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/parser_main.c",
+      "sha256": "0d523f57f7fe2a27057c3b04b58d79f951602fd28cb95ad754e9cbe2feb9bfa5",
+      "bytes": 47292
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/parser_common.c",
+      "sha256": "47325a10f6a6bfb82dd57cc91803f074dd965afa5f2e8d26fa842bf94e053f55",
+      "bytes": 5816
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/parser.h",
+      "sha256": "a9b76f6bcc527dd23b5cf61dd623c52e88e97d7bd58ed0f274277beec38e94cc",
+      "bytes": 15420
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/warning-control.cpp",
+      "sha256": "0c3f2afcbcb7538063bba137f62c2ac0f91d2a4669024c64b3ebde1d7d5d47b2",
+      "bytes": 1853
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/warning-control.exe",
+      "sha256": "5b072bed08a3f45b02d3d8bc16ce32152c5f0fece55fdc4feb91e9e1de6c1440",
+      "bytes": 79360
+    },
+    {
+      "path": "build/apparmor-4.0.1-warning-source-20261029/function-control.json",
+      "sha256": "29ba7add4c83eba0605ecf9ccdcf82806e5231a864d4b0a3069408c44799cd58",
+      "bytes": 1023
+    },
+    {
+      "path": "build/linux-sandbox-profile-diagnostics-20261029/unit-tests-final.log",
+      "sha256": "bba898ece844768c125be17ee93dfb9591c1b2404a67fc84101e3fe743f5cfe7",
+      "bytes": 3924
+    },
+    {
+      "path": "build/linux-sandbox-profile-diagnostics-20261029/unit-tests-label-boundary.log",
+      "sha256": "403a58fdbd0b77ef5cfad55e4ce97ee811db587d4aaa5f89a6ee2e9ab083abd7",
+      "bytes": 3924
+    }
+  ],
+  "primary_sources": [
+    {
+      "url": "https://gitlab.com/apparmor/apparmor/-/blob/b0eb95457bc2de401920308869d016e696c73664/parser/parser_common.c",
+      "used_for": "warning printing and warning-as-error exit are controlled independently"
+    },
+    {
+      "url": "https://gitlab.com/apparmor/apparmor/-/blob/b0eb95457bc2de401920308869d016e696c73664/parser/parser.h",
+      "used_for": "default warning mask excludes rule-not-enforced"
+    },
+    {
+      "url": "https://manpages.ubuntu.com/manpages/noble/man8/apparmor_parser.8.html",
+      "used_for": "unprivileged compile with skip-kernel-load and skip-cache"
+    }
+  ],
+  "limits": [
+    "Function-level reproduction is not a test of the Ubuntu binary or kernel",
+    "The exact failing rule or other underlying profile-add cause is not established",
+    "The previous raw profile_reversal_reproduced=true field is invalid without a positive control; the original artifact is preserved and explicitly annotated",
+    "No new corrected remote execution has occurred"
+  ],
+  "runtime_native_gates_and_workflows_unchanged": true,
+  "new_real_model_calls": 0,
+  "local_host_policy_modified": false,
+  "remote_pushed": false
+}
