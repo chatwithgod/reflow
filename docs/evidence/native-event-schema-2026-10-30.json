@@ -1,0 +1,73 @@
+{
+  "date_local": "2026-10-30",
+  "scope": "official Codex 0.165.0 JSON event schema; synthetic login and loopback upstream only",
+  "base_commit": "8e4cad6",
+  "native_test_concurrency": 1,
+  "real_model_calls": 0,
+  "original_native_login_baseline": {
+    "ordinary_cases_passed": 2,
+    "race_cases_passed": 2
+  },
+  "event_probe": {
+    "ordinary_cases_passed": 2,
+    "race_cases_passed": 2,
+    "race_observations": [
+      {
+        "aggregated_output_present": true,
+        "classifier_match": true,
+        "exit_code": 1,
+        "exit_code_envelope": false,
+        "fixed_marker": "python_assertion",
+        "native_command_exit_exception": false,
+        "output_bytes": 288,
+        "output_envelope": false
+      },
+      {
+        "aggregated_output_present": true,
+        "classifier_match": true,
+        "exit_code": 1,
+        "exit_code_envelope": false,
+        "fixed_marker": "unclassified",
+        "native_command_exit_exception": false,
+        "output_bytes": 239,
+        "output_envelope": false
+      }
+    ]
+  },
+  "source_files": [
+    {
+      "path": "integration/codex_test.go",
+      "sha256": "5ff2c936231f14c1459592a229ef4a5a92ed122589212dd8fc294fa4f6c2a67b",
+      "bytes": 16946
+    },
+    {
+      "path": "integration/native_event_probe_test.go",
+      "sha256": "5ff1e374bca04b5a412995e11cc9a11acb9780490ae576d3f320eb001ab04aff",
+      "bytes": 3626
+    },
+    {
+      "path": "evaluations/event_diagnostics.py",
+      "sha256": "5208f09782ea173f4928ca5aae60409483cf02ffcaeb36d5be83b68b806ad40f",
+      "bytes": 4510
+    }
+  ],
+  "logs": [
+    {
+      "path": "build/native-event-schema-20261030/baseline.log",
+      "sha256": "0899a1e567626c7beceabc9a4eca05456c7d526b1456b3352e331703becb3068",
+      "bytes": 725
+    },
+    {
+      "path": "build/native-event-schema-20261030/race.log",
+      "sha256": "d008f11b285c265d2096cacf8a1aecf8bfbc82d59e15bb426aef56e8d221c806",
+      "bytes": 2164
+    }
+  ],
+  "finding": "The official client exposes aggregated_output and the actual Python classifier recognizes the fixed assertion marker. A fixed nonzero command without an application marker remains unclassified.",
+  "initial_fixture_failure": "The first silent case incorrectly required aggregated_output to be empty. The native client included host output; that assumption was removed while retaining exit-code, marker, file-write, replay-isolation and tool-roundtrip assertions.",
+  "limits": [
+    "These controls do not identify the commands or output from either real ledger session.",
+    "Unclassified does not establish a missing output field, an empty output or a specific root cause.",
+    "No new live continuation acceptance is added."
+  ]
+}

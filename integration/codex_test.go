@@ -43,7 +43,12 @@ func TestCodexNativeLoginOffline(t *testing.T) {
 	}
 }
 
-type nativeLoginMode struct{ codeMode, nativeWrite, direct, command, add, noDaemon, appServer, paginated bool }
+type nativeLoginMode struct {
+	codeMode, nativeWrite, direct, command, add, noDaemon, appServer, paginated bool
+	// Optional fixed synthetic command and in-memory JSON observer for opt-in diagnostics.
+	probeCommand  string
+	observeOutput func(*testing.T, []byte)
+}
 
 func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	codeMode, nativeWrite := mode.codeMode, mode.nativeWrite
@@ -167,6 +172,9 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 								command := "printf 'REFLOW_TOOL_OK\\n' > " + file
 								if runtime.GOOS == "windows" {
 									command = "cmd.exe /d /c \"echo REFLOW_TOOL_OK>" + file + "\""
+								}
+								if mode.probeCommand != "" && id == "chosen" {
+									command = mode.probeCommand
 								}
 								params, _ := json.Marshal(core.Object{"cmd": command, "workdir": work, "yield_time_ms": 10000, "max_output_tokens": 200})
 								item["input"] = "const writer=ALL_TOOLS.find(x=>x.name.endsWith('exec_command')); if(!writer) throw new Error('Fixture command tool unavailable'); text(await tools[writer.name](" + string(params) + ")); const spec=ALL_TOOLS.find(x=>x.name.includes('reflow_fixture')&&x.name.endsWith('probe')); text(await tools[spec.name](" + string(args) + "));"
@@ -367,6 +375,9 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		out, err = runAppServerLifecycle(t, ctx, cmd, home, work, proxyURL, prompt, mode.paginated)
 	} else {
 		out, err = cmd.CombinedOutput()
+	}
+	if mode.observeOutput != nil {
+		mode.observeOutput(t, out)
 	}
 	if nativeWrite {
 		contents, readErr := os.ReadFile(filepath.Join(work, "probe.txt"))
