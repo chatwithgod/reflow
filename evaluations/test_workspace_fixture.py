@@ -33,3 +33,19 @@ class WorkspaceFixtureTests(unittest.TestCase):
             self.assertFalse(workspace_fixture.unchanged(work, digest))
             path.unlink()
             self.assertFalse(workspace_fixture.unchanged(work, digest))
+
+    def test_reader_prints_only_supplied_files_without_modifying_them(self):
+        with tempfile.TemporaryDirectory(prefix="reflow-workspace-reader-") as temporary:
+            work = Path(temporary)
+            (work / "solution.py").write_text("# SYNTHETIC_SOLUTION", encoding="utf-8")
+            check_hash = workspace_fixture.prepare(work, "scheduler")
+            read_hash = workspace_fixture.prepare_reader(work)
+            process = subprocess.run([sys.executable, "-I", "-B", str(work / workspace_fixture.READ_FILENAME)],
+                                     cwd=work, capture_output=True, text=True, timeout=10)
+            self.assertEqual(process.returncode, 0)
+            self.assertIn("# SYNTHETIC_SOLUTION", process.stdout)
+            self.assertIn("schedule_builds", process.stdout)
+            self.assertTrue(workspace_fixture.unchanged(work, check_hash))
+            self.assertTrue(workspace_fixture.unchanged(work, read_hash, workspace_fixture.READ_FILENAME))
+            (work / workspace_fixture.READ_FILENAME).write_text("# changed", encoding="utf-8")
+            self.assertFalse(workspace_fixture.unchanged(work, read_hash, workspace_fixture.READ_FILENAME))

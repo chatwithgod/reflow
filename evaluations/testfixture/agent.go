@@ -168,6 +168,11 @@ func main() {
 			os.Exit(2)
 		}
 	}
+	if strings.Contains(prompt, "SYNTHETIC_MUTATE_READER") {
+		if err := os.WriteFile(filepath.Join(work, "read_fixture.py"), []byte("# changed synthetic reader\n"), 0600); err != nil {
+			os.Exit(2)
+		}
+	}
 	fmt.Println(`{"type":"item.completed","item":{"type":"agent_message","text":"SYNTHETIC_PRIVATE_SENTINEL"}}`)
 	fmt.Printf("{\"type\":\"turn.completed\",\"usage\":{\"input_tokens\":10,\"cached_input_tokens\":2,\"output_tokens\":%d,\"reasoning_output_tokens\":1}}\n", 5+health.MaxContinue)
 }

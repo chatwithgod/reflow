@@ -80,3 +80,8 @@ class EventDiagnosticsTests(unittest.TestCase):
         missing = diagnostic.observe("item.completed", dict(type="command_execution"), capture=True)
         self.assertNotIn("tool_ordinal", missing)
         self.assertEqual(diagnostic.summary()["tool_id_tracking_drops"], 2)
+
+    def test_ansi_colors_do_not_hide_fixed_error_markers(self):
+        item = dict(type="command_execution", exit_code=1,
+                    aggregated_output="\x1b[31;1mParserError: PRIVATE_SENTINEL\x1b[0m")
+        self.assertEqual(failure_markers(item), ["powershell_parser"])

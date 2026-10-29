@@ -31,6 +31,7 @@ def failure_markers(item):
     message = error.get("message", "") if isinstance(error, dict) else ""
     # Never interpolate raw values into exceptions or reports, or hash/store them.
     text = "\n".join(value[:65536] for value in (output, message) if isinstance(value, str))
+    text = re.sub(r"\x1b\[[0-?]*[ -/]*[@-~]", "", text)
     return [name for name, pattern in PATTERNS.items() if re.search(pattern, text, re.IGNORECASE)] or ["unclassified"]
 
 

@@ -185,6 +185,7 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
         solution.write_text(STARTERS[trial["task"]], encoding="utf-8")
         initial_solution = solution.read_bytes()
         fixture_hash = workspace_fixture.prepare(work, trial["task"]) if getattr(args, "workspace_smoke_check", False) else None
+        reader_hash = workspace_fixture.prepare_reader(work) if getattr(args, "fixed_workspace_commands", False) else None
         (Path(env["CODEX_HOME"]) / "auth.json").write_text(auth, encoding="utf-8")
         usage = {key: 0 for key in ("input_tokens", "cached_input_tokens", "output_tokens", "reasoning_output_tokens")}
         observed = {"completed_turns": 0, "error_events": 0, "command_events": 0,
@@ -289,6 +290,11 @@ def run_trial(args, trial, prompt, auth, report, *, require_inference=True):
                                                "unchanged": workspace_fixture.unchanged(work, fixture_hash)}
                 if not record["workspace_fixture"]["unchanged"]:
                     record["status"] = "fixture_changed"
+                if reader_hash is not None:
+                    reader_unchanged = workspace_fixture.unchanged(work, reader_hash, workspace_fixture.READ_FILENAME)
+                    record["workspace_fixture"].update(reader_sha256=reader_hash, reader_unchanged=reader_unchanged)
+                    if not reader_unchanged:
+                        record["status"] = "fixture_changed"
             if require_inference and record["status"] == "finished" and not record["model_evidence_valid"]:
                 record["status"] = "proxy_inference_unverified"
             record["score"] = grade(trial["task"], solution)
@@ -330,6 +336,8 @@ def main():
     parser.add_argument("--seed", type=int, default=17)
     parser.add_argument("--workspace-smoke-check", action="store_true",
                         help="supply an immutable local check and workspace facts for ledger or scheduler")
+    parser.add_argument("--fixed-workspace-commands", action="store_true",
+                        help="supply an immutable reader and fixed native-tool workflow for scheduler")
     args = parser.parse_args()
     if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
@@ -343,6 +351,8 @@ def main():
         parser.error("conditions must be unique")
     if args.workspace_smoke_check and args.tasks not in (["ledger"], ["scheduler"]):
         parser.error("--workspace-smoke-check requires exactly --tasks ledger or --tasks scheduler")
+    if args.fixed_workspace_commands and (not args.workspace_smoke_check or args.tasks != ["scheduler"]):
+        parser.error("--fixed-workspace-commands requires --tasks scheduler --workspace-smoke-check")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
@@ -380,7 +390,7 @@ def main():
     prompts["ledger"] = LEDGER_PROMPT
     prompts["scheduler"] = SCHEDULER_PROMPT
     if args.workspace_smoke_check:
-        prompts[args.tasks[0]] += workspace_fixture.GUIDANCE
+        prompts[args.tasks[0]] += workspace_fixture.FIXED_GUIDANCE if args.fixed_workspace_commands else workspace_fixture.GUIDANCE
     trials = []
     task_index = {task: index for index, task in enumerate(sorted(args.tasks))}
     rng = random.Random(args.seed)
@@ -400,6 +410,7 @@ def main():
             "trial_concurrency": 1, "native_subagents_enabled": False, "code_mode_enabled": True,
             "interval_seconds": args.interval_seconds,
             "workspace_smoke_check": args.workspace_smoke_check,
+            "fixed_workspace_commands": args.fixed_workspace_commands,
             "runner_sha256": fingerprint(HERE / "run.py"),
             "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py", "scheduler_task.py")},
             "trials": trials, "results": []}

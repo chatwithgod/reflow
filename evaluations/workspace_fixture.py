@@ -2,6 +2,24 @@
 import hashlib
 
 FILENAME = "verify_fixture.py"
+READ_FILENAME = "read_fixture.py"
+READER = '''"""Read only the two supplied fixture files; do not modify this helper."""
+from pathlib import Path
+root = Path(__file__).resolve().parent
+for name in ("solution.py", "verify_fixture.py"):
+    print(name)
+    print((root / name).read_text(encoding="utf-8"))
+'''
+FIXED_GUIDANCE = """
+This acceptance workspace contains solution.py, verify_fixture.py and read_fixture.py.
+Parent directories and any containing repository are outside the task.
+Use exactly `python read_fixture.py` to read the supplied source and checks.
+Use the native apply_patch tool to edit solution.py; discover it through available tool metadata if needed.
+Do not invoke an apply_patch executable through a shell. Do not use shell snippets to rewrite files.
+After repairing, use exactly `python verify_fixture.py` for validation, then finish with a short summary.
+These are the only shell commands needed; do not run search, Git, environment probes or ad-hoc invalid-input snippets.
+Keep both helper files byte-for-byte unchanged. The independent final grader still covers the full specification.
+"""
 GUIDANCE = """
 Workspace facts for this run: solution.py and verify_fixture.py are the only supplied files.
 No tests or AGENTS.md are supplied inside this workspace. Parent directories and any containing repository are outside this task.
@@ -55,6 +73,14 @@ def prepare(work, task="ledger"):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def unchanged(work, expected):
-    path = work / FILENAME
+def prepare_reader(work):
+    path = work / READ_FILENAME
+    path.write_text(READER, encoding="utf-8", newline="\n")
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def unchanged(work, expected, filename=FILENAME):
+    if filename not in (FILENAME, READ_FILENAME):
+        raise ValueError("unknown fixture helper")
+    path = work / filename
     return path.is_file() and not path.is_symlink() and hashlib.sha256(path.read_bytes()).hexdigest() == expected
