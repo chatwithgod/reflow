@@ -23,6 +23,7 @@ from scheduler_task import SKELETON as SCHEDULER_SKELETON, SKELETON_PROMPT as SC
 from event_diagnostics import EventDiagnostics
 import workspace_fixture
 import fold_diagnostics
+import acceptance
 from client_preflight import code_mode_host_probe, filesystem_probe
 
 HERE = Path(__file__).resolve().parent
@@ -346,6 +347,8 @@ def main():
                         help="supply an immutable reader and fixed native-tool workflow for scheduler")
     parser.add_argument("--scheduler-skeleton", action="store_true",
                         help="implement the same scheduler specification from a skeleton; fixed commands required")
+    parser.add_argument("--stop-on-continuation-success", action="store_true",
+                        help="stop bounded on-only sampling after a clean continuation, or any non-clean trial")
     args = parser.parse_args()
     if not 1 <= args.repeats <= 20 or not 1 <= args.max_continue <= 7 or not 30 <= args.timeout <= 1800:
         parser.error("repeats 1..20, max-continue 1..7, timeout 30..1800 are required")
@@ -363,6 +366,8 @@ def main():
         parser.error("--fixed-workspace-commands requires --tasks scheduler --workspace-smoke-check")
     if args.scheduler_skeleton and not args.fixed_workspace_commands:
         parser.error("--scheduler-skeleton requires --fixed-workspace-commands")
+    if args.stop_on_continuation_success and (not args.fixed_workspace_commands or args.conditions != ["on"] or args.repeats > 3):
+        parser.error("--stop-on-continuation-success requires fixed commands, on-only, and at most 3 trials")
     stamp = datetime.now(timezone.utc).strftime("%Y%m%d-%H%M%S-%f")
     report = ROOT / "build" / "evaluations" / stamp
     report.mkdir(parents=True, exist_ok=False)
@@ -422,8 +427,9 @@ def main():
             "workspace_smoke_check": args.workspace_smoke_check,
             "fixed_workspace_commands": args.fixed_workspace_commands,
             "starter_variant": "skeleton" if args.scheduler_skeleton else "seeded",
+            "stop_on_continuation_success": args.stop_on_continuation_success,
             "runner_sha256": fingerprint(HERE / "run.py"),
-            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py", "scheduler_task.py")},
+            "task_sources": {name: fingerprint(HERE / name) for name in ("tasks.py", "score.py", "prompts.json", "client_preflight.py", "ledger_task.py", "event_diagnostics.py", "workspace_fixture.py", "fold_diagnostics.py", "scheduler_task.py", "acceptance.py")},
             "trials": trials, "results": []}
     if args.run_live:
         if not all((args.codex, args.reflow, args.auth_file, args.model)):
@@ -447,7 +453,13 @@ def main():
             (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
             if result["status"] != "finished":
                 plan["stopped_early"] = True
+                plan["stop_reason"] = result["status"]
                 break
+            if args.stop_on_continuation_success:
+                reason = acceptance.stop_reason(result)
+                if reason:
+                    plan.update(stopped_early=True, stop_reason=reason)
+                    break
     (report / "results.json").write_text(json.dumps(plan, indent=2) + "\n", encoding="utf-8")
     print(f"{'Executed' if args.run_live else 'Planned'} {len(plan['results']) if args.run_live else len(trials)} trials. Evidence: {report}")
 

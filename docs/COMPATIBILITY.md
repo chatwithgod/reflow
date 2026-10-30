@@ -1,4 +1,4 @@
-# Reflow 兼容性（0.1.0-dev.4）
+# Reflow 兼容性（公开 dev.4 与本地 dev.5）
 
 Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的验证，不把交叉编译、模拟上游或健康检查当作真实账号验收。
 
@@ -39,7 +39,9 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 尚未完成
 
-真实账号链路仍缺完整验收；登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入和二进制发布尚未完成。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+原生 Windows CLI 已有无工具失败的真实续接功能记录，批次有用户手动配置变动的审计例外，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。全面真实账号覆盖、登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入和二进制发布尚未完成。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+
+以下历史实测保留当时结论和累计数字，当前状态以[总表](NATIVE-LOGIN-ACCEPTANCE.md)为准。
 
 2026-10-26 补充：原生 ChatGPT 登录已完成真实推理请求和工作区代码修改。开启组观察到一次续接，但会话超时，尚未完成“续接、后续工具、正常结束”的整体验收。首次实测及其限制见 [真实测试记录](LIVE-SMOKE-2026-10-26.md)。
 
@@ -59,4 +61,4 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 另获批的[同任务 xhigh 验证](LIVE-LEDGER-XHIGH-2026-10-30.md)达到 180 秒上限，18/18、可见工具失败 0、续接 0，未正常结束；5 次请求中有一条未完成，完整用量不可得。原生登录最新累计为 13 次会话、74 次已观察请求、2 次续接，严格验收仍未通过。
 
-本地 dev.5 的[决策观测](DECISION-DIAGNOSTICS.md)不改变核心判断，已通过 Windows amd64 的打包原生普通/race 各 10 项及五个写入场景；评测读取器兼容 dev.4。新增候选未在其他操作系统或真实账号下运行，不扩大已有平台和真实验收结论。
+本地 dev.5 的[决策观测](DECISION-DIAGNOSTICS.md)不改变核心判断，已通过 Windows amd64 的打包原生普通/race 各 10 项及五个写入场景；评测读取器兼容 dev.4。候选已有本机 Windows 的真实续接功能证据及配置审计例外，其他操作系统尚未运行；不扩大已有平台或质量结论。

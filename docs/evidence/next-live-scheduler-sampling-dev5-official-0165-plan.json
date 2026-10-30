@@ -1,0 +1,261 @@
+{
+  "status": "ready_under_standing_authorization",
+  "prepared_date": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "prepared_source_commit": "f310e5010bf3804e891d0e8e09d8524e088fb68b",
+  "source_plan": {
+    "path": "build/evaluations/20261029-234627-417303/results.json",
+    "sha256": "c2905b4a01c03889f45b01af52355ea736593b4f8f5a59d4b6e7a02b14741c96",
+    "bytes": 1845
+  },
+  "plan": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": false,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "fixed_workspace_commands": true,
+    "starter_variant": "seeded",
+    "stop_on_continuation_success": true,
+    "runner_sha256": "07a1f0418234c4fe0bfd5de8b489f6d92afbeadee61b8b5f97d12116d7067eeb",
+    "task_sources": {
+      "tasks.py": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c",
+      "score.py": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "0a092b243cc347dc61dbf22309ece5bb7ed554102c41e949f22d64ff4530678f",
+      "workspace_fixture.py": "1eb8185478cc15cbb7881603ef84c33eab25e5a8b12ddc4c684b6112466fbb77",
+      "fold_diagnostics.py": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877",
+      "scheduler_task.py": "9d1451b13f02dcd4784828785a5c801c9626094baa17efa6bd798656838f0ea9",
+      "acceptance.py": "6e17667171ec4b60726d20e8226897990e21643dc7ff036432c2ce909bdb706c"
+    },
+    "trials": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      },
+      {
+        "task": "scheduler",
+        "repeat": 1,
+        "condition": "on",
+        "max_continue": 1
+      },
+      {
+        "task": "scheduler",
+        "repeat": 2,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": []
+  },
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.5",
+    "path": "dist/0.1.0-dev.5/20261030-061238-866/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+    "sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-scheduler-sampling-dev5-official-0165-live.py",
+    "sha256": "87eab2aca5bdc26c9cc59c1e067101934960507ca6731fdb3f6d2069908e7ad4",
+    "bytes": 9093
+  },
+  "execution_guard": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/started.once",
+  "standing_authorization_source": {
+    "path": "build/native-acceptance-standing-authorization-20261030.json",
+    "sha256": "b2eaea69e90cfd84a6493a07c830e34fcbc387cb718e838ce13e01245e5c3755",
+    "bytes": 649
+  },
+  "offline_process_checks": {
+    "path": "build/evaluation-process/20261029-234454-891141/summary.json",
+    "sha256": "7cedb63f7bc67f21b01682037f79a819737ebdd340d03d8ea972e7f92aa21970",
+    "bytes": 471
+  },
+  "native_checker_preflight": {
+    "path": "build/scheduler-fixed-workspace-preparation-20261030/native-commands-preflight.json",
+    "sha256": "6b18c3c9afba0748b0df85727a619c7908a22ec3c08e7aac481cb3e21c977234",
+    "bytes": 715
+  },
+  "offline_preflight": {
+    "path": "build/evaluations/20261029-223053-926630/summary.json",
+    "sha256": "8287803fb249b7eaa06dd96f9a2faca29dcfbe12d6e6863457f1bfc8461f04ce",
+    "bytes": 922
+  },
+  "candidate_offline_evidence": {
+    "path": "docs/evidence/decision-diagnostics-dev5-2026-10-30.json",
+    "sha256": "35736f7102594370b28294296bec4ab27e31196b0644f019811c54946335484b",
+    "bytes": 5654
+  },
+  "packaged_metrics_preflight": {
+    "path": "build/decision-diagnostics-20261030/packaged-metrics-preflight.json",
+    "sha256": "37e3419fa1782bc13f0def9af6633990a95b229d7761d80e437d2cd0122cdcf2",
+    "bytes": 1079
+  },
+  "validation_source_files": [
+    {
+      "path": "core/fold.go",
+      "sha256": "4ee859f56e38b69c4e903cadf8b77e492d8d854fcadaf9df108e9af3a74ef999",
+      "bytes": 7988
+    },
+    {
+      "path": "core/session.go",
+      "sha256": "ff568d0b9581a55d0068ae771e30bf0e3d3208d70be892756a7c5a9a2e594c31",
+      "bytes": 11745
+    },
+    {
+      "path": "core/stream.go",
+      "sha256": "415921986963aaaecfb871177d24471f8387cefb21455941474a80d409ef270b",
+      "bytes": 1243
+    },
+    {
+      "path": "core/stream_decoder.go",
+      "sha256": "b02686376f876b714591a321b8752df9addfb6543c03de5136c7fe7a560bd939",
+      "bytes": 4379
+    },
+    {
+      "path": "evaluations/score.py",
+      "sha256": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d",
+      "bytes": 7681
+    },
+    {
+      "path": "evaluations/tasks.py",
+      "sha256": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c",
+      "bytes": 3392
+    },
+    {
+      "path": "evaluations/test_event_diagnostics.py",
+      "sha256": "c184e7f33242e3d8a7fed3d44174ed7921602ad64d9237fb2711b6e0cafc7add",
+      "bytes": 5533
+    },
+    {
+      "path": "evaluations/test_fold_diagnostics.py",
+      "sha256": "7db86a3c83191ac85f2e03204b8ca06f4f0c0cfd44e6e6ce617efa992445b4ed",
+      "bytes": 1967
+    },
+    {
+      "path": "evaluations/test_ledger_task.py",
+      "sha256": "638fac057b412bd6f2557343aada1d7e2b2f563e0b8a56c0e234069f3241b380",
+      "bytes": 2498
+    },
+    {
+      "path": "evaluations/test_runner.py",
+      "sha256": "c5a08b832db08d7e77714dd9dc1ba6ca3170bf911e1a413d2512010ff214575e",
+      "bytes": 12877
+    },
+    {
+      "path": "evaluations/test_scheduler_task.py",
+      "sha256": "f90ec6a5f2dd9781d912f97aaa3bd7f986a70d5f6c044cfcc36415c79646e1ac",
+      "bytes": 3814
+    },
+    {
+      "path": "evaluations/test_workspace_fixture.py",
+      "sha256": "cd0283cc4fdff7fa37ce511e0a94a5364f864745134a5c4ea3b61829b4944c0b",
+      "bytes": 2856
+    },
+    {
+      "path": "evaluations/testfixture/agent.go",
+      "sha256": "ed0b2d984748cff7b7d343661709fb7220b32d353961bd2e1e1c6ac49b9979cb",
+      "bytes": 6101
+    },
+    {
+      "path": "proxy/metrics.go",
+      "sha256": "2c8923b3b935bdf5a3cbd7ca633f347fe84bb8696b009aa1ae1b3f39cb97f1a1",
+      "bytes": 7558
+    },
+    {
+      "path": "proxy/server.go",
+      "sha256": "0028214479662cea0c0d57b7798e71a3c9591d693a7a70a6a32b34622a514ebd",
+      "bytes": 11518
+    },
+    {
+      "path": "proxy/websocket.go",
+      "sha256": "578f0a77ab53f6963de9994b748b4fd20b48998aba73ee2e5795a555d37c6576",
+      "bytes": 7872
+    },
+    {
+      "path": "scripts/check-evaluation.py",
+      "sha256": "ac115be5a54a7f616e861cc37c056c4c9efdd328cbb7d562de757dd7b6ddfb79",
+      "bytes": 4450
+    },
+    {
+      "path": "evaluations/test_acceptance.py",
+      "sha256": "87823b53ebdb59dc884128e7d6af7f47e3c5ac2504f4862a3720fd6119494873",
+      "bytes": 5803
+    }
+  ],
+  "workload": {
+    "task": "scheduler",
+    "kind": "repair a nearly complete bounded resource-constrained build planner",
+    "real_parallel_jobs_launched": false,
+    "grader_checks": 18,
+    "starter_passed": 15,
+    "oracle_passed": 18,
+    "independent_faults_rejected": 3,
+    "grader_oracle": "integer-time exhaustive search, cross-checked against direct start-time enumeration",
+    "supplied_implementation": "event-jump search with seeded state, pruning and tie-break faults",
+    "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+    "starter_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+    "reason_for_new_workload": "the preceding ledger run reported seven rule_not_matched decisions and every reasoning sample below 516",
+    "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+    "reason_for_fixed_commands": "preceding scheduler run triggered continuation and passed 18 checks but one retained command failed; raw command/output was not retained, so its exact cause remains unclassified",
+    "guidance_change": "fixed read/check commands and native apply_patch; same task, starter and independent 18-check grader",
+    "diagnostic_change": "strip ANSI CSI colors in memory before existing fixed-marker matching; no raw output is retained",
+    "starter_source_lf_sha256": "8345193cbe641366d2438dd8d1f27586096c91fca5fd601ce84396a8aa8ed0f1",
+    "sampling_reason": "three distinct clean fixed-tool scenarios did not match the unchanged rule; freeze the shorter high repair workload for a bounded sample rather than keep increasing task size"
+  },
+  "allowed_scope": [
+    "at most three predeclared independent native ChatGPT-login scheduler on samples, gpt-6.1-sol/high",
+    "official Codex 0.165.0 and verified Reflow dev.5; continuation policy unchanged",
+    "concurrency 1, no subagents, 180 seconds, maximum one continuation per response",
+    "both fixed helpers remain unchanged; stop on detected rate limit; no automatic retry of this attempt",
+    "30-second gap, stop at the first clean continuation/tool/finish acceptance or any non-clean trial; no automatic retry and no extra fourth sample"
+  ],
+  "excluded_scope": [
+    "production configuration changes",
+    "temporary API key reuse",
+    "Desktop/dot UI",
+    "unbounded automatic repeats"
+  ],
+  "acceptance_checks": [
+    "at least one real continuation and matched subsequent tool result",
+    "normal client finish, changed solution, all 18 predeclared scheduling checks pass",
+    "no observed tool/client/upstream failure, rate limit, parse error or tracking drop",
+    "complete reported usage, immutable checker and reader, cleanup and protected-file invariants",
+    "valid version 1 numeric decision observations"
+  ],
+  "continuation_guaranteed": false,
+  "quality_comparison": false,
+  "new_model_calls_in_preparation": 0,
+  "native_login_read_in_preparation": false,
+  "existing_native_login_totals": {
+    "sessions": 18,
+    "observed_inference_requests": 101,
+    "continuations": 3
+  },
+  "existing_official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "sampling": {
+    "max_sessions": 3,
+    "interval_seconds": 30,
+    "stop_on_first_acceptance": true,
+    "stop_on_non_clean_trial": true,
+    "automatic_retries": 0,
+    "not_a_quality_comparison": true
+  }
+}

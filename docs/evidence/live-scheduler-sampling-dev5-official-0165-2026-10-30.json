@@ -1,0 +1,1003 @@
+{
+  "date_local": "2026-10-30",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-29T23:59:42.295660+00:00",
+  "authorization": "standing native acceptance authorization from call_6d618f8753d948e5afeea9800383947e; maximum three samples predeclared; no automatic retries",
+  "base_commit": "f310e5010bf3804e891d0e8e09d8524e088fb68b",
+  "client": {
+    "kind": "unmodified official Codex CLI 0.165.0; isolated npm directory",
+    "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+    "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+  },
+  "proxy": {
+    "version": "0.1.0-dev.5",
+    "path": "dist/0.1.0-dev.5/20261030-061238-866/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+    "sha256": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+  },
+  "source_record": {
+    "path": "build/evaluations/20261029-234724-681977/results.json",
+    "sha256": "e75114ea4b1dacfe4be795f588cc68b2adfa8156154c32ec54ba2d63d3bcd3ca",
+    "bytes": 25180
+  },
+  "prepared_plan": {
+    "path": "docs/evidence/next-live-scheduler-sampling-dev5-official-0165-plan.json",
+    "sha256": "8c1c31cdb9ef18c10efbb3957cd787e14942f81d1226d96bfd8b2bc60e22d0e8",
+    "bytes": 10728
+  },
+  "data": {
+    "kind": "single_condition_diagnostic",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "fixed_workspace_commands": true,
+    "starter_variant": "seeded",
+    "stop_on_continuation_success": true,
+    "runner_sha256": "07a1f0418234c4fe0bfd5de8b489f6d92afbeadee61b8b5f97d12116d7067eeb",
+    "task_sources": {
+      "tasks.py": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c",
+      "score.py": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "0a092b243cc347dc61dbf22309ece5bb7ed554102c41e949f22d64ff4530678f",
+      "workspace_fixture.py": "1eb8185478cc15cbb7881603ef84c33eab25e5a8b12ddc4c684b6112466fbb77",
+      "fold_diagnostics.py": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877",
+      "scheduler_task.py": "9d1451b13f02dcd4784828785a5c801c9626094baa17efa6bd798656838f0ea9",
+      "acceptance.py": "6e17667171ec4b60726d20e8226897990e21643dc7ff036432c2ce909bdb706c"
+    },
+    "trials": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      },
+      {
+        "task": "scheduler",
+        "repeat": 1,
+        "condition": "on",
+        "max_continue": 1
+      },
+      {
+        "task": "scheduler",
+        "repeat": 2,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "starter_variant": "seeded",
+        "initial_solution_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 83.988,
+        "client_reported_usage": {
+          "input_tokens": 68356,
+          "cached_input_tokens": 57728,
+          "output_tokens": 1444,
+          "reasoning_output_tokens": 930
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 2,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 8.023,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 8.261,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.261,
+            "counter_probe_finished_seconds": 8.305,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 8.912,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.912,
+            "counter_probe_finished_seconds": 8.93,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 47.982,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 48.028,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 48.028,
+            "counter_probe_finished_seconds": 48.051,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 48.407,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 48.407,
+            "counter_probe_finished_seconds": 48.431,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 76.86,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 76.86,
+            "counter_probe_finished_seconds": 76.879,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 77.485,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 77.485,
+            "counter_probe_finished_seconds": 77.5,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 80.562,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 6,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 4,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 4,
+          "failed": 0,
+          "usage_reports": 4,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 68356,
+          "output_tokens": 1444,
+          "cached_tokens": 57728,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 930,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 0,
+            "rule_not_matched": 4,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            817,
+            113,
+            0
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 68356,
+          "output_tokens": 1444,
+          "cached_tokens": 57728,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 930
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true,
+          "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+          "reader_unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      },
+      {
+        "task": "scheduler",
+        "repeat": 1,
+        "condition": "on",
+        "max_continue": 1,
+        "starter_variant": "seeded",
+        "initial_solution_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 53.517,
+        "client_reported_usage": {
+          "input_tokens": 67688,
+          "cached_input_tokens": 39936,
+          "output_tokens": 1478,
+          "reasoning_output_tokens": 866
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 2,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 7.559,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 7.845,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 7.845,
+            "counter_probe_finished_seconds": 7.86,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 8.576,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.576,
+            "counter_probe_finished_seconds": 8.591,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 42.426,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 42.446,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.446,
+            "counter_probe_finished_seconds": 42.46,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 42.66,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.66,
+            "counter_probe_finished_seconds": 42.681,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 45.159,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 45.159,
+            "counter_probe_finished_seconds": 45.172,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 45.716,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 45.716,
+            "counter_probe_finished_seconds": 45.736,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 48.764,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 6,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 4,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 4,
+          "failed": 0,
+          "usage_reports": 4,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 67688,
+          "output_tokens": 1478,
+          "cached_tokens": 39936,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 866,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 0,
+            "rule_not_matched": 4,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            837,
+            0,
+            29
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 67688,
+          "output_tokens": 1478,
+          "cached_tokens": 39936,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 866
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true,
+          "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+          "reader_unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      },
+      {
+        "task": "scheduler",
+        "repeat": 2,
+        "condition": "on",
+        "max_continue": 1,
+        "starter_variant": "seeded",
+        "initial_solution_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 65.244,
+        "client_reported_usage": {
+          "input_tokens": 67800,
+          "cached_input_tokens": 59776,
+          "output_tokens": 1089,
+          "reasoning_output_tokens": 545
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 2,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 7.721,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 7.946,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 7.946,
+            "counter_probe_finished_seconds": 7.96,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 8.515,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.515,
+            "counter_probe_finished_seconds": 8.528,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 42.336,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 42.356,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.356,
+            "counter_probe_finished_seconds": 42.374,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 42.566,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.566,
+            "counter_probe_finished_seconds": 42.58,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 45.489,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 45.489,
+            "counter_probe_finished_seconds": 45.51,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 4,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 46.054,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 46.054,
+            "counter_probe_finished_seconds": 46.072,
+            "proxy_counters": {
+              "requests": 5,
+              "completed": 4,
+              "continuations": 1,
+              "continued_tool_responses": 1,
+              "continued_tool_calls": 1,
+              "continued_tool_results": 1,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 61.699,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 6,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 5,
+          "continuations": 1,
+          "warmups": 1,
+          "completed": 5,
+          "failed": 0,
+          "usage_reports": 5,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 85175,
+          "output_tokens": 1445,
+          "cached_tokens": 76416,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 545,
+          "continued_tool_responses": 1,
+          "continued_tool_calls": 1,
+          "continued_tool_results": 1,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 1,
+            "rule_not_matched": 4,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            516,
+            21,
+            8,
+            0
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 85175,
+          "output_tokens": 1445,
+          "cached_tokens": 76416,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 545
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": true,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true,
+          "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+          "reader_unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558"
+    },
+    "stopped_early": true,
+    "stop_reason": "continuation_acceptance_observed"
+  },
+  "sample_checks": [
+    {
+      "sample": 1,
+      "checks": {
+        "normal_finish": true,
+        "file_changed_and_all_grading_checks_passed": true,
+        "live_model_evidence": true,
+        "real_continuation_observed": false,
+        "matched_continued_tool_result_observed": false,
+        "no_observed_tool_or_client_error": true,
+        "no_rate_limit_or_upstream_error": true,
+        "complete_usage_observed": true,
+        "folded_client_usage_within_billed_totals": true,
+        "event_trace_complete_and_balanced": true,
+        "diagnostic_observations_complete": true,
+        "supplied_workspace_helpers_unchanged": true,
+        "fold_decision_diagnostics_valid": true
+      },
+      "functional_continuation_tool_finish_acceptance": false,
+      "continuation_tool_finish_acceptance": false,
+      "protected_files_unchanged": false,
+      "unmet_acceptance_checks": [
+        "real_continuation_observed",
+        "matched_continued_tool_result_observed",
+        "batch_protected_files_unchanged"
+      ],
+      "max_observed_local_tool_overlap": 1,
+      "runner_stop_reason": null
+    },
+    {
+      "sample": 2,
+      "checks": {
+        "normal_finish": true,
+        "file_changed_and_all_grading_checks_passed": true,
+        "live_model_evidence": true,
+        "real_continuation_observed": false,
+        "matched_continued_tool_result_observed": false,
+        "no_observed_tool_or_client_error": true,
+        "no_rate_limit_or_upstream_error": true,
+        "complete_usage_observed": true,
+        "folded_client_usage_within_billed_totals": true,
+        "event_trace_complete_and_balanced": true,
+        "diagnostic_observations_complete": true,
+        "supplied_workspace_helpers_unchanged": true,
+        "fold_decision_diagnostics_valid": true
+      },
+      "functional_continuation_tool_finish_acceptance": false,
+      "continuation_tool_finish_acceptance": false,
+      "protected_files_unchanged": false,
+      "unmet_acceptance_checks": [
+        "real_continuation_observed",
+        "matched_continued_tool_result_observed",
+        "batch_protected_files_unchanged"
+      ],
+      "max_observed_local_tool_overlap": 1,
+      "runner_stop_reason": null
+    },
+    {
+      "sample": 3,
+      "checks": {
+        "normal_finish": true,
+        "file_changed_and_all_grading_checks_passed": true,
+        "live_model_evidence": true,
+        "real_continuation_observed": true,
+        "matched_continued_tool_result_observed": true,
+        "no_observed_tool_or_client_error": true,
+        "no_rate_limit_or_upstream_error": true,
+        "complete_usage_observed": true,
+        "folded_client_usage_within_billed_totals": true,
+        "event_trace_complete_and_balanced": true,
+        "diagnostic_observations_complete": true,
+        "supplied_workspace_helpers_unchanged": true,
+        "fold_decision_diagnostics_valid": true
+      },
+      "functional_continuation_tool_finish_acceptance": true,
+      "continuation_tool_finish_acceptance": false,
+      "protected_files_unchanged": false,
+      "unmet_acceptance_checks": [
+        "batch_protected_files_unchanged"
+      ],
+      "max_observed_local_tool_overlap": 1,
+      "runner_stop_reason": "continuation_acceptance_observed"
+    }
+  ],
+  "continuation_tool_finish_acceptance": false,
+  "functional_continuation_tool_finish_acceptance": true,
+  "accepted_sample": null,
+  "functional_accepted_sample": 3,
+  "planned_max_sessions": 3,
+  "actual_sessions": 3,
+  "no_extra_sample_after_stop": true,
+  "cumulative_native_login": {
+    "sessions": 21,
+    "observed_inference_requests": 114,
+    "continuations": 4
+  },
+  "official_api_totals_unchanged": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "global_invariants": {
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": false,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "codex": 0,
+      "reflow": 0,
+      "code_mode_host": 0
+    },
+    "binary_sha256_after": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "27e38dc7be7f4eeda37386c0c93876d621880a8d14bb72023de0497978910558",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    }
+  },
+  "production_config_review": {
+    "user_confirmed_manual_edit": "added supports_websockets = true; Codex had not been restarted",
+    "source_question_id": "call_faff38f1bb86498e8b1b47bf2c62180d",
+    "raw_unchanged_check_passed": false,
+    "exact_byte_difference_reconstructed": false,
+    "test_client_uses_isolated_codex_home_and_ignores_user_config": true,
+    "production_file_restored_or_modified_by_review": false,
+    "limits": "Only before/after hashes were retained. User confirmation explains that a manual edit occurred; constrained reconstruction did not prove the complete byte difference. The original invariant remains failed."
+  },
+  "offline_evidence": {
+    "offline_process_checks": {
+      "path": "build/evaluation-process/20261029-234454-891141/summary.json",
+      "sha256": "7cedb63f7bc67f21b01682037f79a819737ebdd340d03d8ea972e7f92aa21970",
+      "bytes": 471
+    },
+    "native_checker_preflight": {
+      "path": "build/scheduler-fixed-workspace-preparation-20261030/native-commands-preflight.json",
+      "sha256": "6b18c3c9afba0748b0df85727a619c7908a22ec3c08e7aac481cb3e21c977234",
+      "bytes": 715
+    },
+    "candidate_offline_evidence": {
+      "path": "docs/evidence/decision-diagnostics-dev5-2026-10-30.json",
+      "sha256": "35736f7102594370b28294296bec4ab27e31196b0644f019811c54946335484b",
+      "bytes": 5654
+    }
+  },
+  "evidence_files": [
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/authorization.json",
+      "sha256": "49eac5a43980161787f46a91f377e2d679599ad2337730f8a83a441d68d8c580",
+      "bytes": 962
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/started.once",
+      "sha256": "5870fd14b6e405dc09b66a5fc8c4c33c00d19ee8d7c472d14b231e1c4550f4d9",
+      "bytes": 34
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/process-precheck.json",
+      "sha256": "9c0208983cd3e1234cc978c042926d692c92448176610ae214363111407ea0c1",
+      "bytes": 60
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/invariants.json",
+      "sha256": "7fe047cb2f714b91f50790555ff52a66b92dd48c8dabd89447e366d3d17760d2",
+      "bytes": 2302
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/user-config-change-attribution.json",
+      "sha256": "c98be688c0c883ad77576554017e68ef89c41e9bd45a999263dd4498de3ec3bc",
+      "bytes": 1252
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/user-config-format-attribution.json",
+      "sha256": "c69906d3d0317f9753e24a145f815bfa9e8ef2ed88cd85ee98320bcc755b39a9",
+      "bytes": 824
+    },
+    {
+      "path": "build/live-authorized-scheduler-sampling-dev5-official-0165-20261030/user-config-spacing-attribution.json",
+      "sha256": "42d3f89d43eacbd573536d964d72078b44c1ad0052379748a61c2968f0508bac",
+      "bytes": 836
+    }
+  ],
+  "limits": [
+    "Every sample uses the same fixed high repair workload and 18 independent checks; this is bounded acceptance sampling, not an off/on quality comparison or reliability estimate.",
+    "No continuation threshold, client binary, Reflow binary or tool-success requirement was changed.",
+    "Matching retained-tool result counts prove protocol correlation; success additionally requires all local tool events and the complete task to succeed in the same session.",
+    "No credentials, request/response text, raw tool commands/output or encrypted reasoning are retained in these diagnostic artifacts.",
+    "Desktop/dot, real token refresh, other live OAuth harnesses, production changes, pushes, releases and external submissions are not covered."
+  ]
+}

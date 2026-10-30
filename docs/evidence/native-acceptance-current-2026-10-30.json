@@ -1,0 +1,269 @@
+{
+  "updated_utc": "2026-10-30T00:00:51.044316+00:00",
+  "date_local": "2026-10-30",
+  "scope": "Windows amd64; isolated native ChatGPT login; unmodified official Codex 0.165.0; Reflow dev.5",
+  "strict_native_continuation_acceptance": false,
+  "functional_native_continuation_acceptance": true,
+  "production_config_review": {
+    "user_confirmed_manual_edit": "added supports_websockets = true; Codex had not been restarted",
+    "source_question_id": "call_faff38f1bb86498e8b1b47bf2c62180d",
+    "raw_unchanged_check_passed": false,
+    "exact_byte_difference_reconstructed": false,
+    "test_client_uses_isolated_codex_home_and_ignores_user_config": true,
+    "production_file_restored_or_modified_by_review": false,
+    "limits": "Only before/after hashes were retained. User confirmation explains that a manual edit occurred; constrained reconstruction did not prove the complete byte difference. The original invariant remains failed."
+  },
+  "cumulative_native_login": {
+    "sessions": 21,
+    "observed_inference_requests": 114,
+    "continuations": 4
+  },
+  "official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "dev5_sessions": [
+    {
+      "native_session": 14,
+      "label": "对账 high",
+      "status": "finished",
+      "seconds": 120.566,
+      "passed": 18,
+      "total": 18,
+      "requests": 7,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 1,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        410,
+        10,
+        0,
+        24,
+        100,
+        75
+      ],
+      "usage_complete": true,
+      "record": "LIVE-LEDGER-DEV5-2026-10-30.md"
+    },
+    {
+      "native_session": 15,
+      "label": "构建计划修复 high",
+      "status": "finished",
+      "seconds": 86.967,
+      "passed": 18,
+      "total": 18,
+      "requests": 8,
+      "continuations": 1,
+      "matched_results": 1,
+      "tool_failures": 1,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        516,
+        0,
+        13,
+        0,
+        435,
+        28,
+        105
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-2026-10-30.md"
+    },
+    {
+      "native_session": 16,
+      "label": "固定工具修复 high",
+      "status": "finished",
+      "seconds": 62.4,
+      "passed": 18,
+      "total": 18,
+      "requests": 4,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        778,
+        135,
+        0
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-FIXED-2026-10-30.md"
+    },
+    {
+      "native_session": 17,
+      "label": "固定工具修复 xhigh",
+      "status": "finished",
+      "seconds": 65.68,
+      "passed": 18,
+      "total": 18,
+      "requests": 4,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        1463,
+        12,
+        238
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-FIXED-XHIGH-2026-10-30.md"
+    },
+    {
+      "native_session": 18,
+      "label": "函数骨架实现 xhigh",
+      "status": "finished",
+      "seconds": 162.025,
+      "passed": 18,
+      "total": 18,
+      "requests": 4,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        3698,
+        50,
+        0
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-SKELETON-2026-10-30.md"
+    },
+    {
+      "native_session": 19,
+      "label": "固定 high 采样 1",
+      "status": "finished",
+      "seconds": 83.988,
+      "passed": 18,
+      "total": 18,
+      "requests": 4,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        817,
+        113,
+        0
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-SAMPLING-2026-10-30.md"
+    },
+    {
+      "native_session": 20,
+      "label": "固定 high 采样 2",
+      "status": "finished",
+      "seconds": 53.517,
+      "passed": 18,
+      "total": 18,
+      "requests": 4,
+      "continuations": 0,
+      "matched_results": 0,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": false,
+      "reasoning_samples": [
+        0,
+        837,
+        0,
+        29
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-SAMPLING-2026-10-30.md"
+    },
+    {
+      "native_session": 21,
+      "label": "固定 high 采样 3",
+      "status": "finished",
+      "seconds": 65.244,
+      "passed": 18,
+      "total": 18,
+      "requests": 5,
+      "continuations": 1,
+      "matched_results": 1,
+      "tool_failures": 0,
+      "accepted": false,
+      "functional_accepted": true,
+      "reasoning_samples": [
+        0,
+        516,
+        21,
+        8,
+        0
+      ],
+      "usage_complete": true,
+      "record": "LIVE-SCHEDULER-SAMPLING-2026-10-30.md"
+    }
+  ],
+  "sources": [
+    {
+      "path": "docs/evidence/live-ledger-dev5-official-0165-2026-10-30.json",
+      "sha256": "6380a215d35b41cf5ddd6ccd92a8dc9a08892dc281e2c1346d2026da086ed9cd",
+      "bytes": 18604
+    },
+    {
+      "path": "docs/evidence/live-scheduler-dev5-official-0165-2026-10-30.json",
+      "sha256": "153a007a33331e6c530035a3c123314bcb78e4d9f46179529745c4a6e6ef7fa9",
+      "bytes": 21249
+    },
+    {
+      "path": "docs/evidence/live-scheduler-fixed-dev5-official-0165-2026-10-30.json",
+      "sha256": "d392d20f8998227d70591bb339e3311deb3fa543b59f64ffa10248b8f2672fc7",
+      "bytes": 16440
+    },
+    {
+      "path": "docs/evidence/live-scheduler-fixed-xhigh-dev5-official-0165-2026-10-30.json",
+      "sha256": "d5d2518c3c16b9d7254379794b3d8d053c93d3dfb07f58c94431ead82cdf4437",
+      "bytes": 16599
+    },
+    {
+      "path": "docs/evidence/live-scheduler-skeleton-dev5-official-0165-2026-10-30.json",
+      "sha256": "a8c37a8d93272d58046efa31ecb02a9518a8664326803fe94b36f5a75abebb21",
+      "bytes": 16869
+    },
+    {
+      "path": "docs/evidence/live-scheduler-sampling-dev5-official-0165-2026-10-30.json",
+      "sha256": "6750df0ad103559541452580982bb8298a3364dcda77ef2e1fea9d7348f8b49f",
+      "bytes": 35383
+    }
+  ],
+  "test_concurrency": 1,
+  "model_session_timeout_seconds": 180,
+  "standing_native_acceptance_authorization": true,
+  "latest_offline_evaluation_checks_passed": 42,
+  "public_checkpoint_checked_date_local": "2026-10-30",
+  "public_head": "d0f1be6101fc81a48de422cd740b4ae44879e919",
+  "public_ci": [
+    {
+      "url": "https://github.com/chatwithgod/reflow/actions/runs/40827335745",
+      "conclusion": "success"
+    },
+    {
+      "url": "https://github.com/chatwithgod/reflow/actions/runs/40827335847",
+      "conclusion": "failure"
+    }
+  ],
+  "not_covered": [
+    "Desktop/dot UI",
+    "real token refresh",
+    "real Pi/Magpie OAuth acceptance",
+    "all platforms and packages",
+    "off/on quality benefit",
+    "production setup",
+    "release or external submission"
+  ]
+}

@@ -8,34 +8,18 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 ## 当前状态
 
-Reflow 的核心逻辑源自 `chatwithgod/cpa-plugin-codexreflow`，经过提取、解耦与适配后，转为不依赖 CPA SDK 的独立 Go 程序。
+Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。公开分支基线为 dev.4 的 `d0f1be6`，本地候选为 dev.5，新增[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)；最新候选和实测记录尚未推送，尚无二进制 Release。
 
-当前本地候选为 `0.1.0-dev.5`，新增[续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)，尚未推送或发布。已在 [chatwithgod/reflow](https://github.com/chatwithgod/reflow) 公开的基线仍为 dev.4，尚无二进制 Release。已实现独立核心、代理服务和 Codex 原生插件的配置与诊断入口。此前带客户端的 Windows 本地回归为 79 个通过项、0 跳过，Codex 使用加入上游修复的隔离源码构件。公开后的三平台离线 CI 均通过，各为 69 个通过项、4 个未配置客户端的测试跳过；race、vet、fuzz 和评测自检通过。范围见 [公开与 CI 记录](docs/PUBLICATION-2026-10-28.md)、[app-server 验证](docs/APP-SERVER-2026-10-27.md)与[兼容性说明](docs/COMPATIBILITY.md)。
+2026-10-30，未修改的官方 Codex `0.165.0` 在隔离的原生 ChatGPT 登录下，经独立 Reflow dev.5 完成 **1 次真实续接、成功工具往返、18/18 和正常结束，工具失败 0**。同批生产配置散列有变化，用户确认同期手动设置；原始不变检查保留未通过，功能结果与这一审计例外分开记录。累计数字、时间线及限制统一见[原生登录验收总表](docs/NATIVE-LOGIN-ACCEPTANCE.md)。
 
-- **Codex CLI**：真实客户端配合合成 ChatGPT 凭证和模拟上游，完成续接，并实际执行本地 MCP 工具。
-- **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复会话及配置还原通过；这是后端协议验证，Desktop/dot 界面仍未验收。
-- **Pi 1.4.0**：`openai-codex` 路径的 SSE 与 WebSocket 续接、工具执行和结果回传通过。见 [Pi 接入说明](adapters/pi/README.md)。
-- **Codex 原生插件**：本地市场注册安装、缓存二进制、4 个 stdio MCP 工具，以及真实 Codex 会话通过 Code Mode 调用 `status` 均已验证。见 [插件说明](plugins/codex/README.md)。
-- **Magpie**：可选 Go 执行扩展和嵌入适配已通过四条模拟接入路径与 race；支持固定公开 Reflow 模块，设置页覆盖两种浏览器和五种语言。宿主全量仍未通过，见 [适配与补丁](adapters/magpie/README.md)。
-- **开关评测**：4 项任务、34 个评分检查点，评分器和进程管理自检通过，尚无真实模型质量结果。见 [评测说明](docs/EVALUATION.md)。
+- **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
+- **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
+- **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
+- **Pi 1.4.0**：合成 OAuth 下的 SSE、WebSocket 续接和工具往返通过，真实账号待验收。见[Pi 适配](adapters/pi/README.md)。
+- **Magpie**：七份本地补丁涵盖可选执行扩展、公开模块和测试修正；宿主全量仍有已知失败，补丁未提交上游。见[适配说明](adapters/magpie/README.md)。
+- **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。42 项离线评测器检查通过，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
-上述自动回归使用隔离目录和模拟上游。后续原生 ChatGPT 登录实测中，关闭组正常完成；开启组观察到一次真实续接且文件评分 9/9，但会话达到 180 秒上限，尚未完整验收。见 [真实测试记录](docs/LIVE-SMOKE-2026-10-26.md)。生产配置未改，Desktop/dot 和质量改善结论仍待验证。
-
-2026-10-27 的修复版单次真实诊断在 61.647 秒正常结束，4 次推理请求、文件评分 9/9、工具失败 0 次；本次未触发续接，因此整体验收仍未完成。见 [修复版 NDJSON 实测](docs/LIVE-SMOKE-2026-10-27.md)。
-
-随后单独授权的拓扑排序诊断在 36.771 秒正常结束，5 次推理请求、评分 8/8、工具失败 0 次，仍未触发续接。见 [拓扑排序实测](docs/LIVE-TOPO-2026-10-27.md)。2026-10-29，未修改的官方 CLI `0.165.0` 在一次 NDJSON 实测中于 61.101 秒正常结束，6 次推理请求、评分 9/9、续接 0 次；中间有一次命令失败，后续完成任务。该次结束时原生登录累计 8 次真实会话、46 次推理请求、1 次续接。见 [官方版实测](docs/LIVE-OFFICIAL-0165-2026-10-29.md)。
-
-后续另获授权的 [LRU 实测](docs/LIVE-LRU-2026-10-29.md)在 43.533 秒正常结束，评分 9/9，5 次推理请求、续接 0 次；一次命令失败后完成修改。
-
-2026-10-30 的 [续接对账任务](docs/LIVE-LEDGER-2026-10-30.md)在 157.988 秒正常结束，评分 18/18，观察到 1 次真实续接及 1 个匹配工具回传；但两次命令失败尚不能与续接精确对应，完整验收仍未通过。另行获批的[补充诊断](docs/LIVE-LEDGER-DIAGNOSTIC-2026-10-30.md)正常结束、18/18，未触发续接，记录到一次未分类命令失败。测试并发始终为 1，没有自动重跑。后续获批的[固定校验入口验证](docs/LIVE-LEDGER-WORKSPACE-2026-10-30.md)在 112.589 秒正常结束，18/18、工具失败 0 次，但续接仍为 0。另获批的[同任务 xhigh 验证](docs/LIVE-LEDGER-XHIGH-2026-10-30.md)达到 180 秒上限，18/18、工具失败 0、续接 0；有一条请求未完成。原生登录最新累计为 13 次会话、74 次已观察推理请求、2 次续接；完整验收仍未通过，新增任务须显式选择，默认四项评测不变。
-
-同日，用户授权的临时官方 API key 经 Reflow dev.4 完成 2 次 SSE 请求、1 次固定本地函数执行及结果回传，最终答案核对通过。此次使用小型 Responses 客户端，推理 token 与续接均为 0；API 证据单独记录，见 [官方 API 检查](docs/LIVE-API-KEY-2026-10-29.md)。
-
-此前官方 `0.164.0` 和 `0.164.0-alpha.11.1` 的 Windows 原生补丁写入失败；加入上游修复的隔离源码构件通过了五个写入场景，以及原生协议、插件回归，见 [历史复现](docs/NATIVE-WRITE-PROBE.md)。后续 `0.165.0` 和 `0.165.0-alpha.1.2` 已通过本机 Windows 的定向离线检查，见 [官方客户端复测](docs/NATIVE-CLIENT-2026-10-29.md)。三平台原生 CI 的客户端普通/race 均通过，macOS arm64 写入通过，Ubuntu/托管 Windows 写入仍失败；[宿主对照](docs/NATIVE-CI.md)已复现对应基础隔离限制。
-
-后续获批的 [Ubuntu 兼容对照](docs/LINUX-SANDBOX-CONTROL.md)已使同一 runner 的五个写入场景从 0/5 变为 5/5，文件/网络边界及配置清理也通过。成功依赖固定发行版配置和明确的 ABI 告警例外；该选项默认关闭，原有自动 CI 失败记录保留。托管 Windows 和完整真实续接验收仍待完成。
-
-公开仓库、发布和维护证据的准备状态见 [开源准备清单](docs/OSS-READINESS.md)。
+dev.5 本机源码普通/race 各 79 通过、4 跳过，Windows 原生打包普通/race 各 10 项及五个写入场景通过。公开 dev.4 的常规三平台 CI 通过；原生 CI 的 macOS 写入通过，默认 Ubuntu/托管 Windows 写入失败保留，另有固定前提下的 Ubuntu 兼容对照通过。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
 
