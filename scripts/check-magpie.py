@@ -20,6 +20,7 @@ module_source.add_argument("--modfile", type=Path, help="alternate .mod file ins
 parser.add_argument("--packages", nargs="+", default=["./..."])
 parser.add_argument("--run")
 parser.add_argument("--race", action="store_true", help="run the selected test suite with Go's race detector")
+parser.add_argument("--serial", action="store_true", help="run one Go package and one parallel test at a time")
 parser.add_argument("--compiler", type=Path, help="C compiler for race checks, if not available on PATH")
 args = parser.parse_args()
 if args.race and args.phase != "suite":
@@ -43,10 +44,14 @@ if modfile:
     command += ["-modfile=" + str(modfile), "-mod=readonly"]
 if args.tags:
     command += ["-tags", args.tags]
+if args.serial:
+    command += ["-p=1"]
 if args.phase == "suite":
     if args.race:
         command += ["-race"]
     command += ["-json", "-count=1", "-timeout=45m"]
+    if args.serial:
+        command += ["-parallel=1"]
     if args.run:
         command += ["-run", args.run]
     command += args.packages

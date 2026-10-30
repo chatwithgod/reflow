@@ -1,0 +1,574 @@
+diff --git a/internal/gateway/reflow_adapter_test.go b/internal/gateway/reflow_adapter_test.go
+new file mode 100644
+index 0000000..c939548
+--- /dev/null
++++ b/internal/gateway/reflow_adapter_test.go
+@@ -0,0 +1,288 @@
++//go:build reflow
++
++package gateway
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"strings"
++	"sync"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	adapter "github.com/chatwithgod/reflow/adapters/magpie"
++	"github.com/chatwithgod/reflow/core"
++	"github.com/coder/websocket"
++	"github.com/yetone/magpie/internal/gwexec"
++	"github.com/yetone/magpie/internal/provider"
++	"github.com/yetone/magpie/internal/usage"
++)
++
++func reflowRound(id string, tokens int, tool bool) []map[string]any {
++	reason := map[string]any{"type": "reasoning", "id": id + "-reason", "summary": []any{}, "encrypted_content": "synthetic-" + id}
++	answer := map[string]any{"type": "message", "id": id + "-answer", "role": "assistant", "status": "completed", "content": []any{map[string]any{"type": "output_text", "text": "synthetic final answer"}}}
++	if tool {
++		answer = map[string]any{"type": "function_call", "id": id + "-tool", "call_id": id + "-call", "name": "inspect", "arguments": "{}", "status": "completed"}
++	}
++	return []map[string]any{
++		{"type": "response.created", "response": map[string]any{"id": id, "status": "in_progress", "output": []any{}}},
++		{"type": "response.output_item.added", "output_index": 0, "item": map[string]any{"type": "reasoning", "id": id + "-reason", "summary": []any{}}},
++		{"type": "response.output_item.done", "output_index": 0, "item": reason},
++		{"type": "response.output_item.added", "output_index": 1, "item": answer},
++		{"type": "response.output_item.done", "output_index": 1, "item": answer},
++		{"type": "response.completed", "response": map[string]any{"id": id, "status": "completed", "output": []any{reason, answer}, "usage": map[string]any{"input_tokens": 100, "output_tokens": tokens + 10, "total_tokens": tokens + 110, "output_tokens_details": map[string]any{"reasoning_tokens": tokens}}}},
++	}
++}
++
++func TestReflowHiddenRoundCanceledThroughGateway(t *testing.T) {
++	started, canceled := make(chan struct{}), make(chan struct{})
++	release := make(chan struct{})
++	var calls atomic.Int32
++	chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++		io.Copy(io.Discard, r.Body)
++		r.Body.Close()
++		if calls.Add(1) == 2 {
++			close(started)
++			select {
++			case <-r.Context().Done():
++				close(canceled)
++			case <-release:
++			}
++			return
++		}
++		w.Header().Set("Content-Type", "text/event-stream")
++		for _, event := range reflowRound("pending", 516, true) {
++			raw, _ := json.Marshal(event)
++			fmt.Fprintf(w, "data: %s\n\n", raw)
++			http.NewResponseController(w).Flush()
++		}
++	})
++	t.Cleanup(func() { close(release) })
++	engine, err := adapter.New(core.DefaultConfig())
++	if err != nil {
++		t.Fatal(err)
++	}
++	stop := gwexec.Use(func(ctx context.Context, info gwexec.Info, body []byte, next gwexec.Next) (*http.Response, error) {
++		return engine.Execute(ctx, info.Scope, body, func(_ context.Context, b []byte) (*http.Response, error) { return next(b) })
++	})
++	defer stop()
++	server := httptest.NewServer(lanGuard(New().Handler()))
++	defer server.Close()
++	ctx, cancel := context.WithCancel(context.Background())
++	defer cancel()
++	req, _ := http.NewRequestWithContext(ctx, http.MethodPost, server.URL+CodexPath+"/responses", strings.NewReader(`{"model":"gpt-6","stream":true,"input":[]}`))
++	req.Header.Set("Authorization", "Bearer synthetic-cancel-token")
++	res, err := server.Client().Do(req)
++	if err != nil {
++		t.Fatal(err)
++	}
++	select {
++	case <-started:
++	case <-time.After(5 * time.Second):
++		cancel()
++		res.Body.Close()
++		t.Fatal("hidden round did not start")
++	}
++	cancel()
++	res.Body.Close()
++	select {
++	case <-canceled:
++	case <-time.After(5 * time.Second):
++		t.Fatal("hidden round survived client cancellation")
++	}
++	if calls.Load() != 2 {
++		t.Fatal("cancellation replayed the original request")
++	}
++}
++
++func TestReflowAdapterThroughGateway(t *testing.T) {
++	for _, mode := range []string{"http", "zstd", "upstream-websocket", "managed-responses", "downstream-websocket", "bidirectional-websocket", "managed-websocket"} {
++		t.Run(mode, func(t *testing.T) {
++			managed := mode == "managed-responses" || mode == "managed-websocket"
++			downstreamSocket := mode == "downstream-websocket" || mode == "bidirectional-websocket" || mode == "managed-websocket"
++			upstreamSocket := mode == "upstream-websocket" || mode == "bidirectional-websocket"
++			var mu sync.Mutex
++			var seen []map[string]any
++			var wsCalls int
++			respond := func(body map[string]any) []map[string]any {
++				mu.Lock()
++				seen = append(seen, body)
++				n := len(seen)
++				mu.Unlock()
++				if n == 1 {
++					return reflowRound("discarded", 516, true)
++				}
++				if n == 2 {
++					return reflowRound("chosen", 20, true)
++				}
++				return reflowRound("final", 20, false)
++			}
++			up := chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++				auth := "Bearer synthetic-reflow-token"
++				if managed {
++					auth = "Bearer synthetic-managed-key"
++				}
++				if r.Header.Get("Authorization") != auth || (!managed && r.Header.Get("Chatgpt-Account-Id") != "reflow-account") {
++					t.Error("continuation changed credentials")
++				}
++				if strings.EqualFold(r.Header.Get("Upgrade"), "websocket") {
++					mu.Lock()
++					wsCalls++
++					mu.Unlock()
++					conn, err := websocket.Accept(w, r, nil)
++					if err != nil {
++						return
++					}
++					defer conn.CloseNow()
++					conn.SetReadLimit(16 << 20)
++					ctx, cancel := context.WithTimeout(r.Context(), 10*time.Second)
++					defer cancel()
++					_, raw, err := conn.Read(ctx)
++					if err != nil {
++						return
++					}
++					var body map[string]any
++					if json.Unmarshal(raw, &body) != nil {
++						t.Error("invalid socket request")
++						return
++					}
++					for _, event := range respond(body) {
++						raw, _ := json.Marshal(event)
++						if err := conn.Write(ctx, websocket.MessageText, raw); err != nil {
++							return
++						}
++					}
++					return
++				}
++				reader, err := decodedBody(r)
++				if err != nil {
++					t.Error(err)
++					http.Error(w, "bad compression", 400)
++					return
++				}
++				defer reader.Close()
++				var body map[string]any
++				if json.NewDecoder(reader).Decode(&body) != nil {
++					t.Error("invalid HTTP request")
++					return
++				}
++				w.Header().Set("Content-Type", "text/event-stream")
++				for _, event := range respond(body) {
++					raw, _ := json.Marshal(event)
++					fmt.Fprintf(w, "data: %s\n\n", raw)
++					http.NewResponseController(w).Flush()
++				}
++			})
++			path, model := CodexPath+"/responses", "gpt-6"
++			if managed {
++				if err := provider.Save(provider.Provider{ID: "reflow-fixture", Name: "Reflow fixture", Key: "synthetic-managed-key", Models: []string{"gpt-6"}, Responses: up.URL + "/v1"}); err != nil {
++					t.Fatal(err)
++				}
++				path, model = "/v1/responses", "reflow-fixture/gpt-6"
++			}
++			if mode == "zstd" {
++				defer provider.CodexZstdForTests(true)()
++			}
++			if upstreamSocket {
++				was := codexSocketOff.Swap(false)
++				defer codexSocketOff.Store(was)
++			}
++			engine, err := adapter.New(core.DefaultConfig())
++			if err != nil {
++				t.Fatal(err)
++			}
++			stop := gwexec.Use(func(ctx context.Context, info gwexec.Info, body []byte, next gwexec.Next) (*http.Response, error) {
++				return engine.Execute(ctx, info.Scope, body, func(_ context.Context, b []byte) (*http.Response, error) { return next(b) })
++			})
++			defer stop()
++			_, server := sockServer(t)
++			var socket *sockClient
++			if downstreamSocket {
++				socket, _, err = dialSock(t, server, path, http.Header{
++					"Authorization": {"Bearer synthetic-reflow-token"}, "Chatgpt-Account-Id": {"reflow-account"},
++				})
++				if err != nil {
++					t.Fatal(err)
++				}
++			}
++			ask := func(body string) string {
++				t.Helper()
++				body = strings.ReplaceAll(body, `"gpt-6"`, fmt.Sprintf("%q", model))
++				if socket != nil {
++					frames := socket.turn(`{"type":"response.create","store":false,` + strings.TrimPrefix(body, "{"))
++					if last(frames).Get("type").String() != "response.completed" {
++						t.Fatal("socket turn did not complete")
++					}
++					var out strings.Builder
++					for _, frame := range frames {
++						out.WriteString(frame.Raw)
++					}
++					return out.String()
++				}
++				req, _ := http.NewRequest(http.MethodPost, server.URL+path, strings.NewReader(body))
++				req.Header.Set("Authorization", "Bearer synthetic-reflow-token")
++				req.Header.Set("Chatgpt-Account-Id", "reflow-account")
++				res, err := server.Client().Do(req)
++				if err != nil {
++					t.Fatal(err)
++				}
++				raw, err := io.ReadAll(res.Body)
++				res.Body.Close()
++				if err != nil || res.StatusCode != 200 {
++					t.Fatalf("status=%d err=%v response=%s", res.StatusCode, err, raw)
++				}
++				return string(raw)
++			}
++			out := ask(`{"model":"gpt-6","stream":true,"input":[{"role":"user","content":"synthetic task"}]}`)
++			if strings.Contains(out, "discarded-call") || !strings.Contains(out, "chosen-call") {
++				t.Fatalf("tool isolation failed: %s", out)
++			}
++			ask(`{"model":"gpt-6","stream":true,"previous_response_id":"discarded","input":[{"type":"function_call_output","call_id":"chosen-call","output":"synthetic tool result"}]}`)
++			mu.Lock()
++			defer mu.Unlock()
++			if len(seen) != 3 {
++				t.Fatalf("upstream requests=%d", len(seen))
++			}
++			if upstreamSocket && wsCalls != 3 {
++				t.Fatalf("expected all three rounds over host WebSockets; got %d", wsCalls)
++			}
++			full, _ := json.Marshal(seen[2]["input"])
++			if seen[2]["previous_response_id"] != nil || !strings.Contains(string(full), "chosen-call") || !strings.Contains(string(full), "synthetic tool result") {
++				t.Fatal("next tool result did not carry complete history for the new host connection")
++			}
++			if strings.Contains(string(full), "discarded-call") {
++				t.Fatal("discarded tool call entered the next client turn")
++			}
++			var chosenCalls, chosenResults, userMessages int
++			for _, item := range seen[2]["input"].([]any) {
++				m := item.(map[string]any)
++				if m["type"] == "function_call" && m["call_id"] == "chosen-call" {
++					chosenCalls++
++				}
++				if m["type"] == "function_call_output" && m["call_id"] == "chosen-call" {
++					chosenResults++
++				}
++				if m["role"] == "user" {
++					userMessages++
++				}
++			}
++			if chosenCalls != 1 || chosenResults != 1 || userMessages != 1 {
++				t.Fatalf("history duplicated or incomplete: calls=%d results=%d user=%d", chosenCalls, chosenResults, userMessages)
++			}
++			found := false
++			for _, row := range usage.Load(time.Time{}) {
++				if row.Input == 200 && row.Output == 556 {
++					found = true
++				}
++			}
++			if !found {
++				t.Fatal("gateway usage did not include both folded rounds")
++			}
++		})
++	}
++}
+diff --git a/internal/gateway/reflow_socket_test.go b/internal/gateway/reflow_socket_test.go
+new file mode 100644
+index 0000000..6548b4d
+--- /dev/null
++++ b/internal/gateway/reflow_socket_test.go
+@@ -0,0 +1,158 @@
++//go:build reflow
++
++package gateway
++
++import (
++	"context"
++	"encoding/json"
++	"fmt"
++	"io"
++	"net/http"
++	"sync/atomic"
++	"testing"
++	"time"
++
++	adapter "github.com/chatwithgod/reflow/adapters/magpie"
++	"github.com/chatwithgod/reflow/core"
++	"github.com/tidwall/gjson"
++	"github.com/yetone/magpie/internal/gwexec"
++)
++
++func reflowSocketEngine(t *testing.T) {
++	t.Helper()
++	config := core.DefaultConfig()
++	config.MaxContinue = 1
++	engine, err := adapter.New(config)
++	if err != nil {
++		t.Fatal(err)
++	}
++	t.Cleanup(gwexec.Use(func(ctx context.Context, info gwexec.Info, body []byte, next gwexec.Next) (*http.Response, error) {
++		return engine.Execute(ctx, info.Scope, body, func(_ context.Context, b []byte) (*http.Response, error) { return next(b) })
++	}))
++}
++
++func reflowSocketReply(w http.ResponseWriter, id string, tokens int, tool bool) {
++	w.Header().Set("Content-Type", "text/event-stream")
++	for _, event := range reflowRound(id, tokens, tool) {
++		raw, _ := json.Marshal(event)
++		fmt.Fprintf(w, "data: %s\n\n", raw)
++		http.NewResponseController(w).Flush()
++	}
++}
++
++// Warmup stays local, even with Reflow enabled. The next delta keeps the
++// warmup's input exactly once; a reply is never looked up on another socket.
++func TestReflowSocketWarmupAndHistoryScope(t *testing.T) {
++	var calls atomic.Int32
++	chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++		raw, err := io.ReadAll(r.Body)
++		if err != nil {
++			t.Error(err)
++		}
++		if calls.Add(1) == 1 {
++			items := gjson.GetBytes(raw, "input").Array()
++			if len(items) != 2 || items[0].Get("content.0.text").String() != "hi" || items[1].Get("content.0.text").String() != "and more" {
++				t.Error("warmup input was lost or duplicated")
++			}
++			if gjson.GetBytes(raw, "generate").Exists() || gjson.GetBytes(raw, "previous_response_id").Exists() {
++				t.Error("socket-local fields went upstream")
++			}
++			reflowSocketReply(w, "warmup-follow", 516, false)
++			return
++		}
++		reflowSocketReply(w, "warmup-final", 20, false)
++	})
++	reflowSocketEngine(t)
++	_, server := sockServer(t)
++	header := http.Header{"Authorization": {"Bearer synthetic-reflow-token"}}
++	c, _, err := dialSock(t, server, CodexPath+"/responses", header)
++	if err != nil {
++		t.Fatal(err)
++	}
++	frame := func(prev, input string, extra ...string) string {
++		return string(rewriteModel([]byte(create(prev, input, extra...)), "gpt-6"))
++	}
++	warm := last(c.turn(frame("", userHi, `"generate":false`)))
++	if warm.Get("type").String() != "response.completed" || calls.Load() != 0 {
++		t.Fatal("warmup ran inference with Reflow enabled")
++	}
++	end := last(c.turn(frame(warm.Get("response.id").String(), userMore)))
++	if end.Get("type").String() != "response.completed" || calls.Load() != 2 {
++		t.Fatal("warmup follow-up did not complete exactly one continuation")
++	}
++	other, _, err := dialSock(t, server, CodexPath+"/responses", header)
++	if err != nil {
++		t.Fatal(err)
++	}
++	refused := last(other.turn(frame(end.Get("response.id").String(), userHi)))
++	if refused.Get("error.code").String() != "previous_response_not_found" || calls.Load() != 2 {
++		t.Fatal("response history crossed sockets")
++	}
++}
++
++// Interrupting the visible response must cancel a hidden continuation too.
++// Neither the discarded tool nor the interrupted response becomes history.
++func TestReflowSocketInterruptHiddenRound(t *testing.T) {
++	var calls atomic.Int32
++	started, canceled, release := make(chan struct{}), make(chan struct{}), make(chan struct{})
++	chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++		io.Copy(io.Discard, r.Body)
++		switch calls.Add(1) {
++		case 1:
++			reflowSocketReply(w, "interrupted-first", 516, true)
++		case 2:
++			close(started)
++			select {
++			case <-r.Context().Done():
++				close(canceled)
++			case <-release:
++			}
++		default:
++			reflowSocketReply(w, "after-interrupt", 20, false)
++		}
++	})
++	t.Cleanup(func() { close(release) })
++	reflowSocketEngine(t)
++	_, server := sockServer(t)
++	c, _, err := dialSock(t, server, CodexPath+"/responses", http.Header{"Authorization": {"Bearer synthetic-reflow-token"}})
++	if err != nil {
++		t.Fatal(err)
++	}
++	frame := func(prev string) string { return string(rewriteModel([]byte(create(prev, userHi)), "gpt-6")) }
++	c.send(frame(""))
++	got, err := c.until("response.created")
++	if err != nil || last(got).Get("response.id").String() != "interrupted-first" {
++		t.Fatal("visible response did not start")
++	}
++	select {
++	case <-started:
++	case <-time.After(30 * time.Second):
++		t.Fatal("hidden continuation did not start")
++	}
++	c.send(`{"type":"response.interrupt","response_id":"interrupted-first","mode":"discard_partial_items"}`)
++	got, err = c.until("response.incomplete")
++	if err != nil {
++		t.Fatal(err)
++	}
++	accepted := false
++	for _, event := range got {
++		accepted = accepted || event.Get("type").String() == "response.interrupt.accepted"
++		if event.Get("item.type").String() == "function_call" {
++			t.Error("discarded tool escaped before interruption")
++		}
++	}
++	if !accepted || last(got).Get("response.incomplete_details.reason").String() != "interrupted" {
++		t.Fatal("hidden continuation was not interrupted")
++	}
++	select {
++	case <-canceled:
++	case <-time.After(30 * time.Second):
++		t.Fatal("hidden continuation survived interruption")
++	}
++	if end := last(c.turn(frame("interrupted-first"))); end.Get("error.code").String() != "previous_response_not_found" || calls.Load() != 2 {
++		t.Fatal("interrupted response became reusable history")
++	}
++	if end := last(c.turn(frame(""))); end.Get("type").String() != "response.completed" || calls.Load() != 3 {
++		t.Fatal("socket failed to serve a fresh turn after interruption")
++	}
++}
+diff --git a/plugins/all/all.go b/plugins/all/all.go
+index f69757e..af4524d 100644
+--- a/plugins/all/all.go
++++ b/plugins/all/all.go
+@@ -10,6 +10,7 @@ import (
+ 	_ "github.com/yetone/magpie/plugins/middleware"
+ 	_ "github.com/yetone/magpie/plugins/otel"
+ 	_ "github.com/yetone/magpie/plugins/redact"
++	_ "github.com/yetone/magpie/plugins/reflow"
+ 	_ "github.com/yetone/magpie/plugins/rotation"
+ 	_ "github.com/yetone/magpie/plugins/routing"
+ 	_ "github.com/yetone/magpie/plugins/search"
+diff --git a/plugins/reflow/disabled.go b/plugins/reflow/disabled.go
+new file mode 100644
+index 0000000..a34e5a4
+--- /dev/null
++++ b/plugins/reflow/disabled.go
+@@ -0,0 +1,4 @@
++//go:build !reflow
++
++// Package reflow is inert unless the optional Reflow adapter is built in.
++package reflow
+diff --git a/plugins/reflow/reflow.go b/plugins/reflow/reflow.go
+new file mode 100644
+index 0000000..eb2de17
+--- /dev/null
++++ b/plugins/reflow/reflow.go
+@@ -0,0 +1,46 @@
++//go:build reflow
++
++// Package reflow supplies the optional local Reflow execution adapter. The
++// separate build tag and zero continuation default keep activation explicit.
++package reflow
++
++import (
++	"context"
++	"encoding/json"
++	"net/http"
++
++	adapter "github.com/chatwithgod/reflow/adapters/magpie"
++	"github.com/chatwithgod/reflow/core"
++	"github.com/yetone/magpie/internal/gwexec"
++	"github.com/yetone/magpie/internal/pluginrt"
++)
++
++type settings struct {
++	MaxContinue int `json:"maxContinue" title:"Additional reasoning rounds" description:"Zero disables continuation; extra rounds consume additional quota and time." min:"0" max:"7"`
++}
++
++func init() {
++	pluginrt.Register(pluginrt.Manifest{ID: "reflow", API: "^1", Requires: []string{"gateway"}, Name: "Reflow", Sub: "Bounded reasoning continuation on the selected Responses account", Settings: settings{}, Apply: func(c *pluginrt.Ctx) error {
++		b, err := json.Marshal(c.Config)
++		if err != nil {
++			return err
++		}
++		var options settings
++		if err = json.Unmarshal(b, &options); err != nil {
++			return err
++		}
++		if options.MaxContinue == 0 {
++			return nil
++		}
++		config := core.DefaultConfig()
++		config.MaxContinue = options.MaxContinue
++		engine, err := adapter.New(config)
++		if err != nil {
++			return err
++		}
++		c.OnDispose(gwexec.Use(func(ctx context.Context, info gwexec.Info, body []byte, next gwexec.Next) (*http.Response, error) {
++			return engine.Execute(ctx, info.Scope, body, func(_ context.Context, b []byte) (*http.Response, error) { return next(b) })
++		}))
++		return nil
++	}})
++}
+diff --git a/plugins/reflow/reflow_test.go b/plugins/reflow/reflow_test.go
+new file mode 100644
+index 0000000..5d97dcf
+--- /dev/null
++++ b/plugins/reflow/reflow_test.go
+@@ -0,0 +1,36 @@
++//go:build reflow
++
++package reflow
++
++import (
++	"github.com/yetone/magpie/internal/gwexec"
++	"github.com/yetone/magpie/internal/pluginrt"
++	"testing"
++)
++
++func TestZeroDefaultAndRuntimeRemoval(t *testing.T) {
++	var manifest pluginrt.Manifest
++	for _, m := range pluginrt.Registered() {
++		if m.ID == "reflow" {
++			manifest = m
++		}
++	}
++	if manifest.ID == "" {
++		t.Fatal("adapter not registered")
++	}
++	rt := pluginrt.New([]pluginrt.Manifest{manifest})
++	defer rt.Stop()
++	rt.Reconcile(map[string]bool{"reflow": true}, map[string]map[string]any{"reflow": {"maxContinue": int64(0)}})
++	if gwexec.Current() != nil {
++		t.Fatal("default enabled reasoning continuation")
++	}
++	rt.Reconcile(map[string]bool{"reflow": false}, nil)
++	rt.Reconcile(map[string]bool{"reflow": true}, map[string]map[string]any{"reflow": {"maxContinue": int64(3)}})
++	if gwexec.Current() == nil {
++		t.Fatal("configured adapter did not serve")
++	}
++	rt.Reconcile(map[string]bool{"reflow": false}, nil)
++	if gwexec.Current() != nil {
++		t.Fatal("disabled adapter still served")
++	}
++}

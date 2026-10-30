@@ -1,0 +1,122 @@
+diff --git a/internal/omarchy/niri_test.go b/internal/omarchy/niri_test.go
+index b33d092..e4aca4c 100644
+--- a/internal/omarchy/niri_test.go
++++ b/internal/omarchy/niri_test.go
+@@ -3,6 +3,7 @@ package omarchy
+ import (
+ 	"bufio"
+ 	"bytes"
++	"context"
+ 	"encoding/json"
+ 	"io"
+ 	"net"
+@@ -11,6 +12,9 @@ import (
+ 	"strings"
+ 	"sync"
+ 	"testing"
++	"time"
++
++	"github.com/yetone/magpie/internal/proc"
+ )
+ 
+ // The JSON below is niri's own, as niri-ipc 26.4.0 (niri v26.04,
+@@ -124,6 +128,8 @@ func fakeNiri(t *testing.T, answer func(req string) string) (sent func() []strin
+ 	}
+ 	var mu sync.Mutex
+ 	var got []string
++	var active net.Conn
++	var stopped bool
+ 	var wg sync.WaitGroup
+ 	wg.Add(1)
+ 	go func() {
+@@ -133,6 +139,14 @@ func fakeNiri(t *testing.T, answer func(req string) string) (sent func() []strin
+ 			if err != nil {
+ 				return
+ 			}
++			mu.Lock()
++			if stopped {
++				mu.Unlock()
++				c.Close()
++				return
++			}
++			active = c
++			mu.Unlock()
+ 			sc := bufio.NewScanner(c)
+ 			for sc.Scan() {
+ 				mu.Lock()
+@@ -141,10 +155,22 @@ func fakeNiri(t *testing.T, answer func(req string) string) (sent func() []strin
+ 				io.WriteString(c, answer(sc.Text())+"\n")
+ 			}
+ 			c.Close()
++			mu.Lock()
++			active = nil
++			mu.Unlock()
+ 		}
+ 	}()
+ 	t.Cleanup(func() {
++		mu.Lock()
++		stopped = true
++		c := active
++		mu.Unlock()
+ 		l.Close()
++		// Closing a listener does not release an accepted connection's read.
++		// Also reject an Accept that completed just before this cleanup.
++		if c != nil {
++			c.Close()
++		}
+ 		wg.Wait()
+ 		os.RemoveAll(dir)
+ 	})
+@@ -156,6 +182,52 @@ func fakeNiri(t *testing.T, answer func(req string) string) (sent func() []strin
+ 	}
+ }
+ 
++// Hold a client open across the subtest's cleanup: closing only the listener
++// leaves its server goroutine in Scanner.Scan. Bound the old failure in a child
++// so it produces a test failure without stranding the rest of the package.
++func TestFakeNiriCleanupClosesAcceptedConnection(t *testing.T) {
++	const child = "MAGPIE_TEST_NIRI_CLEANUP_CHILD"
++	if os.Getenv(child) == "1" {
++		var c net.Conn
++		t.Cleanup(func() {
++			if c != nil {
++				c.Close()
++			}
++		})
++		t.Run("client_stays_open", func(t *testing.T) {
++			fakeNiri(t, func(string) string { return `{"Ok":"Handled"}` })
++			var err error
++			c, err = niriDial()
++			if err != nil {
++				t.Fatal(err)
++			}
++			if err := c.SetDeadline(time.Now().Add(10 * time.Second)); err != nil {
++				t.Fatal(err)
++			}
++			if _, err := io.WriteString(c, "\"FocusedOutput\"\n"); err != nil {
++				t.Fatal(err)
++			}
++			// A reply proves Accept completed; the client stays open until the
++			// outer test cleans up, after fakeNiri must have stopped its reader.
++			reply, err := bufio.NewReader(c).ReadString('\n')
++			if err != nil || reply != "{\"Ok\":\"Handled\"}\n" {
++				t.Fatalf("fixture handshake: reply=%q err=%v", reply, err)
++			}
++		})
++		return
++	}
++	// These are deadlock guards, not performance assertions. The child has
++	// enough time for its handshake and emits stacks before the outer guard.
++	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
++	defer cancel()
++	cmd := proc.CommandContext(ctx, os.Args[0], "-test.run=^TestFakeNiriCleanupClosesAcceptedConnection$", "-test.timeout=20s")
++	cmd.Env = append(os.Environ(), child+"=1")
++	output, err := cmd.CombinedOutput()
++	if ctx.Err() != nil || err != nil {
++		t.Fatalf("niri fixture cleanup did not release an accepted connection: %v\n%s", err, output)
++	}
++}
++
+ func TestPlacePanel(t *testing.T) {
+ 	answer := func(req string) string {
+ 		if req == `"FocusedOutput"` {

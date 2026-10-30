@@ -16,7 +16,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
 - **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
-- **Magpie**：七份本地补丁涵盖可选执行扩展、公开模块和测试修正；宿主全量仍有已知失败，补丁未提交上游。见[适配说明](adapters/magpie/README.md)。
+- **Magpie**：七份本地补丁已移到 2026-10-30 固定上游，补测新增 WebSocket 入口的续接和工具回传；旧补丁保留，宿主全量状态单列，尚未提交上游。见[适配说明](adapters/magpie/README.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
 dev.5 本机最新源码普通/race 各 80 通过、4 跳过，Windows 原生打包普通/race 各 14 项、五个写入场景及 Pi 探针普通/race 各 4 项通过，见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)。公开 dev.4 的常规三平台 CI 通过；原生 CI 的 macOS 写入通过，默认 Ubuntu/托管 Windows 写入失败保留，另有固定前提下的 Ubuntu 兼容对照通过。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。

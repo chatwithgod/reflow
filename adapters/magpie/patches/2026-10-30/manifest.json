@@ -1,0 +1,82 @@
+{
+  "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+  "previous_base_commit": "a1174674da9d1435443e95ffac7d0300ce8b59d6",
+  "apply_order": [
+    "00-cgroup-root.patch",
+    "host-execution.patch",
+    "reflow-bridge.patch",
+    "windows-test-fixtures.patch",
+    "reflow-module.patch",
+    "niri-fixture-shutdown.patch",
+    "masking-duration-tests.patch"
+  ],
+  "patches": {
+    "00-cgroup-root.patch": "0329435d9dc8446e32464ec6a1a7ef2c5f24a8a8a45f500fadf0debd75f33130",
+    "host-execution.patch": "2392a903ab8215fc2822efba315efdeba1c1ea17f7a5320b8c01898d089bff23",
+    "reflow-bridge.patch": "f0505f7c4c42a70a7a93edc5f0bdeabfdc1f1ccda03089b216c7ba725a221ed1",
+    "windows-test-fixtures.patch": "e4449f8926c15b960119b3f26bfa511e6715221e6123ead82d55eba40c08777f",
+    "reflow-module.patch": "395fe1bc8e66bea1173f443397d98461b6927e1d26c8bfb8481668d0e4807fa6",
+    "niri-fixture-shutdown.patch": "f91513b904c89d57fe675807ba5be13061280f16e1d3e3306bd05aca8c433a10",
+    "masking-duration-tests.patch": "9a44b696de3765dcb585caa3558b91f390cb90ff9f5e65f98138a4209622a68c"
+  },
+  "patch_files": {
+    "00-cgroup-root.patch": [
+      "internal/gateway/claude_cgroup_root_test.go",
+      "internal/gateway/claude_room.go"
+    ],
+    "host-execution.patch": [
+      "docs/subsystems/gateway-middleware.md",
+      "internal/gateway/codex_backend.go",
+      "internal/gateway/codex_socket.go",
+      "internal/gateway/execution.go",
+      "internal/gateway/execution_test.go",
+      "internal/gateway/execution_translation_test.go",
+      "internal/gateway/execution_usage.go",
+      "internal/gateway/execution_usage_test.go",
+      "internal/gateway/gateway.go",
+      "internal/gateway/sniff.go",
+      "internal/gwexec/gwexec.go",
+      "internal/gwexec/gwexec_test.go"
+    ],
+    "reflow-bridge.patch": [
+      "internal/gateway/reflow_adapter_test.go",
+      "plugins/all/all.go",
+      "plugins/reflow/disabled.go",
+      "plugins/reflow/reflow.go",
+      "plugins/reflow/reflow_test.go",
+      "internal/gateway/reflow_socket_test.go"
+    ],
+    "windows-test-fixtures.patch": [
+      "internal/agent/codex_keychain_test.go",
+      "internal/gui/backup_test.go",
+      "internal/provider/codex_store_test.go"
+    ],
+    "reflow-module.patch": [
+      "go.reflow.mod",
+      "go.reflow.sum",
+      "internal/agent/grok_test.go",
+      "internal/edit/toml_test.go",
+      "internal/gui/assets/i18n.js",
+      "internal/gui/builtins_test.go",
+      "internal/gui/tests/reflow-settings.test.cjs"
+    ],
+    "niri-fixture-shutdown.patch": [
+      "internal/omarchy/niri_test.go"
+    ],
+    "masking-duration-tests.patch": [
+      "internal/gateway/masked_sent_test.go",
+      "internal/gateway/masking_time_test.go"
+    ]
+  },
+  "public_module_version": "v0.0.0-20261028113656-6d8e7a534060",
+  "published": false,
+  "upstream_submitted": false,
+  "magpie_binary_released": false,
+  "status": "offline_protocol_verified_full_host_incomplete",
+  "original_patchset_preserved": true,
+  "full_host_suite_status": "interrupted",
+  "source_git_tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+  "validation_record": "docs/evidence/magpie-upstream-2026-10-30.json",
+  "default_module_files_unchanged": true,
+  "real_model_calls": 0
+}

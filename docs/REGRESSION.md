@@ -30,7 +30,7 @@ Windows 检查另覆盖 Code Mode 宿主缺失、原生文件 helper 启动失�
 
 首次本地离线脚本记为 78 个通过项、3 个客户端测试跳过，其中 20 个通过项来自 `dist` 中的适配器副本。现已添加模块边界排除生成目录，并重跑了完整客户端模拟验收。原始记录、计数更正和两种评测自检路径的证据见 [offline-ci-prep.json](evidence/offline-ci-prep.json)。该文件是公开 CI 运行之前的历史记录。
 
-Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--compiler` 指定 C 编译器；仍保持临时用户目录和固定 Go 缓存。该入口已用于 Windows 夹具和 dev.4 桥接的 race 检查，完整命令及未通过项见 [Magpie 夹具记录](../adapters/magpie/WINDOWS-FIXTURES.md)。
+Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--compiler` 指定 C 编译器；`--serial` 使包编译/运行及并行测试各最多一个。入口保持临时用户目录、固定 Go 缓存和锁文件核对。历史夹具结果见 [Magpie 夹具记录](../adapters/magpie/WINDOWS-FIXTURES.md)，新下游 WebSocket 与固定上游移植见 [2026-10-30 记录](../adapters/magpie/UPSTREAM-2026-10-30.md)。
 
 2026-10-30 的 [Pi 新 OpenAI 入口](PI-PUBLIC-RESPONSES-2026-10-30.md)补充公共 OAuth/API key SSE、保留原生 OAuth 字段限制的负向对照及五项传输边界检查。最新源码普通/race 各 80 通过、4 跳过，vet/fuzz 通过。`scripts/check-native-clients.py` 现在核对并加载解压包内的两个 Pi 扩展及辅助模块；另串行执行 `pi_probe` 标签的普通/race 检查，验证只读探针正常完成、限流停止和越界阻断。本机 Windows 原生普通/race 各 14 项、写入五场景及探针普通/race 各 4 项通过，全部合成凭据、真实模型调用 0；新改动尚未远程执行。
 

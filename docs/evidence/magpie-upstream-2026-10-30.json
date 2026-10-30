@@ -1,0 +1,1497 @@
+{
+  "recorded_at_utc": "2026-10-30T02:30:06.757807+00:00",
+  "status": "targeted_verified_full_suite_incomplete",
+  "upstream": {
+    "sha": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "html_url": "https://github.com/yetone/magpie/commit/ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "date": "2026-10-30T00:51:03Z",
+    "subject": "gateway: Codex talks Responses to magpie over a WebSocket, turns after the first as a delta (#4058)",
+    "files": [
+      {
+        "path": "docs/reference.md",
+        "status": "modified"
+      },
+      {
+        "path": "docs/subsystems/gateway-routing.md",
+        "status": "modified"
+      },
+      {
+        "path": "docs/subsystems/providers-accounts.md",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/codex_backend.go",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/codex_backend_test.go",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/gateway.go",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/holdcatalog.go",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/oneport.go",
+        "status": "modified"
+      },
+      {
+        "path": "internal/gateway/responses_socket_test.go",
+        "status": "removed"
+      },
+      {
+        "path": "internal/gateway/responses_ws.go",
+        "status": "added"
+      },
+      {
+        "path": "internal/gateway/responses_ws_test.go",
+        "status": "added"
+      }
+    ]
+  },
+  "upstream_comparison": {
+    "status": "ahead",
+    "ahead_by": 721,
+    "behind_by": 0,
+    "total_commits": 721,
+    "html_url": "https://github.com/yetone/magpie/compare/a1174674da9d1435443e95ffac7d0300ce8b59d6...ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "returned_file_count": 300,
+    "file_list_may_be_capped": true
+  },
+  "patch_manifest": {
+    "path": "adapters/magpie/patches/2026-10-30/manifest.json",
+    "sha256": "d765f2bcb92144cf95f62c960222e4225a6cb0b46e48a45e9026132b24f025b3"
+  },
+  "patch_roundtrip": {
+    "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "patches": 7,
+    "source_tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+    "reapplied_tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+    "identical": true,
+    "original_patches_preserved": true
+  },
+  "windows_checkout_bytes": {
+    "forced_core_autocrlf": true,
+    "patch_files_checked": 14,
+    "all_manifest_hashes_match": true,
+    "original_and_versioned_patch_paths_covered": true,
+    "text_conversion_disabled": true,
+    "patch_data_whitespace_markers_preserved": true,
+    "source_tests_rerun": false
+  },
+  "original_patch_applicability": {
+    "base": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "patches": [
+      {
+        "patch": "00-cgroup-root.patch",
+        "sha256": "621114aca546d06f9efb3acaee1fe6621adfedb81269d2ca55d39824738ca346",
+        "clean_apply": true,
+        "check_output": "",
+        "applied": true
+      },
+      {
+        "patch": "host-execution.patch",
+        "sha256": "79a2ac317f7dfd5a8917e2b9a4a466603b933e9baaa365d9f69363f4ea7215e8",
+        "clean_apply": false,
+        "check_output": "error: patch failed: internal/gateway/gateway.go:4348\nerror: internal/gateway/gateway.go: patch does not apply\n",
+        "applied": false
+      },
+      {
+        "patch": "reflow-bridge.patch",
+        "sha256": "4422d8c8952e04cbf60f41d130c1b26020d9a98de3d43bc54f2333d5ef429a52",
+        "clean_apply": true,
+        "check_output": "",
+        "applied": true
+      },
+      {
+        "patch": "windows-test-fixtures.patch",
+        "sha256": "5bd41b95beb1d995923f8b32108391cd85a70847f17385c549fe8aad1440aba1",
+        "clean_apply": true,
+        "check_output": "",
+        "applied": true
+      },
+      {
+        "patch": "reflow-module.patch",
+        "sha256": "6aa20997220ea408374fc6f2de1a7c8faa49f2d99f95ae7b9f95ffa61b6d5393",
+        "clean_apply": false,
+        "check_output": "error: patch failed: docs/subsystems/gateway-middleware.md:29\nerror: docs/subsystems/gateway-middleware.md: patch does not apply\nerror: patch failed: internal/gui/assets/i18n.js:4\nerror: internal/gui/assets/i18n.js: patch does not apply\n",
+        "applied": false
+      },
+      {
+        "patch": "niri-fixture-shutdown.patch",
+        "sha256": "3937fd29b1b011bef58f57335b2c7890f817bf5db32906977dc09405c72b2db7",
+        "clean_apply": true,
+        "check_output": "",
+        "applied": true
+      },
+      {
+        "patch": "masking-duration-tests.patch",
+        "sha256": "d10b83a97c797a068cf648ab7a62172d8a6f4053f9efa09e8cf21c88c2965fcf",
+        "clean_apply": true,
+        "check_output": "",
+        "applied": true
+      }
+    ]
+  },
+  "applicability_note": "The initial host-execution check failed and that patch was not applied before later checks. The module documentation failure therefore also reflected a missing prerequisite; it applied after the host port. Current optional module locks were regenerated, not copied from the old patch.",
+  "reflow_public_module": "v0.0.0-20261028113656-6d8e7a534060",
+  "runs": {
+    "extension-race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012712-209303/summary.json",
+        "sha256": "b95b1131af52a0517fe7854790105515c926144651175ae85721ff984bb4c24d"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012712-209303/output.log",
+        "sha256": "d11bd6e10acd5ec7de11f06e162b660834a67cae5890b3d789929a0a291235e4"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-parallel=1",
+          "./internal/gwexec",
+          "./plugins/reflow"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true,
+        "test_items": {
+          "pass": 8,
+          "skip": 0,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "usage-race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012718-525716/summary.json",
+        "sha256": "030c73485b45ba14bb501000b538706ece2cb20323c980dbf09031bf380d7878"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012718-525716/output.log",
+        "sha256": "922d5d7cc461957523201c0644ef58e45007ff915b550feb3146e6713bee9eb5"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-parallel=1",
+          "-run",
+          "^TestFoldedUsageCountsUpstreamWithoutChangingClientContext$",
+          "./internal/gateway"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true,
+        "test_items": {
+          "pass": 1,
+          "skip": 0,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "optional-vet-windows": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012724-675619/summary.json",
+        "sha256": "b9b0a3177d638c1c6c80668a17b17c9fc72a57455c526f06f0572e7a6326e01b"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012724-675619/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "vet",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "vet",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "./..."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true
+      }
+    },
+    "optional-vet-linux": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012757-933675/summary.json",
+        "sha256": "ab7302ffe78c96809941962f570dc9711faa034827ce69d88b59aa86dcfd7b4d"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012757-933675/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "vet",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "vet",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "./..."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "linux",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true
+      }
+    },
+    "optional-build-windows": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012847-194614/summary.json",
+        "sha256": "f26da22ef379ef41c331f1ed422996eda8450fe8459cf837b27a2c6f4f901a05"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012847-194614/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-o",
+          "<reflow-checkout>\\build\\magpie-verification\\20261030-012847-194614\\magpie.exe",
+          "."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true
+      },
+      "binary": {
+        "path": "build/magpie-verification/20261030-012847-194614/magpie.exe",
+        "sha256": "726a79b1face6b303abe078535f9b51e7d8086ac6bdf36fbb32703ef70620284"
+      }
+    },
+    "optional-build-linux": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012850-966599/summary.json",
+        "sha256": "1406b2fd355e2db22eb7bafc5fb58403b5a3e2a57fe4b2186af725782ebd9273"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012850-966599/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-o",
+          "<reflow-checkout>\\build\\magpie-verification\\20261030-012850-966599\\magpie",
+          "."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "linux",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true
+      },
+      "binary": {
+        "path": "build/magpie-verification/20261030-012850-966599/magpie",
+        "sha256": "d7aa016fb0bef8318e65fa18c83b4a7b589a82f1cfe8b762a6a6c8a35493e28e"
+      }
+    },
+    "normal-vet-windows": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012854-307763/summary.json",
+        "sha256": "bea1269c8ce63c1bd576539f668dcfc0997b0ce325bfcbca246885f17941a7dc"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012854-307763/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "vet",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "vet",
+          "-p=1",
+          "./..."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false
+      }
+    },
+    "normal-build-windows": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012934-309962/summary.json",
+        "sha256": "eaba90019764d6e056d361874cb53d7c6cd9178e14999eaba0b6105f5ca2ae97"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012934-309962/output.log",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "data": {
+        "phase": "build",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "build",
+          "-p=1",
+          "-o",
+          "<reflow-checkout>\\build\\magpie-verification\\20261030-012934-309962\\magpie.exe",
+          "."
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "windows",
+        "live_account": false,
+        "production_modified": false
+      },
+      "binary": {
+        "path": "build/magpie-verification/20261030-012934-309962/magpie.exe",
+        "sha256": "f01331e5faefd1d01bc2fb4ebeb8ad3f174ab1023b1cf633e47479fdb6df7e39"
+      }
+    },
+    "ui-chromium": {
+      "source_record": {
+        "path": "build/magpie-ui-verification/20261030-012937-817442/summary.json",
+        "sha256": "907f2185fbac1de15100d990d03263d7c2009ded1cb17ec6d73f670d023a7bab"
+      },
+      "log": {
+        "path": "build/magpie-ui-verification/20261030-012937-817442/output.tap",
+        "sha256": "a59221c8bf8920302fb414cd6ac90691f441f7ef87907fd5009364c078f4ac56"
+      },
+      "data": {
+        "engine": "chromium",
+        "exit_code": 0,
+        "command": [
+          "C:/Program Files/nodejs/node.exe",
+          "--test",
+          "--test-reporter=tap",
+          "--test-concurrency=1",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\reflow-settings.test.cjs",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\builtins.test.cjs",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\plugin-kernel.test.cjs"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "counts": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "skipped": 0
+        },
+        "live_account": false,
+        "production_modified": false,
+        "isolated_home_removed": true,
+        "negative_assets": null,
+        "playwright": "1.64.1",
+        "lock_sha256": "aa8441d56c3517985a86c49ac868d0c70876ab3c4c50083683598e730319911c",
+        "runner_sha256": "afc955f4ef04e2c5054e6f28d966acf75bb63fb317f787d2ed88ebe16c2da138"
+      }
+    },
+    "ui-webkit": {
+      "source_record": {
+        "path": "build/magpie-ui-verification/20261030-013018-133972/summary.json",
+        "sha256": "53e1085a090a8fa0fc6fab312f3b07a1fff7ab6a092b3169978bf8f60a341d1b"
+      },
+      "log": {
+        "path": "build/magpie-ui-verification/20261030-013018-133972/output.tap",
+        "sha256": "5042d7189c91c0e1a28b5d1869b3ea12166b36bb92eff1987054197e8ba43e1a"
+      },
+      "data": {
+        "engine": "webkit",
+        "exit_code": 0,
+        "command": [
+          "C:/Program Files/nodejs/node.exe",
+          "--test",
+          "--test-reporter=tap",
+          "--test-concurrency=1",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\reflow-settings.test.cjs",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\builtins.test.cjs",
+          "<reflow-checkout>\\.tools\\magpie-upstream-20261030\\internal\\gui\\tests\\plugin-kernel.test.cjs"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "counts": {
+          "tests": 5,
+          "pass": 5,
+          "fail": 0,
+          "skipped": 0
+        },
+        "live_account": false,
+        "production_modified": false,
+        "isolated_home_removed": true,
+        "negative_assets": null,
+        "playwright": "1.64.1",
+        "lock_sha256": "aa8441d56c3517985a86c49ac868d0c70876ab3c4c50083683598e730319911c",
+        "runner_sha256": "afc955f4ef04e2c5054e6f28d966acf75bb63fb317f787d2ed88ebe16c2da138"
+      }
+    },
+    "focused-normal": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012310-453698/summary.json",
+        "sha256": "5e2392324c2a9bf1ada95690a44cb84adc96b22bb6263b7a0c44f38a883e3385"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012310-453698/output.log",
+        "sha256": "23043fe1cddf23577fa880d89417f77706adc445be3f5c6fdb1a995f1ceccd9a"
+      },
+      "data": {
+        "phase": "suite",
+        "race": false,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-parallel=1",
+          "-run",
+          "TestReflow|TestExecution|TestResponsesSocket",
+          "./internal/gateway"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "00df6c87ec8074da529cc58ac89145050013d8123ed498c6374648644f5a522a",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true,
+        "test_items": {
+          "pass": 22,
+          "skip": 0,
+          "fail": 0
+        },
+        "failures": []
+      }
+    },
+    "focused-race": {
+      "source_record": {
+        "path": "build/magpie-verification/20261030-012452-608964/summary.json",
+        "sha256": "200d79684bced0030d36d7c6d6f180119782c2e6ca71153a51ecde530c2d719e"
+      },
+      "log": {
+        "path": "build/magpie-verification/20261030-012452-608964/output.log",
+        "sha256": "09eb2b1f940921beac023858dceef4f1dc76a1df10c98f0e2e24693770b55acd"
+      },
+      "data": {
+        "phase": "suite",
+        "race": true,
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+          "-mod=readonly",
+          "-tags",
+          "nogui reflow",
+          "-p=1",
+          "-race",
+          "-json",
+          "-count=1",
+          "-timeout=45m",
+          "-parallel=1",
+          "-run",
+          "TestReflow|TestExecution|TestResponsesSocket|TestAccountedUsage|TestZeroDefault|TestRun|TestUse|Test.*Budget|Test.*Panic|Test.*Close|Test.*Scope",
+          "./internal/gwexec",
+          "./plugins/reflow",
+          "./internal/gateway"
+        ],
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+        "source_sha256": "3b7d671825d45e07368d53b0c74db1bd90cec1d6afa98c65e97e1d761ab0c2db",
+        "exit_code": 0,
+        "goos": "host",
+        "live_account": false,
+        "production_modified": false,
+        "modfile": "go.reflow.mod",
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+          "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+          "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+        },
+        "module_lockfiles_unchanged": true,
+        "test_items": {
+          "pass": 107,
+          "skip": 3,
+          "fail": 0
+        },
+        "failures": []
+      }
+    }
+  },
+  "module_difference": {
+    "github.com/coder/websocket": {
+      "normal": "v1.8.14",
+      "optional": "v1.8.15"
+    },
+    "github.com/klauspost/compress": {
+      "normal": "v1.18.3",
+      "optional": "v1.20.3"
+    },
+    "github.com/pelletier/go-toml/v2": {
+      "normal": "v2.2.4",
+      "optional": "v2.4.3"
+    },
+    "github.com/chatwithgod/reflow": {
+      "normal": null,
+      "optional": "v0.0.0-20261028113656-6d8e7a534060"
+    }
+  },
+  "negative_controls": [
+    {
+      "fault": "execution-disabled",
+      "exit_code": 1,
+      "test_items": {
+        "pass": 0,
+        "skip": 0,
+        "fail": 4
+      },
+      "failures": [
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway/downstream-websocket"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway/managed-websocket"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowSocketWarmupAndHistoryScope"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway"
+        }
+      ],
+      "source_sha256": "98d96d366384a7e7ddc7b8ca5dc1f873e40326f10eed05dc18c213489b200269",
+      "source_restored": true,
+      "record": {
+        "source_record": {
+          "path": "build/magpie-verification/20261030-012407-684027/summary.json",
+          "sha256": "c7c82151653713f062d0288c50ded60d091d30193c709eb4f80b07202b6d1389"
+        },
+        "log": {
+          "path": "build/magpie-verification/20261030-012407-684027/output.log",
+          "sha256": "87a7429ea9d58f7b0bf29a6849752f8de4bd458dde9719206b0907f0cec0cabb"
+        },
+        "data": {
+          "phase": "suite",
+          "race": false,
+          "command": [
+            "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+            "test",
+            "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+            "-mod=readonly",
+            "-tags",
+            "nogui reflow",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=45m",
+            "-parallel=1",
+            "-run",
+            "TestReflowAdapterThroughGateway/(downstream-websocket|managed-websocket)|TestReflowSocketWarmupAndHistoryScope",
+            "./internal/gateway"
+          ],
+          "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+          "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+          "source_sha256": "98d96d366384a7e7ddc7b8ca5dc1f873e40326f10eed05dc18c213489b200269",
+          "exit_code": 1,
+          "goos": "host",
+          "live_account": false,
+          "production_modified": false,
+          "modfile": "go.reflow.mod",
+          "module_files_before": {
+            "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+            "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+            "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+            "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+          },
+          "module_files_after": {
+            "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+            "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+            "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+            "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+          },
+          "module_lockfiles_unchanged": true,
+          "test_items": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 4
+          },
+          "failures": [
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway/downstream-websocket"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway/managed-websocket"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowSocketWarmupAndHistoryScope"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fault": "duplicate-delta",
+      "exit_code": 1,
+      "test_items": {
+        "pass": 0,
+        "skip": 0,
+        "fail": 3
+      },
+      "failures": [
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway/downstream-websocket"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway/managed-websocket"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway",
+          "Test": "TestReflowAdapterThroughGateway"
+        },
+        {
+          "Package": "github.com/yetone/magpie/internal/gateway"
+        }
+      ],
+      "source_sha256": "cdf776d232bea95d82093d16c283339f20389ec78401047e794febc5f9913b87",
+      "source_restored": true,
+      "record": {
+        "source_record": {
+          "path": "build/magpie-verification/20261030-012425-770271/summary.json",
+          "sha256": "7a3f092bd708e3bc23d55103d3823b8d52932fee63bfa4f6026fe26f6b9c7482"
+        },
+        "log": {
+          "path": "build/magpie-verification/20261030-012425-770271/output.log",
+          "sha256": "a7c375e4b2f959bca2d04ad6d46fce0727e9f221eea8e3e71e5e0b1332de31a0"
+        },
+        "data": {
+          "phase": "suite",
+          "race": false,
+          "command": [
+            "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+            "test",
+            "-modfile=<reflow-checkout>\\.tools\\magpie-upstream-20261030\\go.reflow.mod",
+            "-mod=readonly",
+            "-tags",
+            "nogui reflow",
+            "-p=1",
+            "-json",
+            "-count=1",
+            "-timeout=45m",
+            "-parallel=1",
+            "-run",
+            "TestReflowAdapterThroughGateway/(downstream-websocket|managed-websocket)",
+            "./internal/gateway"
+          ],
+          "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+          "runner_sha256": "2e1fdda02cc3b35026bdbacc1c504466b7acf921240f91ae2f240312b0c35404",
+          "source_sha256": "cdf776d232bea95d82093d16c283339f20389ec78401047e794febc5f9913b87",
+          "exit_code": 1,
+          "goos": "host",
+          "live_account": false,
+          "production_modified": false,
+          "modfile": "go.reflow.mod",
+          "module_files_before": {
+            "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+            "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+            "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+            "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+          },
+          "module_files_after": {
+            "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+            "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a",
+            "go.reflow.mod": "87c354b9f9ba128e1134248185d37e7667e558161c20cc5f6ed96b0872039ad0",
+            "go.reflow.sum": "5a37822dcc73f1366b0d912ae00fa9951d476d936ac8d26b5b627bd9c0d422fd"
+          },
+          "module_lockfiles_unchanged": true,
+          "test_items": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 3
+          },
+          "failures": [
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway/downstream-websocket"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway/managed-websocket"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway",
+              "Test": "TestReflowAdapterThroughGateway"
+            },
+            {
+              "Package": "github.com/yetone/magpie/internal/gateway"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "full_comparison": {
+    "previous_test_items": {
+      "pass": 12219,
+      "skip": 615,
+      "fail": 36
+    },
+    "current_partial_test_items": {
+      "pass": 8843,
+      "skip": 390,
+      "fail": 51
+    },
+    "current_full_suite_complete": false,
+    "new_failure_names": [
+      [
+        "github.com/yetone/magpie/internal/agent",
+        "TestHermesOffAndOnKeepsEveryBotsModel"
+      ],
+      [
+        "github.com/yetone/magpie/internal/agent",
+        "TestHermesProfileModels"
+      ],
+      [
+        "github.com/yetone/magpie/internal/agent",
+        "TestHermesProfilesFollowMagpieModel"
+      ],
+      [
+        "github.com/yetone/magpie/internal/cli",
+        "TestLibraryMCPHub"
+      ],
+      [
+        "github.com/yetone/magpie/internal/filememo",
+        "TestReadWhileReplaced"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAConnectionItTook"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAConnectionItTook/handed_off"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAConnectionStillAnswering"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAConnectionStillAnswering/handed_off"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAKeptAliveConnection"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayAnswersAKeptAliveConnection/handed_off"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gateway",
+        "TestHandedOffGatewayTakesNoNewConnection"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceDown"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceListedToBrowserOnly"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceProxied"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/a_fraction"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/a_string_port"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/no_port"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/not_an_object"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/port_out_of_range"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/the_gateway's_port"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/the_option_set"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/the_option_set_as_text"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/the_option_set_wrong"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageServiceSpec/the_port_named"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestPluginPageStartsItsHost"
+      ]
+    ],
+    "previous_failures_not_observed": [
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestProxyCheckSaysAProxyPassedBy"
+      ],
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestUpdateThatWontStart"
+      ],
+      [
+        "github.com/yetone/magpie/internal/library",
+        "TestCheckMixedServerEachSide"
+      ],
+      [
+        "github.com/yetone/magpie/internal/library",
+        "TestGoneAgentListedToTakeOut"
+      ],
+      [
+        "github.com/yetone/magpie/internal/library",
+        "TestRemoveFoundSkill"
+      ],
+      [
+        "github.com/yetone/magpie/internal/plugin",
+        "TestWindowPageStaysInside"
+      ],
+      [
+        "github.com/yetone/magpie/internal/provider",
+        "TestCodexDaemonEnvIsTheTerminals"
+      ],
+      [
+        "github.com/yetone/magpie/internal/provider",
+        "TestSavedButSignedOut"
+      ],
+      [
+        "github.com/yetone/magpie/internal/sessions",
+        "TestAgyRowOnly"
+      ],
+      [
+        "github.com/yetone/magpie/internal/sessions",
+        "TestAgySessions"
+      ],
+      [
+        "github.com/yetone/magpie/internal/sqlitedb",
+        "TestSQLiteSurvivesMalformedEnv"
+      ],
+      [
+        "github.com/yetone/magpie/internal/usage",
+        "TestDesktopSessionAccountMetadata"
+      ]
+    ],
+    "unfinished_test_items": [
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestProviderBaseAPIKept"
+      ]
+    ],
+    "timed_out": false,
+    "interpretation": "Name comparison across different upstream baselines; absence from an interrupted run is not a fixed failure, and names alone do not attribute causes."
+  },
+  "full_suite_interruption": {
+    "status": "interrupted_without_complete_summary",
+    "runner_process_confirmed_absent": true,
+    "original_exec_session_absent": true,
+    "complete_suite_result": false,
+    "partial_test_items": {
+      "pass": 8843,
+      "skip": 390,
+      "fail": 51
+    },
+    "unfinished_test_items": [
+      [
+        "github.com/yetone/magpie/internal/gui",
+        "TestProviderBaseAPIKept"
+      ]
+    ],
+    "completed_packages": {
+      "github.com/yetone/magpie": "pass",
+      "github.com/yetone/magpie/internal/access": "pass",
+      "github.com/yetone/magpie/internal/agent": "fail",
+      "github.com/yetone/magpie/internal/agentenv": "pass",
+      "github.com/yetone/magpie/internal/agentplug": "pass",
+      "github.com/yetone/magpie/internal/appdir": "pass",
+      "github.com/yetone/magpie/internal/autostart": "pass",
+      "github.com/yetone/magpie/internal/awake": "pass",
+      "github.com/yetone/magpie/internal/backup": "pass",
+      "github.com/yetone/magpie/internal/beat": "pass",
+      "github.com/yetone/magpie/internal/budget": "skip",
+      "github.com/yetone/magpie/internal/catalog": "pass",
+      "github.com/yetone/magpie/internal/claudebridge": "pass",
+      "github.com/yetone/magpie/internal/claudecode": "pass",
+      "github.com/yetone/magpie/internal/claudeseal": "skip",
+      "github.com/yetone/magpie/internal/cli": "fail",
+      "github.com/yetone/magpie/internal/codexcat": "pass",
+      "github.com/yetone/magpie/internal/codexrelay": "pass",
+      "github.com/yetone/magpie/internal/codexsummary": "pass",
+      "github.com/yetone/magpie/internal/daemon": "pass",
+      "github.com/yetone/magpie/internal/davsync": "pass",
+      "github.com/yetone/magpie/internal/desktopdir": "pass",
+      "github.com/yetone/magpie/internal/dirent": "pass",
+      "github.com/yetone/magpie/internal/edit": "pass",
+      "github.com/yetone/magpie/internal/filelock": "pass",
+      "github.com/yetone/magpie/internal/filememo": "fail",
+      "github.com/yetone/magpie/internal/fonts": "pass",
+      "github.com/yetone/magpie/internal/fx": "pass",
+      "github.com/yetone/magpie/internal/gateway": "fail",
+      "github.com/yetone/magpie/internal/ghtoken": "pass"
+    },
+    "observed_failures": [
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestWorkBuddyRestartOnMac"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange/darwin"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestWorkBuddyOwnSaveAfterStartIsNoChange"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestAsideOfflineDisconnectRestoresWithoutDaemon"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestClaudeDesktopCarriesTheLanguage"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestCodexSyncMendsGoneCatalog/not_the_provider"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestCodexSyncMendsGoneCatalog"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestHermesProfilesFollowMagpieModel"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestHermesOffAndOnKeepsEveryBotsModel"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestHermesProfileModels"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestCopilotFolderFromAnIDEPluginIsNotTheCLI"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder-cn"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI/qoder"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestQoderSettingsFromAnIDEPluginIsNotTheCLI"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestOpenLodyRunsItsDesktopEntry"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/agent",
+        "Test": "TestDesktopExec"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/cli",
+        "Test": "TestLibraryMCPHub"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/filememo",
+        "Test": "TestReadWhileReplaced"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestClaudeAsRootEnv"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestSweepBridgeProjectsTakesOnlyTheBridgesFolders"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOverGatewayFinishesItsStream"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayTakesNoNewConnection"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAConnectionItTook/handed_off"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAConnectionItTook"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAKeptAliveConnection/handed_off"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAKeptAliveConnection"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAConnectionStillAnswering/handed_off"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestHandedOffGatewayAnswersAConnectionStillAnswering"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gateway",
+        "Test": "TestAutoVisionDoesNotBuildListsAgain"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestGatewayHeldByAContainer"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceListedToBrowserOnly"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/the_port_named"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/a_string_port"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/the_option_set"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/the_option_set_as_text"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/the_option_set_wrong"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/no_port"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/port_out_of_range"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/a_fraction"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/not_an_object"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec/the_gateway's_port"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceSpec"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceProxied"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServiceDown"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageServedShutIn"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageReadsWhatItDeclared"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageStartsItsHost"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageNoAPI"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageWebGuard"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageActions"
+      },
+      {
+        "Package": "github.com/yetone/magpie/internal/gui",
+        "Test": "TestPluginPageWindowPolicy"
+      }
+    ],
+    "log": {
+      "path": "build/magpie-verification/20261030-013116-396455/output.log",
+      "sha256": "53784ad5b72733378ae38285a73699af3a60b36f8c40222fb8a2c6837f05a57d"
+    },
+    "planned_failure_controls_started": false,
+    "restarted": false,
+    "scope_note": "Pi simulated-acceptance decision is separate from this interrupted Magpie diagnostic."
+  },
+  "partial_failure_markers": {
+    "basis": "Fixed error markers from the already-completed portions of the interrupted synthetic run; no new execution.",
+    "observations": {
+      "symlink_privilege_missing": {
+        "count": 15,
+        "tests": [
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceDown"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceListedToBrowserOnly"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceProxied"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/a_fraction"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/a_string_port"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/no_port"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/not_an_object"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/port_out_of_range"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/the_gateway's_port"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/the_option_set"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/the_option_set_as_text"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/the_option_set_wrong"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageServiceSpec/the_port_named"
+          ],
+          [
+            "github.com/yetone/magpie/internal/gui",
+            "TestPluginPageStartsItsHost"
+          ]
+        ]
+      }
+    },
+    "not_a_full_cause_classification": true,
+    "remaining_failures_unclassified": true
+  },
+  "temporary_profile_cleanup": {
+    "operation": "delete only the isolated temporary profile of the interrupted host test",
+    "automatic_approval_rejected": true,
+    "reason_returned": "blocked by policy",
+    "deletion_executed": false,
+    "alternative_deletion_attempted": false,
+    "profile_exists": true
+  },
+  "test_concurrency": 1,
+  "live_account": false,
+  "model_calls": 0,
+  "production_modified_by_this_work": false,
+  "reflow_core_proxy_engine_changed": false,
+  "pushed": false,
+  "upstream_submitted": false,
+  "binary_released": false,
+  "limits": [
+    "Protocol checks use Go client fixtures, synthetic credentials and local mock upstreams; fixture tool results are submitted directly, without a real Codex client.",
+    "A Windows cross-build/vet does not establish native Linux or macOS runtime support.",
+    "No native Magpie window, Codex Desktop/dot, or real-account Magpie acceptance.",
+    "The full host suite is assessed separately; targeted passes never turn its failures into passes."
+  ],
+  "planned_upstream_failure_controls": {
+    "status": "not_started",
+    "results": null
+  },
+  "hermes_source_triage": {
+    "issue": "https://github.com/yetone/magpie/issues/4115",
+    "title": "22 more tests red on Windows at main 67d0e4da6, alone too (not in #1827/#1388/#2808/#1356)",
+    "state_at_read": "open",
+    "comments_at_read": 0,
+    "read_comments_through_end": true,
+    "upstream_patch_found": false,
+    "matching_tests": [
+      "TestHermesProfilesFollowMagpieModel",
+      "TestHermesOffAndOnKeepsEveryBotsModel",
+      "TestHermesProfileModels"
+    ],
+    "source_observation": {
+      "file": "internal/appdir/hermes.go",
+      "function": "HermesDefaultIn",
+      "windows_folder": "LOCALAPPDATA/hermes",
+      "test_file": "internal/agent/hermes_test.go",
+      "test_profile_scope": "HOME, USERPROFILE and XDG folders replaced; LOCALAPPDATA not replaced for these fixtures"
+    },
+    "hypothesis": "Tests share package-level LOCALAPPDATA on Windows, so Hermes profiles can survive between tests. Not yet verified by an isolated fault control.",
+    "posted_to_upstream": false
+  }
+}

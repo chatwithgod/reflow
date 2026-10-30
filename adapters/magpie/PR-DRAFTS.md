@@ -1,5 +1,7 @@
 # Local PR drafts — not submitted
 
+The original draft bodies below retain their `a1174674` evidence. The [2026-10-30 port](UPSTREAM-2026-10-30.md) targets `ffa07395` with a [separate patch series](patches/2026-10-30/manifest.json), adds downstream WebSocket continuation coverage, and records its host checks separately. Neither series has been submitted upstream; old full-suite numbers do not describe the new tree.
+
 These drafts describe the patches in [manifest.json](patches/manifest.json). They do not represent an upstream issue or review. The optional Reflow bridge is a separate development patch; [the fifth patch](PUBLIC-MODULE.md) adds a pinned public module as an alternative to the local Go workspace, plus enabled-build test compatibility and settings translations. Full host acceptance remains incomplete.
 
 ## fix(cgroup): terminate parent walk at the host filesystem root

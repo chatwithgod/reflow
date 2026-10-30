@@ -1,0 +1,665 @@
+diff --git a/docs/subsystems/gateway-middleware.md b/docs/subsystems/gateway-middleware.md
+index 87fbb9b..851f91d 100644
+--- a/docs/subsystems/gateway-middleware.md
++++ b/docs/subsystems/gateway-middleware.md
+@@ -21,6 +21,18 @@ plugins.json is the source of truth for which middleware is installed and on, in
+ 
+ ## Runtime path
+ 
++### Optional Responses execution
++
++The compiled execution extension in [`internal/gwexec`](../../internal/gwexec/gwexec.go) is separate from the JavaScript and Bun hooks. [`executeResponses`](../../internal/gateway/execution.go) offers it only native Codex passthrough and streaming Responses-to-Responses requests, after normal preparation and signing. Translations, non-streaming requests, compaction and other APIs bypass it. The callback retains the selected endpoint, account, model, context and transport limits; it exposes the body and an opaque account-and-endpoint scope, not credentials. This is an interface for trusted in-process code, not a plugin sandbox.
++
++Only the last registered executor runs. Each request permits at most eight upstream calls including the first, and requires the preceding response to be closed before another call. An extension error or panic returns an error without automatically replaying the original request. Existing gateway error handling and candidate fallback remain outside this interface. A folded Responses reply may carry `metadata.proxy_billed_usage` and `proxy_rounds`: the passthrough usage reader accepts valid totals that do not reduce any ordinary usage component, while leaving the client stream unchanged ([`execution_usage.go`](../../internal/gateway/execution_usage.go)).
++
++The separate Reflow bridge is an optional development build under the `reflow` tag. It defaults to zero additional rounds and reuses Reflow's HTTP pipeline in memory, opening no listener. Native HTTP, zstd, upstream WebSocket and managed Responses passthrough are exercised with synthetic credentials in `TestReflowAdapterThroughGateway`; translated routes are excluded by `TestExecutionExtensionLeavesTranslatedRoutesAlone`. Real-account verification is separate. Normal builds have no registered executor.
++
++The optional [go.reflow.mod](../../go.reflow.mod) and [go.reflow.sum](../../go.reflow.sum) pin the public Reflow module to `v0.0.0-20261028113656-6d8e7a534060`. Set `GOWORK=off` and pass `-modfile=go.reflow.mod -mod=readonly` with the `reflow` tag to use it without a local Reflow checkout. Only this alternate module graph raises websocket, compress and go-toml to Reflow's requirements; normal `go.mod` and `go.sum` remain unchanged. This pin identifies a development source commit, not a Magpie or Reflow binary release.
++
++The [Responses WebSocket entry](gateway-routing.md#a-responses-websocket) restores each socket's input before it reaches this extension. A continued reply's visible tools and reasoning are kept by the socket; discarded tool calls are not. A following tool-result delta therefore reaches the selected upstream with one complete conversation, over HTTP or a new upstream WebSocket. Warmup stays local and an interrupt of the visible response cancels its hidden continuation too. The socket's own history scope and normal request guards still apply. `TestReflowAdapterThroughGateway` exercises both socket legs and managed Responses; `TestReflowSocketWarmupAndHistoryScope` and `TestReflowSocketInterruptHiddenRound` cover warmup, history boundaries and interruption with synthetic upstreams. These are offline protocol checks, not a real account or desktop-window acceptance record.
++
+ 1. `serveAgent` establishes the [gateway session identity and optional recording](gateway-sessions.md), runs any [asynchronous request hooks](gateway-request-hooks.md) through Bun, then calls `Begin` on each registered `gwmw.Agent` (the JS chain's is `middleware.Begin`) with the request's protocol, model, stream flag, path and agent. With no middleware it calls `serve` directly.
+ 2. `Run.Request` passes the agent's body, in its own API, to each `onRequest` in turn. An object returned is the body the next middleware and the gateway get; `undefined` keeps the bytes as they were. `ctx.reject(status, message)` stops the chain, and the agent gets that error in its API's shape (`writeError`).
+ 3. `Run.Tried` runs each `onProvider` on the body each time `serve` tries it on a provider, just before that try is sent (`triedOn` in the candidate loop of `gateway.go`; `serveAgent` puts the runs that are `gwmw.Tried` on the request's context). `ctx.provider` says which: `id`, `name`, `account` (the subscription's kind, as `accountAgent` gives it: `claude`, `antigravity`, …; absent for a key) and `model`, the model's id there. Every try starts again from the body `onRequest` left, so what one provider is sent changes no other try's: this is how a plugin acts on one vendor only, for an agent such as Claude Desktop whose model names say nothing of where they go. `null` and `ctx.reject` turn nothing away here; the request has been routed.
+diff --git a/internal/gateway/codex_backend.go b/internal/gateway/codex_backend.go
+index 098405c..f1f3c66 100644
+--- a/internal/gateway/codex_backend.go
++++ b/internal/gateway/codex_backend.go
+@@ -1195,7 +1195,7 @@ func (s *Server) codexUpstreamOn(w http.ResponseWriter, r *http.Request, rest st
+ 			// a turn to ChatGPT goes zstd-compressed again, as Codex sent it
+ 			// before magpie read it (ylorn on X); an API key's goes plain
+ 			sent = provider.CodexCompressed(req, body)
+-			if res, err = s.client.Do(req); err != nil {
++			if res, err = executeResponses(req, body, provider.Responses, true, executionOwner(on), s.client.Do); err != nil {
+ 				msg := "OpenAI: " + err.Error()
+ 				if rest == "/responses" {
+ 					msg = codexUnreached(modelOf(body), err)
+diff --git a/internal/gateway/codex_socket.go b/internal/gateway/codex_socket.go
+index 74b27f8..a78fb35 100644
+--- a/internal/gateway/codex_socket.go
++++ b/internal/gateway/codex_socket.go
+@@ -361,6 +361,7 @@ func (t codexSocket) socket(req *http.Request, msg []byte) (*http.Response, erro
+ 			break
+ 		}
+ 	}
++	header.Set("Content-Type", "text/event-stream")
+ 	return &http.Response{
+ 		Status:        "200 OK",
+ 		StatusCode:    http.StatusOK,
+diff --git a/internal/gateway/execution.go b/internal/gateway/execution.go
+new file mode 100644
+index 0000000..d7e00f1
+--- /dev/null
++++ b/internal/gateway/execution.go
+@@ -0,0 +1,86 @@
++package gateway
++
++import (
++	"bytes"
++	"context"
++	"crypto/sha256"
++	"encoding/hex"
++	"errors"
++	"io"
++	"net/http"
++	"strings"
++	"sync"
++
++	"github.com/yetone/magpie/internal/gwexec"
++	"github.com/yetone/magpie/internal/provider"
++)
++
++// executeResponses is a post-signing extension for a streamed Responses turn.
++// Each extra round retains the target and identity and goes through the same
++// transport, so its rate limit and cancellation still apply.
++func executeResponses(req *http.Request, body []byte, proto provider.Protocol, compatible bool, owner string, send func(*http.Request) (*http.Response, error)) (*http.Response, error) {
++	e := gwexec.Current()
++	if e == nil || !compatible || proto != provider.Responses || req.Method != http.MethodPost || !strings.HasSuffix(req.URL.Path, "/responses") || !streamOf(body) || req.Header.Get("Authorization") == "" {
++		return send(req)
++	}
++	scope := sha256.Sum256([]byte(owner + "\x00" + req.URL.String() + "\x00" + req.Header.Get("Authorization") + "\x00" + req.Header.Get("Chatgpt-Account-Id")))
++	info := gwexec.Info{Protocol: string(proto), Model: modelOf(body), Path: req.URL.Path, Stream: true, Scope: hex.EncodeToString(scope[:])}
++	ctx, cancel := context.WithCancel(req.Context())
++	req = req.Clone(ctx)
++	first := true
++	res, err := gwexec.Run(req.Context(), e, info, body, func(next []byte) (*http.Response, error) {
++		if modelOf(next) != info.Model || !streamOf(next) {
++			return nil, errors.New("execution extension cannot change the selected model or streaming mode")
++		}
++		if first && bytes.Equal(next, body) {
++			first = false
++			return send(req)
++		}
++		additional := !first
++		first = false
++		r := req.Clone(req.Context())
++		r.Header.Del("Content-Encoding")
++		r.Header.Del("Content-Length")
++		if additional {
++			r.Header.Del("Idempotency-Key")
++			r.Header.Del("X-Idempotency-Key")
++		}
++		provider.SetBody(r, next)
++		defer provider.LetGo(r)
++		if strings.EqualFold(req.Header.Get("Content-Encoding"), "zstd") {
++			provider.CodexCompressed(r, next)
++		}
++		return send(r)
++	})
++	if err != nil {
++		cancel()
++		return res, err
++	}
++	res.Body = &executionBody{ReadCloser: res.Body, cancel: cancel}
++	return res, nil
++}
++
++type executionResponsesKey struct{}
++
++func executionOwner(p *provider.Provider) string {
++	if p == nil {
++		return "native"
++	}
++	owner := p.ID
++	if p.Account != nil {
++		owner += "\x00" + p.Account.User
++	}
++	return owner
++}
++
++type executionBody struct {
++	io.ReadCloser
++	cancel context.CancelFunc
++	once   sync.Once
++	err    error
++}
++
++func (b *executionBody) Close() error {
++	b.once.Do(func() { b.cancel(); b.err = b.ReadCloser.Close() })
++	return b.err
++}
+diff --git a/internal/gateway/execution_test.go b/internal/gateway/execution_test.go
+new file mode 100644
+index 0000000..5e68396
+--- /dev/null
++++ b/internal/gateway/execution_test.go
+@@ -0,0 +1,69 @@
++package gateway
++
++import (
++	"context"
++	"fmt"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"strings"
++	"sync"
++	"testing"
++
++	"github.com/yetone/magpie/internal/gwexec"
++)
++
++// The test crosses the real server guards, native sign-in route, signing and
++// transport. A helper-only call would not prove the extension is wired in.
++func TestExecutionExtensionThroughNativeCodexGateway(t *testing.T) {
++	var mu sync.Mutex
++	var bodies []string
++	chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++		body, _ := io.ReadAll(r.Body)
++		mu.Lock()
++		bodies = append(bodies, string(body))
++		n := len(bodies)
++		mu.Unlock()
++		if r.Header.Get("Authorization") != "Bearer synthetic-execution-token" || r.Header.Get("chatgpt-account-id") != "execution-account" {
++			t.Error("round changed its account")
++		}
++		w.Header().Set("Content-Type", "text/event-stream")
++		fmt.Fprintf(w, "data: {\"type\":\"response.created\",\"response\":{\"id\":\"round-%d\",\"status\":\"in_progress\"}}\n\n", n)
++		fmt.Fprintf(w, "data: {\"type\":\"response.completed\",\"response\":{\"id\":\"round-%d\",\"status\":\"completed\",\"output\":[],\"usage\":{\"input_tokens\":10,\"output_tokens\":20}}}\n\n", n)
++	})
++	stop := gwexec.Use(func(_ context.Context, info gwexec.Info, body []byte, next gwexec.Next) (*http.Response, error) {
++		if info.Protocol != "responses" || info.Model != "gpt-5.5" || len(info.Scope) != 64 || strings.Contains(info.Scope, "token") {
++			t.Error("incorrect or private execution metadata")
++		}
++		first, err := next(body)
++		if err != nil {
++			return nil, err
++		}
++		_, err = io.Copy(io.Discard, first.Body)
++		first.Body.Close()
++		if err != nil {
++			return nil, err
++		}
++		return next([]byte(`{"model":"gpt-5.5","stream":true,"input":[{"role":"user","content":"synthetic continuation"}]}`))
++	})
++	defer stop()
++	server := httptest.NewServer(lanGuard(New().Handler()))
++	defer server.Close()
++	req, _ := http.NewRequest(http.MethodPost, server.URL+CodexPath+"/responses", strings.NewReader(`{"model":"gpt-5.5","stream":true,"input":[]}`))
++	req.Header.Set("Authorization", "Bearer synthetic-execution-token")
++	req.Header.Set("chatgpt-account-id", "execution-account")
++	res, err := server.Client().Do(req)
++	if err != nil {
++		t.Fatal(err)
++	}
++	got, err := io.ReadAll(res.Body)
++	res.Body.Close()
++	if err != nil {
++		t.Fatal(err)
++	}
++	mu.Lock()
++	defer mu.Unlock()
++	if res.StatusCode != 200 || len(bodies) != 2 || !strings.Contains(bodies[1], "synthetic continuation") || strings.Contains(string(got), "round-1") || !strings.Contains(string(got), "round-2") {
++		t.Fatalf("status=%d requests=%d client=%s", res.StatusCode, len(bodies), got)
++	}
++}
+diff --git a/internal/gateway/execution_translation_test.go b/internal/gateway/execution_translation_test.go
+new file mode 100644
+index 0000000..c851e3e
+--- /dev/null
++++ b/internal/gateway/execution_translation_test.go
+@@ -0,0 +1,46 @@
++package gateway
++
++import (
++	"context"
++	"errors"
++	"io"
++	"net/http"
++	"net/http/httptest"
++	"strings"
++	"sync/atomic"
++	"testing"
++
++	"github.com/yetone/magpie/internal/gwexec"
++	"github.com/yetone/magpie/internal/provider"
++)
++
++func TestExecutionExtensionLeavesTranslatedRoutesAlone(t *testing.T) {
++	var calls atomic.Int32
++	up := chatgpt(t, func(w http.ResponseWriter, r *http.Request) {
++		calls.Add(1)
++		w.Header().Set("Content-Type", "text/event-stream")
++		io.WriteString(w, "data: {\"type\":\"response.created\",\"response\":{\"id\":\"ordinary\"}}\n\n")
++		io.WriteString(w, "data: {\"type\":\"response.output_text.delta\",\"delta\":\"ordinary translated answer\",\"output_index\":0}\n\n")
++		io.WriteString(w, "data: {\"type\":\"response.completed\",\"response\":{\"id\":\"ordinary\",\"status\":\"completed\",\"usage\":{\"input_tokens\":100,\"output_tokens\":526,\"output_tokens_details\":{\"reasoning_tokens\":516}}}}\n\n")
++	})
++	if err := provider.Save(provider.Provider{ID: "execution-fixture", Name: "Execution fixture", Key: "synthetic-key", Models: []string{"gpt-6"}, Responses: up.URL + "/v1"}); err != nil {
++		t.Fatal(err)
++	}
++	var entered atomic.Int32
++	stop := gwexec.Use(func(context.Context, gwexec.Info, []byte, gwexec.Next) (*http.Response, error) {
++		entered.Add(1)
++		return nil, errors.New("translated route entered execution extension")
++	})
++	defer stop()
++	server := httptest.NewServer(lanGuard(New().Handler()))
++	defer server.Close()
++	res, err := server.Client().Post(server.URL+"/v1/chat/completions", "application/json", strings.NewReader(`{"model":"execution-fixture/gpt-6","stream":true,"messages":[{"role":"user","content":"synthetic request"}]}`))
++	if err != nil {
++		t.Fatal(err)
++	}
++	body, err := io.ReadAll(res.Body)
++	res.Body.Close()
++	if err != nil || res.StatusCode != 200 || calls.Load() != 1 || entered.Load() != 0 || !strings.Contains(string(body), "ordinary translated answer") {
++		t.Fatalf("status=%d calls=%d entered=%d err=%v body=%s", res.StatusCode, calls.Load(), entered.Load(), err, body)
++	}
++}
+diff --git a/internal/gateway/execution_usage.go b/internal/gateway/execution_usage.go
+new file mode 100644
+index 0000000..af0c4dd
+--- /dev/null
++++ b/internal/gateway/execution_usage.go
+@@ -0,0 +1,27 @@
++package gateway
++
++import "encoding/json"
++
++// responsesAccountedUsage reads the optional folded-response accounting block.
++// The ordinary usage remains in the untouched client stream: it describes one
++// visible context, while proxy_billed_usage counts every upstream round.
++func responsesAccountedUsage(visible *rUsage, metadata json.RawMessage) Usage {
++	var extra struct {
++		Billed *rUsage           `json:"proxy_billed_usage"`
++		Rounds []json.RawMessage `json:"proxy_rounds"`
++	}
++	if len(metadata) == 0 || json.Unmarshal(metadata, &extra) != nil || extra.Billed == nil || len(extra.Rounds) == 0 || len(extra.Rounds) > 17 {
++		return visible.usage()
++	}
++	b := extra.Billed
++	d := b.InputTokensDetails
++	// Malformed metadata never suppresses the vendor's ordinary usage.
++	if b.InputTokens < visible.InputTokens || b.OutputTokens < visible.OutputTokens || d.CachedTokens < 0 || d.CacheWriteTokens < 0 || d.CachedTokens > b.InputTokens || d.CacheWriteTokens > b.InputTokens-d.CachedTokens || b.OutputTokensDetails.ReasoningTokens < 0 || b.OutputTokensDetails.ReasoningTokens > b.OutputTokens || b.InputTokens < 0 || b.OutputTokens < 0 {
++		return visible.usage()
++	}
++	accounted, ordinary := b.usage(), visible.usage()
++	if accounted.Input < ordinary.Input || accounted.CacheRead < ordinary.CacheRead || accounted.CacheWrite < ordinary.CacheWrite || accounted.Reasoning < ordinary.Reasoning {
++		return ordinary
++	}
++	return accounted
++}
+diff --git a/internal/gateway/execution_usage_test.go b/internal/gateway/execution_usage_test.go
+new file mode 100644
+index 0000000..53704e3
+--- /dev/null
++++ b/internal/gateway/execution_usage_test.go
+@@ -0,0 +1,39 @@
++package gateway
++
++import (
++	"strings"
++	"testing"
++
++	"github.com/yetone/magpie/internal/provider"
++)
++
++func TestFoldedUsageCountsUpstreamWithoutChangingClientContext(t *testing.T) {
++	for _, stream := range []bool{false, true} {
++		body := `{"id":"visible","usage":{"input_tokens":100,"output_tokens":546},"metadata":{"proxy_rounds":[{"round":1},{"round":2}],"proxy_billed_usage":{"input_tokens":200,"output_tokens":556,"input_tokens_details":{"cached_tokens":50},"output_tokens_details":{"reasoning_tokens":536}}}}`
++		ct := "application/json"
++		if stream {
++			ct = "text/event-stream"
++			body = "data: {\"type\":\"response.completed\",\"response\":" + body + "}\n\n"
++		}
++		s := newSniffer(provider.Responses, ct)
++		s.write([]byte(body))
++		u := s.usage()
++		if u.Input != 150 || u.CacheRead != 50 || u.Output != 556 || u.Reasoning != 536 {
++			t.Fatalf("stream=%t usage=%+v", stream, u)
++		}
++		bad := strings.Replace(body, `"cached_tokens":50`, `"cached_tokens":-1`, 1)
++		s = newSniffer(provider.Responses, ct)
++		s.write([]byte(bad))
++		u = s.usage()
++		if u.Input != 100 || u.Output != 546 {
++			t.Fatal("invalid accounting replaced visible usage")
++		}
++		bad = strings.Replace(body, `"cached_tokens":50`, `"cached_tokens":200`, 1)
++		s = newSniffer(provider.Responses, ct)
++		s.write([]byte(bad))
++		u = s.usage()
++		if u.Input != 100 || u.CacheRead != 0 || u.Output != 546 {
++			t.Fatal("metadata lowered the upstream's ordinary accounting")
++		}
++	}
++}
+diff --git a/internal/gateway/gateway.go b/internal/gateway/gateway.go
+index 710b520..e6bd4cb 100644
+--- a/internal/gateway/gateway.go
++++ b/internal/gateway/gateway.go
+@@ -4571,7 +4571,8 @@ func (s *Server) forwardOnce(ctx context.Context, p provider.Provider, to provid
+ 		// sent plain, ChatGPT answered a 1.1 MB one 503 (ylorn on X)
+ 		sent = provider.CodexCompressed(req, body)
+ 	}
+-	res, err := p.Do(s.client, req)
++	compatible, _ := ctx.Value(executionResponsesKey{}).(bool)
++	res, err := executeResponses(req, body, to, compatible, executionOwner(&p), func(r *http.Request) (*http.Response, error) { return p.Do(s.client, r) })
+ 	if err == nil && res.StatusCode >= 400 && provider.OpenCodeURL(req.URL.String()) {
+ 		logOpenCodeRefusal(p, req, res.StatusCode)
+ 	}
+@@ -4675,6 +4676,11 @@ func codexClientHeader(k string) bool {
+ // written, when the provider serves the model on another of its endpoints
+ // but not this one.
+ func (s *Server) passthrough(w http.ResponseWriter, r *http.Request, p provider.Provider, proto provider.Protocol, model string, body []byte, u *Usage) (status int, msg string, done bool) {
++	// Execution extensions retain Responses wire semantics. Translated routes
++	// do not enter them, so their tool and accounting contracts stay unchanged.
++	if proto == provider.Responses && streamOf(body) {
++		r = r.WithContext(context.WithValue(r.Context(), executionResponsesKey{}, true))
++	}
+ 	upstream := provider.UpstreamNameIn(wiresOf(r.Context()), p.ID, model)
+ 	body = rewriteModel(body, upstream)
+ 	if proto == provider.Responses {
+diff --git a/internal/gateway/sniff.go b/internal/gateway/sniff.go
+index aada6ca..f5d0c90 100644
+--- a/internal/gateway/sniff.go
++++ b/internal/gateway/sniff.go
+@@ -181,14 +181,16 @@ func (s *usageSniffer) parse(b []byte) {
+ 		}
+ 	case provider.Responses:
+ 		var v struct {
+-			ID       string  `json:"id"`
+-			Type     string  `json:"type"`
+-			Model    string  `json:"model"`
+-			Usage    *rUsage `json:"usage"`
++			ID       string          `json:"id"`
++			Type     string          `json:"type"`
++			Model    string          `json:"model"`
++			Usage    *rUsage         `json:"usage"`
++			Metadata json.RawMessage `json:"metadata"`
+ 			Response struct {
+-				ID    string  `json:"id"`
+-				Model string  `json:"model"`
+-				Usage *rUsage `json:"usage"`
++				ID       string          `json:"id"`
++				Model    string          `json:"model"`
++				Usage    *rUsage         `json:"usage"`
++				Metadata json.RawMessage `json:"metadata"`
+ 			} `json:"response"`
+ 		}
+ 		if json.Unmarshal(b, &v) == nil {
+@@ -200,9 +202,9 @@ func (s *usageSniffer) parse(b []byte) {
+ 			s.saw(v.Response.Model)
+ 			s.saw(v.Model)
+ 			if v.Response.Usage != nil {
+-				s.u.add(v.Response.Usage.usage())
++				s.u.add(responsesAccountedUsage(v.Response.Usage, v.Response.Metadata))
+ 			} else if v.Usage != nil {
+-				s.u.add(v.Usage.usage())
++				s.u.add(responsesAccountedUsage(v.Usage, v.Metadata))
+ 			}
+ 		}
+ 	default:
+diff --git a/internal/gwexec/gwexec.go b/internal/gwexec/gwexec.go
+new file mode 100644
+index 0000000..7563848
+--- /dev/null
++++ b/internal/gwexec/gwexec.go
+@@ -0,0 +1,148 @@
++// Package gwexec lets a compiled extension execute bounded Responses rounds on
++// the already selected provider. The gateway owns signing, routing and limits.
++package gwexec
++
++import (
++	"bytes"
++	"context"
++	"errors"
++	"io"
++	"net/http"
++	"slices"
++	"sync"
++)
++
++// Info contains no credentials. Scope is an opaque account-and-endpoint key for
++// separating in-memory continuation state; it must not be persisted or logged.
++type Info struct {
++	Protocol, Model, Path, Scope string
++	Stream                       bool
++}
++
++// Next sends a body through the same provider, identity, context and limits.
++// Close each reply before asking again. There is no automatic retry on failure.
++type Next func(body []byte) (*http.Response, error)
++type Executor func(context.Context, Info, []byte, Next) (*http.Response, error)
++
++const MaxCalls = 8
++
++var registry struct {
++	sync.Mutex
++	list []*Executor
++}
++
++// Use serves one executor until removed. The last registered serves; executors
++// are not chained, so their additional-call budgets cannot multiply.
++func Use(e Executor) func() {
++	if e == nil {
++		return func() {}
++	}
++	entry := &e
++	registry.Lock()
++	registry.list = append(registry.list, entry)
++	registry.Unlock()
++	var once sync.Once
++	return func() {
++		once.Do(func() {
++			registry.Lock()
++			defer registry.Unlock()
++			registry.list = slices.DeleteFunc(registry.list, func(p *Executor) bool { return p == entry })
++		})
++	}
++}
++
++func Current() Executor {
++	registry.Lock()
++	defer registry.Unlock()
++	if len(registry.list) == 0 {
++		return nil
++	}
++	return *registry.list[len(registry.list)-1]
++}
++
++// Run bounds an extension to MaxCalls and the client's lifetime. A failing or
++// panicking extension is an error, never a second execution of the first round.
++func Run(ctx context.Context, e Executor, info Info, body []byte, next Next) (res *http.Response, err error) {
++	if e == nil {
++		return next(body)
++	}
++	var mu sync.Mutex
++	calls := 0
++	var pending *trackedBody
++	guarded := func(body []byte) (*http.Response, error) {
++		mu.Lock()
++		if ctx.Err() != nil {
++			mu.Unlock()
++			return nil, ctx.Err()
++		}
++		if pending != nil {
++			mu.Unlock()
++			return nil, errors.New("execution extension must close the previous reply")
++		}
++		if calls >= MaxCalls {
++			mu.Unlock()
++			return nil, errors.New("execution extension call budget exhausted")
++		}
++		calls++
++		owned := &trackedBody{}
++		pending = owned
++		mu.Unlock()
++		r, err := next(bytes.Clone(body))
++		mu.Lock()
++		if err != nil || r == nil || r.Body == nil {
++			pending = nil
++			mu.Unlock()
++			if r != nil && r.Body != nil {
++				r.Body.Close()
++			}
++			if err == nil {
++				err = errors.New("execution callback returned no response body")
++			}
++			return nil, err
++		}
++		owned.ReadCloser = r.Body
++		owned.closed = func() {
++			mu.Lock()
++			if pending == owned {
++				pending = nil
++			}
++			mu.Unlock()
++		}
++		r.Body = owned
++		mu.Unlock()
++		return r, nil
++	}
++	defer func() {
++		if recover() != nil {
++			res = nil
++			err = errors.New("execution extension failed")
++		}
++		if res == nil && err == nil {
++			err = errors.New("execution extension returned no response")
++		}
++		if err != nil {
++			mu.Lock()
++			p := pending
++			if p != nil && p.ReadCloser == nil {
++				p = nil
++			}
++			mu.Unlock()
++			if p != nil {
++				p.Close()
++			}
++		}
++	}()
++	return e(ctx, info, bytes.Clone(body), guarded)
++}
++
++type trackedBody struct {
++	io.ReadCloser
++	once     sync.Once
++	closed   func()
++	closeErr error
++}
++
++func (b *trackedBody) Close() error {
++	b.once.Do(func() { b.closeErr = b.ReadCloser.Close(); b.closed() })
++	return b.closeErr
++}
+diff --git a/internal/gwexec/gwexec_test.go b/internal/gwexec/gwexec_test.go
+new file mode 100644
+index 0000000..f788f0b
+--- /dev/null
++++ b/internal/gwexec/gwexec_test.go
+@@ -0,0 +1,94 @@
++package gwexec
++
++import (
++	"context"
++	"errors"
++	"io"
++	"net/http"
++	"strings"
++	"testing"
++)
++
++func TestBoundsCancellationAndNoFailureReplay(t *testing.T) {
++	for _, kind := range []string{"budget", "unclosed", "canceled", "panic", "failure"} {
++		t.Run(kind, func(t *testing.T) {
++			ctx, cancel := context.WithCancel(context.Background())
++			defer cancel()
++			calls := 0
++			send := func(b []byte) (*http.Response, error) {
++				calls++
++				return &http.Response{StatusCode: 200, Body: io.NopCloser(strings.NewReader("upstream"))}, nil
++			}
++			execute := func(ctx context.Context, _ Info, body []byte, next Next) (*http.Response, error) {
++				if kind == "canceled" {
++					cancel()
++					return next(body)
++				}
++				res, err := next(body)
++				if err != nil {
++					return nil, err
++				}
++				if kind == "panic" {
++					panic("private contents must not enter diagnostics")
++				}
++				if kind == "failure" {
++					return nil, errors.New("stopped")
++				}
++				if kind == "unclosed" {
++					return next(body)
++				}
++				res.Body.Close()
++				for i := 1; i <= MaxCalls; i++ {
++					res, err = next(body)
++					if err != nil {
++						return nil, err
++					}
++					res.Body.Close()
++				}
++				return res, nil
++			}
++			_, err := Run(ctx, execute, Info{}, []byte(`{"stream":true}`), send)
++			if err == nil {
++				t.Fatal("extension escaped its boundary")
++			}
++			want := 1
++			if kind == "budget" {
++				want = MaxCalls
++			}
++			if kind == "canceled" {
++				want = 0
++			}
++			if calls != want {
++				t.Fatalf("upstream calls=%d, want %d", calls, want)
++			}
++			if strings.Contains(err.Error(), "private") {
++				t.Fatal("panic content leaked")
++			}
++		})
++	}
++}
++
++func TestRegistrationRemovalAndUnchangedDefault(t *testing.T) {
++	count := 0
++	send := func(body []byte) (*http.Response, error) {
++		count++
++		if string(body) != "original" {
++			t.Error("default changed bytes")
++		}
++		return &http.Response{Body: io.NopCloser(strings.NewReader("ok"))}, nil
++	}
++	res, err := Run(context.Background(), Current(), Info{}, []byte("original"), send)
++	if err != nil {
++		t.Fatal(err)
++	}
++	res.Body.Close()
++	remove := Use(func(_ context.Context, _ Info, b []byte, n Next) (*http.Response, error) { return n(b) })
++	if Current() == nil {
++		t.Fatal("executor not registered")
++	}
++	remove()
++	remove()
++	if Current() != nil || count != 1 {
++		t.Fatal("removed executor still active or default executed twice")
++	}
++}

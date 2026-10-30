@@ -1,0 +1,53 @@
+diff --git a/internal/gateway/claude_cgroup_root_test.go b/internal/gateway/claude_cgroup_root_test.go
+new file mode 100644
+index 0000000..2ff619b
+--- /dev/null
++++ b/internal/gateway/claude_cgroup_root_test.go
+@@ -0,0 +1,34 @@
++package gateway
++
++import (
++	"context"
++	"os"
++	"testing"
++	"time"
++
++	"github.com/yetone/magpie/internal/proc"
++)
++
++// A Linux cgroup fixture is also read on Windows. Isolate its termination
++// check in a child so a broken parent walk cannot leave a spinning goroutine.
++func TestCgroupRootWalkTerminates(t *testing.T) {
++	const child = "MAGPIE_TEST_CGROUP_WALK_CHILD"
++	if os.Getenv(child) == "1" {
++		root := memFixture(t, map[string]string{"proc/meminfo": "MemTotal: 1024 kB\n", "proc/self/cgroup": "0::/\n", "sys/fs/cgroup/memory.max": "max\n"})
++		if limit, why := memLimit("linux", root); limit != 1024<<10 || why != "MemTotal" {
++			t.Fatalf("root walk returned %d (%s)", limit, why)
++		}
++		return
++	}
++	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
++	defer cancel()
++	cmd := proc.CommandContext(ctx, os.Args[0], "-test.run=^TestCgroupRootWalkTerminates$")
++	cmd.Env = append(os.Environ(), child+"=1")
++	output, err := cmd.CombinedOutput()
++	if ctx.Err() != nil {
++		t.Fatal("cgroup parent walk did not terminate at the host filesystem root")
++	}
++	if err != nil {
++		t.Fatalf("cgroup root child: %v\n%s", err, output)
++	}
++}
+diff --git a/internal/gateway/claude_room.go b/internal/gateway/claude_room.go
+index 00bded5..7abcd6b 100644
+--- a/internal/gateway/claude_room.go
++++ b/internal/gateway/claude_room.go
+@@ -170,7 +170,7 @@ func memLimit(goos, root string) (int64, string) {
+ 						least(n, "cgroup "+filepath.Join(dir, name))
+ 					}
+ 				}
+-				if dir == "/" {
++				if filepath.Dir(dir) == dir {
+ 					break
+ 				}
+ 			}

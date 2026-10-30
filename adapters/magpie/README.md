@@ -1,6 +1,6 @@
 # Reflow 的 Magpie 适配
 
-这是开发中的嵌入式适配，固定针对 `yetone/magpie` 的 `a1174674da9d1435443e95ffac7d0300ce8b59d6`。本目录保存可审阅补丁，尚未提交 Magpie 上游或发布 Magpie 二进制。
+这是开发中的嵌入式适配。2026-10-30 已移植到 `yetone/magpie` 的 `ffa07395eb274cbe6cea299d825bf4f5c58db6e2`，并补测新下游 WebSocket 入口，见[新版记录](UPSTREAM-2026-10-30.md)。原 `a1174674` 基线及补丁继续保留。本目录的补丁尚未提交 Magpie 上游或发布 Magpie 二进制。
 
 ## 接入方式
 
@@ -21,6 +21,8 @@ Magpie 现有 JS 中间件有 250ms / 50ms 的执行时限，Bun 的异步 `onRe
 普通 `response.usage` 仍表示一个可见上下文。Reflow 把多轮实际消耗写入 `metadata.proxy_billed_usage`，Magpie 的透传用量读取器用它记账。缺失、非法或会降低原有任一计费项的元数据会回退到普通 `usage`；客户端收到的流不因此改写。
 
 ## 开发构建
+
+先选固定基线：`ffa07395` 使用 [2026-10-30 补丁](patches/2026-10-30/manifest.json)，`a1174674` 使用下面的原补丁。新版仍为七份，原来的文件名和职责保留，新增 WebSocket 回归放在桥接补丁中。
 
 补丁位于 [patches](patches/manifest.json)，按清单顺序应用：`00-cgroup-root.patch` 修复上游 Windows 测试中的路径循环，`host-execution.patch` 提供宿主执行扩展，`reflow-bridge.patch` 提供可选适配。第五份 `reflow-module.patch` 提供独立的 `go.reflow.mod` 与校验文件，引用公开 Reflow 的固定提交；也补齐启用该构建时的测试兼容和设置页翻译。普通 Magpie 的依赖不变。构建与验证命令见 [公开模块接入](PUBLIC-MODULE.md)。本地联合开发仍可使用 `go.work`。
 
