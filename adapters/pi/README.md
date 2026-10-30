@@ -37,4 +37,4 @@ pi --extension /absolute/path/adapters/pi/reflow.ts --provider openai-codex --mo
 
 临时目录、合成凭据与本地模拟上游下，表中四条正向路径均完成模拟续接、实际 `read` 工具执行和结果回传，被舍弃轮次的读取没有执行。负向对照确认：只改新入口的 `baseUrl` 会带上 ChatGPT 登录不支持的请求字段。另有五项无账号检查覆盖回环地址、请求正文与头部、路由范围、取消和禁止回退。
 
-真实 Pi 账号、浏览器登录、Token 刷新及其他 Pi 版本尚未验收。Codex CLI 的真实成功记录不替代 Pi 的账号验收。完整范围见[新入口验证记录](../../docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，另有[只读账号探针](../../docs/PI-OAUTH-PROBE.md)。接口依据还包括[Pi 自定义提供商文档](https://github.com/earendil-works/pi/blob/d5b3de22d0e24a3e9c38a9410d3329b099717283/packages/coding-agent/docs/custom-provider.md)。
+2026-10-30，用户明确以现有模拟测试作为 Pi 的完成条件，本项已通过模拟验收，不再等待首次登录或安排真实调用。真实账号、浏览器登录、Token 刷新及其他 Pi 版本仍未实测；这描述证据范围，不是本目标的 Pi 待办。完整范围见[新入口验证记录](../../docs/PI-PUBLIC-RESPONSES-2026-10-30.md)及[验收记录](../../docs/evidence/pi-simulated-acceptance-2026-10-30.json)，[只读账号探针](../../docs/PI-OAUTH-PROBE.md)保留为可选诊断工具。接口依据还包括[Pi 自定义提供商文档](https://github.com/earendil-works/pi/blob/d5b3de22d0e24a3e9c38a9410d3329b099717283/packages/coding-agent/docs/custom-provider.md)。

@@ -1,4 +1,6 @@
-# Pi 公共 OAuth 只读验收
+# Pi 公共 OAuth 只读探针（可选）
+
+用户已明确以模拟测试作为 Pi 的验收条件，本项目的 Pi 接入已按该范围通过，见[验收记录](evidence/pi-simulated-acceptance-2026-10-30.json)。不再安排首次登录或真实调用。以下探针保留供未来确有需要时诊断，不是当前 goal 的待办。
 
 `evaluations/pi_probe.py` 用于 Pi 1.4.0 的新 `openai` 入口。默认只生成方案，不读取登录、不调用模型。单次实际执行最多 180 秒、并发 1、每轮最多续接一次；只允许内置 `read` 读取临时生成的 `probe.txt` 一次，拒绝其他工具、路径或第二次读取。
 
@@ -26,4 +28,4 @@ Pi 的代理层与 provider 层重试都显式设为 0，后台缓存预热和�
 
 离线运行方式见 `integration/pi_probe_test.go` 的 `pi_probe` 构建标签。模拟正常会话验证 3 次请求、1 次续接及匹配工具回传；429 和越界读取对照各只允许 1 次请求。打包客户端流水线串行执行普通/race 两组探针，已有 Codex 与 Pi 的其他检查继续保留。
 
-本地的一次性[冻结方案](evidence/next-live-pi-public-plan-2026-10-30.json)已经核对源码、SDK 依赖、Node、Pi CLI 和已测 Reflow 构件散列，尚未执行真实账号测试，当前等待 Pi 自己的登录记录。已有持续模型测试授权不替代客户端首次 OAuth 登录；完成登录后不再逐轮索取模型测试授权。
+本地的一次性[冻结方案](evidence/next-live-pi-public-plan-2026-10-30.json)曾核对源码、SDK 依赖、Node、Pi CLI 和已测 Reflow 构件散列，但没有执行真实账号测试。该文件按原散列保留为历史记录；其中的待登录状态已被后来的[模拟验收决定](evidence/pi-simulated-acceptance-2026-10-30.json)取代，不再据此发起登录或模型调用。

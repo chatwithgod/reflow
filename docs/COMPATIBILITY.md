@@ -6,7 +6,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | --- | --- | --- |
 | Codex CLI | 2026-10-29：官方 `0.165.0`；应用附带的 `0.165.0-alpha.1.2` 另在本机 Windows 验证 | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；写入结果依宿主环境而异，见下方 CI 记录。旧版失败记录保留 |
 | Codex app-server | 同上两版官方客户端；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
-| Pi | `1.4.0` 的旧 `openai-codex` 及新 `openai` provider | 旧入口覆盖地址，SSE/WS 模拟通过；新入口保留官方模型 URL，通过请求级 fetch 转发公共 Responses，合成 OAuth/API key 的 SSE 通过。两者均实际执行工具并回传结果；真实 Pi 账号未验收，见[接入说明](../adapters/pi/README.md) |
+| Pi | `1.4.0` 的旧 `openai-codex` 及新 `openai` provider | 旧入口 SSE/WS、新入口合成 OAuth/API key SSE 均通过，实际 CLI 执行工具并回传结果；按用户确定的范围通过模拟验收，真实账号不作为本项完成条件。见[接入说明](../adapters/pi/README.md) |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
 | Magpie | 固定提交 `a1174674da9d1435443e95ffac7d0300ce8b59d6` 加本地补丁 | 原生 HTTP、zstd、上游 WebSocket、托管 Responses 透传四条路径的模拟续接和 race 通过；可通过替代模块文件使用公开 Reflow 固定提交。补丁未提交上游 |
 | 官方 OpenAI API | Reflow dev.4；`gpt-6.1-sol/high`；专用小型 Responses 客户端 | 用户授权的临时 API key 下，两次 SSE 请求、一次固定本地函数执行、结果回传及最终答案核对通过。推理 token 与续接均为 0；不属于原生 Codex/OAuth 验收 |

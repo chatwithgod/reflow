@@ -15,7 +15,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
-- **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返；真实 Pi 账号待验收。见[Pi 适配](adapters/pi/README.md)。
+- **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
 - **Magpie**：七份本地补丁涵盖可选执行扩展、公开模块和测试修正；宿主全量仍有已知失败，补丁未提交上游。见[适配说明](adapters/magpie/README.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 

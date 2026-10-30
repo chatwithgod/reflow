@@ -1,0 +1,100 @@
+{
+  "date_local": "2026-10-30",
+  "recorded_utc": "2026-10-30T02:05:16.333316+00:00",
+  "status": "accepted_simulated",
+  "scope": "Pi 1.4.0 Reflow integration under the user-selected simulated acceptance scope",
+  "user_direction": [
+    "我说的是pi",
+    "你模拟测试通过就行了"
+  ],
+  "real_account_acceptance_required_for_this_goal": false,
+  "browser_login_required_for_this_goal": false,
+  "additional_pi_live_test_scheduled": false,
+  "real_pi_model_calls": 0,
+  "real_account_tested": false,
+  "oauth_login_and_refresh_tested": false,
+  "new_tests_run_for_this_scope_update": false,
+  "existing_evidence": {
+    "path": "docs/evidence/pi-public-responses-preparation-2026-10-30.json",
+    "sha256": "d0fdc53a6136daaf192c67b82f19e77f8d303ede350518469d36345b63ed4f53"
+  },
+  "verified_checks": {
+    "native": {
+      "pi_passed_names": [
+        "TestPiOAuthOffline",
+        "TestPiOAuthOffline/public_api_key_sse",
+        "TestPiOAuthOffline/public_endpoint_only_control",
+        "TestPiOAuthOffline/public_oauth_sse",
+        "TestPiOAuthOffline/sse",
+        "TestPiOAuthOffline/websocket",
+        "TestPiTransportBoundaries"
+      ],
+      "full_client_batch_counts": {
+        "pass": 14,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "race": {
+      "pi_passed_names": [
+        "TestPiOAuthOffline",
+        "TestPiOAuthOffline/public_api_key_sse",
+        "TestPiOAuthOffline/public_endpoint_only_control",
+        "TestPiOAuthOffline/public_oauth_sse",
+        "TestPiOAuthOffline/sse",
+        "TestPiOAuthOffline/websocket",
+        "TestPiTransportBoundaries"
+      ],
+      "full_client_batch_counts": {
+        "pass": 14,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "pi_probe": {
+      "passed_names": [
+        "TestPiProbeOffline",
+        "TestPiProbeOffline/blocked_read",
+        "TestPiProbeOffline/rate_limit",
+        "TestPiProbeOffline/success"
+      ],
+      "counts": {
+        "pass": 4,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "pi_probe_race": {
+      "passed_names": [
+        "TestPiProbeOffline",
+        "TestPiProbeOffline/blocked_read",
+        "TestPiProbeOffline/rate_limit",
+        "TestPiProbeOffline/success"
+      ],
+      "counts": {
+        "pass": 4,
+        "skip": 0,
+        "fail": 0
+      }
+    }
+  },
+  "current_source_sha256_matches_tested_files": {
+    "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+    "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+    "adapters/pi/lib/openai-transport.mjs": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520",
+    "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+    "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+    "evaluations/pi_probe.py": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4"
+  },
+  "superseded_unexecuted_plan": {
+    "path": "docs/evidence/next-live-pi-public-plan-2026-10-30.json",
+    "sha256": "6987c66a442e3a153313ca085ac414143aae6b34e88dfd313a4d3a249f4e074b",
+    "historical_bytes_preserved": true,
+    "execution_guard_consumed": false
+  },
+  "limits": [
+    "Evidence uses the actual Pi CLI with synthetic credentials and a local mock upstream.",
+    "Acceptance does not claim real-account login, token refresh, or untested Pi versions."
+  ],
+  "goal_overall_complete": false
+}
