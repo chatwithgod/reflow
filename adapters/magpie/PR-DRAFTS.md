@@ -1,5 +1,48 @@
 # Local PR drafts — not submitted
 
+## Current discussion candidate — 2026-10-31
+
+The [host-only patch](patches/host-review-2026-10-31/manifest.json) is based on the observed upstream `bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9`, with local review commit `cb1a4062f644da15c2fa7715ecf0b0c8325415e3`. It contains the twelve host execution files and their design reference. It does not include the Reflow bridge or its dependency. Three bridge-specific documentation paragraphs now arrive with the bridge, so the minimal host commit has no references to module files or tests that it does not provide.
+
+The complete Reflow integration still uses the fixed `ffa07395` base. Its seven published patches have been reorganized into six local review commits, with the bridge and alternate module delivered together. Reapplying all six reproduces the previously tested Git tree `79bdbc861cc268147de69a6a05fb1c6c37fa87e4` exactly. This extraction changes no runtime code. The two sets are alternative review scopes on different bases, not a series to apply together.
+
+| Local commit | Review scope |
+| --- | --- |
+| `f136f424` | Host execution extension on `ffa07395`, independently checked with original dependencies |
+| `97f10ea0` | Cgroup root-walk termination |
+| `b38d3b7b` | Windows keychain and configuration-directory fixtures |
+| `8ba32563` | Niri fixture connection cleanup |
+| `f295ab90` | Valid zero masking duration and virtual-clock tests |
+| `ea4fccc8` | Optional Reflow bridge, public alternate module, translations and bridge documentation |
+
+The independently extracted host extension passed ordinary and race checks on both `ffa07395` and `bca0d6d`, with 10 pass / 0 skip / 0 fail in each run. Disabling the registered executor made `TestExecutionExtensionThroughNativeCodexGateway` fail behaviorally: HTTP 200 with one upstream request instead of two. Source was restored before each passing race run. All checks were serial, used temporary homes and synthetic accounts, and preserved the original module files. The stored diagnostics contain test events, numbers and fixed markers; raw reply bodies were not saved. Commands, artifacts and hashes are in the [review packet evidence](../../docs/evidence/magpie-review-packet-2026-10-31.json).
+
+Only the host extension has been checked on `bca0d6d`. The complete bridge, its GUI checks and the interrupted full host run remain tied to `ffa07395`. A full suite, whole-host build/vet matrix, native Linux/macOS use and real accounts were not run for the host-only new-base candidate. These materials support a design discussion, not merge or release acceptance.
+
+The observed [upstream contribution policy](https://github.com/yetone/magpie/blob/bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9/docs/contributors.md) says community fixes may arrive through issues because PRs are limited to collaborators. The connected account has read access and no push permission. The intended first external step is one design discussion with the maintainer, after the user authorizes it and the referenced review files are public. Nothing has been posted.
+
+### Proposed discussion: bounded compiled execution for streaming Responses
+
+Streaming Responses middleware can transform requests and observe replies, but a continuation executor needs to hold an intermediate response and make another request on the same selected upstream before releasing a visible response. Would a small compiled execution hook be an acceptable extension point for that use case?
+
+The prototype exposes `Info`, `Next` and `Executor` through `internal/gwexec`. The gateway keeps the selected account, endpoint, model, request context and transport. One executor runs per request, with at most eight upstream calls including the first; each response must be closed before the next call. Cancellation follows the client request. Failure or panic returns an error without replaying the initial call. With no registered executor, forwarding follows the existing path.
+
+The hook is limited to native Codex and streaming Responses-to-Responses passthrough. Translations, non-streaming requests and compaction bypass it. It is for trusted compiled code, not an untrusted plugin sandbox. An optional Reflow bridge is maintained separately; the host-only proposal adds no Reflow dependency or listener. Folded billing totals are recorded separately from visible context usage, without rewriting the client stream.
+
+At base `bca0d6d`, the selected Windows tests pass normally and with race (10 items each), and disabling the hook fails the native gateway behavior test. The test exercises the real handler and LAN guard with a synthetic upstream. Full-host and cross-platform merge checks are still required; no production service or real account was used. The question for the maintainer is whether this ownership boundary fits Magpie, or whether an existing supported extension contract should serve the same purpose.
+
+### Reproduce the host-only candidate
+
+Use a clean isolated Magpie checkout at the base in [the host manifest](patches/host-review-2026-10-31/manifest.json), verify the patch SHA-256, then apply `host-execution.patch`. Keep `go.mod` and `go.sum` unchanged and do not add the `reflow` tag or alternate module. Run the command below under a temporary HOME with pinned Go caches, as required by Magpie's test instructions; append `-race` for the race run.
+
+```sh
+go test -mod=readonly -tags nogui -p=1 -parallel=1 -count=1 -timeout=3m -run '^(TestBoundsCancellationAndNoFailureReplay|TestRegistrationRemovalAndUnchangedDefault|TestExecutionExtension.*|TestFoldedUsageCountsUpstreamWithoutChangingClientContext)$' ./internal/gwexec ./internal/gateway
+```
+
+For the negative control, replace only `e := gwexec.Current()` in `executeResponses` with `var e gwexec.Executor`, run `TestExecutionExtensionThroughNativeCodexGateway`, require its behavioral failure, then restore the file. The full bridge's existing positive/negative and GUI evidence is linked below and is not a substitute for running those checks on a newer base.
+
+## Historical drafts on the original base
+
 The original draft bodies below retain their `a1174674` evidence. The [2026-10-30 port](UPSTREAM-2026-10-30.md) targets `ffa07395` with a [separate patch series](patches/2026-10-30/manifest.json), adds downstream WebSocket continuation coverage, and records its host checks separately. Neither series has been submitted upstream; old full-suite numbers do not describe the new tree.
 
 These drafts describe the patches in [manifest.json](patches/manifest.json). They do not represent an upstream issue or review. The optional Reflow bridge is a separate development patch; [the fifth patch](PUBLIC-MODULE.md) adds a pinned public module as an alternative to the local Go workspace, plus enabled-build test compatibility and settings translations. Full host acceptance remains incomplete.

@@ -1,0 +1,648 @@
+{
+  "date_local": "2026-10-31",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-30T21:21:15.485000+00:00",
+  "status": "local_review_packet_prepared",
+  "previous_goal_turn": "progress_source_push_and_CI_completed",
+  "host_only_candidate": {
+    "base_commit": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+    "review_commit": "cb1a4062f644da15c2fa7715ecf0b0c8325415e3",
+    "source_git_tree": "acd7260659f983777ff23414eca9eadacfc29b5b",
+    "scope": "trusted host execution extension only; Reflow bridge excluded",
+    "apply_order": [
+      "host-execution.patch"
+    ],
+    "patches": {
+      "host-execution.patch": "cf711f6059c10100f8f04eb0a2f5b0367fb5882c4a9746a744f3304267c3ec6f"
+    },
+    "patch_files": {
+      "host-execution.patch": [
+        "docs/subsystems/gateway-middleware.md",
+        "internal/gateway/codex_backend.go",
+        "internal/gateway/codex_socket.go",
+        "internal/gateway/execution.go",
+        "internal/gateway/execution_test.go",
+        "internal/gateway/execution_translation_test.go",
+        "internal/gateway/execution_usage.go",
+        "internal/gateway/execution_usage_test.go",
+        "internal/gateway/gateway.go",
+        "internal/gateway/sniff.go",
+        "internal/gwexec/gwexec.go",
+        "internal/gwexec/gwexec_test.go"
+      ]
+    },
+    "previous_combined_base": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "previous_host_review_commit": "f136f42419e6e62531e1249ea103aa3172b5786c",
+    "default_module_files_unchanged": true,
+    "reflow_dependency_added": false,
+    "test_items_each_normal_and_race": {
+      "pass": 10,
+      "skip": 0,
+      "fail": 0
+    },
+    "negative_control": {
+      "test": "TestExecutionExtensionThroughNativeCodexGateway",
+      "failed_items": 1,
+      "http_status": 200,
+      "upstream_requests": 1
+    },
+    "full_host_suite_run": false,
+    "status": "discussion_candidate_targeted_windows_verified",
+    "source_published": false,
+    "upstream_submitted": false,
+    "binary_released": false,
+    "real_model_calls": 0,
+    "test_concurrency": 1,
+    "validation_record": "docs/evidence/magpie-review-packet-2026-10-31.json"
+  },
+  "host_only_manifest": {
+    "path": "adapters/magpie/patches/host-review-2026-10-31/manifest.json",
+    "sha256": "343f8a201ee956fbd90a0d5a12559c45ca538ad947408acef534cf0c25393662"
+  },
+  "host_patch_roundtrip_tree": "acd7260659f983777ff23414eca9eadacfc29b5b",
+  "host_patch_id_stable": "07b5e67e3d6b2bbeb065f05db3e75b4266a3e50f",
+  "host_extension_delta_unchanged_across_bases": true,
+  "independent_host_checks": {
+    "prior_base": {
+      "record": {
+        "path": "build/magpie-review-20261031/host-only-verification.json",
+        "sha256": "cf9a8ee30b198bd3b047ec1f0003ebdc576b8e533074cf271e4da9a2b9a7b927"
+      },
+      "runner": {
+        "path": "build/verify-magpie-host-split-20261031.py",
+        "sha256": "270c5f031ce44fae3c68259ff1e4f72130860c81ea5648b75f6b10869e583ee9"
+      },
+      "data": {
+        "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+        "host_only_tree": "1ffdebb3b8d836a1dda658653c6ea2087b342bce",
+        "runs": [
+          {
+            "phase": "host-only-normal",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-run",
+              "^(TestBoundsCancellationAndNoFailureReplay|TestRegistrationRemovalAndUnchangedDefault|TestExecutionExtension.*|TestFoldedUsageCountsUpstreamWithoutChangingClientContext)$",
+              "./internal/gwexec",
+              "./internal/gateway"
+            ],
+            "exit_code": 0,
+            "test_items": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "passed_names": [
+              "TestBoundsCancellationAndNoFailureReplay",
+              "TestBoundsCancellationAndNoFailureReplay/budget",
+              "TestBoundsCancellationAndNoFailureReplay/canceled",
+              "TestBoundsCancellationAndNoFailureReplay/failure",
+              "TestBoundsCancellationAndNoFailureReplay/panic",
+              "TestBoundsCancellationAndNoFailureReplay/unclosed",
+              "TestExecutionExtensionLeavesTranslatedRoutesAlone",
+              "TestExecutionExtensionThroughNativeCodexGateway",
+              "TestFoldedUsageCountsUpstreamWithoutChangingClientContext",
+              "TestRegistrationRemovalAndUnchangedDefault"
+            ],
+            "failures": [],
+            "fixed_numeric_diagnostics": [],
+            "raw_output_bytes": 9662,
+            "raw_output_sha256": "c5eeedb660546d1f433c7485411939fbb6faa69625b58476c4c40292038f8287",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          },
+          {
+            "phase": "host-only-disabled-control",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-run",
+              "^TestExecutionExtensionThroughNativeCodexGateway$",
+              "./internal/gateway"
+            ],
+            "exit_code": 1,
+            "test_items": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 1
+            },
+            "passed_names": [],
+            "failures": [
+              {
+                "Package": "github.com/yetone/magpie/internal/gateway",
+                "Test": "TestExecutionExtensionThroughNativeCodexGateway"
+              },
+              {
+                "Package": "github.com/yetone/magpie/internal/gateway"
+              }
+            ],
+            "fixed_numeric_diagnostics": [
+              {
+                "http_status": 200,
+                "upstream_requests": 1
+              }
+            ],
+            "raw_output_bytes": 2517,
+            "raw_output_sha256": "fe53b9dc19a95d0eae58dbfeedee4d8b19b007b486bca49f687bb1b74960a4d4",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          },
+          {
+            "phase": "host-only-race",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-race",
+              "-run",
+              "^(TestBoundsCancellationAndNoFailureReplay|TestRegistrationRemovalAndUnchangedDefault|TestExecutionExtension.*|TestFoldedUsageCountsUpstreamWithoutChangingClientContext)$",
+              "./internal/gwexec",
+              "./internal/gateway"
+            ],
+            "exit_code": 0,
+            "test_items": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "passed_names": [
+              "TestBoundsCancellationAndNoFailureReplay",
+              "TestBoundsCancellationAndNoFailureReplay/budget",
+              "TestBoundsCancellationAndNoFailureReplay/canceled",
+              "TestBoundsCancellationAndNoFailureReplay/failure",
+              "TestBoundsCancellationAndNoFailureReplay/panic",
+              "TestBoundsCancellationAndNoFailureReplay/unclosed",
+              "TestExecutionExtensionLeavesTranslatedRoutesAlone",
+              "TestExecutionExtensionThroughNativeCodexGateway",
+              "TestFoldedUsageCountsUpstreamWithoutChangingClientContext",
+              "TestRegistrationRemovalAndUnchangedDefault"
+            ],
+            "failures": [],
+            "fixed_numeric_diagnostics": [],
+            "raw_output_bytes": 9663,
+            "raw_output_sha256": "c943d663280101be59ef2fae600a36b5c937b24fd1b1afd2afcee28f379f2cca",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          }
+        ],
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a"
+        },
+        "module_files_unchanged": true,
+        "source_restored": true,
+        "full_host_suite_run": false,
+        "new_real_model_calls": 0,
+        "upstream_submitted": false
+      },
+      "event_records": [
+        {
+          "path": "build/magpie-review-20261031/host-only-disabled-control-events.json",
+          "sha256": "248a7d3f7fbdb122d39df638508c42d8a95462efa1f248391bd714796aceab1a"
+        },
+        {
+          "path": "build/magpie-review-20261031/host-only-normal-events.json",
+          "sha256": "1b4315414094166cfa089cead0e0405fcc323c3555b9bb274bb59e0cf7da28b1"
+        },
+        {
+          "path": "build/magpie-review-20261031/host-only-race-events.json",
+          "sha256": "59893f1d8d688f809dcdbd130206999a5a3be1513777d8b583d0ded6c70d37b5"
+        }
+      ]
+    },
+    "observed_upstream": {
+      "record": {
+        "path": "build/magpie-host-current-20261031/host-only-verification.json",
+        "sha256": "85a84ffdfc0d213883acb413958fc0d4a97869e83278f78b6243a520412fc097"
+      },
+      "runner": {
+        "path": "build/verify-magpie-host-current-20261031.py",
+        "sha256": "3dd42b31c2ce497a7c6624e31ce97d76349204906e0a3a485677fbeb3a7f9005"
+      },
+      "data": {
+        "base_commit": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+        "host_only_tree": "acd7260659f983777ff23414eca9eadacfc29b5b",
+        "runs": [
+          {
+            "phase": "host-only-normal",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-run",
+              "^(TestBoundsCancellationAndNoFailureReplay|TestRegistrationRemovalAndUnchangedDefault|TestExecutionExtension.*|TestFoldedUsageCountsUpstreamWithoutChangingClientContext)$",
+              "./internal/gwexec",
+              "./internal/gateway"
+            ],
+            "exit_code": 0,
+            "test_items": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "passed_names": [
+              "TestBoundsCancellationAndNoFailureReplay",
+              "TestBoundsCancellationAndNoFailureReplay/budget",
+              "TestBoundsCancellationAndNoFailureReplay/canceled",
+              "TestBoundsCancellationAndNoFailureReplay/failure",
+              "TestBoundsCancellationAndNoFailureReplay/panic",
+              "TestBoundsCancellationAndNoFailureReplay/unclosed",
+              "TestExecutionExtensionLeavesTranslatedRoutesAlone",
+              "TestExecutionExtensionThroughNativeCodexGateway",
+              "TestFoldedUsageCountsUpstreamWithoutChangingClientContext",
+              "TestRegistrationRemovalAndUnchangedDefault"
+            ],
+            "failures": [],
+            "fixed_numeric_diagnostics": [],
+            "raw_output_bytes": 9663,
+            "raw_output_sha256": "1822ced16d234ac5fce772c83be1f516d3d96ced3f8a945bb725ee66f505bf54",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          },
+          {
+            "phase": "host-only-disabled-control",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-run",
+              "^TestExecutionExtensionThroughNativeCodexGateway$",
+              "./internal/gateway"
+            ],
+            "exit_code": 1,
+            "test_items": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 1
+            },
+            "passed_names": [],
+            "failures": [
+              {
+                "Package": "github.com/yetone/magpie/internal/gateway",
+                "Test": "TestExecutionExtensionThroughNativeCodexGateway"
+              },
+              {
+                "Package": "github.com/yetone/magpie/internal/gateway"
+              }
+            ],
+            "fixed_numeric_diagnostics": [
+              {
+                "http_status": 200,
+                "upstream_requests": 1
+              }
+            ],
+            "raw_output_bytes": 2518,
+            "raw_output_sha256": "b67fad94bb49a87fce50ab4955ed92bfac9d3c7372aa84e644ef49cd041c22c9",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          },
+          {
+            "phase": "host-only-race",
+            "command": [
+              "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+              "test",
+              "-mod=readonly",
+              "-tags",
+              "nogui",
+              "-p=1",
+              "-parallel=1",
+              "-count=1",
+              "-timeout=3m",
+              "-json",
+              "-race",
+              "-run",
+              "^(TestBoundsCancellationAndNoFailureReplay|TestRegistrationRemovalAndUnchangedDefault|TestExecutionExtension.*|TestFoldedUsageCountsUpstreamWithoutChangingClientContext)$",
+              "./internal/gwexec",
+              "./internal/gateway"
+            ],
+            "exit_code": 0,
+            "test_items": {
+              "pass": 10,
+              "skip": 0,
+              "fail": 0
+            },
+            "passed_names": [
+              "TestBoundsCancellationAndNoFailureReplay",
+              "TestBoundsCancellationAndNoFailureReplay/budget",
+              "TestBoundsCancellationAndNoFailureReplay/canceled",
+              "TestBoundsCancellationAndNoFailureReplay/failure",
+              "TestBoundsCancellationAndNoFailureReplay/panic",
+              "TestBoundsCancellationAndNoFailureReplay/unclosed",
+              "TestExecutionExtensionLeavesTranslatedRoutesAlone",
+              "TestExecutionExtensionThroughNativeCodexGateway",
+              "TestFoldedUsageCountsUpstreamWithoutChangingClientContext",
+              "TestRegistrationRemovalAndUnchangedDefault"
+            ],
+            "failures": [],
+            "fixed_numeric_diagnostics": [],
+            "raw_output_bytes": 9659,
+            "raw_output_sha256": "8505478279e141a3745df41c01f7a4f02499102169d898c6d732de1e6521cc84",
+            "raw_output_persisted": false,
+            "isolated_home_removed": true,
+            "real_model_calls": 0,
+            "concurrency": 1
+          }
+        ],
+        "module_files_before": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a"
+        },
+        "module_files_after": {
+          "go.mod": "705178fc60f4924bd9fd3552fd1cb64adbc9fd8920e517891ab2bfcd3d032a0b",
+          "go.sum": "e16cbd03cb37f04cf10808a6f2cd46054a93d8931ef9f22ca7301113fe892b2a"
+        },
+        "module_files_unchanged": true,
+        "source_restored": true,
+        "full_host_suite_run": false,
+        "new_real_model_calls": 0,
+        "upstream_submitted": false
+      },
+      "event_records": [
+        {
+          "path": "build/magpie-host-current-20261031/host-only-disabled-control-events.json",
+          "sha256": "deeb9301e75757d7f78129585c0ed07bfa3c71977347712f06060d97e8a47057"
+        },
+        {
+          "path": "build/magpie-host-current-20261031/host-only-normal-events.json",
+          "sha256": "40d4a4842f5afa490a0ace69b367df1c168efa4f8720866f2be88146484ad62c"
+        },
+        {
+          "path": "build/magpie-host-current-20261031/host-only-race-events.json",
+          "sha256": "3513e3ef760b029159cb4975300df08f54696f9420cd74f4d3fee7e6e0872f04"
+        }
+      ]
+    }
+  },
+  "combined_fixed_base_series": {
+    "base_commit": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+    "commits": [
+      {
+        "id": "01-host-execution",
+        "commit": "f136f42419e6e62531e1249ea103aa3172b5786c",
+        "tree": "1ffdebb3b8d836a1dda658653c6ea2087b342bce",
+        "subject": "gateway: let trusted code execute bounded Responses rounds",
+        "files": [
+          "docs/subsystems/gateway-middleware.md",
+          "internal/gateway/codex_backend.go",
+          "internal/gateway/codex_socket.go",
+          "internal/gateway/execution.go",
+          "internal/gateway/execution_test.go",
+          "internal/gateway/execution_translation_test.go",
+          "internal/gateway/execution_usage.go",
+          "internal/gateway/execution_usage_test.go",
+          "internal/gateway/gateway.go",
+          "internal/gateway/sniff.go",
+          "internal/gwexec/gwexec.go",
+          "internal/gwexec/gwexec_test.go"
+        ]
+      },
+      {
+        "id": "02-cgroup-root",
+        "commit": "97f10ea06042c5dc129c845eaf89b0725785e3c2",
+        "tree": "cbb02927b51436ad611055c23e18aa5c91df5526",
+        "subject": "gateway: stop cgroup lookup at the platform root",
+        "files": [
+          "internal/gateway/claude_cgroup_root_test.go",
+          "internal/gateway/claude_room.go"
+        ]
+      },
+      {
+        "id": "03-windows-fixtures",
+        "commit": "b38d3b7b3745072e954ae71b1072586a39449e29",
+        "tree": "c94a0ab3e292c95545b8085dd808dedc1ecd94fe",
+        "subject": "tests: isolate Windows keychain and config directory fixtures",
+        "files": [
+          "internal/agent/codex_keychain_test.go",
+          "internal/gui/backup_test.go",
+          "internal/provider/codex_store_test.go"
+        ]
+      },
+      {
+        "id": "04-niri-fixture",
+        "commit": "8ba325636f71cd0f912ca0c003a96e3cdabbe150",
+        "tree": "08016ff89de321288f64eb5b37e9bdc99f142365",
+        "subject": "omarchy: close the accepted fixture connection during cleanup",
+        "files": [
+          "internal/omarchy/niri_test.go"
+        ]
+      },
+      {
+        "id": "05-masking-duration",
+        "commit": "f295ab906b9995f457e76d363b7a7c42e7027d5c",
+        "tree": "7a29a3b634ccd2d6e3299ee298093f597deea461",
+        "subject": "gateway tests: preserve valid zero masking duration",
+        "files": [
+          "internal/gateway/masked_sent_test.go",
+          "internal/gateway/masking_time_test.go"
+        ]
+      },
+      {
+        "id": "06-reflow-bridge",
+        "commit": "ea4fccc893d1f9fc9b4bb9371c93804380a54891",
+        "tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+        "subject": "plugins: offer an optional Reflow Responses executor",
+        "files": [
+          "docs/subsystems/gateway-middleware.md",
+          "go.reflow.mod",
+          "go.reflow.sum",
+          "internal/agent/grok_test.go",
+          "internal/edit/toml_test.go",
+          "internal/gateway/reflow_adapter_test.go",
+          "internal/gateway/reflow_socket_test.go",
+          "internal/gui/assets/i18n.js",
+          "internal/gui/builtins_test.go",
+          "internal/gui/tests/reflow-settings.test.cjs",
+          "plugins/all/all.go",
+          "plugins/reflow/disabled.go",
+          "plugins/reflow/reflow.go",
+          "plugins/reflow/reflow_test.go"
+        ]
+      }
+    ],
+    "final_tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+    "matches_previously_verified_tree": true,
+    "original_patch_series_unchanged": true,
+    "bundle": {
+      "path": "build/magpie-review-20261031/magpie-reflow-review-20261031.bundle",
+      "sha256": "92a814103d0b11cb9643b2002120971a8a10fc837d7e76f6369a3d3f882dcf49",
+      "bytes": 39840
+    },
+    "format_patches": [
+      {
+        "path": "build/magpie-review-20261031/format-patches/0001-gateway-let-trusted-code-execute-bounded-Responses-r.patch",
+        "sha256": "7ed564b68ba2d1c423169be472e0505ea93f0fa4a95c03015bdd9934f5e153fe"
+      },
+      {
+        "path": "build/magpie-review-20261031/format-patches/0002-gateway-stop-cgroup-lookup-at-the-platform-root.patch",
+        "sha256": "18e9c90c302a3c1125ea0ca70fe8701e1b85a6dadb2adca1e0d882a1f8b90b5a"
+      },
+      {
+        "path": "build/magpie-review-20261031/format-patches/0003-tests-isolate-Windows-keychain-and-config-directory-.patch",
+        "sha256": "aec9a437c67668c9dc51e7b291c6c7a682f3da2d099f862351c066574c32b23f"
+      },
+      {
+        "path": "build/magpie-review-20261031/format-patches/0004-omarchy-close-the-accepted-fixture-connection-during.patch",
+        "sha256": "196b55b742847c24acc737adfb734f71b78986c82c10ee6f4bf318a1adc480e0"
+      },
+      {
+        "path": "build/magpie-review-20261031/format-patches/0005-gateway-tests-preserve-valid-zero-masking-duration.patch",
+        "sha256": "d0df52e1672fbb55b7bcabc09b770e7e3186471707261f6c40298d13a3a027f8"
+      },
+      {
+        "path": "build/magpie-review-20261031/format-patches/0006-plugins-offer-an-optional-Reflow-Responses-executor.patch",
+        "sha256": "f0f658d23ecc70e849e977b6f0c32824ec238dfffe855651231cce78db8f2e92"
+      }
+    ],
+    "local_branch": "reflow-review-20261031",
+    "upstream_submitted": false,
+    "published": false,
+    "model_calls": 0
+  },
+  "combined_series_roundtrip": {
+    "reapplied_commits": [
+      {
+        "commit": "f136f42419e6e62531e1249ea103aa3172b5786c",
+        "tree": "1ffdebb3b8d836a1dda658653c6ea2087b342bce",
+        "reapplied": true
+      },
+      {
+        "commit": "97f10ea06042c5dc129c845eaf89b0725785e3c2",
+        "tree": "cbb02927b51436ad611055c23e18aa5c91df5526",
+        "reapplied": true
+      },
+      {
+        "commit": "b38d3b7b3745072e954ae71b1072586a39449e29",
+        "tree": "c94a0ab3e292c95545b8085dd808dedc1ecd94fe",
+        "reapplied": true
+      },
+      {
+        "commit": "8ba325636f71cd0f912ca0c003a96e3cdabbe150",
+        "tree": "08016ff89de321288f64eb5b37e9bdc99f142365",
+        "reapplied": true
+      },
+      {
+        "commit": "f295ab906b9995f457e76d363b7a7c42e7027d5c",
+        "tree": "7a29a3b634ccd2d6e3299ee298093f597deea461",
+        "reapplied": true
+      },
+      {
+        "commit": "ea4fccc893d1f9fc9b4bb9371c93804380a54891",
+        "tree": "79bdbc861cc268147de69a6a05fb1c6c37fa87e4",
+        "reapplied": true
+      }
+    ],
+    "final_tree_matches": true,
+    "host_only_patch_current_upstream_apply_check": {
+      "upstream_head": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+      "exit_code": 0,
+      "failed_paths": [],
+      "execution_tested": false
+    },
+    "worktree_untouched_by_roundtrip": true
+  },
+  "combined_source_evidence": {
+    "path": "docs/evidence/magpie-upstream-2026-10-30.json",
+    "sha256": "50dd5250d4d1a1eff425e3b365e9d99a5fec98ec505c5224aa13854fdf7001db"
+  },
+  "upstream_observation": {
+    "read_only_snapshot_before_current_base_tests": {
+      "review_base": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+      "upstream_head_observed": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+      "commits_since_review_base": 210,
+      "changed_relevant_paths": [
+        "internal/gateway/codex_backend.go",
+        "internal/gateway/gateway.go",
+        "internal/gui/assets/i18n.js"
+      ],
+      "current_account_permissions": {
+        "pull": true,
+        "push": false
+      },
+      "latest_head_execution_tested": false
+    },
+    "host_only_validation_completed": true,
+    "full_bridge_validation_on_observed_head": false
+  },
+  "original_patch_series_preserved": true,
+  "documentation_split": {
+    "moved_bridge_paragraphs": 3,
+    "host_only_new_links_resolve_without_bridge": true,
+    "combined_final_document_unchanged": true
+  },
+  "real_model_calls": 0,
+  "test_concurrency": 1,
+  "production_modified": false,
+  "remote_push_executed": false,
+  "upstream_submitted": false,
+  "binary_released": false,
+  "goal_complete": false,
+  "limits": [
+    "The host-only candidate has selected Windows ordinary/race checks on bca0d6d; no full host suite or whole-host build/vet matrix was run at this head.",
+    "The complete Reflow bridge still targets ffa07395; its source tree is unchanged and its full host suite remains interrupted.",
+    "Earlier combined-tree build, GUI and protocol checks do not prove the host-only new-base candidate or the full bridge on bca0d6d.",
+    "No new real-account, Desktop/dot, native Magpie window, Linux or macOS runtime checks were performed.",
+    "The six-commit bundle and format-patches are local review artifacts; current upstream policy and contribution access require checking before external submission."
+  ],
+  "discussion_preparation": {
+    "search_record": {
+      "path": "build/magpie-review-20261031/upstream-discussion-search.json",
+      "sha256": "72cc13321192487647e846786009d1aeeab35277aafae9017618c826078ada69"
+    },
+    "search_is_exhaustive": false,
+    "draft_path": "adapters/magpie/PR-DRAFTS.md",
+    "target_repository": "yetone/magpie",
+    "external_message_sent": false,
+    "source_push_required_before_external_links_are_used": true
+  }
+}

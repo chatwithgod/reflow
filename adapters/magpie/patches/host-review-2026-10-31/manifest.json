@@ -1,0 +1,51 @@
+{
+  "base_commit": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+  "review_commit": "cb1a4062f644da15c2fa7715ecf0b0c8325415e3",
+  "source_git_tree": "acd7260659f983777ff23414eca9eadacfc29b5b",
+  "scope": "trusted host execution extension only; Reflow bridge excluded",
+  "apply_order": [
+    "host-execution.patch"
+  ],
+  "patches": {
+    "host-execution.patch": "cf711f6059c10100f8f04eb0a2f5b0367fb5882c4a9746a744f3304267c3ec6f"
+  },
+  "patch_files": {
+    "host-execution.patch": [
+      "docs/subsystems/gateway-middleware.md",
+      "internal/gateway/codex_backend.go",
+      "internal/gateway/codex_socket.go",
+      "internal/gateway/execution.go",
+      "internal/gateway/execution_test.go",
+      "internal/gateway/execution_translation_test.go",
+      "internal/gateway/execution_usage.go",
+      "internal/gateway/execution_usage_test.go",
+      "internal/gateway/gateway.go",
+      "internal/gateway/sniff.go",
+      "internal/gwexec/gwexec.go",
+      "internal/gwexec/gwexec_test.go"
+    ]
+  },
+  "previous_combined_base": "ffa07395eb274cbe6cea299d825bf4f5c58db6e2",
+  "previous_host_review_commit": "f136f42419e6e62531e1249ea103aa3172b5786c",
+  "default_module_files_unchanged": true,
+  "reflow_dependency_added": false,
+  "test_items_each_normal_and_race": {
+    "pass": 10,
+    "skip": 0,
+    "fail": 0
+  },
+  "negative_control": {
+    "test": "TestExecutionExtensionThroughNativeCodexGateway",
+    "failed_items": 1,
+    "http_status": 200,
+    "upstream_requests": 1
+  },
+  "full_host_suite_run": false,
+  "status": "discussion_candidate_targeted_windows_verified",
+  "source_published": false,
+  "upstream_submitted": false,
+  "binary_released": false,
+  "real_model_calls": 0,
+  "test_concurrency": 1,
+  "validation_record": "docs/evidence/magpie-review-packet-2026-10-31.json"
+}
