@@ -1,4 +1,6 @@
-# Local PR drafts — not submitted
+# Local review material and upstream discussion
+
+The review files were published in Reflow commit `b357a58`. After reading the complete maintainer discussion on [#2118](https://github.com/yetone/magpie/issues/2118#issuecomment-6216502171), one authorized [integration-boundary discussion, #4497](https://github.com/yetone/magpie/issues/4497), was opened. It acknowledges client-owned loops and asks about supported external placement and stable account/model selection. It does not request reversing that policy or merging the compiled hook. The original hook proposal below remains a historical draft, not the text posted upstream. No Magpie PR, merge or binary release has occurred.
 
 ## Current discussion candidate — 2026-10-31
 
@@ -19,7 +21,7 @@ The independently extracted host extension passed ordinary and race checks on bo
 
 Only the host extension has been checked on `bca0d6d`. The complete bridge, its GUI checks and the interrupted full host run remain tied to `ffa07395`. A full suite, whole-host build/vet matrix, native Linux/macOS use and real accounts were not run for the host-only new-base candidate. These materials support a design discussion, not merge or release acceptance.
 
-The observed [upstream contribution policy](https://github.com/yetone/magpie/blob/bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9/docs/contributors.md) says community fixes may arrive through issues because PRs are limited to collaborators. The connected account has read access and no push permission. The intended first external step is one design discussion with the maintainer, after the user authorizes it and the referenced review files are public. Nothing has been posted.
+The observed [upstream contribution policy](https://github.com/yetone/magpie/blob/bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9/docs/contributors.md) says community fixes may arrive through issues because PRs are limited to collaborators. The connected account has read access and no push permission. The first external step was the single authorized discussion #4497 described above; it is not upstream acceptance of these patches.
 
 ### Proposed discussion: bounded compiled execution for streaming Responses
 

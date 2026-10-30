@@ -1,0 +1,383 @@
+{
+  "date_local": "2026-10-31",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-30T22:04:59.515227+00:00",
+  "status": "account_pin_cache_isolation_fixed_external_chain_unverified",
+  "base_reflow_commit": "b357a58435be186b6f7c91c8dfb46963b25aa213",
+  "magpie_base": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+  "upstream_discussion": "https://github.com/yetone/magpie/issues/4497",
+  "maintainer_direction": "https://github.com/yetone/magpie/issues/2118#issuecomment-6216502171",
+  "source_findings": {
+    "explicit_account_header": "X-Magpie-Account",
+    "magpie_pin_selection": "pinTo narrows to the named account or returns an error; copyHeaders does not send the pin to the vendor.",
+    "affinity_limit": "strict affinity retains a vendor/account and can keep other models on that account; it is not a permanent immutable model/account lease.",
+    "session_identity": "conversationID uses a native session header or derives an identity from the first user input; X-Magpie-Session is a usage identity override, not itself one of those affinity headers.",
+    "reflow_scope": "Authorization and ChatGPT-Account-ID remain scope inputs; a nonempty X-Magpie-Account now adds a separate namespace. This is replay isolation, not authentication or gateway enforcement."
+  },
+  "magpie_prerequisites": {
+    "strict": {
+      "record": {
+        "path": "build/magpie-external-prerequisites-20261031/summary.json",
+        "sha256": "9191ffd7ba4717c484cae1b28f46baaf466d6add90bcc540f4206b63186dae77"
+      },
+      "data": {
+        "base_commit": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+        "source_tree": "83afbdba5d328c1b4b3ee00b9ba5ec8a004b458e",
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-mod=readonly",
+          "-tags",
+          "nogui",
+          "-p=1",
+          "-parallel=1",
+          "-race",
+          "-count=1",
+          "-timeout=3m",
+          "-json",
+          "-run",
+          "^(TestStrictAffinityGoesPastTheCap|TestStrictAffinityHeldForCreditsIsRefused|TestStrictAffinityPassesTheErrorOn|TestStrictGroupKeepsItsMemberPastABrokenReply)$",
+          "./internal/gateway"
+        ],
+        "exit_code": 0,
+        "test_items": {
+          "pass": 4,
+          "skip": 0,
+          "fail": 0
+        },
+        "passed_names": [
+          "TestStrictAffinityGoesPastTheCap",
+          "TestStrictAffinityHeldForCreditsIsRefused",
+          "TestStrictAffinityPassesTheErrorOn",
+          "TestStrictGroupKeepsItsMemberPastABrokenReply"
+        ],
+        "raw_output_persisted": false,
+        "output_bytes": 3775,
+        "output_sha256": "a78c1fddb3b1cd709bd202cfb3d92520bd7879cfb1c4a7ec0db24d598e3a010f",
+        "source_unchanged": true,
+        "module_files_unchanged": true,
+        "isolated_home_removed": true,
+        "model_calls": 0,
+        "concurrency": 1,
+        "Reflow_in_this_test_path": false,
+        "external_chain_acceptance": false,
+        "runtime_code_changed": false
+      }
+    },
+    "account_pin": {
+      "record": {
+        "path": "build/magpie-account-pin-prerequisites-20261031/summary.json",
+        "sha256": "26c5bc8b58871d168e878c6e18b78814b48cf84a99ced038d5d1f8fe461108a7"
+      },
+      "data": {
+        "base_commit": "bca0d6d69a806ae941bf9a5a6fafe4c7e03322b9",
+        "source_tree": "83afbdba5d328c1b4b3ee00b9ba5ec8a004b458e",
+        "command": [
+          "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+          "test",
+          "-mod=readonly",
+          "-tags",
+          "nogui",
+          "-p=1",
+          "-parallel=1",
+          "-race",
+          "-count=1",
+          "-timeout=3m",
+          "-json",
+          "-run",
+          "^(TestAccountPinned|TestAccountPinnedResting|TestAccountPinnedUnknown)$",
+          "./internal/gateway"
+        ],
+        "exit_code": 0,
+        "test_items": {
+          "pass": 3,
+          "skip": 0,
+          "fail": 0
+        },
+        "passed_names": [
+          "TestAccountPinned",
+          "TestAccountPinnedResting",
+          "TestAccountPinnedUnknown"
+        ],
+        "raw_output_persisted": false,
+        "output_bytes": 2680,
+        "output_sha256": "457479ae031994cc3fcb8c22e9324b76b50441ad204a334290fe2d477a07b44f",
+        "source_unchanged": true,
+        "module_files_unchanged": true,
+        "isolated_home_removed": true,
+        "model_calls": 0,
+        "concurrency": 1,
+        "Reflow_in_this_test_path": false,
+        "external_chain_acceptance": false,
+        "runtime_code_changed": false
+      }
+    }
+  },
+  "before_fix": {
+    "record": {
+      "path": "build/magpie-account-scope-20261031/before-fix.json",
+      "sha256": "cfdb2c53e829fb233f4b7c09bb682b8afc994032ce73754a928ee0394290ef75"
+    },
+    "data": {
+      "source_head": "b357a58435be186b6f7c91c8dfb46963b25aa213",
+      "runtime_sha256": "a796abca8062990341b12069eb13dd7aa0d1b485dd719a5af005a3dde1bc1e7d",
+      "test_sha256": "bb31300c1d03be9d2e398baacef80005256dc2c62a97e0459db9a8eeade50911",
+      "command": [
+        "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+        "test",
+        "-p=1",
+        "-parallel=1",
+        "-count=1",
+        "-json",
+        "-run",
+        "^TestGatewayAccountPinSeparatesHTTPReplay$",
+        "./proxy"
+      ],
+      "exit_code": 1,
+      "test_items": {
+        "pass": 3,
+        "fail": 4
+      },
+      "events": [
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/same_pin",
+          "Action": "pass",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/changed_pin",
+          "Action": "fail",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_removed",
+          "Action": "fail",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_added",
+          "Action": "fail",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/bearer_changed",
+          "Action": "pass",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay/native_account_changed",
+          "Action": "pass",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        },
+        {
+          "Test": "TestGatewayAccountPinSeparatesHTTPReplay",
+          "Action": "fail",
+          "Package": "github.com/chatwithgod/reflow/proxy"
+        }
+      ],
+      "numeric_markers": [
+        {
+          "test": "TestGatewayAccountPinSeparatesHTTPReplay/changed_pin",
+          "upstream_requests": 3,
+          "expected_requests": 2,
+          "cached_history_replayed": true
+        },
+        {
+          "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_removed",
+          "upstream_requests": 3,
+          "expected_requests": 2,
+          "cached_history_replayed": true
+        },
+        {
+          "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_added",
+          "upstream_requests": 3,
+          "expected_requests": 2,
+          "cached_history_replayed": true
+        }
+      ],
+      "raw_output_persisted": false,
+      "real_model_calls": 0
+    }
+  },
+  "after_fix": {
+    "record": {
+      "path": "build/magpie-account-scope-20261031/clean-source-verification/verification.json",
+      "sha256": "32f4904e3b783df9e2ed7456596d0e5e261ce1c2d231ba7a5f47025702b5bda6"
+    },
+    "data": {
+      "source_head": "b357a58435be186b6f7c91c8dfb46963b25aa213",
+      "source_sha256": {
+        "proxy/cache.go": "7fc8ba1ef9c1a46cd3abbbd85c8da442a128473ccb0f2aa3098aa601e4739b85",
+        "proxy/gateway_scope_test.go": "bb31300c1d03be9d2e398baacef80005256dc2c62a97e0459db9a8eeade50911"
+      },
+      "runs": [
+        {
+          "phase": "normal",
+          "command": [
+            "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+            "test",
+            "-mod=readonly",
+            "-p=1",
+            "-parallel=1",
+            "-count=1",
+            "-timeout=3m",
+            "-json",
+            "./..."
+          ],
+          "exit_code": 0,
+          "test_items": {
+            "pass": 87,
+            "skip": 4,
+            "fail": 0
+          },
+          "regression": [
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/same_pin",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/changed_pin",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_removed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_added",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/bearer_changed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/native_account_changed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay",
+              "action": "pass"
+            }
+          ],
+          "raw_output_sha256": "9cb6d7a699253c9ccc81e49906159506f872f73ab32e9ff77fbe8568ebe17cb4",
+          "raw_output_persisted": false
+        },
+        {
+          "phase": "race",
+          "command": [
+            "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+            "test",
+            "-mod=readonly",
+            "-p=1",
+            "-parallel=1",
+            "-race",
+            "-count=1",
+            "-timeout=3m",
+            "-json",
+            "./..."
+          ],
+          "exit_code": 0,
+          "test_items": {
+            "pass": 87,
+            "skip": 4,
+            "fail": 0
+          },
+          "regression": [
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/same_pin",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/changed_pin",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_removed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/pin_added",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/bearer_changed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay/native_account_changed",
+              "action": "pass"
+            },
+            {
+              "test": "TestGatewayAccountPinSeparatesHTTPReplay",
+              "action": "pass"
+            }
+          ],
+          "raw_output_sha256": "0d333d7a58847584034c68d758a086f31c7b7bbffcfbc078e803917f0e208688",
+          "raw_output_persisted": false
+        },
+        {
+          "phase": "vet",
+          "command": [
+            "<toolchain-checkout>\\.tools\\go\\bin\\go.exe",
+            "vet",
+            "-mod=readonly",
+            "-p=1",
+            "./..."
+          ],
+          "exit_code": 0,
+          "test_items": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 0
+          },
+          "regression": [],
+          "raw_output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "raw_output_persisted": false
+        }
+      ],
+      "isolated_home_removed": true,
+      "model_calls": 0,
+      "concurrency": 1,
+      "external_magpie_chain_tested": false,
+      "source_snapshot": "build\\magpie-account-scope-20261031\\source"
+    },
+    "source_snapshot_manifest": {
+      "path": "build/magpie-account-scope-20261031/source-manifest.json",
+      "sha256": "55f1cabada13bce57b77207bf081155d93ace74515bf5998fdaae7716a53631f"
+    }
+  },
+  "initial_workspace_verification": {
+    "exit_code": 1,
+    "test_items": {
+      "pass": 87,
+      "skip": 4,
+      "fail": 0
+    },
+    "package_failures": [
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/faults-20261028-161104-620294/drop_json_elapsed",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/faults-20261028-161104-620294/drop_record_elapsed",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/faults-20261028-161104-620294/drop_text_elapsed",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/faults-20261028-161104-620294/fixed_assert_zero",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/faults-20261028-161104-620294/old_assert_zero",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/measurement-20261028-155556-916739",
+      "github.com/chatwithgod/reflow/build/magpie-masking-time-20261028/measurement-fixed-20261028-161731-616346"
+    ],
+    "cause": "Go ./... traversed ignored historical fault-injection samples under build; they are not tracked project source.",
+    "original_failure_preserved": true,
+    "resolution": "Ran the unchanged complete ./... normal/race/vet commands in a byte-verified snapshot of tracked project files plus the new regression; no test selection or assertion was relaxed."
+  },
+  "external_chain_tested": false,
+  "real_model_calls": 0,
+  "test_concurrency": 1,
+  "production_modified": false,
+  "new_external_messages": 0,
+  "pushed": false,
+  "binary_release_created": false,
+  "limits": [
+    "The replay regression uses the actual Reflow HTTP handler and a local synthetic upstream, not a complete Magpie chain.",
+    "The four strict-affinity and three account-pin checks execute unchanged Magpie on Windows with synthetic accounts; no Reflow process is in those paths.",
+    "Client configuration, end-to-end continuation through external Reflow and Magpie, quota/error handling, tool history and cancellation still require combined validation.",
+    "Real-account and Desktop/dot acceptance states are unchanged."
+  ]
+}

@@ -34,7 +34,13 @@ func NewReplayCache() *ReplayCache {
 }
 
 func credentialScope(h http.Header) string {
-	hash := sha256.Sum256([]byte(h.Get("Authorization") + "\x00" + h.Get("ChatGPT-Account-ID")))
+	identity := h.Get("Authorization") + "\x00" + h.Get("ChatGPT-Account-ID")
+	// A Magpie gateway key can select different upstream accounts. The pin
+	// separates their replay state without replacing either credential field.
+	if pin := h.Get("X-Magpie-Account"); pin != "" {
+		identity += "\x00" + pin
+	}
+	hash := sha256.Sum256([]byte(identity))
 	return hex.EncodeToString(hash[:])
 }
 

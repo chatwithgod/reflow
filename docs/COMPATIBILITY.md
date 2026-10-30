@@ -25,6 +25,8 @@ Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、
 
 ## Magpie 边界
 
+2026-10-31 的[外置接入前置记录](evidence/magpie-external-account-scope-2026-10-31.json)另行核对 `bca0d6d` 的账号指定与严格亲和接口，并修复 Reflow 对 `X-Magpie-Account` 的缓存隔离。Magpie 既有接口检查与 Reflow HTTP 回归分别通过，尚不是完整外置链路的兼容性证明；下文的嵌入式桥接与构建结果继续按原基线解释。[上游讨论 #4497](https://github.com/yetone/magpie/issues/4497)也尚未给出接受结论。
+
 可信 Go 扩展 `gwexec` 只进入流式 Responses 兼容直通路径；跨协议、非流式和 compact 旁路。可选 `reflow` 构建标签启用桥接代码，`maxContinue` 默认 0，显式设置 1–7 才注册续接。普通模块不依赖 Reflow；可选 `go.reflow.mod` 已固定公开模块版本，本地开发也可使用 `go.work`。
 
 Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建通过。Magpie 全量 `nogui` 测试为 12180 个通过项、615 个跳过项、60 个失败项。改进隔离环境后，对原失败项进行复查，干净上游和修改版均为 12 通过、0 跳过、50 失败，失败集合相同。这是选定失败项的对照，不是双边全量通过，也未确定所有失败根因。见 [宿主证据](../adapters/magpie/VERIFICATION.md)。

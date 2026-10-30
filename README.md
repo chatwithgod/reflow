@@ -24,6 +24,7 @@ dev.5 的公开三平台常规 CI 普通/race 各 80 通过、4 跳过，vet/fuz
 ## 凭据与网络边界
 
 - **凭据透传**：用户的 Codex 客户端继续自行负责账号登录与 Token 刷新。Reflow 仅在转发时将客户端自带的 `Authorization` 等凭据送往固定上游，本身不读取 `auth.json`，不参与鉴权逻辑管理，也不会记录或留存凭据。
+- **历史隔离**：内存中的续接历史按凭据与账号隔离。使用 Magpie 的 `X-Magpie-Account` 指定账号时，该字段也参与隔离；切换、增加或移除指定账号不会自动复用另一账号的缓存历史。它不替代网关鉴权，完整外置 Magpie 链路仍待验证，见[修复证据](docs/evidence/magpie-external-account-scope-2026-10-31.json)。
 - **本地监听**：服务默认仅监听本地回环地址 `127.0.0.1:18516`，默认将请求发送至官方地址 `https://chatgpt.com/backend-api/codex`。
 
 ## 运行与配置说明
