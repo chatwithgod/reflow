@@ -6,7 +6,21 @@
 
 后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；默认 Ubuntu 和托管 Windows 的失败结果仍保留。
 
-## 公开 CI：2026-10-29
+## 最新公开 CI：2026-10-31
+
+经用户授权，13 个提交已推送至 `304a67c`。本轮[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41125692514)三平台全部通过，普通/race 各 80 通过、4 跳过，vet、fuzz、合成评测和宿主控制自检通过；Ubuntu 的 34 项宿主控制检查全部执行，Windows/macOS 跳过其中 3 项 Linux 专用检查。
+
+| 环境 | 客户端普通 / race | 五个写文件场景 | 后续 Pi 只读探针普通 / race |
+| --- | --- | --- | --- |
+| Ubuntu amd64 runner | 各 14 通过、0 跳过 | 0/5 通过 | 写入阶段失败后未执行 |
+| Windows amd64 runner | 各 14 通过、0 跳过 | 0/5 通过 | 写入阶段失败后未执行 |
+| macOS arm64 runner | 各 14 通过、0 跳过 | 5/5 通过 | 各 4 通过、0 跳过 |
+
+三平台客户端测试均包含 Pi 旧入口、新公共 OAuth/API key 入口及传输边界检查。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41125692789)整体仍为失败：Ubuntu/托管 Windows 的五个写入场景及固定错误标记与第四轮记录一致，未发现新增失败，没有放宽断言。失败平台后续 Pi 只读探针、二进制未变和临时目录清理的最终确认字段未执行，不能借用 macOS 的成功结果补齐。
+
+原生任务按 Ubuntu、Windows、macOS 顺序执行，实际区间没有重叠，最大并发 1。两条工作流都只执行一次，没有重跑或手动宿主对照，真实模型调用 0。完整计数、散列、任务区间与比较依据见[本轮证据](evidence/publication-dev5-2026-10-31.json)。Pi 按用户指定的模拟范围验收，不要求真实登录；本轮没有改变 Desktop/dot 未验收、Magpie 宿主全量中断或原生真实批次配置审计例外的状态。
+
+## 历史公开 CI：2026-10-29
 
 | 环境 | 四组客户端普通检查 | Race | 五个写文件场景 |
 | --- | --- | --- | --- |
@@ -66,7 +80,7 @@ macOS 原生任务首次因托管机容量不足、未获得 runner 而被平台
 1. 按 [依赖锁文件](../ci/native-clients/package-lock.json) 安装 Codex `0.165.0` 和 Pi `1.4.0`；Node 固定为 `24.17.0`。客户端安装在项目 `.tools/native-clients`，安装时禁用 lifecycle scripts。
 2. `build.ps1 -CurrentPlatform -WithCodexPlugin` 为当前机器生成独立包和插件包。原有默认 Windows amd64 与 `-AllPlatforms` 行为保留；两个平台选项不能同时使用。
 3. 检查 ZIP 散列、文件路径和可执行权限位，解压到临时目录，再核对二进制散列。后续代理进程和插件安装都使用解压包。
-4. 串行执行 CLI、app-server、Pi 和插件的普通及 race 测试，再单独执行五个写文件场景。Go 使用 `-p=1 -parallel=1`，CI 三个平台也按 `max-parallel: 1` 排队。
+4. 串行执行 CLI、app-server、Pi 和插件的普通及 race 测试，再单独执行五个写文件场景；这些阶段通过后，再执行 Pi 只读探针的普通及 race 测试。任一阶段失败即停止后续阶段。Go 使用 `-p=1 -parallel=1`，CI 三个平台也按 `max-parallel: 1` 排队。
 5. 检查客户端及 Reflow 二进制未改变，并清理临时目录。CI 只上传数字摘要，不发布二进制 Release。
 
 测试使用合成登录文件和本地模拟上游，不需要账号或 API key。测试进程显式设置隔离的 `HOME`、`CODEX_HOME`/`PI_CODING_AGENT_DIR` 和临时目录；Codex 使用文件凭据存储，并关闭两种子代理开关。Pi 保留自己的 OAuth provider 和实际 `read` 工具路径。

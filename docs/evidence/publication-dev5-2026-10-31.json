@@ -1,0 +1,915 @@
+{
+  "date_local": "2026-10-31",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-10-30T20:55:21.678665+00:00",
+  "repository": "https://github.com/chatwithgod/reflow",
+  "published_commit": "304a67cbec1f02c69e0c294d5889579fba1d6415",
+  "published_commits": [
+    "418c539cafeeab991289f3848572d373e5c376da",
+    "8e4cad69bf281f22e5a12cc2ac92100eeabf3018",
+    "0bc48e1eaa32feed1d6ef95a6dfa3bbb919502f8",
+    "c94b7ce6ef22cce0fc0dc7042dfee2037eb7bb78",
+    "2e6f6554693cdbd65ebf5b3135024d98cf8833be",
+    "d09b0467f15d5ae36b2cd65dc1f16a475e9e6e75",
+    "87b4eb4d00e31562ff2cee1d182d7056e1a5e224",
+    "e8355c9da75865f57cf959f4636ce2fdcd2bf6f1",
+    "f310e5010bf3804e891d0e8e09d8524e088fb68b",
+    "56829daa4a2c59fbdf4c7019ead97b05b93665e7",
+    "0bfdffd439840ab1e8ee2c16df5dd8aac16566a9",
+    "88636bdd80f5a3b4d2f2135d55553fabefd63ec1",
+    "304a67cbec1f02c69e0c294d5889579fba1d6415"
+  ],
+  "commit_count": 13,
+  "changed_file_count": 104,
+  "remote_main_verified": "304a67cbec1f02c69e0c294d5889579fba1d6415",
+  "scope": "Approved 13-commit source push and existing automatic CI only",
+  "offline_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/41125692514",
+    "conclusion": "success",
+    "attempt": 1,
+    "jobs": [
+      {
+        "job_id": 124303508665,
+        "name": "offline (macos-latest)",
+        "conclusion": "success",
+        "test_event_counts_normal_and_race_combined": {
+          "pass": 160,
+          "skip": 8
+        },
+        "each_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 80,
+          "skip": 4
+        },
+        "host_control_unittest_summary": [
+          "Ran 34 tests in 0.164s",
+          "OK (skipped=3)"
+        ],
+        "evaluation_process_check_passed": true,
+        "log_sha256": "8813499608d6c9ba2d1045970457d36032615eed3deedcf5d51af53940e0f5a9",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "job_id": 124303508831,
+        "name": "offline (ubuntu-latest)",
+        "conclusion": "success",
+        "test_event_counts_normal_and_race_combined": {
+          "pass": 160,
+          "skip": 8
+        },
+        "each_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 80,
+          "skip": 4
+        },
+        "host_control_unittest_summary": [
+          "Ran 34 tests in 0.184s",
+          "OK"
+        ],
+        "evaluation_process_check_passed": true,
+        "log_sha256": "bbbbc59e5998555e0103120a67622466ac8d7b46d9847bb799e6bed1edefc912",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "job_id": 124303508981,
+        "name": "offline (windows-latest)",
+        "conclusion": "success",
+        "test_event_counts_normal_and_race_combined": {
+          "pass": 160,
+          "skip": 8
+        },
+        "each_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 80,
+          "skip": 4
+        },
+        "host_control_unittest_summary": [
+          "Ran 34 tests in 0.270s",
+          "OK (skipped=3)"
+        ],
+        "evaluation_process_check_passed": true,
+        "log_sha256": "b4cbccb7946382e0d5c95d4d7a834cc6fc7a1a0510a09923cf47659b6df7052a",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      }
+    ]
+  },
+  "native_ci": {
+    "url": "https://github.com/chatwithgod/reflow/actions/runs/41125692789",
+    "conclusion": "failure",
+    "attempt": 1,
+    "platforms": {
+      "ubuntu": {
+        "platform": "linux/amd64",
+        "status": "fail",
+        "artifact_name": "native-client-summary-ubuntu-latest",
+        "artifact_summary_sha256": "d52485c25eda10a00b6c019132c4e223fc73bbb0f0161818374fcd39bade0e77",
+        "source_commit": "304a67cbec1f02c69e0c294d5889579fba1d6415",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "8265f77aabda3c1e544fe4b57fd562b21f0ef97e25c505d6302de6a457aff862"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "bd0ff16c793ed6179646eb7d745bbc66e91fd003042aa817acfa10c37ba09c05"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false,
+            "failure_observations": [
+              {
+                "test": "TestCodexNativeWriteProbe/command_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "bubblewrap": 1,
+                    "operation_not_permitted": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 1,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_add_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              }
+            ],
+            "status": "fail",
+            "log_sha256": "af2ee9679a4ccd89345b838176768f1553aa4f4f879e88c8b0107beb9c8d0f84"
+          }
+        },
+        "write_scenarios_passed": 0,
+        "write_scenarios_total": 5,
+        "same_write_failures_and_observations_as_baseline": true,
+        "pi_probe_status": "not_run_after_write_failure",
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "package_hashes_verified": true
+      },
+      "windows": {
+        "platform": "windows/amd64",
+        "status": "fail",
+        "artifact_name": "native-client-summary-windows-latest",
+        "artifact_summary_sha256": "a42ae6d843ff17c1242f453c7a7e98f14948c183106697902fc614c1608ad5ec",
+        "source_commit": "304a67cbec1f02c69e0c294d5889579fba1d6415",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "11aef80a72e0c03ce21a52768400ac99df813e1580a5f867531ee1233c0c82c1"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "7e2845e9ff57216e7294ba3ff488281c1b91031b35263d019f49c9225cbc4813"
+          },
+          "write": {
+            "exit_code": 1,
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "passed_names": [],
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "package_passed": false,
+            "failure_observations": [
+              {
+                "test": "TestCodexNativeWriteProbe/command_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1,
+                  "mxc_unavailable": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "mxc_unavailable": 1,
+                    "unsupported_operation": 1,
+                    "windows_mxc": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_add_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 2,
+                "websocket_requests": 3,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              },
+              {
+                "test": "TestCodexNativeWriteProbe/patch_via_reflow",
+                "matching_log_lines": {
+                  "workspace_file_not_updated": 1,
+                  "windows_mxc": 1
+                },
+                "upstream_tool_output": {
+                  "observed_outputs": 1,
+                  "empty_outputs": 0,
+                  "matching_outputs": {
+                    "filesystem_error": 1
+                  }
+                },
+                "client_error_kind": "none",
+                "client_exit_code": null,
+                "upstream_requests": 3,
+                "websocket_requests": 4,
+                "http_requests": 0,
+                "auth_header_seen": true,
+                "tool_result_seen": false,
+                "retained_tool_executions": 0,
+                "discarded_tool_executions": 0
+              }
+            ],
+            "status": "fail",
+            "log_sha256": "41d9be996af7cc15ca8d16fb56e20f8158f94cc26777d032a53ed1c08e2cc6e2"
+          }
+        },
+        "write_scenarios_passed": 0,
+        "write_scenarios_total": 5,
+        "same_write_failures_and_observations_as_baseline": true,
+        "pi_probe_status": "not_run_after_write_failure",
+        "client_binaries_unchanged": null,
+        "isolated_profile_removed": null,
+        "package_hashes_verified": true
+      },
+      "macos": {
+        "platform": "darwin/arm64",
+        "status": "pass",
+        "artifact_name": "native-client-summary-macos-latest",
+        "artifact_summary_sha256": "7d59adc77c70af6bde7257aef8dcb3a4c6b6ac89abc59edcf3318fb9d80b531d",
+        "source_commit": "304a67cbec1f02c69e0c294d5889579fba1d6415",
+        "codex_version": "codex-cli 0.165.0",
+        "pi_version": "1.4.0",
+        "checks": {
+          "native": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "28fdeeeeb426edcf821015e66a17cf719bed83fd0ee44c35a396eb8bd668001d"
+          },
+          "race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeLoginOffline",
+              "TestCodexAppServerOffline",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiTransportBoundaries"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexAppServerOffline",
+              "TestCodexAppServerOffline/legacy",
+              "TestCodexAppServerOffline/paginated",
+              "TestCodexNativeLoginOffline",
+              "TestCodexNativeLoginOffline/code_mode",
+              "TestCodexNativeLoginOffline/direct_mcp",
+              "TestCodexPluginInstallAndStdioOffline",
+              "TestPiOAuthOffline",
+              "TestPiOAuthOffline/public_api_key_sse",
+              "TestPiOAuthOffline/public_endpoint_only_control",
+              "TestPiOAuthOffline/public_oauth_sse",
+              "TestPiOAuthOffline/sse",
+              "TestPiOAuthOffline/websocket",
+              "TestPiTransportBoundaries"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "d1f48dc2f31877db7be84bf0a15c459a7e222415f0347976d5fa5b6ea280638a"
+          },
+          "write": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestCodexNativeWriteProbe"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "ee4c086b9e2a103a56f4f9e63bb20a7bad4aa025d43e532405ca2e4afb4f6eec"
+          },
+          "pi_probe": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestPiProbeOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestPiProbeOffline",
+              "TestPiProbeOffline/blocked_read",
+              "TestPiProbeOffline/rate_limit",
+              "TestPiProbeOffline/success"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "2d53794e8f709249e16882104f3b968fd9e32d183a6dc2be80f11e17228adf60"
+          },
+          "pi_probe_race": {
+            "exit_code": 0,
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "required_tests": [
+              "TestPiProbeOffline"
+            ],
+            "missing_tests": [],
+            "passed_names": [
+              "TestPiProbeOffline",
+              "TestPiProbeOffline/blocked_read",
+              "TestPiProbeOffline/rate_limit",
+              "TestPiProbeOffline/success"
+            ],
+            "failed_names": [],
+            "package_passed": true,
+            "failure_observations": [],
+            "status": "pass",
+            "log_sha256": "5f00cd5bb2a93b92f039c886154fa4865be12396412d597b222d02a8b0c54175"
+          }
+        },
+        "write_scenarios_passed": 5,
+        "write_scenarios_total": 5,
+        "same_write_failures_and_observations_as_baseline": null,
+        "pi_probe_status": "pass",
+        "client_binaries_unchanged": true,
+        "isolated_profile_removed": true,
+        "package_hashes_verified": true
+      }
+    },
+    "execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_at": "2026-10-30T20:45:18Z",
+        "completed_at": "2026-10-30T20:47:37Z",
+        "conclusion": "failure",
+        "url": "https://github.com/chatwithgod/reflow/actions/runs/41125692789/job/124303509677"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_at": "2026-10-30T20:47:41Z",
+        "completed_at": "2026-10-30T20:51:11Z",
+        "conclusion": "failure",
+        "url": "https://github.com/chatwithgod/reflow/actions/runs/41125692789/job/124303509841"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_at": "2026-10-30T20:51:15Z",
+        "completed_at": "2026-10-30T20:54:35Z",
+        "conclusion": "success",
+        "url": "https://github.com/chatwithgod/reflow/actions/runs/41125692789/job/124303509073"
+      }
+    ],
+    "execution_overlapped": false,
+    "max_parallel": 1
+  },
+  "baseline_reference": "docs/evidence/native-ci-fourth-run-2026-10-29.json",
+  "new_observed_test_failures": false,
+  "new_live_model_calls": 0,
+  "existing_login_read": false,
+  "production_modified": false,
+  "manual_workflow_dispatches": 0,
+  "workflow_reruns": 0,
+  "binary_release_created": false,
+  "magpie_upstream_submission": false,
+  "oss_application_submitted": false,
+  "pi_acceptance": "accepted_simulated",
+  "desktop_dot_acceptance": "deferred_unverified",
+  "overall_goal_complete": false,
+  "limits": [
+    "Default Ubuntu and hosted Windows write checks remain failed; failing assertions were not relaxed.",
+    "Their later Pi read-probe phases and final binary/cleanup confirmation fields were not reached.",
+    "Pi basic protocol and transport-boundary cases passed ordinary and race on all three platforms.",
+    "CI does not execute the Magpie full host suite; its interrupted status remains unchanged.",
+    "Native real-login functional evidence and its batch configuration audit exception remain separate from this synthetic CI."
+  ]
+}

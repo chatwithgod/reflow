@@ -8,7 +8,7 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 ## 当前状态
 
-Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。公开分支基线为 dev.4 的 `d0f1be6`，本地候选为 dev.5，新增[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)；最新候选和实测记录尚未推送，尚无二进制 Release。
+Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。2026-10-31，dev.5 源码、[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)、原生实测、Pi 适配及 Magpie 新入口补丁已随 13 个提交公开至 `304a67c`；尚无二进制 Release。推送与自动 CI 的范围见[执行记录](docs/evidence/publication-dev5-2026-10-31.json)。
 
 2026-10-30，未修改的官方 Codex `0.165.0` 在隔离的原生 ChatGPT 登录下，经独立 Reflow dev.5 完成 **1 次真实续接、成功工具往返、18/18 和正常结束，工具失败 0**。同批生产配置散列有变化，用户确认同期手动设置；原始不变检查保留未通过，功能结果与这一审计例外分开记录。累计数字、时间线及限制统一见[原生登录验收总表](docs/NATIVE-LOGIN-ACCEPTANCE.md)。
 
@@ -19,7 +19,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Magpie**：七份本地补丁已移到 2026-10-30 固定上游，补测新增 WebSocket 入口的续接和工具回传；旧补丁保留，宿主全量状态单列，尚未提交上游。见[适配说明](adapters/magpie/README.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
-dev.5 本机最新源码普通/race 各 80 通过、4 跳过，Windows 原生打包普通/race 各 14 项、五个写入场景及 Pi 探针普通/race 各 4 项通过，见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)。公开 dev.4 的常规三平台 CI 通过；原生 CI 的 macOS 写入通过，默认 Ubuntu/托管 Windows 写入失败保留，另有固定前提下的 Ubuntu 兼容对照通过。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
+dev.5 的公开三平台常规 CI 普通/race 各 80 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。macOS 的五个写入场景及 Pi 只读探针普通/race 各 4 项通过；默认 Ubuntu/托管 Windows 仍在写入阶段失败，后续只读探针未执行。原生 CI 整体仍为失败，失败项和固定错误标记与旧记录一致。此前本机 Windows 的写入与探针成功结果见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，固定前提下的 Ubuntu 对照也单独保留。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
 
