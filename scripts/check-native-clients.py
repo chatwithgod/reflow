@@ -18,7 +18,7 @@ import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 CLIENT_TESTS = ('TestCodexNativeLoginOffline', 'TestCodexAppServerOffline',
-                'TestCodexPluginInstallAndStdioOffline', 'TestPiOAuthOffline')
+                'TestCodexPluginInstallAndStdioOffline', 'TestPiOAuthOffline', 'TestPiTransportBoundaries')
 TARGETS = {
     ('win32', 'x64'): ('windows/amd64', 'x86_64-pc-windows-msvc'),
     ('win32', 'arm64'): ('windows/arm64', 'aarch64-pc-windows-msvc'),
@@ -370,17 +370,27 @@ def run_checks(args, report, summary):
             summary['packages'].append({**entry, 'source_archive': archive.relative_to(ROOT).as_posix(),
                                         'archive_hash_verified': True, 'extracted_binary_verified': True})
         require(digest(extracted['standalone']) == digest(extracted['codex-plugin']), 'Standalone and plugin binaries differ')
+        pi_adapters = extracted['standalone'].parent / 'adapters/pi'
+        summary['pi_adapter_files'] = []
+        for relative in ('reflow.ts', 'reflow-openai.ts', 'lib/openai-transport.mjs'):
+            packaged = pi_adapters / relative
+            source = ROOT / 'adapters/pi' / relative
+            require(packaged.is_file() and digest(packaged) == digest(source), 'Packaged Pi adapter differs from source')
+            summary['pi_adapter_files'].append({'path': relative, 'sha256': digest(packaged)})
         env.update(REFLOW_CODEX_BIN=str(codex), REFLOW_NODE_BIN=node, REFLOW_PI_CLI=str(pi),
+                   REFLOW_PI_ADAPTER_DIR=str(pi_adapters),
                    REFLOW_PROXY_BIN=str(extracted['standalone']), REFLOW_PLUGIN_MARKETPLACE=str(profile / 'codex-plugin'),
                    GOPROXY='off')
-        for phase, race, tagged, required in [('native', False, False, CLIENT_TESTS),
-                                              ('race', True, False, CLIENT_TESTS),
-                                              ('write', False, True, ('TestCodexNativeWriteProbe',))]:
+        for phase, race, tag, required in [('native', False, '', CLIENT_TESTS),
+                                          ('race', True, '', CLIENT_TESTS),
+                                          ('write', False, 'native_write_probe', ('TestCodexNativeWriteProbe',)),
+                                          ('pi_probe', False, 'pi_probe', ('TestPiProbeOffline',)),
+                                          ('pi_probe_race', True, 'pi_probe', ('TestPiProbeOffline',))]:
             command = [go, 'test', '-p=1', '-parallel=1', '-json', '-count=1', '-timeout=5m']
             if race:
                 command += ['-race']
-            if tagged:
-                command += ['-tags', 'native_write_probe']
+            if tag:
+                command += ['-tags', tag]
             command += ['-run', '^(' + '|'.join(required) + ')$', './integration']
             phase_env = {**env, 'CGO_ENABLED': '1' if race else '0'}
             log_path = report / (phase + '.jsonl')
@@ -412,7 +422,10 @@ def main():
     sources = ['scripts/check-native-clients.py', 'scripts/build.ps1', 'scripts/archive.py',
                'ci/native-clients/package.json', 'ci/native-clients/package-lock.json',
                '.github/workflows/native-clients.yml', 'adapters/pi/reflow.ts',
+               'adapters/pi/reflow-openai.ts', 'adapters/pi/lib/openai-transport.mjs',
+               'integration/pi_openai_transport.test.mjs',
                'plugins/codex/plugin.json', 'plugins/codex/mcp.json', 'evaluations/client_preflight.py',
+               'evaluations/pi_probe.py', 'evaluations/pi_events.py', 'evaluations/pi_probe_guard.ts', 'evaluations/run.py',
                'go.mod', 'go.sum', 'VERSION']
     sources += [path.relative_to(ROOT).as_posix() for path in sorted((ROOT / 'integration').glob('*.go'))]
     summary = {'status': 'running', 'created_utc': datetime.now(timezone.utc).isoformat(),

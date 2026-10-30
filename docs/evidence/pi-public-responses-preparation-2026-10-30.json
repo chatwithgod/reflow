@@ -1,0 +1,747 @@
+{
+  "date_local": "2026-10-30",
+  "recorded_utc": "2026-10-30T01:10:22.095431+00:00",
+  "base_commit": "56829daa4a2c59fbdf4c7019ead97b05b93665e7",
+  "scope": "Pi 1.4.0 public Responses adapter and isolated read-probe preparation; Windows amd64 only",
+  "real_model_calls": 0,
+  "existing_login_read": false,
+  "production_modified": false,
+  "npm_metadata_observed": {
+    "version": "1.4.0",
+    "dist_integrity": "sha512-Z41LpZ3yYHSC/UUps6Mr39UMFPwH8elhJBG9DY1P7kuzsE5qSK/6eMj2EHzO5evJRQWLbKSqUMw+4nCNtIyiQg==",
+    "tarball": "https://registry.npmjs.org/@earendil-works/pi-coding-agent/-/pi-coding-agent-1.4.0.tgz"
+  },
+  "source_checks": {
+    "status": "pass",
+    "created_utc": "2026-10-30T01:02:54.331289+00:00",
+    "real_model_calls": 0,
+    "source_snapshot": "all tracked and nonignored untracked files",
+    "steps": [
+      {
+        "name": "ordinary",
+        "exit_code": 0
+      },
+      {
+        "name": "race",
+        "exit_code": 0
+      },
+      {
+        "name": "vet",
+        "exit_code": 0
+      },
+      {
+        "name": "fuzz",
+        "exit_code": 0
+      }
+    ],
+    "ordinary": {
+      "counts": {
+        "pass": 80,
+        "skip": 4
+      },
+      "packages": [
+        "github.com/chatwithgod/reflow/adapters/magpie",
+        "github.com/chatwithgod/reflow/core",
+        "github.com/chatwithgod/reflow/integration",
+        "github.com/chatwithgod/reflow/internal/codexconfig",
+        "github.com/chatwithgod/reflow/internal/control",
+        "github.com/chatwithgod/reflow/proxy"
+      ]
+    },
+    "race": {
+      "counts": {
+        "pass": 80,
+        "skip": 4
+      },
+      "packages": [
+        "github.com/chatwithgod/reflow/adapters/magpie",
+        "github.com/chatwithgod/reflow/core",
+        "github.com/chatwithgod/reflow/integration",
+        "github.com/chatwithgod/reflow/internal/codexconfig",
+        "github.com/chatwithgod/reflow/internal/control",
+        "github.com/chatwithgod/reflow/proxy"
+      ]
+    },
+    "remaining_source_copies": 0
+  },
+  "native_package_checks": {
+    "status": "pass",
+    "created_utc": "2026-10-30T01:00:06.210805+00:00",
+    "source_commit": "56829daa4a2c59fbdf4c7019ead97b05b93665e7",
+    "source_sha256": {
+      "scripts/check-native-clients.py": "6dbea937ea04ca33e3be2d8be3842a3e7a5f23cd2ac3ca1dcd5c1a26c7b3fb8d",
+      "scripts/build.ps1": "0b92e009b636d668b2f7f6cc7c41fc656db04aea54126a7c0dd3738721bd73d3",
+      "scripts/archive.py": "7ec32e126fea3349338dc6cd1c53d8d83c4d60194257f2cdfa653d5fd486058f",
+      "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+      "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+      ".github/workflows/native-clients.yml": "eb1ae01faa2768ae33d5a1039bf1ea4d04b8b62520a77a3ab87f7b46d751384f",
+      "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+      "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+      "adapters/pi/lib/openai-transport.mjs": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520",
+      "integration/pi_openai_transport.test.mjs": "a3072631018f18396c259851f6106465e0b53ebb59b6e0f3b6185d87ea03c3d2",
+      "plugins/codex/plugin.json": "bd179745267766316269ba79ddafa756c6060e485bce4bbc881f6f8a6c5c1b36",
+      "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+      "evaluations/client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "evaluations/pi_probe.py": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4",
+      "evaluations/pi_events.py": "e7c5f4428fd294c11eaa33404df77bd42b1995ffc841f8ef8c473e02605d95ee",
+      "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+      "evaluations/run.py": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95",
+      "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+      "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+      "VERSION": "55c9a5e5bdfccaaf47aad734f2045b22d176fdaa9779a02376a8129a0568b4b8",
+      "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+      "integration/codex_test.go": "3bd4c71ddc3049bb5e858d96535a6bca854003ad1c1b2b5721c37350256b2d44",
+      "integration/native_diagnostics_test.go": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4",
+      "integration/native_event_probe_test.go": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+      "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+      "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+      "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+      "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+      "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+    },
+    "checks": {
+      "native": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 14,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiTransportBoundaries"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/public_api_key_sse",
+          "TestPiOAuthOffline/public_endpoint_only_control",
+          "TestPiOAuthOffline/public_oauth_sse",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket",
+          "TestPiTransportBoundaries"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "4b4b15092645569f8ec19dea6d5c5ecab4dfe591d918719df5d3b069721b9825"
+      },
+      "race": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 14,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiTransportBoundaries"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/public_api_key_sse",
+          "TestPiOAuthOffline/public_endpoint_only_control",
+          "TestPiOAuthOffline/public_oauth_sse",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket",
+          "TestPiTransportBoundaries"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "2828dfbc8402d6f5565c63049794bf8dd8bfc75abcd4d12b813cbbb55c7e47f3"
+      },
+      "write": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 6,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeWriteProbe"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexNativeWriteProbe",
+          "TestCodexNativeWriteProbe/command_via_reflow",
+          "TestCodexNativeWriteProbe/patch_add_direct",
+          "TestCodexNativeWriteProbe/patch_direct",
+          "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+          "TestCodexNativeWriteProbe/patch_via_reflow"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "e262beffe11ffe8b9a650a198751dfcc13c5ebfc94b8533965b5dafade35d0d9"
+      },
+      "pi_probe": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 4,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestPiProbeOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestPiProbeOffline",
+          "TestPiProbeOffline/blocked_read",
+          "TestPiProbeOffline/rate_limit",
+          "TestPiProbeOffline/success"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "633901fcd55aabfba70cd0003e59d2e3666dcefdffba6794268a4ee4349f8a74"
+      },
+      "pi_probe_race": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 4,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestPiProbeOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestPiProbeOffline",
+          "TestPiProbeOffline/blocked_read",
+          "TestPiProbeOffline/rate_limit",
+          "TestPiProbeOffline/success"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "181ba3f70e540ffc1fb2d03d916a98d3e7081f531567ba703c855514eab443f4"
+      }
+    },
+    "max_native_clients": 1,
+    "synthetic_auth": true,
+    "model_calls": 0,
+    "existing_login_read": false,
+    "production_modified": false,
+    "desktop_dot_ui_tested": false,
+    "scope": "native extracted packages and local fixture upstreams only",
+    "platform": "windows/amd64",
+    "node": {
+      "platform": "win32",
+      "arch": "x64",
+      "version": "v24.17.0"
+    },
+    "codex_version": "codex-cli 0.165.0",
+    "pi_version": "1.4.0",
+    "client_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    },
+    "host_diagnostics": {
+      "model_calls": 0,
+      "existing_login_read": false,
+      "host_configuration_modified": false,
+      "purpose": "diagnostic context only; original write-test gates remain mandatory",
+      "shells_available": {
+        "bash": false,
+        "sh": false,
+        "cmd": true,
+        "pwsh": true,
+        "powershell": true
+      },
+      "windows_version": {
+        "major": 10,
+        "minor": 0,
+        "build": 26300,
+        "product_type": 1
+      },
+      "native_sandbox_command": {
+        "status": "pass",
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "matching_output": {},
+        "workspace_marker_verified": true
+      },
+      "native_filesystem_rpc": {
+        "native_filesystem_write_verified": true,
+        "out_of_workspace_write_blocked": true,
+        "native_filesystem_reason": "pass"
+      }
+    },
+    "packages": [
+      {
+        "kind": "standalone",
+        "platform": "windows/amd64",
+        "archive": "reflow_0.1.0-dev.5_windows_amd64.zip",
+        "sha256": "935af27cca5d06101df0aa65c0ea9ac66a2b6587d6c5ae86a12d7711a1aadd61",
+        "binary_sha256": "58af8b6cff743b989ddace4f70075acd4336d9ba5caae0f4852b8c4a4cb3efcc",
+        "binary_path": "reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.5/20261030-090008-046/reflow_0.1.0-dev.5_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      },
+      {
+        "kind": "codex-plugin",
+        "platform": "windows/amd64",
+        "archive": "reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+        "sha256": "d2cdaa261d784ac036ecd3e2f3aaed4abb9e2d9d5feb86dc67ef9606137f35ab",
+        "binary_sha256": "58af8b6cff743b989ddace4f70075acd4336d9ba5caae0f4852b8c4a4cb3efcc",
+        "binary_path": "plugins/reflow/bin/reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.5/20261030-090008-046/reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      }
+    ],
+    "pi_adapter_files": [
+      {
+        "path": "reflow.ts",
+        "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+      },
+      {
+        "path": "reflow-openai.ts",
+        "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+      },
+      {
+        "path": "lib/openai-transport.mjs",
+        "sha256": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520"
+      }
+    ],
+    "client_binaries_unchanged": true,
+    "isolated_profile_removed": true
+  },
+  "evaluation_process_checks": {
+    "live_account": false,
+    "live_model": false,
+    "production_modified": false,
+    "status": "pass",
+    "steps": [
+      {
+        "name": "build_synthetic_agent",
+        "exit_code": 0
+      },
+      {
+        "name": "runner_process_tests",
+        "exit_code": 0
+      },
+      {
+        "name": "grader_self_test",
+        "exit_code": 0
+      }
+    ],
+    "process_tests_passed": 49,
+    "proxy_sha256": "58af8b6cff743b989ddace4f70075acd4336d9ba5caae0f4852b8c4a4cb3efcc"
+  },
+  "runtime_source_files": [
+    {
+      "path": "adapters/pi/lib/openai-transport.mjs",
+      "sha256": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520"
+    },
+    {
+      "path": "adapters/pi/reflow-openai.ts",
+      "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+    },
+    {
+      "path": "adapters/pi/reflow.ts",
+      "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+    },
+    {
+      "path": "core/fold.go",
+      "sha256": "4ee859f56e38b69c4e903cadf8b77e492d8d854fcadaf9df108e9af3a74ef999"
+    },
+    {
+      "path": "core/session.go",
+      "sha256": "ff568d0b9581a55d0068ae771e30bf0e3d3208d70be892756a7c5a9a2e594c31"
+    },
+    {
+      "path": "core/session_test.go",
+      "sha256": "08409ee9b978e2c39bc71d9e80aa20b9d0263467942a316629b57c04f6742769"
+    },
+    {
+      "path": "core/stream.go",
+      "sha256": "415921986963aaaecfb871177d24471f8387cefb21455941474a80d409ef270b"
+    },
+    {
+      "path": "core/stream_decoder.go",
+      "sha256": "b02686376f876b714591a321b8752df9addfb6543c03de5136c7fe7a560bd939"
+    },
+    {
+      "path": "core/stream_decoder_test.go",
+      "sha256": "95d0611308bfbd1ba76ff93b4f9024bdbde0cb002cac3be35e7060aa0ed5a23f"
+    },
+    {
+      "path": "evaluations/acceptance.py",
+      "sha256": "6e17667171ec4b60726d20e8226897990e21643dc7ff036432c2ce909bdb706c"
+    },
+    {
+      "path": "evaluations/client_preflight.py",
+      "sha256": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8"
+    },
+    {
+      "path": "evaluations/event_diagnostics.py",
+      "sha256": "0a092b243cc347dc61dbf22309ece5bb7ed554102c41e949f22d64ff4530678f"
+    },
+    {
+      "path": "evaluations/fold_diagnostics.py",
+      "sha256": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877"
+    },
+    {
+      "path": "evaluations/ledger_task.py",
+      "sha256": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08"
+    },
+    {
+      "path": "evaluations/pi_events.py",
+      "sha256": "e7c5f4428fd294c11eaa33404df77bd42b1995ffc841f8ef8c473e02605d95ee"
+    },
+    {
+      "path": "evaluations/pi_probe.py",
+      "sha256": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4"
+    },
+    {
+      "path": "evaluations/pi_probe_guard.ts",
+      "sha256": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc"
+    },
+    {
+      "path": "evaluations/prompts.json",
+      "sha256": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079"
+    },
+    {
+      "path": "evaluations/run.py",
+      "sha256": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95"
+    },
+    {
+      "path": "evaluations/scheduler_task.py",
+      "sha256": "9d1451b13f02dcd4784828785a5c801c9626094baa17efa6bd798656838f0ea9"
+    },
+    {
+      "path": "evaluations/score.py",
+      "sha256": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d"
+    },
+    {
+      "path": "evaluations/tasks.py",
+      "sha256": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c"
+    },
+    {
+      "path": "evaluations/test_acceptance.py",
+      "sha256": "87823b53ebdb59dc884128e7d6af7f47e3c5ac2504f4862a3720fd6119494873"
+    },
+    {
+      "path": "evaluations/test_event_diagnostics.py",
+      "sha256": "c184e7f33242e3d8a7fed3d44174ed7921602ad64d9237fb2711b6e0cafc7add"
+    },
+    {
+      "path": "evaluations/test_fold_diagnostics.py",
+      "sha256": "7db86a3c83191ac85f2e03204b8ca06f4f0c0cfd44e6e6ce617efa992445b4ed"
+    },
+    {
+      "path": "evaluations/test_ledger_task.py",
+      "sha256": "638fac057b412bd6f2557343aada1d7e2b2f563e0b8a56c0e234069f3241b380"
+    },
+    {
+      "path": "evaluations/test_pi_probe.py",
+      "sha256": "17da5dc6555979dba2f975d18aaea80822d2f6e12323725250a21a102e6bb87a"
+    },
+    {
+      "path": "evaluations/test_runner.py",
+      "sha256": "c5a08b832db08d7e77714dd9dc1ba6ca3170bf911e1a413d2512010ff214575e"
+    },
+    {
+      "path": "evaluations/test_scheduler_task.py",
+      "sha256": "f90ec6a5f2dd9781d912f97aaa3bd7f986a70d5f6c044cfcc36415c79646e1ac"
+    },
+    {
+      "path": "evaluations/test_workspace_fixture.py",
+      "sha256": "cd0283cc4fdff7fa37ce511e0a94a5364f864745134a5c4ea3b61829b4944c0b"
+    },
+    {
+      "path": "evaluations/testfixture/agent.go",
+      "sha256": "ed0b2d984748cff7b7d343661709fb7220b32d353961bd2e1e1c6ac49b9979cb"
+    },
+    {
+      "path": "evaluations/workspace_fixture.py",
+      "sha256": "1eb8185478cc15cbb7881603ef84c33eab25e5a8b12ddc4c684b6112466fbb77"
+    },
+    {
+      "path": "integration/app_server_test.go",
+      "sha256": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a"
+    },
+    {
+      "path": "integration/codex_test.go",
+      "sha256": "3bd4c71ddc3049bb5e858d96535a6bca854003ad1c1b2b5721c37350256b2d44"
+    },
+    {
+      "path": "integration/native_diagnostics_test.go",
+      "sha256": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4"
+    },
+    {
+      "path": "integration/native_event_probe_test.go",
+      "sha256": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919"
+    },
+    {
+      "path": "integration/native_write_probe_test.go",
+      "sha256": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09"
+    },
+    {
+      "path": "integration/pi_openai_transport.test.mjs",
+      "sha256": "a3072631018f18396c259851f6106465e0b53ebb59b6e0f3b6185d87ea03c3d2"
+    },
+    {
+      "path": "integration/pi_probe_test.go",
+      "sha256": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2"
+    },
+    {
+      "path": "integration/pi_test.go",
+      "sha256": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550"
+    },
+    {
+      "path": "integration/plugin_test.go",
+      "sha256": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8"
+    },
+    {
+      "path": "integration/proxy_process_test.go",
+      "sha256": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+    },
+    {
+      "path": "proxy/cache.go",
+      "sha256": "a796abca8062990341b12069eb13dd7aa0d1b485dd719a5af005a3dde1bc1e7d"
+    },
+    {
+      "path": "proxy/compression_test.go",
+      "sha256": "22aac0add1ecccfc9d42fea952132464e3d2fdc390898a4309b8817efa07c82c"
+    },
+    {
+      "path": "proxy/decision_metrics_test.go",
+      "sha256": "edada91c08835643d0a15433700e22b6ee56034d89b4f673d84f376f54e97a86"
+    },
+    {
+      "path": "proxy/metrics.go",
+      "sha256": "2c8923b3b935bdf5a3cbd7ca633f347fe84bb8696b009aa1ae1b3f39cb97f1a1"
+    },
+    {
+      "path": "proxy/metrics_test.go",
+      "sha256": "56230e978455f67a9c5fed08bf232c8d25425ed45f9c3b3c44766510109c3d1f"
+    },
+    {
+      "path": "proxy/recovery_test.go",
+      "sha256": "3158c088fe17284d4efd6a7e4986bb78922d8a390d416589570d112dd3dbd80c"
+    },
+    {
+      "path": "proxy/server.go",
+      "sha256": "0028214479662cea0c0d57b7798e71a3c9591d693a7a70a6a32b34622a514ebd"
+    },
+    {
+      "path": "proxy/server_test.go",
+      "sha256": "700dd394e137ffcc0bdf9ee5e386515fa120d8946d2b15adab25a9792bc07b99"
+    },
+    {
+      "path": "proxy/tool_metrics.go",
+      "sha256": "bed94d07c0e4c6ae6e9fb8acb062b5257cadca35d3f8444504c71e782f187ee4"
+    },
+    {
+      "path": "proxy/tool_metrics_test.go",
+      "sha256": "e48fe4e2fc7f87b2afa31451a2ddb9153aef5e0ac40c5f2c62b32254f823c48c"
+    },
+    {
+      "path": "proxy/websocket.go",
+      "sha256": "578f0a77ab53f6963de9994b748b4fd20b48998aba73ee2e5795a555d37c6576"
+    },
+    {
+      "path": "proxy/websocket_test.go",
+      "sha256": "85ca40334aff3ec416bf7b41bdceed9eea6fcea33517c53770cfb9fd31165478"
+    },
+    {
+      "path": "scripts/archive.py",
+      "sha256": "7ec32e126fea3349338dc6cd1c53d8d83c4d60194257f2cdfa653d5fd486058f"
+    },
+    {
+      "path": "scripts/build.ps1",
+      "sha256": "0b92e009b636d668b2f7f6cc7c41fc656db04aea54126a7c0dd3738721bd73d3"
+    },
+    {
+      "path": "scripts/check-evaluation.py",
+      "sha256": "ac115be5a54a7f616e861cc37c056c4c9efdd328cbb7d562de757dd7b6ddfb79"
+    },
+    {
+      "path": "scripts/check-linux-sandbox.py",
+      "sha256": "c07130334c89cdabc4706132816dd421ced63bd44c0e2c20170ea7890499b045"
+    },
+    {
+      "path": "scripts/check-magpie.py",
+      "sha256": "08d9409bed164ae19563c4705f83994aec6b4bc2aed20c028578f74a6e7cf32d"
+    },
+    {
+      "path": "scripts/check-native-clients.py",
+      "sha256": "6dbea937ea04ca33e3be2d8be3842a3e7a5f23cd2ac3ca1dcd5c1a26c7b3fb8d"
+    },
+    {
+      "path": "scripts/test-linux-sandbox-control.py",
+      "sha256": "def3e56c13d52c7a4ef3c3f3d34962a6b7f7a8e4ad7733d1123d0d1110d5ee7d"
+    },
+    {
+      "path": "scripts/verify.ps1",
+      "sha256": "c4ccb98719d56eb9f4696f03b9d44736df9a22ad877648811e0e442142d20c41"
+    }
+  ],
+  "runtime_dependencies": [
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/package.json",
+      "sha256": "36df91142c18a5912eafab0f2783bb4d88cdd101c5c5e7fd9173d4387cc5cced",
+      "bytes": 2720
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/api/openai-responses.js",
+      "sha256": "002f15414b7c7b62a32610a8a915bdf1a01eed930b8b45d7691e8a5c475fa9b5",
+      "bytes": 16324
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/api/openai-responses-shared.js",
+      "sha256": "eed025a4821b1e017dd024b930caf8fa11c7fe053a81efe11bd7d846fdc641d3",
+      "bytes": 35999
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/auth/oauth/openai-chatgpt.js",
+      "sha256": "4cf9fc758a07ffe4ee022326404b5dcc86767ee4154945c0417c7f95eaecdcc2",
+      "bytes": 11679
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/auth/resolve.js",
+      "sha256": "3fcec09018831324d9c7fb02f4aea707e8a9e4fec5a2bdf1b3d84d716fd3091e",
+      "bytes": 6696
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/compat.js",
+      "sha256": "df55dca273cb2a7053187b7b29d0fe5b91966a5099ab02d2efe38bb31c3f9738",
+      "bytes": 8872
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/package.json",
+      "sha256": "df6883685382d6a914e5797232744c26579fe7db5576ea0e9c859d018ca2d54e",
+      "bytes": 3873
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/provider-composer.js",
+      "sha256": "7ec4af06726158fa34377bed34fbb378d2d39c5c9d51ae5640ac459a4c78bec4",
+      "bytes": 24668
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/sdk.js",
+      "sha256": "992a539079e42f9dc577064e971afa9972a01dbffedb035f7cb68ab204d36964",
+      "bytes": 15768
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/settings-manager.js",
+      "sha256": "f3eeaadbc97b8c36acf98b1dd5894265f7f719bab95218e66dbc8c25658d5b12",
+      "bytes": 45705
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/modes/json-event.js",
+      "sha256": "5f3756470739fa4a1595feeaf1ce2dfd29e36a2cffd9e642f914fc23f540d606",
+      "bytes": 1057
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/modes/print-mode.js",
+      "sha256": "bb070a05a16f14d124908a1b374fc714a78f89ca8a1a71add20a09e7e1c9f13d",
+      "bytes": 5604
+    }
+  ],
+  "source_artifacts": [
+    {
+      "path": "build/native-client-ci/20261030-010006-210044/summary.json",
+      "sha256": "a64c27f4044c45f3b18d6546bd15b1d7b84dbcee95685c2197961472abda4902",
+      "bytes": 10994
+    },
+    {
+      "path": "build/evaluation-process/20261030-005857-383140/summary.json",
+      "sha256": "5e1137df9509b93dc5f473731450af40f484a14a0253e42972b0b072af5ca424",
+      "bytes": 471
+    },
+    {
+      "path": "build/pi-public-preparation-20261030/source-final/summary.json",
+      "sha256": "8d1bc7a0fd5f243d259b414703c3f84e0653aeb04a8b91778c8cc00483818e2d",
+      "bytes": 1317
+    },
+    {
+      "path": "build/pi-public-preparation-20261030/source-final/source-manifest.json",
+      "sha256": "2d9d441c9ad8a899f82ba98511ead09f2437eb132807d311b6ea413de0b6be35",
+      "bytes": 31117
+    },
+    {
+      "path": "build/pi-public-preparation-20261030/native-second.log",
+      "sha256": "7a4e80cdf80c7b423d4747ec5fcf09b3da53c379e2e1312f39c3e6c35d31b97d",
+      "bytes": 1669
+    },
+    {
+      "path": "build/pi-public-preparation-20261030/probe-first.log",
+      "sha256": "e9484c28f6846f839ab6322f131e16f7a2c118db41dc44708dcc40104e79cd59",
+      "bytes": 784
+    },
+    {
+      "path": "build/pi-public-preparation-20261030/probe-second.log",
+      "sha256": "743a190a2fbb45eca8443aa7b05445e3b45ac738232482a4fd4f72bfd5e0e08b",
+      "bytes": 2415
+    }
+  ],
+  "preparation_failures_retained": [
+    {
+      "kind": "Pi extension-loader subpath alias mismatch",
+      "observed_in_console": true,
+      "source": {
+        "path": "build/pi-public-preparation-20261030/initial-subpath-import.ts",
+        "sha256": "4fd9a5c9a44616b5b91cd2a3b7f7d1467750139c8a130e31c8c05240215b3359",
+        "bytes": 1922
+      },
+      "modern_cases_sent_requests": 0
+    },
+    {
+      "kind": "synthetic item ID normalized by Pi prevented strict result matching",
+      "log": {
+        "path": "build/pi-public-preparation-20261030/probe-first.log",
+        "sha256": "e9484c28f6846f839ab6322f131e16f7a2c118db41dc44708dcc40104e79cd59",
+        "bytes": 784
+      },
+      "fixed_in_fixture_only": true,
+      "core_matching_rules_unchanged": true
+    }
+  ],
+  "official_sources": [
+    "https://developers.openai.com/siwc/token-sharing-open-source/models-and-inference",
+    "https://developers.openai.com/siwc/token-sharing-open-source/sign-in"
+  ],
+  "limits": [
+    "Synthetic OAuth/API keys do not prove real account admission, browser login or refresh.",
+    "New openai provider tested over SSE only; legacy openai-codex SSE/WS remain separate.",
+    "No remote CI, publication, production setup or external submission was executed.",
+    "Codex native totals remain 21 sessions, 114 observed inference requests and four continuations; Pi real totals are zero."
+  ]
+}

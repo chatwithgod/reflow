@@ -1,0 +1,139 @@
+{
+  "status": "awaiting_pi_owned_oauth_login",
+  "date_local": "2026-10-30",
+  "plan": {
+    "kind": "single_pi_oauth_read_probe",
+    "provider": "openai",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "trial_concurrency": 1,
+    "timeout_seconds": 180,
+    "max_continue": 1,
+    "max_sessions": 1,
+    "provider_retries": 0,
+    "agent_retries": 0,
+    "cache_warming": "off",
+    "native_subagents_enabled": false,
+    "permitted_tools": [
+      "one read of generated probe.txt"
+    ],
+    "refresh_token_copied": false,
+    "api_key_used": false,
+    "live_execution": false,
+    "synthetic_execution": false,
+    "source_sha256": {
+      "evaluations/pi_probe.py": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4",
+      "evaluations/pi_events.py": "e7c5f4428fd294c11eaa33404df77bd42b1995ffc841f8ef8c473e02605d95ee",
+      "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+      "evaluations/run.py": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95"
+    },
+    "adapter_sha256": {
+      "reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+      "lib/openai-transport.mjs": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520"
+    },
+    "binary_sha256": {
+      "node": "c6335d08331c23d68b9f2b18adb102002d76ef150b47248e954c507e0d033664",
+      "pi_cli": "e79626f2dd6f94aa45d30f3fa63cd84319a6eefcd150b353cfaf274366926774",
+      "reflow": "58af8b6cff743b989ddace4f70075acd4336d9ba5caae0f4852b8c4a4cb3efcc"
+    },
+    "result": null,
+    "credential_read": false,
+    "real_account_inference_requests": 0
+  },
+  "source_plan": {
+    "path": "build/pi-probes/20261030-010406-017895/results.json",
+    "sha256": "edbc91bbaab8ff332b4c66bd7a65cd91cd6558cd56f8dd4f00bff689344fce1d",
+    "bytes": 1535
+  },
+  "offline_evidence": {
+    "path": "docs/evidence/pi-public-responses-preparation-2026-10-30.json",
+    "sha256": "d0fdc53a6136daaf192c67b82f19e77f8d303ede350518469d36345b63ed4f53",
+    "bytes": 28014
+  },
+  "one_use_runner": {
+    "path": "build/run-authorized-pi-public-once-20261030.py",
+    "sha256": "ad7eeafd58611c93d2e04b2a62b76a9759753eed69bcdf247a6350a23ae25c33",
+    "bytes": 4213
+  },
+  "standing_authorization_source": "call_6d618f8753d948e5afeea9800383947e",
+  "test_reauthorization_required": false,
+  "pi_browser_login_required": true,
+  "runtime_paths": {
+    "node": "C:\\Program Files\\nodejs\\node.exe",
+    "pi_cli": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/bundle/cli.js",
+    "reflow": "dist/0.1.0-dev.5/20261030-090008-046/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+    "adapter_dir": "dist/0.1.0-dev.5/20261030-090008-046/reflow_0.1.0-dev.5_windows_amd64/adapters/pi"
+  },
+  "runtime_dependencies": [
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/package.json",
+      "sha256": "36df91142c18a5912eafab0f2783bb4d88cdd101c5c5e7fd9173d4387cc5cced",
+      "bytes": 2720
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/api/openai-responses.js",
+      "sha256": "002f15414b7c7b62a32610a8a915bdf1a01eed930b8b45d7691e8a5c475fa9b5",
+      "bytes": 16324
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/api/openai-responses-shared.js",
+      "sha256": "eed025a4821b1e017dd024b930caf8fa11c7fe053a81efe11bd7d846fdc641d3",
+      "bytes": 35999
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/auth/oauth/openai-chatgpt.js",
+      "sha256": "4cf9fc758a07ffe4ee022326404b5dcc86767ee4154945c0417c7f95eaecdcc2",
+      "bytes": 11679
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/auth/resolve.js",
+      "sha256": "3fcec09018831324d9c7fb02f4aea707e8a9e4fec5a2bdf1b3d84d716fd3091e",
+      "bytes": 6696
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-ai/dist/compat.js",
+      "sha256": "df55dca273cb2a7053187b7b29d0fe5b91966a5099ab02d2efe38bb31c3f9738",
+      "bytes": 8872
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/package.json",
+      "sha256": "df6883685382d6a914e5797232744c26579fe7db5576ea0e9c859d018ca2d54e",
+      "bytes": 3873
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/provider-composer.js",
+      "sha256": "7ec4af06726158fa34377bed34fbb378d2d39c5c9d51ae5640ac459a4c78bec4",
+      "bytes": 24668
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/sdk.js",
+      "sha256": "992a539079e42f9dc577064e971afa9972a01dbffedb035f7cb68ab204d36964",
+      "bytes": 15768
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/core/settings-manager.js",
+      "sha256": "f3eeaadbc97b8c36acf98b1dd5894265f7f719bab95218e66dbc8c25658d5b12",
+      "bytes": 45705
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/modes/json-event.js",
+      "sha256": "5f3756470739fa4a1595feeaf1ce2dfd29e36a2cffd9e642f914fc23f540d606",
+      "bytes": 1057
+    },
+    {
+      "path": ".tools/native-clients/node_modules/@earendil-works/pi-coding-agent/dist/modes/print-mode.js",
+      "sha256": "bb070a05a16f14d124908a1b374fc714a78f89ca8a1a71add20a09e7e1c9f13d",
+      "bytes": 5604
+    }
+  ],
+  "execution_guard": "build/live-authorized-pi-public-20261030/started.once",
+  "account_metadata_request_limit": 1,
+  "frozen_inference_session_limit": 1,
+  "no_api_key_and_no_codex_token_conversion": true,
+  "excluded": [
+    "browser login implemented by Reflow",
+    "refresh-token use by the probe",
+    "production changes",
+    "push or release"
+  ]
+}

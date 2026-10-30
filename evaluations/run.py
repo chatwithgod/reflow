@@ -129,8 +129,11 @@ def execution_preflight(codex, report):
         return result
 
 
-def start_proxy(binary, maximum, env):
-    process = subprocess.Popen([str(binary), "-listen", "127.0.0.1:0", "-max-continue", str(maximum),"-metrics"],
+def start_proxy(binary, maximum, env, *, upstream=None):
+    command = [str(binary), "-listen", "127.0.0.1:0", "-max-continue", str(maximum), "-metrics"]
+    if upstream is not None:
+        command += ["-upstream", upstream]
+    process = subprocess.Popen(command,
                                stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
                                stderr=subprocess.PIPE, text=True, encoding="utf-8", errors="replace", env=env, **spawn_options())
     addresses = queue.Queue()
