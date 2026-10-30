@@ -35,3 +35,5 @@ Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--c
 2026-10-30 的 [Pi 新 OpenAI 入口](PI-PUBLIC-RESPONSES-2026-10-30.md)补充公共 OAuth/API key SSE、保留原生 OAuth 字段限制的负向对照及五项传输边界检查。最新源码普通/race 各 80 通过、4 跳过，vet/fuzz 通过。`scripts/check-native-clients.py` 现在核对并加载解压包内的两个 Pi 扩展及辅助模块；另串行执行 `pi_probe` 标签的普通/race 检查，验证只读探针正常完成、限流停止和越界阻断。本机 Windows 原生普通/race 各 14 项、写入五场景及探针普通/race 各 4 项通过，全部合成凭据、真实模型调用 0；新改动尚未远程执行。
 
 公开模块构建可指定 `--modfile go.reflow.mod`，与 `--workspace` 二选一；该路径相对 `--magpie`，必须在宿主源码目录内。入口传入 `-mod=readonly`，并核对默认及替代模块锁文件在检查前后没有变化。见 [公开模块验证](../adapters/magpie/PUBLIC-MODULE.md)。
+
+2026-10-31 新增独立的 `scripts/check-magpie-external.py`，在固定且未修改的 Magpie checkout 前启动独立 Reflow，串行运行 7 场景普通/race、账号故障和标准模式对照。Reflow 与 Magpie 两侧均启用 race；原生客户端、真实账号及完整宿主测试不在此范围。该入口尚未接入 CI，命令及通过记录见[外置方案](../adapters/magpie/EXTERNAL.md)。本地完整 Reflow 普通/race 各 90 通过、4 跳过，vet 通过；使用当前项目文件的隔离副本，避免收进 build 目录中的历史故障样本。

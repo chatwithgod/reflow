@@ -28,6 +28,7 @@ func run() error {
 	}
 	listen := flag.String("listen", "127.0.0.1:18516", "loopback listen address")
 	upstream := flag.String("upstream", "https://chatgpt.com/backend-api/codex", "fixed upstream base URL")
+	profile := flag.String("upstream-profile", "standard", "upstream protocol profile: standard or magpie")
 	maxContinue := flag.Int("max-continue", 3, "maximum extra model requests (0 disables folding)")
 	showVersion := flag.Bool("version", false, "print version")
 	metrics := flag.Bool("metrics", false, "enable payload-free upstream counters at /metrics")
@@ -42,7 +43,21 @@ func run() error {
 	}
 	cfg := core.DefaultConfig()
 	cfg.MaxContinue = *maxContinue
-	handler, err := proxy.New(proxy.Config{Upstream: *upstream, Fold: cfg, EnableMetrics: *metrics})
+	proxyConfig := proxy.Config{Upstream: *upstream, Fold: cfg, EnableMetrics: *metrics}
+	switch *profile {
+	case "standard":
+	case "magpie":
+		explicitUpstream := false
+		flag.Visit(func(f *flag.Flag) { explicitUpstream = explicitUpstream || f.Name == "upstream" })
+		if !explicitUpstream {
+			return fmt.Errorf("magpie profile requires an explicit --upstream gateway URL")
+		}
+		proxyConfig.FullReplay = true
+		proxyConfig.WebSocketStream = true
+	default:
+		return fmt.Errorf("unknown upstream profile; choose standard or magpie")
+	}
+	handler, err := proxy.New(proxyConfig)
 	if err != nil {
 		return err
 	}

@@ -21,7 +21,8 @@ type lane struct {
 	replayable bool
 	active     bool
 	broken     bool
-	canceled   bool
+	canceled   string
+	visibleID  string
 	currentID  string
 	pending    []packet
 	metrics    *metricRound
@@ -117,7 +118,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 		l.request = full
 		parent, _ := wire["previous_response_id"].(string)
 		l.replayable = parent == "" || replay != nil
-		l.active, l.broken, l.canceled, l.currentID = true, false, false, ""
+		l.active, l.broken, l.canceled, l.currentID, l.visibleID = true, false, "", "", ""
 		l.fold = nil
 		if s.config.Fold.MaxContinue > 0 && core.Eligible(wire) {
 			prepare(wire)
@@ -130,7 +131,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			}
 			l.fold = fold
 		}
-		delete(wire, "stream")
+		s.prepareSocketStreaming(wire)
 		s.metrics.toolResults(scope, body)
 		l.metrics = s.metrics.begin(false, wire["generate"] == false)
 		return write(up, wire) == nil
@@ -162,8 +163,13 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			l := lanes[id]
 			typ, _ := body["type"].(string)
 			if typ != "response.create" {
-				if typ == "response.cancel" && l != nil && l.active {
-					l.canceled = true
+				targetID, _ := body["response_id"].(string)
+				interrupt := typ == "response.interrupt" && l != nil && targetID != "" && (targetID == l.visibleID || targetID == l.currentID)
+				if (typ == "response.cancel" || interrupt) && l != nil && l.active {
+					l.canceled = "canceled"
+					if interrupt {
+						l.canceled = "interrupted"
+					}
 					if _, ok := body["response_id"]; ok && l.currentID != "" {
 						body["response_id"] = l.currentID
 						p.data, _ = json.Marshal(body)
@@ -218,11 +224,18 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 				continue
 			}
 			typ, _ := ev["type"].(string)
+			if typ == "response.interrupt.failed" && ev["response_id"] == l.currentID {
+				// A rejected interrupt must not poison the still-active response.
+				l.canceled = ""
+			}
 			l.metrics.event(ev)
 			terminal := typ == "response.completed" || typ == "response.done" || typ == "response.failed" || typ == "response.incomplete" || typ == "error"
 			if response, ok := ev["response"].(map[string]any); ok {
 				if rid, _ := response["id"].(string); rid != "" {
 					l.currentID = rid
+					if l.visibleID == "" {
+						l.visibleID = rid
+					}
 				}
 			}
 			if l.broken {
@@ -254,8 +267,8 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 				}
 				continue
 			}
-			if l.canceled && terminal {
-				if emit(id, l.fold.Abort("canceled")) != nil {
+			if l.canceled != "" && terminal {
+				if emit(id, l.fold.Abort(l.canceled)) != nil {
 					return
 				}
 				if !advance(id, l) {
@@ -300,7 +313,7 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 			s.metrics.decision(d)
 			if d.Next != nil {
 				d.Next["type"] = "response.create"
-				delete(d.Next, "stream")
+				s.prepareSocketStreaming(d.Next)
 				if id != "" {
 					d.Next["stream_id"] = id
 				}
@@ -327,5 +340,13 @@ func (s *Server) websocket(w http.ResponseWriter, r *http.Request) {
 		case <-ctx.Done():
 			return
 		}
+	}
+}
+
+func (s *Server) prepareSocketStreaming(body core.Object) {
+	if s.config.WebSocketStream {
+		body["stream"] = true
+	} else {
+		delete(body, "stream")
 	}
 }

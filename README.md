@@ -16,7 +16,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
 - **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
-- **Magpie**：七份本地补丁已移到 2026-10-30 固定上游，补测新增 WebSocket 入口的续接和工具回传；旧补丁保留，宿主全量状态单列，尚未提交上游。见[适配说明](adapters/magpie/README.md)。
+- **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
 dev.5 的公开三平台常规 CI 普通/race 各 80 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。macOS 的五个写入场景及 Pi 只读探针普通/race 各 4 项通过；默认 Ubuntu/托管 Windows 仍在写入阶段失败，后续只读探针未执行。原生 CI 整体仍为失败，失败项和固定错误标记与旧记录一致。此前本机 Windows 的写入与探针成功结果见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，固定前提下的 Ubuntu 对照也单独保留。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
@@ -24,7 +24,7 @@ dev.5 的公开三平台常规 CI 普通/race 各 80 通过、4 跳过，vet/fuz
 ## 凭据与网络边界
 
 - **凭据透传**：用户的 Codex 客户端继续自行负责账号登录与 Token 刷新。Reflow 仅在转发时将客户端自带的 `Authorization` 等凭据送往固定上游，本身不读取 `auth.json`，不参与鉴权逻辑管理，也不会记录或留存凭据。
-- **历史隔离**：内存中的续接历史按凭据与账号隔离。使用 Magpie 的 `X-Magpie-Account` 指定账号时，该字段也参与隔离；切换、增加或移除指定账号不会自动复用另一账号的缓存历史。它不替代网关鉴权，完整外置 Magpie 链路仍待验证，见[修复证据](docs/evidence/magpie-external-account-scope-2026-10-31.json)。
+- **历史隔离**：内存中的续接历史按凭据与账号隔离。使用 Magpie 的 `X-Magpie-Account` 指定账号时，该字段也参与隔离；切换、增加或移除指定账号不会自动复用另一账号的缓存历史。它不替代网关鉴权；[缓存隔离修复](docs/evidence/magpie-external-account-scope-2026-10-31.json)与后续[外置模拟联调](adapters/magpie/EXTERNAL.md)分别记录。
 - **本地监听**：服务默认仅监听本地回环地址 `127.0.0.1:18516`，默认将请求发送至官方地址 `https://chatgpt.com/backend-api/codex`。
 
 ## 运行与配置说明

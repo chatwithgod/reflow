@@ -118,6 +118,11 @@ func TestWebSocketWarmupFoldAndFollowingToolResult(t *testing.T) {
 	if len(requests) != 4 {
 		t.Fatalf("request count=%d", len(requests))
 	}
+	for _, request := range requests {
+		if _, present := request["stream"]; present {
+			t.Fatal("standard WebSocket mode forwarded the HTTP stream field")
+		}
+	}
 	if requests[0]["generate"] != false || len(requests[0]["input"].([]any)) != 0 {
 		t.Fatal("warmup changed")
 	}

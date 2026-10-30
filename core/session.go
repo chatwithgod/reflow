@@ -378,11 +378,17 @@ func (s *Session) result(reason string) Result {
 func (s *Session) Abort(reason string) Object {
 	s.finished = true
 	switch reason {
-	case "upstream_error", "upstream_eof", "buffer_limit", "canceled":
+	case "upstream_error", "upstream_eof", "buffer_limit", "canceled", "interrupted":
 	default:
 		reason = "upstream_error"
 	}
-	ev := terminalEvent(nil, s.baseResponse, s.output, agentUsage(s.firstUsage, s.summed, s.usage, false), s.rounds, s.summed, reason, reason)
+	output := s.output
+	if reason == "interrupted" {
+		// Native response.interrupt uses discard_partial_items: the canceled
+		// response must not publish partial output as reusable history.
+		output = nil
+	}
+	ev := terminalEvent(nil, s.baseResponse, output, agentUsage(s.firstUsage, s.summed, s.usage, false), s.rounds, s.summed, reason, reason)
 	return s.stamp(ev)
 }
 

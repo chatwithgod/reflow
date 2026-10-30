@@ -31,6 +31,9 @@ type Config struct {
 	// Embedded hosts may open a fresh upstream WebSocket for every HTTP round.
 	FullReplay    bool
 	EnableMetrics bool
+	// WebSocketStream supplies stream=true to gateways that reuse HTTP request
+	// bodies for socket turns. Standard Responses WebSockets omit that field.
+	WebSocketStream bool
 }
 
 type Server struct {

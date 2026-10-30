@@ -52,6 +52,16 @@ func TestWebSocketDisconnectCancelsUpstream(t *testing.T) {
 }
 
 func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
+	for _, kind := range []string{"response.cancel", "response.interrupt", "interrupt_rejected"} {
+		t.Run(kind, func(t *testing.T) { testWebSocketCancellation(t, kind) })
+	}
+}
+
+func testWebSocketCancellation(t *testing.T, kind string) {
+	rejected := kind == "interrupt_rejected"
+	if rejected {
+		kind = "response.interrupt"
+	}
 	var requests atomic.Int32
 	cancelID := make(chan string, 1)
 	url, _ := harness(t, http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -70,10 +80,21 @@ func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
 			var body core.Object
 			json.Unmarshal(b, &body)
 			var events []core.Object
-			if body["type"] == "response.cancel" {
+			if body["type"] == kind {
 				id, _ := body["response_id"].(string)
 				cancelID <- id
 				events = []core.Object{{"type": "response.incomplete", "response": core.Object{"id": "hidden", "status": "incomplete", "output": []any{}}}}
+				if kind == "response.interrupt" {
+					if body["mode"] != "discard_partial_items" {
+						t.Error("interrupt mode changed")
+					}
+					ack := "response.interrupt.accepted"
+					if rejected {
+						ack = "response.interrupt.failed"
+						events = testfixture.Round("hidden", 20, true)[2:]
+					}
+					events = append([]core.Object{{"type": ack, "response_id": id}}, events...)
+				}
 			} else {
 				switch requests.Add(1) {
 				case 1:
@@ -109,10 +130,34 @@ func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
 			break
 		}
 	}
-	wsSend(t, ctx, down, core.Object{"type": "response.cancel", "response_id": "visible"})
+	wsSend(t, ctx, down, core.Object{"type": kind, "response_id": "visible", "mode": "discard_partial_items"})
 	ev := wsRead(t, ctx, down)
-	if ev["type"] != "response.incomplete" || ev["response"].(map[string]any)["id"] != "visible" {
+	if kind == "response.interrupt" {
+		ack := "response.interrupt.accepted"
+		if rejected {
+			ack = "response.interrupt.failed"
+		}
+		if ev["type"] != ack || ev["response_id"] != "visible" {
+			t.Fatal("interrupt acknowledgement lost visible identity")
+		}
+		ev = wsRead(t, ctx, down)
+	}
+	if rejected {
+		for ev["type"] != "response.completed" && ev["type"] != "response.incomplete" {
+			ev = wsRead(t, ctx, down)
+		}
+		if ev["type"] != "response.completed" {
+			t.Fatal("rejected interrupt canceled the active turn")
+		}
+	} else if ev["type"] != "response.incomplete" || ev["response"].(map[string]any)["id"] != "visible" {
 		t.Fatal("cancel terminal identity lost")
+	}
+	if kind == "response.interrupt" && !rejected {
+		response := ev["response"].(map[string]any)
+		details, _ := response["incomplete_details"].(map[string]any)
+		if details["reason"] != "interrupted" || len(response["output"].([]any)) != 0 {
+			t.Fatal("interrupt did not discard partial output with the native reason")
+		}
 	}
 	if id := <-cancelID; id != "hidden" {
 		t.Fatal("cancel did not target active upstream attempt")
@@ -130,7 +175,11 @@ func TestWebSocketCancelHiddenRoundAndContinueSameSocket(t *testing.T) {
 	if requests.Load() != 3 {
 		t.Fatal("unexpected request count")
 	}
-	if m := readMetrics(t, url); m.Continuations != 1 || m.ContinuedToolResponses != 0 || m.ContinuedToolResults != 0 {
+	expectedTools := int64(0)
+	if rejected {
+		expectedTools = 1
+	}
+	if m := readMetrics(t, url); m.Continuations != 1 || m.ContinuedToolResponses != expectedTools || m.ContinuedToolResults != 0 {
 		t.Fatalf("canceled continuation counted as a tool return: %+v", m)
 	}
 }

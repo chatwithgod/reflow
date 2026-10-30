@@ -8,6 +8,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | Codex app-server | 同上两版官方客户端；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的旧 `openai-codex` 及新 `openai` provider | 旧入口 SSE/WS、新入口合成 OAuth/API key SSE 均通过，实际 CLI 执行工具并回传结果；按用户确定的范围通过模拟验收，真实账号不作为本项完成条件。见[接入说明](../adapters/pi/README.md) |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
+| Magpie 外置接入 | 未修改的 `bca0d6d`，本地 Reflow 后续候选，Windows | 协议夹具经独立 Reflow 进程到实际 Magpie 入口，7 场景普通/race 通过，包含 HTTP/WS、预热、工具回传、账号拒绝与取消；上游为模拟 HTTP，未运行原生客户端或真实账号。见[外置说明](../adapters/magpie/EXTERNAL.md) |
 | Magpie | 新固定提交 `ffa07395eb274cbe6cea299d825bf4f5c58db6e2` 加本地补丁；旧 `a1174674` 另存 | 原四条路径外，新增原生下游 WebSocket、双向 WebSocket、托管下游 WebSocket 的模拟续接、工具往返、预热及取消检查；race 通过。宿主全量状态见[新版记录](../adapters/magpie/UPSTREAM-2026-10-30.md)，未提交上游 |
 | 官方 OpenAI API | Reflow dev.4；`gpt-6.1-sol/high`；专用小型 Responses 客户端 | 用户授权的临时 API key 下，两次 SSE 请求、一次固定本地函数执行、结果回传及最终答案核对通过。推理 token 与续接均为 0；不属于原生 Codex/OAuth 验收 |
 
@@ -25,7 +26,7 @@ Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、
 
 ## Magpie 边界
 
-2026-10-31 的[外置接入前置记录](evidence/magpie-external-account-scope-2026-10-31.json)另行核对 `bca0d6d` 的账号指定与严格亲和接口，并修复 Reflow 对 `X-Magpie-Account` 的缓存隔离。Magpie 既有接口检查与 Reflow HTTP 回归分别通过，尚不是完整外置链路的兼容性证明；下文的嵌入式桥接与构建结果继续按原基线解释。[上游讨论 #4497](https://github.com/yetone/magpie/issues/4497)也尚未给出接受结论。
+2026-10-31 的[外置接入前置记录](evidence/magpie-external-account-scope-2026-10-31.json)另行核对 `bca0d6d` 的账号指定与严格亲和接口，并修复 Reflow 对 `X-Magpie-Account` 的缓存隔离。前置检查当时只分别验证了 Magpie 既有接口与 Reflow HTTP 回归。随后完成[外置链路模拟检查](../adapters/magpie/EXTERNAL.md)，普通/race 各 8 个通过项（7 场景加父测试），账号故障和标准模式对照符合预期；下文的嵌入式桥接与构建结果继续按原基线解释。[上游讨论 #4497](https://github.com/yetone/magpie/issues/4497)也尚未给出接受结论。
 
 可信 Go 扩展 `gwexec` 只进入流式 Responses 兼容直通路径；跨协议、非流式和 compact 旁路。可选 `reflow` 构建标签启用桥接代码，`maxContinue` 默认 0，显式设置 1–7 才注册续接。普通模块不依赖 Reflow；可选 `go.reflow.mod` 已固定公开模块版本，本地开发也可使用 `go.work`。
 
