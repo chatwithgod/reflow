@@ -27,8 +27,10 @@
 
 42 项评测器离线检查通过。dev.5 核心普通/race 各 79 通过、4 跳过，Windows 原生打包普通/race 各 10 项及五个写入场景通过，范围见[决策诊断](DECISION-DIAGNOSTICS.md)。这些模拟结果与上表真实账号证据分开计算。
 
-公开分支只读核对仍为 `d0f1be6`：同提交[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40827335745)通过，[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40827335847)保留既有失败。本地 dev.5、最新评测改动和实测记录尚未推送或发布。Mac 与条件性 Ubuntu 的离线通过范围见[原生 CI](NATIVE-CI.md)和[Ubuntu 对照](LINUX-SANDBOX-CONTROL.md)。
+2026-10-30 记录时，公开分支为 `d0f1be6`：同提交[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/40827335745)通过，[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/40827335847)保留既有失败。2026-10-31，这些源码和实测记录已公开，后续 `3e0ea18` 又发布为 [dev.5 预发布](RELEASE-0.1.0-dev.5.md)。本表的真实样本和原始审计结论没有因推送、打包或发布而增加或改变。Mac 与条件性 Ubuntu 的离线通过范围见[原生 CI](NATIVE-CI.md)和[Ubuntu 对照](LINUX-SANDBOX-CONTROL.md)。
 
 Desktop/dot 按用户决定仍未验收；真实 Token 刷新、其他 OAuth harness 的真实账号、其余平台构件及质量收益也未验证。全目标仍在进行。用户已给予原生验收及必要修复的持续授权，后续不逐轮索取授权；生产接入、远程推送、发布和对外提交按各自实际授权处理。
+
+Pi 后续已按用户明确选择的模拟范围验收通过，见[范围记录](evidence/pi-simulated-acceptance-2026-10-30.json)；本页未做真实 Pi 验证的事实不再作为等待登录的安排。
 
 数字索引与来源散列见[当前机器可读记录](evidence/native-acceptance-current-2026-10-30.json)。历史失败和较早客户端结果仍保留在各次原始记录，不改写为成功。

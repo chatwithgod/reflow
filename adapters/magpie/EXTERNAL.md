@@ -10,7 +10,7 @@
 
 ## 使用前提
 
-下例的 `8000` 是示例端口，应换成已有 Magpie 网关的地址。需要包含本次修改的 Reflow 源码构件；当前没有对应的二进制 Release。
+下例的 `8000` 是示例端口，应换成已有 Magpie 网关的地址。对应构件已随 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)公开；本页的完整外置联调通过范围仍限于所述 Windows 模拟环境。
 
 ```sh
 reflow --listen 127.0.0.1:18516 \

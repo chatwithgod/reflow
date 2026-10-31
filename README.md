@@ -1,4 +1,4 @@
-# Reflow (0.1.0-dev.5 候选)
+# Reflow (0.1.0-dev.5 预发布)
 
 Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
 
@@ -8,9 +8,9 @@ Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提
 
 ## 当前状态
 
-Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。2026-10-31，dev.5 源码、[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)、原生实测、Pi 适配及 Magpie 新入口补丁已随 13 个提交公开至 `304a67c`；尚无二进制 Release。推送与自动 CI 的范围见[执行记录](docs/evidence/publication-dev5-2026-10-31.json)。
+Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。2026-10-31，dev.5 源码、[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)、原生实测、Pi 适配及 Magpie 新入口补丁曾随 13 个提交公开至 `304a67c`。随后发布了固定 `3e0ea18` 的 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)，提供五平台独立服务和 Codex 插件包；12 个附件已完成公开下载核验。平台差异与标签 CI 见[发布记录](docs/RELEASE-0.1.0-dev.5.md)，此前源码推送见[历史记录](docs/evidence/publication-dev5-2026-10-31.json)。
 
-2026-10-30，未修改的官方 Codex `0.165.0` 在隔离的原生 ChatGPT 登录下，经独立 Reflow dev.5 完成 **1 次真实续接、成功工具往返、18/18 和正常结束，工具失败 0**。同批生产配置散列有变化，用户确认同期手动设置；原始不变检查保留未通过，功能结果与这一审计例外分开记录。累计数字、时间线及限制统一见[原生登录验收总表](docs/NATIVE-LOGIN-ACCEPTANCE.md)。
+2026-10-30，未修改的官方 Codex `0.165.0` 在隔离的原生 ChatGPT 登录下，经独立 Reflow dev.5 完成 **1 次真实续接、成功工具往返、18/18 和正常结束，工具失败 0**。同批生产配置散列有变化，用户确认同期手动设置；原始不变检查保留未通过，功能结果与这一审计例外分开记录。累计数字、时间线及限制统一见[原生登录验收总表](docs/NATIVE-LOGIN-ACCEPTANCE.md)。这是发布前候选的有限样本，本次发布没有增加真实账号验收。
 
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
@@ -19,7 +19,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
-dev.5 的公开三平台常规 CI 普通/race 各 80 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。macOS 的五个写入场景及 Pi 只读探针普通/race 各 4 项通过；默认 Ubuntu/托管 Windows 仍在写入阶段失败，后续只读探针未执行。原生 CI 整体仍为失败，失败项和固定错误标记与旧记录一致。此前本机 Windows 的写入与探针成功结果见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，固定前提下的 Ubuntu 对照也单独保留。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
+dev.5 标签的三平台常规 CI 普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。macOS 的五个写入场景及 Pi 只读探针普通/race 各 4 项通过；默认 Ubuntu/托管 Windows 仍在写入阶段失败，后续只读探针未执行。原生 CI 整体仍为失败，失败项和固定错误标记与旧记录一致。此前本机 Windows 的写入与探针成功结果见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，固定前提下的 Ubuntu 对照也单独保留。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
 
@@ -52,7 +52,7 @@ reflow -metrics
 
 dev.4 增加续接后工具响应、工具调用和匹配结果回传的数字计数。它们用于核对协议往返，不能单独证明工具成功或任务完成。保留的关联状态只有有上限、会过期的摘要；详情见 [评测说明](docs/EVALUATION.md)。
 
-dev.5 候选补充实际续接或停止的固定原因计数，以及最多 64 个推理 token 数字样本；核心规则没有改变。字段与局限见[决策诊断说明](docs/DECISION-DIAGNOSTICS.md)。
+dev.5 补充实际续接或停止的固定原因计数，以及最多 64 个推理 token 数字样本；核心规则没有改变。字段与局限见[决策诊断说明](docs/DECISION-DIAGNOSTICS.md)。
 
 ### 2. 客户端配置与还原
 

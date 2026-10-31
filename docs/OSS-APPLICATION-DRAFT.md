@@ -1,41 +1,46 @@
 # Codex for OSS 申请草稿
 
-表单字段于 2026-10-27 核对，项目事实于 2026-10-30 更新。草稿未提交；独立源码现已公开于 [chatwithgod/reflow](https://github.com/chatwithgod/reflow)，三平台离线 CI 记录见 [公开证据](PUBLICATION-2026-10-28.md)。带客户端的 Windows 回归基线为 `fa2c622`，真实调用累计数与审计例外见[最新总表](NATIVE-LOGIN-ACCEPTANCE.md)。个人资料仍未填写。
+官方项目页和申请表于 2026-10-31 重新核对；项目事实固定到已公开的 `3e0ea18` 和 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)。这是尚未提交的草稿。页面要求的三段文字各不超过 500 字符，以下字符数包含空格与标点；可复制文本另存于[结构化草稿](oss-application-fields.json)。
 
-申请表要求公开的 GitHub 账号和仓库链接，选择主要或核心维护者身份；项目价值、API 额度用途和补充说明三段文字各限 500 字符。具体字段以提交时的 [官方申请表](https://openai.com/form/codex-for-oss/) 为准。[计划介绍](https://developers.openai.com/community/codex-for-oss)允许规模较小但有生态价值的项目说明理由，不代表一定入选。
+[官方计划](https://developers.openai.com/community/codex-for-oss)允许申请者说明项目的生态价值，[申请表](https://openai.com/form/codex-for-oss/)同时关注实际使用和持续维护证据。当前 Reflow 是早期项目，申请理由集中在可复用的协议兼容性维护，不声称已被广泛采用或能够提高回答质量。
 
-下面按现有事实说明跨客户端兼容性与可复现维护价值。没有把回归测试计数写成采用量，也没有声称续接能提高回答质量。三段英文同时保存在 [结构化文本](oss-application-fields.json)，便于核对和复制；字符数包含空格与标点，不包含字段名。
+## 项目价值：471 字符
 
-## 项目价值：466 字符
+Reflow is an early-stage MIT Go core and local proxy for budget-bounded Responses continuation, decoupled from CPA. It preserves client-managed login, keeps discarded tool calls from clients, and tracks folded usage. Codex, Pi and external Magpie integrations share protocol regressions. A dev.5 preview is public. We have no verified adoption metrics; the proposed ecosystem value is reusable compatibility checks for tool round-trips, cancellation and history recovery.
 
-Reflow is an early-stage standalone Go engine and local proxy for budget-bounded continuation, decoupled from CPA. It holds intermediate outputs while preserving retained tool calls, usage totals, and client-managed login. Integrations are prepared for Codex CLI, app-server, a Codex plugin, and Pi 1.4.0, with local Magpie patches. Its 79 passing regression checks use synthetic upstreams. The aim is reproducible maintenance of cross-client protocol compatibility.
-
-中文意思：独立 Reflow 的价值在于让多客户端共享有限预算的续接、工具调用和用量处理，并提供可复现的兼容性检查；目前仍是早期开发项目。
+中文意思：独立核心、有限预算的续接、工具隔离和用量处理可以减少不同客户端及网关重复维护兼容性的工作；预发布与回归已经公开，但生态价值仍是申请理由，不是已经证实的采用规模。
 
 ## API 额度用途：373 字符
 
 Credits would fund planned maintenance: small-batch, budget-capped API runs checking protocol compatibility, tool-use round-trips, and disconnect recovery. We would reproduce failures, compare upstream versions, review fixes, and validate releases. These proposed API workloads are separate from our previous ChatGPT subscription tests, which are not an API-spend baseline.
 
-中文意思：这是未来 API 维护工作的用途草稿，包括有限批次的协议、工具往返和断连验证。既有 ChatGPT 订阅测试不作为 API 花费依据。本草稿不预选申请项目，只有决定申请 API 额度时才使用这一段。
+中文意思：拟把额度用于小批次、设有预算的官方 API 维护检查，覆盖协议、工具往返、断连和发布验证。这是后续用途草稿，既有 ChatGPT 订阅测试不作为 API 花费基线；尚未替用户选择申请 API 额度。
 
 ## 补充说明：453 字符
 
-The source is public; no packaged release or verified adoption data yet. Across 21 native-login sessions: 114 observed requests and four continuations. A dev.5 session continued, returned a matching tool result, passed 18/18 with zero tool failures and finished normally. The batch production-config hash changed during a user-confirmed manual edit; that invariant remains failed. Desktop/dot is pending; local Magpie patches are not submitted upstream.
+One native ChatGPT-login session completed continuation, a matching tool result, 18/18 and normal exit with no tool failures. Its batch retained a configuration-audit failure after a user-confirmed manual edit. Three-platform source CI passes; Ubuntu/hosted Windows write checks still fail. Linux arm64 and Intel Mac packages are build-only. Desktop/dot remains unverified. Magpie discussion #4497 has no upstream acceptance; no quality gain is claimed.
 
-中文意思：同一原生登录会话已完成真实续接、工具成功和正常结束；同批次有用户手动改动生产配置，原始不变检查保留未通过。发布、外部采用、Desktop/dot 及其他真实生态验收仍有缺口。
+中文意思：保留原生登录成功样本、配置审计例外、宿主写入失败、仅交叉编译的平台、Desktop/dot 未验收，以及 Magpie 讨论尚未获上游接受等限制。
 
-## 各项说法的依据
+## 可核对的项目材料
 
-| 申请说法 | 可核对的本地依据 |
+| 申请说法 | 依据与限制 |
 | --- | --- |
-| 独立核心、客户端接入和插件入口 | [兼容性说明](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md) |
-| 79 个回归通过项 | [app-server 验证](APP-SERVER-2026-10-27.md)；含子测试和 fuzz 种子，模拟上游，0 个测试跳过 |
-| 公开源码及三平台离线 CI | [仓库](https://github.com/chatwithgod/reflow)、[修复提交](https://github.com/chatwithgod/reflow/commit/23eb3bef11f2cb5951599d08ca6ecd76a946619d)、[通过的 CI](https://github.com/chatwithgod/reflow/actions/runs/40679721072)；各 69 个通过项，4 个客户端联调跳过 |
-| 原生登录 21 次会话、114 次已观察请求、4 次续接 | [验收总表](NATIVE-LOGIN-ACCEPTANCE.md)、[成功功能样本与配置审计例外](LIVE-SCHEDULER-SAMPLING-2026-10-30.md)；会话功能闭环通过，原始批次检查未全过；本轮记录尚未推送 |
-| 官方 API 1 次会话、2 次推理请求、0 次续接 | [API 流式与工具回传](LIVE-API-KEY-2026-10-29.md)；专用 Responses 客户端，固定本地函数执行与最终答案核对通过；记录已随 `e2f4dda` 公开 |
-| Ubuntu 固定配置下的离线写入恢复 | [获批手动对照](https://github.com/chatwithgod/reflow/actions/runs/40824531617)；同一 runner 写入 0/5 到 5/5，隔离边界和清理通过；明确 ABI 告警例外，默认 CI 失败保留 |
-| Magpie 本地补丁 | [补丁清单](../adapters/magpie/patches/manifest.json)、[PR 草稿](../adapters/magpie/PR-DRAFTS.md)；公开模块及设置页检查见[最新记录](../adapters/magpie/PUBLIC-MODULE.md)，宿主全量仍未通过 |
+| 独立核心、客户端与插件接入 | [兼容性](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md)。Pi 按用户选择通过模拟验收，不再等待真实登录 |
+| 可安装的公开预发布 | [dev.5 Release](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)及[核验记录](RELEASE-0.1.0-dev.5.md)：五平台 10 个 ZIP，全部 12 个附件公开下载散列一致；其中两个平台只有交叉编译证据 |
+| 共享回归与维护流程 | [标签常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41144772748)：三平台普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过。计数包含父测试和子测试，不作为采用量 |
+| 原生客户端的覆盖与已知失败 | [标签原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41144772772)：三个平台的普通/race 各 14 项通过；macOS 后续检查通过，默认 Ubuntu/托管 Windows 的写入失败保留，整体仍为失败 |
+| 有限真实功能证据 | [原生验收总表](NATIVE-LOGIN-ACCEPTANCE.md)：21 次会话、114 次已观察请求、4 次续接；一个样本完成同会话功能闭环，批次配置审计检查未全过。发布过程没有增加真实样本 |
+| 官方 API 路径 | [独立记录](LIVE-API-KEY-2026-10-29.md)：1 次会话、2 次推理请求、0 次续接，与原生登录和订阅用量分开 |
+| Magpie 外置接入及协作 | [外置说明](../adapters/magpie/EXTERNAL.md)、[公开讨论 #4497](https://github.com/yetone/magpie/issues/4497)。本机固定源码的七场景普通/race 通过；讨论尚无回复，嵌入式补丁没有作为 Magpie PR 提交或合并 |
+| 使用与影响数据 | [2026-10-31 快照](evidence/oss-readiness-2026-10-31.json)：仓库公开，0 星、0 分叉、0 未关闭 issue。未验证外部采用数据；发布核验下载不计为外部使用 |
 
-官方版实测记录已随 [fdef7b5](https://github.com/chatwithgod/reflow/commit/fdef7b50c1fe93130f02bb500f16aa90c3a07562) 及其前序提交公开。申请时可引用上述固定提交及 CI 链接；最新宿主对照状态见 [Ubuntu 对照记录](LINUX-SANDBOX-CONTROL.md)。Magpie 补丁仍未提交上游，不能写成已合并贡献。
+已保存的 Codex Windows 沙箱修复是 OpenAI 已合并修复的本地回移，不计作本项目新提交的上游贡献。旧 CPA 版的发布和用户情况也不能充当独立 Reflow 的采用量。
 
-公开仓库 URL 已补入草稿。提交前仍需填写姓名、ChatGPT 账号邮箱和 GitHub 账号，确认个人资料可见性、维护者身份、申请哪些支持及所需的组织信息。尚未收集独立版采用数据，相关指标暂不填写。Desktop/dot 暂留未验收，申请草稿没有改变工程验收状态。二进制发布、上游提交和正式申请仍按 [计划](../PLAN.md) 分别处理。
+## 提交前仍需用户提供或确认
+
+需要姓名、ChatGPT 账号邮箱、申请者的公开 GitHub 账号、维护角色，以及希望申请的支持项目。仓库所有者已核对为 `chatwithgod`，但尚未代替用户确认申请身份或选择主要/核心维护者。
+
+表单文本还包含组织 ID 和 API 额度用途；本轮只读核对页面，没有操作选项，因此这些字段随选项变化的必填关系仍以正式填写时为准。不把旧 API key 或已有账号信息当作填写授权。
+
+正式提交前应由用户审阅[项目条款](https://learn.chatgpt.com/docs/codex-for-oss-terms)，并明确授权提交。当前没有在网页填写字段、选择支持项目或发送申请；这份草稿也没有改变完整工程 goal 的未完成状态。

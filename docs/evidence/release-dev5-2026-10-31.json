@@ -1,0 +1,1010 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-10-31",
+  "recorded_utc": "2026-10-30T23:48:37.068629+00:00",
+  "release": {
+    "release_id": 429582296,
+    "url": "https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5",
+    "tag": "v0.1.0-dev.5",
+    "source_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+    "prerelease": true,
+    "draft": false,
+    "zip_packages": 10,
+    "total_assets": 12
+  },
+  "public_assets": [
+    {
+      "name": "reflow_0.1.0-dev.5_windows_amd64.zip",
+      "bytes": 6600162,
+      "sha256": "5e4cdae87870f5338893f5d16364cda49ef75b979ca76f5d9e29358eda2a08bf"
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+      "bytes": 6080342,
+      "sha256": "ae2340cc3db04b9b39fb825bf230a253a9e803035359ec270f487b107a0b7831"
+    },
+    {
+      "name": "reflow_0.1.0-dev.5_linux_amd64.zip",
+      "bytes": 6552225,
+      "sha256": "55333a46f9cc66ec507ebd0da2a7421c5bd072aebefa63185f83e57c182d08ca"
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.5_linux_amd64.zip",
+      "bytes": 6032402,
+      "sha256": "854928f5a8219c47104ac561071069959414534d28913372f8a02ab23909b3ba"
+    },
+    {
+      "name": "reflow_0.1.0-dev.5_linux_arm64.zip",
+      "bytes": 6042643,
+      "sha256": "bb8e20af7e7c32dd4a3db28a148e12cb56f9d85b1c0ca687bf6af49eb14642ef"
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.5_linux_arm64.zip",
+      "bytes": 5522820,
+      "sha256": "ff9df0d528b2e458041d07fe462c82c331266c2b861ad8e5553c48f212d5a745"
+    },
+    {
+      "name": "reflow_0.1.0-dev.5_darwin_amd64.zip",
+      "bytes": 6729362,
+      "sha256": "98bdbde22f01d1cd8acc09ad99fdf38d2f987bcb5a15c5c6c834ae2719f09e80"
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.5_darwin_amd64.zip",
+      "bytes": 6209539,
+      "sha256": "1c44314c866932cb43aa4c46cdb59e13c74140496a50f61dc2bfa9ca21fb6a19"
+    },
+    {
+      "name": "reflow_0.1.0-dev.5_darwin_arm64.zip",
+      "bytes": 6336686,
+      "sha256": "a00b3c866940f51618a860614c6b8b667fb2e5639b4889f8d20f11a6758e772b"
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.5_darwin_arm64.zip",
+      "bytes": 5816863,
+      "sha256": "c858c057a24ac415abab91bdcb96274d57087f7d5e6b1b9158fcd1de57b364e6"
+    },
+    {
+      "name": "release-manifest.json",
+      "bytes": 12395,
+      "sha256": "36af63da08f5237b15cb8467e287e43d22c382b16c44243fd30590e5f880f74d"
+    },
+    {
+      "name": "SHA256SUMS.txt",
+      "bytes": 1141,
+      "sha256": "1e6b5e6b5911349828d80056eb90c47003ae06560e20d6ab3d2ae7ee94eec538"
+    }
+  ],
+  "public_download_verification": {
+    "status": "pass",
+    "authenticated_downloads": false,
+    "download_concurrency": 1,
+    "downloaded_bytes_persisted": false,
+    "total_download_bytes": 61936580,
+    "public_release_page_verified": true,
+    "tag_target_verified": true,
+    "downloads": [
+      {
+        "name": "reflow_0.1.0-dev.5_windows_amd64.zip",
+        "bytes": 6600162,
+        "sha256": "5e4cdae87870f5338893f5d16364cda49ef75b979ca76f5d9e29358eda2a08bf",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_plugin_0.1.0-dev.5_windows_amd64.zip",
+        "bytes": 6080342,
+        "sha256": "ae2340cc3db04b9b39fb825bf230a253a9e803035359ec270f487b107a0b7831",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_0.1.0-dev.5_linux_amd64.zip",
+        "bytes": 6552225,
+        "sha256": "55333a46f9cc66ec507ebd0da2a7421c5bd072aebefa63185f83e57c182d08ca",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_plugin_0.1.0-dev.5_linux_amd64.zip",
+        "bytes": 6032402,
+        "sha256": "854928f5a8219c47104ac561071069959414534d28913372f8a02ab23909b3ba",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_0.1.0-dev.5_linux_arm64.zip",
+        "bytes": 6042643,
+        "sha256": "bb8e20af7e7c32dd4a3db28a148e12cb56f9d85b1c0ca687bf6af49eb14642ef",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_plugin_0.1.0-dev.5_linux_arm64.zip",
+        "bytes": 5522820,
+        "sha256": "ff9df0d528b2e458041d07fe462c82c331266c2b861ad8e5553c48f212d5a745",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_0.1.0-dev.5_darwin_amd64.zip",
+        "bytes": 6729362,
+        "sha256": "98bdbde22f01d1cd8acc09ad99fdf38d2f987bcb5a15c5c6c834ae2719f09e80",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_plugin_0.1.0-dev.5_darwin_amd64.zip",
+        "bytes": 6209539,
+        "sha256": "1c44314c866932cb43aa4c46cdb59e13c74140496a50f61dc2bfa9ca21fb6a19",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_0.1.0-dev.5_darwin_arm64.zip",
+        "bytes": 6336686,
+        "sha256": "a00b3c866940f51618a860614c6b8b667fb2e5639b4889f8d20f11a6758e772b",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "reflow_plugin_0.1.0-dev.5_darwin_arm64.zip",
+        "bytes": 5816863,
+        "sha256": "c858c057a24ac415abab91bdcb96274d57087f7d5e6b1b9158fcd1de57b364e6",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "release-manifest.json",
+        "bytes": 12395,
+        "sha256": "36af63da08f5237b15cb8467e287e43d22c382b16c44243fd30590e5f880f74d",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      },
+      {
+        "name": "SHA256SUMS.txt",
+        "bytes": 1141,
+        "sha256": "1e6b5e6b5911349828d80056eb90c47003ae06560e20d6ab3d2ae7ee94eec538",
+        "matches_frozen_asset": true,
+        "final_host": "release-assets.githubusercontent.com"
+      }
+    ]
+  },
+  "package_checks": {
+    "zip_contents_permissions_architectures_and_hashes": "pass",
+    "windows_extracted_version_smoke": {
+      "exit_code": 0,
+      "version": "0.1.0-dev.5",
+      "extracted_binary_sha256": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7",
+      "model_calls": 0
+    },
+    "native_ci_identical_packages": 6,
+    "cross_compiled_only_packages": 4,
+    "comparison_ci_url": "https://github.com/chatwithgod/reflow/actions/runs/41141793654",
+    "old_artifacts_unchanged": true
+  },
+  "source_push_ci": {
+    "automatic_runs": [
+      {
+        "id": 41141793654,
+        "name": "Native client fixtures",
+        "head_sha": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41141793654",
+        "created_at": "2026-10-30T23:00:46Z",
+        "updated_at": "2026-10-30T23:08:46Z"
+      },
+      {
+        "id": 41141793802,
+        "name": "Offline regression",
+        "head_sha": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41141793802",
+        "created_at": "2026-10-30T23:00:46Z",
+        "updated_at": "2026-10-30T23:03:25Z"
+      }
+    ],
+    "offline_results": [
+      {
+        "name": "offline (ubuntu-latest)",
+        "job_id": 124357573134,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "5c5f9bf4b9c987cc242127d6aa9b6608bddb506d88c2538ffe4179c84259ced2",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (macos-latest)",
+        "job_id": 124357573237,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "221586949dc753c4eeaaedb2163a7088cc81d0fd96f3dff1b1a96d920536dd32",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (windows-latest)",
+        "job_id": 124357573272,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "276a7c862478bd7dca4755c07dd7454ae0c233cb62bc81d0eba0b8a0c45c33a4",
+        "raw_log_persisted": false
+      }
+    ],
+    "native_platforms": {
+      "ubuntu": {
+        "platform": "linux/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "34b81ffcef9058d15af456629427d5d6c4e4ba06d68e72e9f2f888a8a77f8b91",
+        "artifact_id": 13018719935,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "windows": {
+        "platform": "windows/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "375918733f9e15797e411ee666171fb1f4d68cec30caa7a568acce602a96d831",
+        "artifact_id": 13020310459,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "macos": {
+        "platform": "darwin/arm64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "1e0f1902ccb50d2685efa02886f71c9edf4f08b669f18823dc514f3e1024b838",
+        "artifact_id": 13019686534,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      }
+    },
+    "native_execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_at": "2026-10-30T23:00:52Z",
+        "completed_at": "2026-10-30T23:02:50Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_at": "2026-10-30T23:02:53Z",
+        "completed_at": "2026-10-30T23:06:34Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_at": "2026-10-30T23:06:37Z",
+        "completed_at": "2026-10-30T23:08:46Z",
+        "conclusion": "success"
+      }
+    ],
+    "native_max_parallel": 1,
+    "new_observed_failures": false
+  },
+  "tag_push_ci": {
+    "automatic_runs": [
+      {
+        "id": 41144772748,
+        "name": "Offline regression",
+        "head_sha": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41144772748",
+        "created_at": "2026-10-30T23:29:30Z",
+        "updated_at": "2026-10-30T23:32:00Z"
+      },
+      {
+        "id": 41144772772,
+        "name": "Native client fixtures",
+        "head_sha": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41144772772",
+        "created_at": "2026-10-30T23:29:30Z",
+        "updated_at": "2026-10-30T23:37:41Z"
+      }
+    ],
+    "offline_results": [
+      {
+        "name": "offline (windows-latest)",
+        "job_id": 124367209831,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "b44a517cd8c090c308dd019a169bef51379f275dbd0d5667845fd628f756dc3e",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "job_id": 124367209930,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "10d8c580c024cc65d6afddc3223ae6f2b8a8e86b23d29051b686bb46d11544f5",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (macos-latest)",
+        "job_id": 124367209992,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "e88f80abe21ebf8ceaefee8833a5557fb448c7d5287355580c8f267035e432f7",
+        "raw_log_persisted": false
+      }
+    ],
+    "native_platforms": {
+      "ubuntu": {
+        "platform": "linux/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "3ce0d8ef242de336da5a31eb12b82b47e0f047a35727396492b97ea41048bafa",
+        "artifact_id": 13020700177,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "windows": {
+        "platform": "windows/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "8eda1dd69a6232a1035499b167dafd2b0e635a6f433a39e743ffe216afa73204",
+        "artifact_id": 13020274932,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "macos": {
+        "platform": "darwin/arm64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "744a8f69453f3bf04d0929da0a4dd548dc8eac55e5b802cc1d4e1f3828025c3a",
+        "artifact_id": 13021420101,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      }
+    },
+    "native_execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_at": "2026-10-30T23:29:34Z",
+        "completed_at": "2026-10-30T23:31:43Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_at": "2026-10-30T23:31:56Z",
+        "completed_at": "2026-10-30T23:34:23Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_at": "2026-10-30T23:34:35Z",
+        "completed_at": "2026-10-30T23:37:41Z",
+        "conclusion": "success"
+      }
+    ],
+    "native_max_parallel": 1,
+    "new_observed_failures": false
+  },
+  "scope": {
+    "real_model_calls": 0,
+    "manual_workflow_dispatches": 0,
+    "workflow_reruns": 0,
+    "production_modified": false,
+    "magpie_full_external_chain_in_ci": false,
+    "desktop_dot_tested": false,
+    "download_counts_are_adoption_data": false
+  },
+  "preserved_preparation_observations": [
+    "The first local audit hit a Windows text-decoding error; the collector was corrected to read UTF-8, then all package checks passed. Package bytes did not change.",
+    "The first immediate draft-list read did not find the new draft. Later reads verified the same draft; it was not recreated.",
+    "An unauthenticated REST read hit GitHub anonymous API rate limiting. That endpoint was not retried. Public release HTML and all twelve asset downloads were verified without credentials."
+  ],
+  "limitations": [
+    "Default Ubuntu and hosted Windows write scenarios remain failed.",
+    "Linux arm64 and darwin amd64 packages were cross-compiled without native runtime acceptance.",
+    "Desktop/dot and account refresh remain unverified; the overall goal is not complete.",
+    "The exact released binaries match the referenced pre-tag main CI; this is not a claim that every subsequent tagged rebuild has the same metadata or hash.",
+    "Earlier native real-login samples retain their own binary/source provenance and configuration-audit exception. No new live sample was run for publication.",
+    "Published Magpie review materials and issue #4497 are not an accepted upstream contribution."
+  ],
+  "evidence_hashes": {
+    "build/release-dev5-20261031/completion.json": "a3b2a004ff2760afc002181b8f237b55ab9d701bc97eca80ace778b1adb805bd",
+    "build/release-dev5-20261031/public-download-verification.json": "e553b00c3014b2323e7838a77681b3ff2e6d85f95bc84e01274ed31c187bceb5",
+    "build/release-dev5-20261031/package-audit.json": "c3000b288141f933ff71cc99ad3a554fe2b134f3d09ae5769cadc3c1f597abef",
+    "build/release-dev5-20261031/tag-ci/ci-summary.json": "4927d571ff25371d780d8eaeefbcd1fbaa7784718a7f03259449f67a51781d39",
+    "build/push-3e0ea18-20261031/ci-summary.json": "e5c371072d6042099356eeb8a428bb212b949669d4382a62003442ef12867304"
+  }
+}

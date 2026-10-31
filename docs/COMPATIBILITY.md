@@ -1,6 +1,8 @@
-# Reflow 兼容性（公开 dev.4 与本地 dev.5）
+# Reflow 兼容性（dev.5 预发布及历史记录）
 
 Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的验证，不把交叉编译、模拟上游或健康检查当作真实账号验收。
+
+[dev.5 预发布](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)已提供五平台服务/插件包，12 个附件公开下载核验通过。Windows amd64、Linux amd64、macOS arm64 的包内二进制与指定的发布前原生 CI 相同；Linux arm64/macOS amd64 仍仅交叉编译。完整平台表、已知失败与标签 CI 见[发布记录](RELEASE-0.1.0-dev.5.md)。
 
 | 接入方式 | 版本与范围 | 已验证行为 |
 | --- | --- | --- |
@@ -8,7 +10,7 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 | Codex app-server | 同上两版官方客户端；`legacy` 和 `paginated` 历史格式 | 合成登录仍识别为 ChatGPT，provider 保持 `openai`；续接后执行本地 MCP、回传结果，关闭进程后恢复会话并完成下一轮；接入配置精确还原。仅后端 RPC，未验证 Desktop/dot 界面 |
 | Pi | `1.4.0` 的旧 `openai-codex` 及新 `openai` provider | 旧入口 SSE/WS、新入口合成 OAuth/API key SSE 均通过，实际 CLI 执行工具并回传结果；按用户确定的范围通过模拟验收，真实账号不作为本项完成条件。见[接入说明](../adapters/pi/README.md) |
 | Codex 原生插件 | 本地开发包 | 在临时 `CODEX_HOME` 注册市场、安装缓存二进制；4 个 stdio MCP 工具通过，真实会话经 Code Mode 调用 `status` 通过。插件提供配置与诊断，代理服务需独立启动 |
-| Magpie 外置接入 | 未修改的 `bca0d6d`，本地 Reflow 后续候选，Windows | 协议夹具经独立 Reflow 进程到实际 Magpie 入口，7 场景普通/race 通过，包含 HTTP/WS、预热、工具回传、账号拒绝与取消；上游为模拟 HTTP，未运行原生客户端或真实账号。见[外置说明](../adapters/magpie/EXTERNAL.md) |
+| Magpie 外置接入 | 未修改的 `bca0d6d`，Reflow dev.5（`3e0ea18`），Windows | 协议夹具经独立 Reflow 进程到实际 Magpie 入口，7 场景普通/race 通过，包含 HTTP/WS、预热、工具回传、账号拒绝与取消；上游为模拟 HTTP，未运行原生客户端或真实账号。见[外置说明](../adapters/magpie/EXTERNAL.md) |
 | Magpie | 新固定提交 `ffa07395eb274cbe6cea299d825bf4f5c58db6e2` 加本地补丁；旧 `a1174674` 另存 | 原四条路径外，新增原生下游 WebSocket、双向 WebSocket、托管下游 WebSocket 的模拟续接、工具往返、预热及取消检查；race 通过。宿主全量状态见[新版记录](../adapters/magpie/UPSTREAM-2026-10-30.md)，未提交上游 |
 | 官方 OpenAI API | Reflow dev.4；`gpt-6.1-sol/high`；专用小型 Responses 客户端 | 用户授权的临时 API key 下，两次 SSE 请求、一次固定本地函数执行、结果回传及最终答案核对通过。推理 token 与续接均为 0；不属于原生 Codex/OAuth 验收 |
 
@@ -42,7 +44,7 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 尚未完成
 
-原生 Windows CLI 已有无工具失败的真实续接功能记录，批次有用户手动配置变动的审计例外，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。全面真实账号覆盖、登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入和二进制发布尚未完成。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+原生 Windows CLI 已有无工具失败的真实续接功能记录，批次有用户手动配置变动的审计例外，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。全面真实账号覆盖、登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入尚未执行；二进制已作为上述预发布提供。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
 
 以下历史实测保留当时结论和累计数字，当前状态以[总表](NATIVE-LOGIN-ACCEPTANCE.md)为准。
 
@@ -64,4 +66,4 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 另获批的[同任务 xhigh 验证](LIVE-LEDGER-XHIGH-2026-10-30.md)达到 180 秒上限，18/18、可见工具失败 0、续接 0，未正常结束；5 次请求中有一条未完成，完整用量不可得。原生登录最新累计为 13 次会话、74 次已观察请求、2 次续接，严格验收仍未通过。
 
-本地 dev.5 的[决策观测](DECISION-DIAGNOSTICS.md)不改变核心判断，已通过 Windows amd64 的打包原生普通/race 各 10 项及五个写入场景；评测读取器兼容 dev.4。候选已有本机 Windows 的真实续接功能证据及配置审计例外，其他操作系统尚未运行；不扩大已有平台或质量结论。
+本地 dev.5 的[决策观测](DECISION-DIAGNOSTICS.md)不改变核心判断，已通过 Windows amd64 的打包原生普通/race 各 10 项及五个写入场景；评测读取器兼容 dev.4。这是发布前的本机 Windows 检查点，真实样本保留配置审计例外。后续公开构件与三平台 CI 范围见[发布记录](RELEASE-0.1.0-dev.5.md)，不据此扩大真实账号或质量结论。
