@@ -1,0 +1,188 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-04",
+  "recorded_utc": "2026-11-04T13:43:08.187892+00:00",
+  "scope": "Installed Windows Desktop backend compatibility and read-only isolation entry inspection; no GUI or dot acceptance.",
+  "source_commit": "fb5b3628e2f95bd85d7df6b1e432f481e5247865",
+  "appx_version": "26.1029.7803.0",
+  "package_version": "26.1029.61003",
+  "backend": {
+    "recorded_utc": "2026-11-04T13:35:46.790038+00:00",
+    "status": "pass",
+    "exit_code": 0,
+    "elapsed_seconds": 12.849,
+    "source_commit": "fb5b3628e2f95bd85d7df6b1e432f481e5247865",
+    "appx_version": "26.1029.7803.0",
+    "codex_version": "codex-cli 0.166.0-alpha.6",
+    "reflow_version": "0.1.0-dev.5",
+    "binary_sha256": {
+      "client": "925c7d0665ffa49b0dcf748e034a805a04da984164ac92301432073b47789b99",
+      "code_mode_host": "ddd144291738f99b3f2254e0d9759fd7f8adac057405883ed8f1ccd9ad4502b4",
+      "reflow": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7"
+    },
+    "binaries_unchanged": true,
+    "tests": {
+      "pass": 3,
+      "fail": 0,
+      "skip": 0
+    },
+    "test_items": [
+      {
+        "name": "TestCodexAppServerOffline/legacy",
+        "action": "pass",
+        "elapsed_seconds": 3.73
+      },
+      {
+        "name": "TestCodexAppServerOffline/paginated",
+        "action": "pass",
+        "elapsed_seconds": 1.66
+      },
+      {
+        "name": "TestCodexAppServerOffline",
+        "action": "pass",
+        "elapsed_seconds": 5.38
+      }
+    ],
+    "fixed_marker_counts": {
+      "completed_lifecycle_assertions": 2
+    },
+    "lifecycle_details": [
+      {
+        "test": "TestCodexAppServerOffline/legacy",
+        "synthetic_inference_requests": 4,
+        "local_readonly_mcp_invocations": 1,
+        "no_http_fallback": true
+      },
+      {
+        "test": "TestCodexAppServerOffline/paginated",
+        "synthetic_inference_requests": 4,
+        "local_readonly_mcp_invocations": 1,
+        "no_http_fallback": true
+      }
+    ],
+    "protected_files_unchanged": {
+      "production_config": true,
+      "native_auth": true
+    },
+    "remaining_temp_entries": [],
+    "native_concurrency": 1,
+    "synthetic_auth": true,
+    "existing_login_read_by_client": false,
+    "real_model_calls": 0,
+    "desktop_ui_tested": false,
+    "dot_ui_tested": false,
+    "stdout_sha256": "4a85cc74b91147bf80f07a237b4c7b3ec75d4c442f8fcc6b03483ea6ef9c5b0f",
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "raw_output_saved": false,
+    "source_sha256": {
+      "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+      "integration/codex_test.go": "3bd4c71ddc3049bb5e858d96535a6bca854003ad1c1b2b5721c37350256b2d44",
+      "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+    }
+  },
+  "observed_running_backend_comparison": {
+    "installed_backend_sha256": "925c7d0665ffa49b0dcf748e034a805a04da984164ac92301432073b47789b99",
+    "observed_running_backend_sha256": "925c7d0665ffa49b0dcf748e034a805a04da984164ac92301432073b47789b99",
+    "observed_running_backend_matches_installed": true
+  },
+  "desktop_source_files": [
+    {
+      "path": ".vite/build/early-bootstrap-133-485dbc70b8296756.js",
+      "bytes": 116805,
+      "sha256": "8cf2f389549308e8913c1472c576d6cb7b6d8ba6a9524cdd0fd49960a9224699",
+      "matched_entry_names": [
+        "CODEX_ELECTRON_USER_DATA_PATH",
+        "process.env.CODEX_HOME"
+      ]
+    },
+    {
+      "path": ".vite/build/early-bootstrap-339-f66dad1753c54789.js",
+      "bytes": 1344959,
+      "sha256": "862a1b283e239cda5eb840e39b822b8dfbfffe12427dc765539579ecc526cca0",
+      "matched_entry_names": [
+        "CODEX_CLI_PATH",
+        "CODEX_ELECTRON_USER_DATA_PATH",
+        "requestSingleInstanceLock"
+      ]
+    },
+    {
+      "path": ".vite/build/early-bootstrap-632-62c641245a52ef0e.js",
+      "bytes": 5373536,
+      "sha256": "c16675e64dae86bdb09f7720f038a8c2f2beacf0e85bbadd369f407d38662aa4",
+      "matched_entry_names": [
+        "CODEX_APP_SERVER_FORCE_CLI",
+        "CODEX_CLI_PATH",
+        "CODEX_ELECTRON_USER_DATA_PATH"
+      ]
+    },
+    {
+      "path": ".vite/build/early-bootstrap-824-7cc6aeaa77329186.js",
+      "bytes": 289637,
+      "sha256": "db838cd7b1ac94f74a732e3f3438b69a6f233b799222b054db35f90b9d4a5dc7",
+      "matched_entry_names": [
+        "CODEX_APP_SERVER_FORCE_CLI",
+        "CODEX_CLI_PATH",
+        "process.env.CODEX_HOME"
+      ]
+    },
+    {
+      "path": ".vite/build/early-bootstrap.js",
+      "bytes": 596158,
+      "sha256": "c58375117c12c1fa4629490f4184d0982d5ef0645625e79b68fa3a7399fbf434",
+      "matched_entry_names": [
+        "CODEX_CLI_PATH",
+        "CODEX_ELECTRON_USER_DATA_PATH"
+      ]
+    }
+  ],
+  "candidate_environment": [
+    "CODEX_HOME",
+    "CODEX_ELECTRON_USER_DATA_PATH",
+    "CODEX_CLI_PATH",
+    "CODEX_APP_SERVER_FORCE_CLI"
+  ],
+  "isolation_entries_are_source_observations_only": true,
+  "desktop_isolation_runtime_verified": false,
+  "available_ui_observation": {
+    "native_desktop_control_available": false,
+    "dedicated_dot_browser_provider_available": false,
+    "existing_dot_web_page_visible_in_browser_inventory": true,
+    "dot_page_or_chat_opened": false,
+    "proof_of_reflow_dot_route": false,
+    "private_browser_inventory_saved": false
+  },
+  "remaining_exact_test_executable_processes": 0,
+  "desktop_launched": false,
+  "production_service_restarted": false,
+  "real_model_calls": 0,
+  "new_live_test_scheduled": false,
+  "source_push_performed": false,
+  "application_submitted": false,
+  "native_live_totals_unchanged": {
+    "sessions": 23,
+    "observed_inference_requests": 122,
+    "continuations": 4
+  },
+  "official_sources": {
+    "profile_setting": "https://learn.chatgpt.com/docs/agent-configuration/agents-md",
+    "dot_computer_connection": "https://learn.chatgpt.com/docs/dots/computers-and-apps"
+  },
+  "next_gate": "User-assisted or enabled native UI control is required to verify desktop profile isolation before any real-account Desktop/dot acceptance. A visible browser dot entry or a backend RPC pass is insufficient.",
+  "evidence_sources": [
+    {
+      "path": "build/desktop-review-20261104/backend-summary.json",
+      "sha256": "4050c63ce3496dd2c37f1c00463cd4f0e7df37a0316ab073a17ce83157150881",
+      "bytes": 2351
+    },
+    {
+      "path": "build/desktop-review-20261104/running-backend-comparison.json",
+      "sha256": "0f5daaba3288e69c5eef59e3935c0f0d7b99a85abe02384136a9d7b0295add40",
+      "bytes": 260
+    },
+    {
+      "path": "build/desktop-review-20261104/source-observations.json",
+      "sha256": "2e0d853efb2ff8d887e2b25d2e5df7d8fc0082d1e85ee1a4f64b3045298341fd",
+      "bytes": 15738
+    }
+  ]
+}
