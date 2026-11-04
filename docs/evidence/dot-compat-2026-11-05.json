@@ -1,0 +1,96 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-11-04T23:53:10.813925+00:00",
+  "source_commit": "43858ed8ae1b7a7b95145b637cf94a2aa3f24ba3",
+  "scope": "Dot basic reply in a Reflow-connected isolated Desktop; local file access explicitly stopped because it requires creating a task. Not a dot inference-through-Reflow or local task execution acceptance.",
+  "user_observations": {
+    "original_window_basic_ping_replied": true,
+    "cloud_computer_became_ready": true,
+    "existing_local_device_online": true,
+    "device_menu_only_revoke_access": true,
+    "isolated_window_one_probe_reply_received": true,
+    "file_read_requires_new_task_stopped_as_requested": true,
+    "file_marker_returned": false
+  },
+  "local_runner": {
+    "native_concurrency": 1,
+    "model_session_limit_seconds": 180,
+    "max_extra_continuations_per_round": 1,
+    "read_only_test_config": true,
+    "automatic_trial_relaunch": false,
+    "api_key_used": false,
+    "cloud_model_controlled": false,
+    "cloud_activity_stopped_by_local_runner": false,
+    "stop_reason": "requested_stop",
+    "last_observed_metrics_before_stop": {
+      "requests": 0,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 2,
+      "completed": 0,
+      "failed": 0,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    }
+  },
+  "protection": {
+    "existing_device_permission_changes_requested": false,
+    "new_tasks_or_subagents_requested": false,
+    "production_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "isolated_config_exactly_restored": true,
+    "proxy_stopped": true,
+    "remaining_test_process_count": 0,
+    "probe_file_unchanged": true,
+    "cleanup_errors": []
+  },
+  "acceptance": {
+    "dot_basic_reply_in_isolated_desktop": true,
+    "dot_local_file_read": false,
+    "dot_local_task_execution": false,
+    "dot_cloud_model_routed_through_reflow_proven": false,
+    "attached_device_to_test_backend_mapping_proven": false,
+    "cloud_api_request_count_known": false,
+    "goal_complete": false
+  },
+  "raw_reply_or_marker_saved_in_evidence": false,
+  "local_source_record_sha256": {
+    "dot-compat-state.json": "5a199aebca642e50a08c5eca0dcf83c061243e658c72cd9a350fece6c83412f5",
+    "dot-compat-user-observation.json": "a667ff8ce385e14b1619964ec9f5415929b2539273f0a7cb658ab3201e93dea0",
+    "dot-compat-preparation.json": "4089cbd01446936b687fc1f8dadb943ba87433f3065afe3d7c71f32ab5423621",
+    "dot-compat-fixture.json": "1c60716e14b8e8217c660b775d82ee629542b89f5013ec5df6e25e16f98b20e4",
+    "dot-remote-routing-observation.json": "b92f2b715cbab309c5465644091d5847939f0b73efde2551583f5306b3b21bb9"
+  },
+  "local_source_records_frozen": true,
+  "official_reference": "https://learn.chatgpt.com/docs/dots/computers-and-apps"
+}

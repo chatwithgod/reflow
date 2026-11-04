@@ -1,0 +1,142 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-11-04T23:48:37.471118+00:00",
+  "source_commit": "43858ed8ae1b7a7b95145b637cf94a2aa3f24ba3",
+  "scope": "Native Desktop inference and follow-up success; no actual continuation. Separate from initial failed trial and dot tests.",
+  "versions": {
+    "desktop_appx": "26.1029.7803.0",
+    "backend": "0.166.0-alpha.6",
+    "reflow": "0.1.0-dev.5"
+  },
+  "native_concurrency": 1,
+  "api_key_used": false,
+  "desktop_result": {
+    "checked_utc": "2026-11-04T23:01:08.825401+00:00",
+    "status": "desktop_inference_and_followup_pass_continuation_not_observed",
+    "user_ui_switching_normal": true,
+    "relocation_error_count": 0,
+    "actual_turn_contexts": [
+      {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      },
+      {
+        "model": "gpt-6.1-sol",
+        "effort": "high"
+      }
+    ],
+    "completed_user_turns": 2,
+    "verified_checker_runs": [
+      {
+        "turn": 1,
+        "exit_code": 0,
+        "smoke_passed": 6,
+        "smoke_total": 6
+      },
+      {
+        "turn": 2,
+        "exit_code": 0,
+        "smoke_passed": 6,
+        "smoke_total": 6
+      }
+    ],
+    "file_score": {
+      "status": "scored",
+      "total": 18,
+      "passed": 18,
+      "failed": []
+    },
+    "immutable_helpers_unchanged": {
+      "AGENTS.md": true,
+      "read_fixture.py": true,
+      "verify_fixture.py": true
+    },
+    "observed_proxy_metrics": {
+      "requests": 8,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 4,
+      "completed": 8,
+      "failed": 0,
+      "usage_reports": 8,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 178833,
+      "output_tokens": 1292,
+      "cached_tokens": 154880,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 675,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 8,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [
+        0,
+        0,
+        512,
+        0,
+        0,
+        163,
+        0,
+        0
+      ],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "model_session_wall_seconds": 160.092,
+    "model_session_limit_seconds": 180,
+    "proxy_stopped_before_desktop_cleanup": true,
+    "remaining_test_process_count": 0,
+    "proxy_stopped": true,
+    "isolated_config_exactly_restored": true,
+    "production_files_unchanged_within_this_trial": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "production_config_changed_between_trials_after_user_restart": true,
+    "original_live_tool_observer_missing_custom_tool_results": true,
+    "posthoc_custom_tool_results_decoded": true,
+    "all_individual_tool_exit_statuses_proven": false,
+    "no_raw_payloads_saved": true,
+    "actual_continuation_observed": false,
+    "dot_execution_tested": false,
+    "goal_complete": false
+  },
+  "configuration_audit": {
+    "initial_preparation_config_hash_still_mismatches": true,
+    "user_reported_restart_without_manual_settings_edit": true,
+    "new_trial_baseline_captured_before_launch": true,
+    "full_initial_config_diff_reconstructed": false,
+    "production_config_written_by_test": false
+  },
+  "local_source_record_sha256": {
+    "v4-desktop-completion.json": "7c2e45340aca02982896f8a1e6b5968237883acbd6a5f1929f5c75147270fa37",
+    "desktop-reflow-v4-state.json": "1ac5e05a2787fef9d402019038b027421aef10942a308ca2e093e6bfd9b2f41e",
+    "v4-ui-observation.json": "45ad4ccfbe83f4e6e670a4018d31b4e278e6894f44d44784f1e85bc3e8412b7b",
+    "v4-first-turn-score.json": "db0e9814a97795ab2f1c5ebb687b20987347ce40e45cf2329e28184da55d42c8",
+    "v4-tool-result-validation.json": "2266ebcdd5d27230c959065649aaa32d8d975b7561630d2e4fd85534ae917d68",
+    "cua-runtime-cache-offline-preparation.json": "56bfecbd5b63ca9887aa3d0ee30e1765eb2c9eb7cbd3f5166a7f9d5431a0602c",
+    "launcher-v3-verification.json": "1415f71ff597fd33464eddeef85a1b37dd36fb5cd85b4fe11461ac6a4c55dc07",
+    "v4-production-config-source-check.json": "72a41777ebdda779575990daf9184abecc23d16ea63fceadac221bd055402e3a",
+    "v4-preflight-protection-check.json": "6d220c6d8a29c23507d9c57b2756929770112e394cb55a764cc50cc9735dd7aa"
+  },
+  "local_source_records_frozen": true,
+  "prior_failed_trial_evidence": "desktop-manual-2026-11-05.json",
+  "dot_result_included": false,
+  "goal_complete": false
+}

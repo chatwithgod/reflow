@@ -17,7 +17,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 同日随后完成预先限定的[三个开启样本](docs/LIVE-SCHEDULER-SAMPLING-2026-11-04.md)，均正常结束、18/18、工具失败 0、保护文件未变，仍无续接。当前累计为 **26 次会话、134 次已观察请求、4 次续接**；批次已到上限，不再安排同任务重复采样以等待命中，严格验收结论保持未通过。
 
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
-- **Codex app-server / Desktop**：两种历史格式的后端模拟续接、工具回传、关闭进程后恢复和配置还原通过；11 月 5 日人工确认隔离桌面登录和 dot 入口可见，但真实桌面任务失败，完整验收未通过。见[人工验收记录](docs/DESKTOP-DOT-2026-11-05.md)。
+- **Codex app-server / Desktop**：两种历史格式的后端模拟续接、工具回传、关闭进程后恢复和配置还原通过；11 月 5 日隔离桌面经独立 Reflow 完成两轮真实任务、18/18 和两次成功校验，未触发续接。dot 入口和基本回复正常，本机任务仍待验收。首次失败记录保留，见[人工验收后续](docs/DESKTOP-DOT-2026-11-05-FOLLOWUP.md)。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
 - **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
 - **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
