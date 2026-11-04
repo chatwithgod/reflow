@@ -1,0 +1,191 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-11-04T18:29:49.332011+00:00",
+  "source_commit": "cb1f74735c2feb92fad3114e7f63554188bc80ab",
+  "scope": "Manual Windows Desktop login and dot-entry observation, one failed native Desktop trial, and offline test-harness corrections. Full Desktop/dot acceptance remains incomplete.",
+  "versions": {
+    "desktop_appx": "26.1029.7803.0",
+    "backend": "0.166.0-alpha.6",
+    "reflow": "0.1.0-dev.5"
+  },
+  "binary_sha256": {
+    "reflow": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7"
+  },
+  "entry_visibility": {
+    "user_observed": {
+      "signed_in": true,
+      "dot_entry_visible": true,
+      "workspace_error_absent": true
+    },
+    "model_inference_enabled": false,
+    "test_model_calls": 0,
+    "dot_computer_connection_changed": false,
+    "remaining_test_process_count": 0
+  },
+  "desktop_trial": {
+    "sessions_attempted": 1,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "native_clients": 1,
+    "model_session_limit_seconds": 180,
+    "max_continue": 1,
+    "user_turns_started": 1,
+    "user_turns_completed": 0,
+    "stop_reason": "observed_trial_error",
+    "counter_snapshot_at_stop_trigger": {
+      "requests": 1,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 0,
+      "failed": 1,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": false,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "final_proxy_metrics": {
+      "requests": 4,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 0,
+      "failed": 4,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": false,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "native_retry_warning_count": 4,
+    "total_network_attempts_known": false,
+    "counter_scope": "Streaming Responses attempts only; model-list requests and pre-upgrade WebSocket failures are not included.",
+    "usage_or_cost_must_not_be_inferred_from_zero_tokens": true,
+    "upstream_fixed_to_official_codex": true,
+    "api_key_used": false,
+    "task": "existing_seeded_scheduler",
+    "baseline_score": {
+      "passed": 15,
+      "total": 18
+    },
+    "task_completed": false,
+    "retained_tool_roundtrip_verified": false,
+    "followup_turn_verified": false,
+    "raw_payloads_exported": false
+  },
+  "harness_issues": {
+    "known_shell_folders_missing": true,
+    "existing_proxy_environment_omitted": true,
+    "desktop_window_stopped_by_controller": true,
+    "user_reported_unresponsive": true,
+    "windows_application_hang_event_seen": true,
+    "hang_event_link_to_test_pid_proven": false,
+    "complete_hang_root_cause_proven": false
+  },
+  "offline_corrections": {
+    "known_folder_api_checks": 7,
+    "known_folder_api_checks_passed": true,
+    "existing_loopback_proxy_variables_inherited": {
+      "HTTP_PROXY": true,
+      "HTTPS_PROXY": true,
+      "ALL_PROXY": true
+    },
+    "http_and_websocket_socks_handshakes": 2,
+    "stub_deliberately_rejected_connects": true,
+    "live_tls_or_official_service_success_proven": false,
+    "stub_outbound_connections": 0,
+    "early_native_transport_error_guard_verified": true,
+    "proxy_first_stop": {
+      "synthetic_local_attempts": 8,
+      "upstream_requests_before_stop": 1,
+      "upstream_requests_after_cleanup": 1,
+      "additional_upstream_requests_during_cleanup": 0,
+      "initial_fixture_observation_timeout": true,
+      "final_fixture_local_connect_timeout_seconds": 0.2
+    },
+    "restore_after_proxy_stop_passed": true,
+    "native_retry_configuration_changed": false,
+    "real_account_used": false,
+    "real_model_calls": 0,
+    "desktop_launched": false
+  },
+  "protection": {
+    "production_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "isolated_config_exactly_restored": true,
+    "proxy_stopped": true,
+    "remaining_test_process_count": 0,
+    "os_account_or_cloud_authorization_isolation_proven": false
+  },
+  "acceptance": {
+    "native_login_dot_entry_visibility": true,
+    "desktop_inference_completion": false,
+    "desktop_true_continuation": false,
+    "desktop_successful_tool_roundtrip": false,
+    "desktop_next_user_turn": false,
+    "dot_execution_through_reflow": false,
+    "v2_ui_responsiveness": false,
+    "v2_live_trial_started": false,
+    "goal_complete": false
+  },
+  "local_source_record_sha256": {
+    "signed-in-entry-observation.json": "c207bbd8b2b77a59999777e481868a8cd4ee89d7ae442b328e2e040f475c171a",
+    "desktop-reflow-state.json": "78a1d5f452cc54ba8bedc4fe36504a66c4e656e0eac24b21f21d908acec2d8ea",
+    "desktop-reflow-failure-and-fix.json": "0ff68be3e34f97ba903c7a8da497cbda66e001a2d639bd1a21489aff67905b2c",
+    "profile-v2-offline-result.json": "2795dc2d6b002dda930a2dcc332c91ed08910bd9febdda73cd20043690ff6152",
+    "desktop-reflow-v2-preparation.json": "09779c3dca8456e30cc85b879c386613fcdcfd49ed762870ca0ad15839f46ca9",
+    "proxy-first-stop-offline-result.json": "9cac38df74402804ccfb78b85d1a0bbf4e146b63bb477822ea4cb13d387b191e",
+    "proxy-first-restore-offline-result.json": "27a1549f276c989c199f6a006bac3272d32a8f77fed800fd470574442ecbd7cb"
+  },
+  "local_source_records_frozen": true
+}

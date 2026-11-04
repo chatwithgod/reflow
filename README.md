@@ -17,7 +17,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 同日随后完成预先限定的[三个开启样本](docs/LIVE-SCHEDULER-SAMPLING-2026-11-04.md)，均正常结束、18/18、工具失败 0、保护文件未变，仍无续接。当前累计为 **26 次会话、134 次已观察请求、4 次续接**；批次已到上限，不再安排同任务重复采样以等待命中，严格验收结论保持未通过。
 
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
-- **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
+- **Codex app-server / Desktop**：两种历史格式的后端模拟续接、工具回传、关闭进程后恢复和配置还原通过；11 月 5 日人工确认隔离桌面登录和 dot 入口可见，但真实桌面任务失败，完整验收未通过。见[人工验收记录](docs/DESKTOP-DOT-2026-11-05.md)。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
 - **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
 - **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
@@ -30,6 +30,8 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **凭据透传**：用户的 Codex 客户端继续自行负责账号登录与 Token 刷新。Reflow 仅在转发时将客户端自带的 `Authorization` 等凭据送往固定上游，本身不读取 `auth.json`，不参与鉴权逻辑管理，也不会记录或留存凭据。
 - **历史隔离**：内存中的续接历史按凭据与账号隔离。使用 Magpie 的 `X-Magpie-Account` 指定账号时，该字段也参与隔离；切换、增加或移除指定账号不会自动复用另一账号的缓存历史。它不替代网关鉴权；[缓存隔离修复](docs/evidence/magpie-external-account-scope-2026-10-31.json)与后续[外置模拟联调](adapters/magpie/EXTERNAL.md)分别记录。
 - **本地监听**：服务默认仅监听本地回环地址 `127.0.0.1:18516`，默认将请求发送至官方地址 `https://chatgpt.com/backend-api/codex`。
+
+若本机依赖网络代理，启动 Reflow 的进程需要带入已有的 `HTTP_PROXY` / `HTTPS_PROXY`，并让 `NO_PROXY` 包含本地回环地址。Reflow 使用 Go 的环境代理设置，不自动读取 Windows 系统代理配置。`/healthz` 正常只说明本地服务已启动，不证明它能访问官方上游；本次桌面测试的环境遗漏及修正见[记录](docs/DESKTOP-DOT-2026-11-05.md)。
 
 ## 运行与配置说明
 
