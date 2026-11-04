@@ -2,6 +2,8 @@
 
 ## 0.1.3
 
+Published on 2026-11-04 as latest stable with five native packages. All six public assets were anonymously downloaded and matched against the tested CI bytes. See [release verification](docs/RELEASE-2026-11-04-0.1.3.md).
+
 - Repair collaboration tool parameter types changed by CPA's plugin executor before the first upstream call. Restore only the known number-to-integer mutation from the client's original declaration; keep the tools, legitimate integer types and other CPA request transformations intact. Addresses [Issue #2](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/2).
 - Apply the repair to root tools, scoped dynamic `additional_tools`, continuation rounds and native WebSocket replay settings. Missing or ambiguous original declarations are left unchanged rather than guessed. No new configuration is required; SDK remains pinned to v8.0.13.
 - Require 46 native ABI cases on each original and ZIP-extracted platform library, add schema fuzzing to native release validation, and retain HTTP/WS and prewarm regression coverage. The local candidate passed isolated comparisons; the user reported normal use of both existing and new chats. That feedback applies to the trial candidate, not every model, transport or release binary.

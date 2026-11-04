@@ -1,0 +1,98 @@
+{
+  "schema": 1,
+  "version": "0.1.3",
+  "release_url": "https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3",
+  "release_id": 433984522,
+  "published_at": "2026-11-04T13:49:16Z",
+  "source_commit": "5430d895867ee39deca9d088a5c18fa69a26f1de",
+  "root_go_source_sha256": "eac1d09b5bfa93aa92a6547c967eff5aef1f61a238d6b4c1c8d97edee9221fd9",
+  "sdk_version": "8.0.13",
+  "go_version": "go1.26.8",
+  "native_platform_run": 41840027882,
+  "offline_run": 41840027642,
+  "native_cases_per_platform_library": 46,
+  "native_case_executions": 230,
+  "packaged_native_case_executions": 230,
+  "python_tests_per_platform": 48,
+  "fuzz_targets_seconds_each": 15,
+  "windows_dll_sha256": "59e290cc2bb591a30e54a11e42a1eca16e78e825329d4ad9b64dba0546349bc9",
+  "windows_isolated_case_executions": 72,
+  "windows_isolated_reports": {
+    "formal-http-ws-8.0.13.json": {
+      "sha256": "e053cebd8a687d22a7b314a7d20faf3c88a3cd8cfeb07236475324fcc47b39df",
+      "case_executions": 23,
+      "cpa_version": "8.0.13"
+    },
+    "formal-bridge-8.0.13.json": {
+      "sha256": "f0a64c7729fa6c2ffe829b0e7f4bc2d3d1f27f7f3b93d91657cfc95639f7cb4e",
+      "case_executions": 13,
+      "cpa_version": "8.0.13"
+    },
+    "formal-incremental-8.0.13.json": {
+      "sha256": "c0fe48a659097765c981ace0c5d9a12edc0363d3ae58cf5c511e9a6c0c36dd0f",
+      "case_executions": 14,
+      "cpa_version": "8.0.13"
+    },
+    "formal-schema-8.0.47.json": {
+      "sha256": "3438cd9710f93187c6508184b67469a040874ccd01ae5354f61b5d880aec8d20",
+      "case_executions": 18,
+      "cpa_version": "8.0.47"
+    },
+    "formal-schema-8.0.53.json": {
+      "sha256": "4983d507aba371a80ace37d3644d5fd5aa37e1517ad1cb88a534ad1192c27c38",
+      "case_executions": 2,
+      "cpa_version": "8.0.53"
+    },
+    "formal-prewarm-8.0.53.json": {
+      "sha256": "78a272b4eaf47d2ee3d3a8ea94ba26d953c46c644e025885cfb2632eec7a0834",
+      "case_executions": 2,
+      "cpa_version": "8.0.53"
+    }
+  },
+  "public_native_report_sha256": "443c79ef374220c09df569a95b9e9b6af9031d2490ac9343c2d9668dde4ceddc",
+  "assets": [
+    {
+      "name": "checksums.txt",
+      "size": 504,
+      "sha256": "4327013b1cb87482562033339be06ba55767f662447b3c5d9b3abf111d0bcf93",
+      "http_status": 200
+    },
+    {
+      "name": "codexreflow_0.1.3_darwin_amd64.zip",
+      "size": 2094184,
+      "sha256": "6763e6d0d69b2c21558ddaeb5532ac1b5538f610be3fe246148283f44e431885",
+      "http_status": 200
+    },
+    {
+      "name": "codexreflow_0.1.3_darwin_arm64.zip",
+      "size": 1940402,
+      "sha256": "a657d701dfab9151627ab27e5589dd487017390d3fd4e3ae32aa2fb023fbd63b",
+      "http_status": 200
+    },
+    {
+      "name": "codexreflow_0.1.3_linux_amd64.zip",
+      "size": 3747854,
+      "sha256": "fe22dc19a0638d0a2d72035d5545cb9ed6e05017ebe3671e02d7c19d4b09b9ba",
+      "http_status": 200
+    },
+    {
+      "name": "codexreflow_0.1.3_linux_arm64.zip",
+      "size": 3408604,
+      "sha256": "b4484a38ef4f47efa8d239217fdc32d50a64e93990a602829f01820a97d74672",
+      "http_status": 200
+    },
+    {
+      "name": "codexreflow_0.1.3_windows_amd64.zip",
+      "size": 3693943,
+      "sha256": "1cc9979fc0c36cdecea3f3178f8801439aa01f6e30e1e03d6641ebf1b646fce1",
+      "http_status": 200
+    }
+  ],
+  "all_public_downloads_anonymous_http_200": true,
+  "public_bytes_match_tested_ci": true,
+  "old_tags_and_release_assets_unchanged": true,
+  "new_live_model_test_calls": 0,
+  "installed_trial_unchanged": true,
+  "current_trial_version": "0.1.3-dev.2",
+  "other_platform_cpa_live_integration": "not_validated"
+}

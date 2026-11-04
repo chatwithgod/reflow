@@ -1,18 +1,20 @@
 # 兼容性与验收边界
 
-## v0.1.3 正式构件准备
+## 当前正式版 v0.1.3（2026-11-04）
 
-正式版使用与下述候选相同的 Go 修复源码，单独生成正式版本和仓库元数据，不把开发 DLL 改名冒充正式构件。完整原生 ABI 套件为 46 项，五平台构建还需通过各自的 unit/race/vet、decoder/schema fuzz、Python 回归和包内库重复验收。实际构建、公开下载及同字节 Windows 隔离结果将在发布后单独记录；此处不把待执行检查写成已经成功。
+[`v0.1.3`](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) 已正式发布，修复 collaboration 工具参数被 CPA 插件路径误改导致的首轮失败。正式版使用与下述候选相同的 Go 修复源码，但单独生成正式版本和仓库元数据，不把开发 DLL 改名冒充正式构件。
 
-## 本地候选：v0.1.3-dev.2（尚未发布）
+五个平台各通过 unit/race/vet、decoder/schema fuzz、48 项 Python 回归和原库/包内库各 46 项 ABI 检查。同一 Windows 正式 DLL 通过 72 项隔离 CPA 用例；五个 ZIP 与统一校验文件的匿名公开下载均逐字节一致。详情见[发布与验收记录](RELEASE-2026-11-04-0.1.3.md)。Linux/macOS 实际 CPA 集成与全面真实模型验收仍不由这些测试替代。
+
+## 本地候选 v0.1.3-dev.2 的历史证据
 
 针对 [Issue #2](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/2)，候选版从原始请求中恢复被 CPA 插件路径误改的协作工具参数类型，不删除多智能体工具、不整体覆盖宿主处理后的请求。包含 HTTP/SSE、WS、516 续接与动态 `additional_tools` 覆盖。
 
 同一 Windows DLL 在 CPA 8.0.47 上通过 18 项专项与 2 项预热回归，在 SDK 基线 CPA 8.0.13 上通过 50 项原有集成回归；另用已发布的旧 DLL 做反向对照。全部上游为本地模拟，没有真实模型调用。详见[范围、限制与复现方法](VALIDATION-2026-11-04-0.1.3-dev.2.md)。
 
-随后经单独授权，于 11 月 4 日在本机 CPA 8.0.53 上试装并读回生效；增加 4 项同宿主隔离预检，没有额外真实模型请求。见[安装、首次保护回退及最终读回](DEPLOYMENT-2026-11-04-0.1.3-dev.2.md)。仍未正式发布，也未完成真实模型端或 Linux/macOS 验收，不是“所有 schema 错误都能自动修复”。
+随后经单独授权，于 11 月 4 日在本机 CPA 8.0.53 上试装并读回生效；增加 4 项同宿主隔离预检，没有额外真实模型请求。见[安装、首次保护回退及最终读回](DEPLOYMENT-2026-11-04-0.1.3-dev.2.md)。这份候选 DLL 未作为正式资产发布；用户反馈其新旧会话基础使用正常，但这不是全面的真实模型或 Linux/macOS 验收，也不是“所有 schema 错误都能自动修复”。
 
-## 当前正式版 v0.1.2（2026-10-24）
+## 历史正式版 v0.1.2（2026-10-24）
 
 [`v0.1.2`](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.2) 修复 WebSocket 预热请求被接管、空输入 `[]` 被改成 `null` 导致 HTTP 400 的问题。`generate: false` 留在 CPA 原生路径；普通流式请求同样保留空数组。
 
