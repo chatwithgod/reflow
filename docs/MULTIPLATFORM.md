@@ -1,8 +1,12 @@
 # 五平台构建、验收与发布边界
 
-## 当前正式版 v0.1.2
+## 当前构建目标 v0.1.3
 
-`v0.1.2` 已完成五个平台的原生构建和公开下载核验。当前完整 ABI 套件为 34 项，每个平台在构建库、包内库上各执行一组；每组共 170 次执行。完整来源、Windows CPA 回归与公开资产哈希见 [2026-10-24 发布记录](RELEASE-2026-10-24-0.1.2.md)。
+完整 ABI 套件为 46 项，每个平台分别在构建库和 ZIP 解出库上执行；每组五平台合计 230 次执行，不是 460 种不同场景。正式发布前必须完成本版原生构建、同字节验收和公开资产核对，不能直接沿用旧版结果。
+
+## 历史正式版 v0.1.2
+
+`v0.1.2` 已完成五个平台的原生构建和公开下载核验。当时完整 ABI 套件为 34 项，每个平台在构建库、包内库上各执行一组；每组共 170 次执行。完整来源、Windows CPA 回归与公开资产哈希见 [2026-10-24 发布记录](RELEASE-2026-10-24-0.1.2.md)。
 
 下文保留 v0.1.1 的发布背景，通用构建命令和示例输出目录已按当前版更新。
 
@@ -21,7 +25,7 @@
 
 runner 名称/架构依据 [GitHub 官方列表](https://docs.github.com/en/actions/reference/runners/github-hosted-runners#standard-github-hosted-runners-for-public-repositories)
 核对（2026-10-09）。使用原生 runner，不把交叉编译成功当作可以加载执行。
-工具链固定 Go `1.26.8`，SDK 仍为 CPA `v8.0.13`，运行 Go 实现/策略不变；actions 固定到具体 commit。
+工具链固定 Go `1.26.8`，SDK 仍为 CPA `v8.0.13`，actions 固定到具体 commit；v0.1.3 增加工具 schema 兼容修复，续接策略不变。
 
 **`v0.1.1` 已于 2026-10-09 公开发布**，五个 ZIP 与统一 checksums 均经匿名下载逐字节核验。
 发布来源为 main 提交 `6c71eee479e9939a3d300b9231117fae11eef296` 的
@@ -38,7 +42,7 @@ runner 名称/架构依据 [GitHub 官方列表](https://docs.github.com/en/acti
 [PR #225](https://github.com/router-for-me/CLIProxyAPI-Plugins-Store/pull/225) 已于 10 月 10 日合并，10 月 11 日读回官方注册表已收录。
 见 [收录核对记录](STORE-LISTING-2026-10-11.md)及历史[商店重提记录](STORE-SUBMISSION-2026-10-09-0.1.1.md)。本次同步文档，不另发/评论 PR、不安装或启用生产插件、不调用真实模型。
 `v0.1.0` / `v0.1.1` 正文、ZIP、checksums、远程标签及此前开发构件保留不动。
-当次发布的 `VERSION` 为 `0.1.1`，当前为 `0.1.2`；此后 CI 产生的新候选与已发布字节区分，不能覆盖同名 Release 资产。
+当次发布的 `VERSION` 为 `0.1.1`，当前构建目标为 `0.1.3`；此后 CI 产生的新候选与已发布字节区分，不能覆盖同名 Release 资产。
 工作流权限为 `contents: read`，仅上传有期限的 CI 候选 artifact，没有自动发布步骤。
 
 ## 每个平台的实际检查
@@ -46,16 +50,16 @@ runner 名称/架构依据 [GitHub 官方列表](https://docs.github.com/en/acti
 `scripts/build_platform.py` 在匹配的 64 位原生主机上执行：
 
 1. 确认源码已提交、宿主/Go 架构一致、CGO 开启、Go/SDK 固定。
-2. 对根目录 Go 模块字节快照运行 unit、race、vet 和 15 秒 decoder fuzz，避开 ignored `build` 内的其他项目。
+2. 对根目录 Go 模块字节快照运行 unit、race、vet，以及 decoder/schema 各 15 秒 fuzz，避开 ignored `build` 内的其他项目。
 3. 用明确版本和本项目仓库链接生成 **新的** c-shared 动态库，不覆盖原来的非版本化构建。
-4. 跑全部 Python 回归（当前为 47 项）和实际库的 34 项 C ABI mock-host 测试；核对库哈希及测试版本。
+4. 跑全部 Python 回归（当前为 48 项）和实际库的 46 项 C ABI mock-host 测试；核对库哈希及测试版本。
 5. `package_release.py` 检查 PE/ELF/Mach-O 类型与架构，真实加载并读回插件 ID/版本/仓库；只打包动态库及三个保留许可文件。
-6. 读回 ZIP、CRC、许可字节和原始库字节，只把已验证的根库写入新路径，重跑同一组 34 项原生测试。
+6. 读回 ZIP、CRC、许可字节和原始库字节，只把已验证的根库写入新路径，重跑同一组 46 项原生测试。
 7. 输出同提交/Go 源码指纹/同库的脱敏报告与 validation 记录；不把 raw 日志或配置塞入 ZIP。
 
 输出目录及同名包不可覆盖。校验报告中的 unknown/失败不改成成功，缺一平台或报告不全即失败。
 原生 ABI mock 使用合成宿主回调，**不是实际 CPA 进程/HTTP/WS、真实模型或 Desktop 测试**。
-同一组 34 项在五种主机重复执行为 170 次；包装后再执行同组 170 次，不宣传为 340 种独立场景。
+同一组 46 项在五种主机重复执行为 230 次；包装后再执行同组 230 次，不宣传为 460 种独立场景。
 
 ## 本地使用
 
@@ -69,7 +73,7 @@ python scripts/build_platform.py --goos linux --goarch arm64
 python scripts/build_platform.py --goos darwin --goarch arm64
 ```
 
-默认本地新库：`build/platform-<goos>-<goarch>/`；平台候选：`dist/0.1.2/<goos>_<goarch>/`。
+默认本地新库：`build/platform-<goos>-<goarch>/`；平台候选：`dist/0.1.3/<goos>_<goarch>/`。
 重跑必须选择新的 `--build-dir` / `--output-dir`（仍在 ignored build/dist 下），不删除或覆盖历史输出。
 
 ## 五平台汇总
@@ -78,7 +82,7 @@ python scripts/build_platform.py --goos darwin --goarch arm64
 下载目录必须恰好包含五个平台子目录。每个子目录包含：
 
 ```text
-codexreflow_0.1.2_<goos>_<goarch>.zip
+codexreflow_0.1.3_<goos>_<goarch>.zip
 checksums.txt
 registration.json
 native-smoke.json

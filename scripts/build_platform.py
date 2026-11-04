@@ -81,6 +81,7 @@ def main():
         run("go", "test", "./...", "-race", "-count=1", cwd=snapshot)
         run("go", "vet", "./...", cwd=snapshot)
         run("go", "test", "-run", "^$", "-fuzz", "^FuzzDecoderChunkBoundaries$", "-fuzztime=15s", "-parallel=2", cwd=snapshot)
+        run("go", "test", "-run", "^$", "-fuzz", "^FuzzRestoreCollaborationToolSchemas$", "-fuzztime=15s", "-parallel=2", cwd=snapshot)
         run("go", "build", "-trimpath", "-buildmode=c-shared", "-ldflags",
             f"-X main.pluginVersion={version} -X main.pluginRepository={REPOSITORY}", "-o", library, ".", cwd=snapshot)
     run(sys.executable, "-m", "unittest", "discover", "-s", "scripts", "-p", "test_*.py")

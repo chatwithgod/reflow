@@ -1,5 +1,9 @@
 # 兼容性与验收边界
 
+## v0.1.3 正式构件准备
+
+正式版使用与下述候选相同的 Go 修复源码，单独生成正式版本和仓库元数据，不把开发 DLL 改名冒充正式构件。完整原生 ABI 套件为 46 项，五平台构建还需通过各自的 unit/race/vet、decoder/schema fuzz、Python 回归和包内库重复验收。实际构建、公开下载及同字节 Windows 隔离结果将在发布后单独记录；此处不把待执行检查写成已经成功。
+
 ## 本地候选：v0.1.3-dev.2（尚未发布）
 
 针对 [Issue #2](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/2)，候选版从原始请求中恢复被 CPA 插件路径误改的协作工具参数类型，不删除多智能体工具、不整体覆盖宿主处理后的请求。包含 HTTP/SSE、WS、516 续接与动态 `additional_tools` 覆盖。

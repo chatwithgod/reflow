@@ -29,6 +29,7 @@ jobs:
           go test ./... -race -count=1
           go vet ./...
           go test -run '^$' -fuzz '^FuzzDecoderChunkBoundaries$' -fuzztime=15s -parallel=2
+          go test -run '^$' -fuzz '^FuzzRestoreCollaborationToolSchemas$' -fuzztime=15s -parallel=2
       - name: Native mock-host tests (no model calls)
         run: |
           mkdir -p build
