@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-04T14:00:15.060113+00:00",
+  "date_local": "2026-11-04",
+  "published_head": "fb5b3628e2f95bd85d7df6b1e432f481e5247865",
+  "release_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+  "release_url": "https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5",
+  "native_acceptance": {
+    "sessions": 26,
+    "observed_inference_requests": 134,
+    "continuations": 4
+  },
+  "functional_native_continuation_acceptance": true,
+  "strict_native_continuation_acceptance": false,
+  "historical_configuration_audit_failure_preserved": true,
+  "completed_native_off_on_pair": true,
+  "pair_continuations": 0,
+  "quality_benefit_established": false,
+  "offline_ci": "all three platforms pass",
+  "native_ci": {
+    "ubuntu": "pass",
+    "macos": "pass",
+    "windows": "known write failures"
+  },
+  "ubuntu_pass_cause_established": false,
+  "pi_scope": "accepted_simulated; no real-login acceptance required for this goal",
+  "desktop_dot_accepted": false,
+  "official_sources_last_checked": "2026-10-31",
+  "repository_snapshot": {
+    "checked_date": "2026-10-31",
+    "data": {
+      "created_at": "2026-10-28T11:12:07Z",
+      "forks": 0,
+      "license": "MIT",
+      "open_issues": 0,
+      "repository": "chatwithgod/reflow",
+      "stars": 0,
+      "updated_at": "2026-10-30T23:00:49Z",
+      "visibility": "public"
+    }
+  },
+  "repository_metadata_is_usage_evidence": false,
+  "verified_external_adoption_data": null,
+  "publication_verification_downloads_excluded_from_adoption": true,
+  "magpie_upstream_acceptance_claimed": false,
+  "form_controls_operated": false,
+  "form_values_entered": false,
+  "application_submitted": false,
+  "role_or_support_selections_made": false,
+  "ui_conditional_required_fields_verified": false,
+  "goal_complete": false,
+  "evidence_sources": [
+    {
+      "path": "docs/evidence/live-scheduler-sampling-dev5-official-0165-2026-11-04.json",
+      "sha256": "d8c8498f3b827c18501d72bfaff6944a4117afc2ac5c9a2478d22c626298f294",
+      "bytes": 33372
+    },
+    {
+      "path": "docs/evidence/native-acceptance-current-2026-11-04-sampling.json",
+      "sha256": "9aff8ee17aacac646ea1a94cab4859ca3631de5f423d60449ebf7a9e7012e227",
+      "bytes": 11679
+    },
+    {
+      "path": "docs/evidence/oss-readiness-2026-11-04.json",
+      "sha256": "46347e9eef2589942187e377ce456f1692caa618e212878515a4e1dc7edc8ea6",
+      "bytes": 2782
+    },
+    {
+      "path": "docs/evidence/desktop-backend-2026-11-04.json",
+      "sha256": "88d9ad2e258534cb97a7322bade327906780228b51a472ba7bf107edb30039d1",
+      "bytes": 6769
+    },
+    {
+      "path": "docs/evidence/release-dev5-2026-10-31.json",
+      "sha256": "31624983c08ade87e7ec427a0e6836e77d0b871f3756e4625a831eaa750d0d98",
+      "bytes": 33230
+    },
+    {
+      "path": "build/push-fb5b362-20261104/ci-summary.json",
+      "sha256": "b08c1e4e7d2407d691baa4450f1c9af1bdf931adfdfdd42d31dd98f5008f8518",
+      "bytes": 12114
+    }
+  ],
+  "latest_sampling": {
+    "sessions": 3,
+    "observed_inference_requests": 12,
+    "continuations": 0,
+    "score_each": "18/18",
+    "predeclared_limit_reached": true
+  },
+  "new_live_samples_scheduled": false,
+  "previous_checkpoint": {
+    "path": "docs/evidence/oss-readiness-2026-11-04.json",
+    "sha256": "46347e9eef2589942187e377ce456f1692caa618e212878515a4e1dc7edc8ea6",
+    "bytes": 2782
+  },
+  "desktop_backend_checkpoint": {
+    "path": "docs/evidence/desktop-backend-2026-11-04.json",
+    "sha256": "88d9ad2e258534cb97a7322bade327906780228b51a472ba7bf107edb30039d1",
+    "bytes": 6769
+  }
+}

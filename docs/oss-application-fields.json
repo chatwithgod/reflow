@@ -3,7 +3,7 @@
   "checked_date": "2026-10-31",
   "status": "local_draft_not_submitted",
   "technical_checkpoint": "3e0ea1858d1af83a5efe156be101e50b1713d008",
-  "latest_live_record": "evidence/live-scheduler-pair-dev5-official-0165-2026-11-04.json",
+  "latest_live_record": "evidence/live-scheduler-sampling-dev5-official-0165-2026-11-04.json",
   "sources": {
     "program": "https://developers.openai.com/community/codex-for-oss",
     "form": "https://openai.com/form/codex-for-oss/",
@@ -20,8 +20,8 @@
       "characters": 373
     },
     "additional_context": {
-      "text": "One native ChatGPT-login sample completed continuation, a tool round-trip, 18/18 and normal exit; its batch retains a config-audit exception. A new off/on pair passed 18/18 without continuation. Source CI passes on three OSes; native CI passes Ubuntu/macOS, with hosted Windows write failures. Linux arm64/Intel Mac are build-only. Desktop/dot is unverified. Magpie #4497 has no upstream acceptance. No quality gain is claimed.",
-      "characters": 427
+      "text": "One native ChatGPT-login sample completed continuation, a tool round-trip, 18/18 and normal exit; its batch retains a config-audit exception. An off/on pair and three later samples passed 18/18 without continuation. Source CI passes on three OSes; native CI passes Ubuntu/macOS, with hosted Windows write failures. Linux arm64/Intel Mac are build-only. Desktop/dot is unverified. Magpie #4497 has no upstream acceptance. No quality gain is claimed.",
+      "characters": 448
     }
   },
   "submission_values_not_collected": [
@@ -40,7 +40,7 @@
     "Magpie patches are published in Reflow but are not a submitted or merged Magpie PR; issue #4497 is a design discussion",
     "The official 0.165.0 session passed 9/9 and ended normally with zero continuations, after one command failure",
     "One separately authorized official API session completed two streaming requests and a fixed local function roundtrip, with zero reasoning tokens and zero continuations; native-login totals remain separate.",
-    "The native total is 23 sessions, 122 observed requests, four continuations. The October 30 continued sample completed the same-session functional chain with no tool failures; its batch production-config unchanged invariant remains failed after a user-confirmed manual edit. The November 4 off/on pair completed 18/18 with clean protected-file checks but zero continuations, so it cannot repair that audit exception or establish continuation benefit.",
+    "The native total is 26 sessions, 134 observed requests, four continuations. The October 30 continued sample completed the same-session functional chain with no tool failures; its batch production-config unchanged invariant remains failed after a user-confirmed manual edit. The November 4 off/on pair and three later bounded samples completed 18/18 with clean protected-file checks but zero continuations. The sampling limit was reached and no more same-task samples are scheduled; these records cannot repair the old audit exception or establish continuation benefit.",
     "The dev.5 prerelease is public with ten platform ZIPs and two verification files; all twelve unauthenticated asset downloads matched the frozen hashes.",
     "Three platforms have binaries identical to the cited pre-tag native CI; Linux arm64 and Intel Mac packages have only cross-compilation and package checks.",
     "November 4 source CI passes on all three platforms. Native Ubuntu and macOS pass all phases; hosted Windows retains the old write failures. The unmodified-workflow Ubuntu pass has no established cause, and historical failed runs remain unchanged.",
@@ -57,15 +57,15 @@
   },
   "project_facts_updated": "2026-11-04",
   "latest_api_record": "evidence/live-official-api-key-2026-10-29.json",
-  "latest_acceptance_index": "evidence/native-acceptance-current-2026-11-04.json",
+  "latest_acceptance_index": "evidence/native-acceptance-current-2026-11-04-sampling.json",
   "release_tag": "v0.1.0-dev.5",
   "release_url": "https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5",
-  "current_readiness_record": "evidence/oss-readiness-2026-11-04.json",
+  "current_readiness_record": "evidence/oss-readiness-2026-11-04-sampling.json",
   "submission_values_requiring_confirmation": [
     "applicant_public_github_username",
     "primary_or_core_maintainer_role",
     "support_selection_and_any_dependent_required_fields"
   ],
   "form_ui_conditional_requirements_verified": false,
-  "published_documentation_checkpoint": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b"
+  "published_documentation_checkpoint": "fb5b3628e2f95bd85d7df6b1e432f481e5247865"
 }
