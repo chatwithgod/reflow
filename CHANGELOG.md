@@ -6,6 +6,7 @@
 - Cover root `tools`, scoped `input[].additional_tools`, initial execution, continuation rounds and cached native WebSocket replays. Missing originals and ambiguous identities remain unchanged; no new configuration or schema/payload logging.
 - Add 12 C ABI schema scenarios (46 required in total), bounded Go tests/fuzzing, and strict real-CPA 8.0.47 mock-upstream checks with an old-v0.1.2 negative control. Keep SDK v8.0.13, continuation policy and published v0.1.2 artifacts unchanged.
 - Windows candidate only; not a store release, production install or live-model acceptance. See [the scoped validation record](docs/VALIDATION-2026-11-04-0.1.3-dev.2.md).
+- Subsequently trial-installed on the user's CPA 8.0.53 after separate authorization and an idle check. Preserve the previous 0.1.2-dev.1 DLL and all non-version plugin settings; document an initial protective rollback caused by harmless host serialization of empty match defaults, followed by a verified version-only retry. Four targeted isolated preflights pass; no live-model test call or public release. See [the deployment record](docs/DEPLOYMENT-2026-11-04-0.1.3-dev.2.md).
 
 ## 0.1.2
 
