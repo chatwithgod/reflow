@@ -134,6 +134,7 @@ func prepareNativeWSFold(req pluginapi.StreamChunkInterceptRequest) (*nativeWSFo
 	if !valid {
 		return nil, ""
 	}
+	restoreCollaborationToolSchemaTypes(body, req.OriginalRequest)
 	delta, valid := body["input"].([]any)
 	if !valid {
 		return nil, ""

@@ -14,6 +14,7 @@ import threading
 
 from diagnostic_assertions import assert_run
 from summarize_diagnostics import parse_line, summarize
+import tool_schema_fixtures as schema_fixture
 
 
 class Buffer(c.Structure):
@@ -163,11 +164,12 @@ class OfflineHost:
             return {}
         raise RuntimeError(f"unexpected callback: {method}")
 
-    def run_case(self, transport, rounds, fragmented=False, cancelled=False, *, model="fixture-model", config=None, input_items=None):
+    def run_case(self, transport, rounds, fragmented=False, cancelled=False, *, model="fixture-model", config=None, input_items=None,
+                 request_fields=None, original_request=None):
         config = b"models: [fixture-model]\nmax_continue: 3\n" if config is None else config
         self.call("plugin.reconfigure", {"config_yaml": encoded(config)})
         items = [{"role": "user", "content": "offline fixture"}] if input_items is None else input_items
-        body = wire({"model": model, "stream": True, "input": items})
+        body = wire({"model": model, "stream": True, "input": items, **(request_fields or {})})
         route = self.call("model.route", {
             "RequestedModel": model, "SourceFormat": "openai-response", "Stream": True, "Body": encoded(body),
         })
@@ -179,6 +181,7 @@ class OfflineHost:
         self.call("executor.execute_stream", {
             "model": model, "stream_id": "downstream_fixture", "host_callback_id": "fixture-callback",
             "payload": encoded(body),
+            **({"OriginalRequest": encoded(wire(original_request))} if original_request is not None else {}),
         })
         assert self.closed.wait(10), "plugin did not close its downstream stream"
         assert not self.errors, self.errors
@@ -226,6 +229,27 @@ def main():
     assert host.bodies[0]["input"] == [], "empty executor input changed to null"
     assert terminal["type"] == "response.completed"
     results.append({"scenario": "empty-input-preserved-on-wire", "passed": True})
+    # Exercise the SDK's OriginalRequest field through the real C ABI, not
+    # only the Go helper. Keep host routing edits and ordinary tool schemas.
+    for transport in ("sse", "json", "cpa-lines"):
+        for scenario in ("schema-initial", "schema-continuation", "schema-additional", "schema-missing-original"):
+            original = schema_fixture.request(dynamic=scenario == "schema-additional")
+            payload = schema_fixture.normalized_request(original)
+            payload["instructions"] = "host transformed instructions"
+            payload["prompt_cache_key"] = "synthetic-host-cache-key"
+            supplied = None if scenario == "schema-missing-original" else original
+            expected = schema_fixture.declarations(original if supplied is not None else payload)
+            rounds = ([round_events(1, 516, tentative=True), round_events(2, 30)]
+                      if scenario in ("schema-continuation", "schema-additional") else [round_events(1)])
+            _, terminal = host.run_case(transport, rounds, request_fields=payload, original_request=supplied)
+            assert terminal["type"] == "response.completed" and len(host.bodies) == len(rounds)
+            for upstream_body in host.bodies:
+                assert schema_fixture.declarations(upstream_body) == expected, scenario
+                assert upstream_body["instructions"] == payload["instructions"]
+                assert upstream_body["prompt_cache_key"] == payload["prompt_cache_key"]
+                assert upstream_body["tools"][1] == payload["tools"][1], "ordinary host schema rewrite was undone"
+            results.append({"transport_payload": transport, "scenario": scenario, "passed": True})
+            print(f"PASS {transport:4s} / {scenario}")
     for transport in ("sse", "json", "cpa-lines"):
         scenarios = ("normal", "continuation", "tool", "cancelled", "eof", "failed", "upstream-incomplete")
         if transport != "cpa-lines":

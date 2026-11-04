@@ -23,6 +23,7 @@ KINDS = {
     "real CPA process + loopback synthetic Codex upstream; no live provider or Desktop": "isolated_http_ws",
     "real isolated CPA + strict synthetic WS incremental folds; not live-model acceptance": "isolated_incremental",
     "real isolated CPA + strict synthetic WS cache; not live-model/Desktop acceptance": "isolated_bridge",
+    "real isolated CPA + strict synthetic collaboration schemas; not live-model acceptance": "isolated_tool_schema",
 }
 
 
@@ -49,9 +50,12 @@ def sanitize_report(report, digest, report_hash):
             raise ValueError("invalid case")
         if case.get("passed") is False or not (case.get("passed") is True or case.get("answer_preserved") is True):
             raise ValueError("evidence includes unpassed cases")
+        if case.get("expected_old_defect") is True:
+            raise ValueError("negative old-build cases are not candidate validation")
     result = {"kind": kind, "case_executions": len(cases), "report_sha256": report_hash}
     if kind != "native_abi":
-        if report.get("cpa_version") not in ("8.0.13", "8.0.15", "8.0.16") or report.get("production_config_modified") is not False or report.get("billable_model_calls") != 0:
+        versions = ("8.0.47",) if kind == "isolated_tool_schema" else ("8.0.13", "8.0.15", "8.0.16")
+        if report.get("cpa_version") not in versions or report.get("production_config_modified") is not False or report.get("billable_model_calls") != 0:
             raise ValueError("expected pinned isolated non-production evidence")
         if report.get("expected_old_bypass") is True or report.get("expected_old_defect") is True:
             raise ValueError("negative old-build controls are not candidate validation")

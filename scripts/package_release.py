@@ -33,6 +33,8 @@ NATIVE_CASE_KEYS = frozenset(
     + [("", "diagnostic_startup_failure"), ("", "diagnostic_native_lifecycle_failure_and_reused_identifier")]
     + [("", scenario) for scenario in ("prewarm-native-route-empty-input", "prewarm-native-route-with-input",
                                       "empty-input-preserved-on-wire")]
+    + [(transport, scenario) for transport in ("sse", "json", "cpa-lines")
+       for scenario in ("schema-initial", "schema-continuation", "schema-additional", "schema-missing-original")]
 )
 NATIVE_CASES = len(NATIVE_CASE_KEYS)
 MAX_LIBRARY_SIZE = 64 * 1024 * 1024

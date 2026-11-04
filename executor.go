@@ -254,6 +254,8 @@ func executeStream(raw []byte) ([]byte, error) {
 		baseBody["prompt_cache_key"] = stablePromptCacheKey(req.Model, sessionID)
 	}
 
+	restoreCollaborationToolSchemaTypes(baseBody, req.OriginalRequest)
+
 	origInput, _ := baseBody["input"].([]any)
 	// Keep an empty array non-nil: a nil slice would encode as input:null.
 	origInput = append([]any{}, origInput...)

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.3-dev.2 (local candidate; unreleased)
+
+- Address [Issue #2](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/2) without removing collaboration tools: compare processed schemas with `OriginalRequest` and undo only matching `number` to `integer` normalization, including nullable unions. Preserve original integers, ordinary tools, host routing edits and tool membership.
+- Cover root `tools`, scoped `input[].additional_tools`, initial execution, continuation rounds and cached native WebSocket replays. Missing originals and ambiguous identities remain unchanged; no new configuration or schema/payload logging.
+- Add 12 C ABI schema scenarios (46 required in total), bounded Go tests/fuzzing, and strict real-CPA 8.0.47 mock-upstream checks with an old-v0.1.2 negative control. Keep SDK v8.0.13, continuation policy and published v0.1.2 artifacts unchanged.
+- Windows candidate only; not a store release, production install or live-model acceptance. See [the scoped validation record](docs/VALIDATION-2026-11-04-0.1.3-dev.2.md).
+
 ## 0.1.2
 
 Published on 2026-10-24 with five native platform packages. See [release and byte-level verification](docs/RELEASE-2026-10-24-0.1.2.md).

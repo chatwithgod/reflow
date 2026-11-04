@@ -59,6 +59,17 @@ class CandidateTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 create_archive(root, "0.1.0-dev.6", b"data", [{"kind": "native_abi"}])
 
+    def test_schema_report_is_pinned_and_not_a_negative_control(self):
+        report = {"test_kind": "real isolated CPA + strict synthetic collaboration schemas; not live-model acceptance",
+                  "plugin_sha256": "a" * 64, "cases": [{"passed": True}], "cpa_version": "8.0.47",
+                  "production_config_modified": False, "billable_model_calls": 0}
+        safe = sanitize_report(report, "a" * 64, "b" * 64)
+        self.assertEqual(safe["kind"], "isolated_tool_schema")
+        for bad in [{**report, "cpa_version": "8.0.53"}, {**report, "expected_old_defect": True},
+                    {**report, "cases": [{"passed": True, "expected_old_defect": True}]}]:
+            with self.assertRaises(ValueError):
+                sanitize_report(bad, "a" * 64, "b" * 64)
+
 
 if __name__ == "__main__":
     unittest.main()

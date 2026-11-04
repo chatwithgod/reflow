@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "candidate_version": "0.1.3-dev.2",
+  "platform": "windows/amd64",
+  "source_base_commit": "9b261194c416f8affab23c9bf02448cc022f2cf2",
+  "worktree_fix_uncommitted": true,
+  "root_go_source_sha256": "eac1d09b5bfa93aa92a6547c967eff5aef1f61a238d6b4c1c8d97edee9221fd9",
+  "sdk_version": "8.0.13",
+  "go_version": "go1.26.8",
+  "plugin_sha256": "f0c9f4ba44cbe420ff58e45b566bd5c20093c6ac6cc21194f91a97fb5f669201",
+  "cpa_8_0_47_sha256": "90cf448b09da5b8ce03990669e8915638b12ed30abefa4f8546e42c4e7e18e7b",
+  "go_unit_race_vet_passed": true,
+  "schema_fuzz": {
+    "passed": true,
+    "seconds": 30,
+    "executions": 846166
+  },
+  "python_unit_tests": {
+    "passed": true,
+    "count": 48
+  },
+  "reports": {
+    "native-smoke.json": {
+      "sha256": "a275d6844559689fe1361540f130e3273f8d0d2af412696b63b9ad9e30b20b52",
+      "case_executions": 46,
+      "kind": "offline C ABI mock host; not live CPA/WebSocket",
+      "passed": true
+    },
+    "packaged-native-smoke.json": {
+      "sha256": "a275d6844559689fe1361540f130e3273f8d0d2af412696b63b9ad9e30b20b52",
+      "case_executions": 46,
+      "kind": "offline C ABI mock host; not live CPA/WebSocket",
+      "passed": true
+    },
+    "tool-schema.json": {
+      "sha256": "6a10fc79f017d93819ae24d2499e4908c123dcb7863346c12693c9580f3c6016",
+      "case_executions": 18,
+      "kind": "real isolated CPA + strict synthetic collaboration schemas; not live-model acceptance",
+      "cpa_version": "8.0.47",
+      "passed": true
+    },
+    "isolated-http-ws-8.0.13.json": {
+      "sha256": "c8b386a40c812a49cf04f1b5e4d3233066f35aa087b08b2413b9917daffe7c0f",
+      "case_executions": 23,
+      "kind": "real CPA process + loopback synthetic Codex upstream; no live provider or Desktop",
+      "cpa_version": "8.0.13",
+      "passed": true
+    },
+    "isolated-bridge-8.0.13.json": {
+      "sha256": "98405d82400f6909f5ff9b309e87b87a620858bdc5b71a3576625ce23ad5ced3",
+      "case_executions": 13,
+      "kind": "real isolated CPA + strict synthetic WS cache; not live-model/Desktop acceptance",
+      "cpa_version": "8.0.13",
+      "passed": true
+    },
+    "isolated-incremental-8.0.13.json": {
+      "sha256": "a7cc2d3980614dd0fe39efb00bbf894c0a6a18cf6c3daff4d66d999139cd5d78",
+      "case_executions": 14,
+      "kind": "real isolated CPA + strict synthetic WS incremental folds; not live-model acceptance",
+      "cpa_version": "8.0.13",
+      "passed": true
+    },
+    "prewarm-8.0.47.json": {
+      "sha256": "58042697223e044fb8f34f4114022b6bf8e600be4ec089fdcd9f6313703d7eba",
+      "case_executions": 2,
+      "kind": "isolated official CPA with synthetic loopback upstream; no real model calls",
+      "cpa_version": "8.0.47",
+      "passed": true
+    },
+    "old-0.1.2-negative-control.json": {
+      "sha256": "7dd6afb4c602f90911f29fc028a980e4f51afd5054d8ff05e5003b28c0da9609",
+      "case_executions": 6,
+      "kind": "real isolated CPA + strict synthetic collaboration schemas; not live-model acceptance",
+      "cpa_version": "8.0.47",
+      "expected_rejections": 4,
+      "disabled_native_controls": 2,
+      "not_candidate_acceptance": true,
+      "plugin_sha256": "db956e8e05241692ce123f138358c209347e3c4ab41f801f7a681ba73414079d"
+    }
+  },
+  "archive": {
+    "name": "codexreflow_0.1.3-dev.2_windows_amd64_LOCAL-CANDIDATE.zip",
+    "sha256": "2a27fc940e1b516cb4ee8914816192a5e165d67f2974b0db29c20938ff2d4bce",
+    "allowlisted_member_count": 8,
+    "checksums_verified": true,
+    "all_members_match_manifest": true,
+    "packaged_library_matches_tested_library": true
+  },
+  "production_config_modified": false,
+  "billable_model_calls": 0,
+  "published": false,
+  "production_installed": false,
+  "live_model_acceptance": "pending",
+  "linux_macos_validation": "pending"
+}
