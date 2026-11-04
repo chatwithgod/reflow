@@ -12,6 +12,8 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 
 2026-10-30，未修改的官方 Codex `0.165.0` 在隔离的原生 ChatGPT 登录下，经独立 Reflow dev.5 完成 **1 次真实续接、成功工具往返、18/18 和正常结束，工具失败 0**。同批生产配置散列有变化，用户确认同期手动设置；原始不变检查保留未通过，功能结果与这一审计例外分开记录。累计数字、时间线及限制统一见[原生登录验收总表](docs/NATIVE-LOGIN-ACCEPTANCE.md)。这是发布前候选的有限样本，本次发布没有增加真实账号验收。
 
+2026-11-04，已发布的 Windows 独立包完成一组[原生登录开关对照](docs/LIVE-SCHEDULER-PAIR-2026-11-04.md)：两组均正常结束、18/18、工具失败 0，生产配置和登录文件未变；开启组未触发续接。累计为 23 次会话、122 次已观察请求、4 次续接。新对照不能抵消旧样本的审计例外，也没有建立质量或速度收益结论。
+
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
 - **Codex app-server**：两种历史格式下，续接、工具回传、关闭进程后恢复和配置还原通过；Desktop/dot 界面仍未验收。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
@@ -19,7 +21,7 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 - **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
 - **评测**：默认 4 任务、34 个评分点；另有对账和构建计划任务，各 18 点。49 项离线评测器检查通过，新增受限的 Pi 只读探针，没有回答质量改善结论。见[评测说明](docs/EVALUATION.md)。
 
-dev.5 标签的三平台常规 CI 普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。macOS 的五个写入场景及 Pi 只读探针普通/race 各 4 项通过；默认 Ubuntu/托管 Windows 仍在写入阶段失败，后续只读探针未执行。原生 CI 整体仍为失败，失败项和固定错误标记与旧记录一致。此前本机 Windows 的写入与探针成功结果见[Pi 新入口记录](docs/PI-PUBLIC-RESPONSES-2026-10-30.md)，固定前提下的 Ubuntu 对照也单独保留。各版本和平台范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
+2026-11-04，`6d6cfbf` 的三平台常规 CI 普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过；三平台打包客户端普通/race 各 14 项通过。Ubuntu/macOS 的五个写入场景及 Pi 探针普通/race 各 4 项通过；托管 Windows 仍在写入阶段失败，后续探针未执行，原生 CI 整体仍为失败。Ubuntu 本次没有由工作流改动宿主配置，客户端与 CI 输入和前轮相同，转为通过的原因尚未查明。此前标签的 Ubuntu 失败和固定配置对照均保留，范围见[兼容性](docs/COMPATIBILITY.md)、[原生 CI](docs/NATIVE-CI.md)和[开源准备清单](docs/OSS-READINESS.md)。
 
 ## 凭据与网络边界
 
@@ -83,7 +85,7 @@ reflow codex-config --action restore
 - **Pi CLI 1.4.0**：临时隔离环境配合合成 OAuth 凭证，跑通 SSE 与 WebSocket 双路径的续接流程。内置 `read` 工具读取合成文件，工具结果回传；被舍弃轮次的读操作没有执行。
 - **Codex CLI 0.164.0-alpha.11.1**：使用合成 ChatGPT 凭证，纯 WebSocket、无 HTTP 回退，实际执行一次本地只读 MCP 工具，并回传结果。此前 shell 工具测试有过断言误判，已修正并保留失败记录。
 
-Windows amd64 本机、macOS arm64 CI，以及采用上述固定发行版配置的 Ubuntu amd64 已有原生客户端和打包构件的离线执行证据。默认三平台 CI 的协议/插件/Pi 普通及 race 检查通过；其 Ubuntu/托管 Windows 写入失败仍保留，Linux arm64/macOS amd64 尚缺原生验证。最新范围见 [原生 CI 记录](docs/NATIVE-CI.md)与[兼容性](docs/COMPATIBILITY.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
+Windows amd64 本机、macOS arm64 CI，以及 11 月 4 日默认 Ubuntu amd64 runner 已有原生客户端和打包构件的离线执行证据。默认三平台 CI 的协议/插件/Pi 普通及 race 检查通过；托管 Windows 写入仍失败，Linux arm64/macOS amd64 尚缺原生验证。Ubuntu 此前失败和固定发行版配置下的通过记录均保留，不推导为所有 Linux 主机可用。最新范围见[原生 CI 记录](docs/NATIVE-CI.md)与[兼容性](docs/COMPATIBILITY.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
 
 这些测试只证明已覆盖场景的行为符合预期，不等同于真实线上账号的 OAuth 验收，也尚未验证真实 Token 自动刷新、Codex Desktop / dot、跨连接恢复的完整边界或实际模型输出质量。
 

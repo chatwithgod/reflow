@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-04T12:32:21.021840+00:00",
+  "date_local": "2026-11-04",
+  "published_head": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+  "release_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+  "release_url": "https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5",
+  "native_acceptance": {
+    "sessions": 23,
+    "observed_inference_requests": 122,
+    "continuations": 4
+  },
+  "functional_native_continuation_acceptance": true,
+  "strict_native_continuation_acceptance": false,
+  "historical_configuration_audit_failure_preserved": true,
+  "completed_native_off_on_pair": true,
+  "pair_continuations": 0,
+  "quality_benefit_established": false,
+  "offline_ci": "all three platforms pass",
+  "native_ci": {
+    "ubuntu": "pass",
+    "macos": "pass",
+    "windows": "known write failures"
+  },
+  "ubuntu_pass_cause_established": false,
+  "pi_scope": "accepted_simulated; no real-login acceptance required for this goal",
+  "desktop_dot_accepted": false,
+  "official_sources_last_checked": "2026-10-31",
+  "repository_snapshot": {
+    "checked_date": "2026-10-31",
+    "data": {
+      "created_at": "2026-10-28T11:12:07Z",
+      "forks": 0,
+      "license": "MIT",
+      "open_issues": 0,
+      "repository": "chatwithgod/reflow",
+      "stars": 0,
+      "updated_at": "2026-10-30T23:00:49Z",
+      "visibility": "public"
+    }
+  },
+  "repository_metadata_is_usage_evidence": false,
+  "verified_external_adoption_data": null,
+  "publication_verification_downloads_excluded_from_adoption": true,
+  "magpie_upstream_acceptance_claimed": false,
+  "form_controls_operated": false,
+  "form_values_entered": false,
+  "application_submitted": false,
+  "role_or_support_selections_made": false,
+  "ui_conditional_required_fields_verified": false,
+  "goal_complete": false,
+  "evidence_sources": [
+    {
+      "path": "docs/evidence/live-scheduler-pair-dev5-official-0165-2026-11-04.json",
+      "sha256": "b1335f04a2bdd7a2643288a07b0ada627bfa8278862489d14f9958dc59046eeb",
+      "bytes": 24665
+    },
+    {
+      "path": "docs/evidence/native-acceptance-current-2026-11-04.json",
+      "sha256": "c178c59b8db6adf9d4ebc7613938eb53f82b3c2c8d01b4884dcbf941493f661a",
+      "bytes": 9332
+    },
+    {
+      "path": "docs/evidence/documentation-ci-2026-11-04.json",
+      "sha256": "de84fec7294891770012949c76893c80802782936b76323b0d2803d684396ad0",
+      "bytes": 18658
+    },
+    {
+      "path": "docs/evidence/oss-readiness-2026-10-31.json",
+      "sha256": "fd7ff5dc646f619497c53f8690d02848afb4d8ca180b05490d23e4dd67c16b69",
+      "bytes": 1428
+    },
+    {
+      "path": "docs/evidence/release-dev5-2026-10-31.json",
+      "sha256": "31624983c08ade87e7ec427a0e6836e77d0b871f3756e4625a831eaa750d0d98",
+      "bytes": 33230
+    }
+  ]
+}

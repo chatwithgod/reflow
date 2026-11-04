@@ -4,6 +4,8 @@ Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的�
 
 [dev.5 预发布](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)已提供五平台服务/插件包，12 个附件公开下载核验通过。Windows amd64、Linux amd64、macOS arm64 的包内二进制与指定的发布前原生 CI 相同；Linux arm64/macOS amd64 仍仅交叉编译。完整平台表、已知失败与标签 CI 见[发布记录](RELEASE-0.1.0-dev.5.md)。
 
+2026-11-04 最新检查点：文档提交 `6d6cfbf` 的三平台常规 CI 通过；原生 Ubuntu/macOS 全部阶段通过，托管 Windows 写入仍失败。Ubuntu 本次未由工作流修改宿主配置，客户端和 CI 输入与前轮一致，但通过原因尚未确定；详见[原生 CI](NATIVE-CI.md)。同日已发布 Windows 独立包的[真实开关对照](LIVE-SCHEDULER-PAIR-2026-11-04.md)两组均正常结束、18/18、零工具失败且保护文件未变，但无续接，不能消除历史配置审计例外或证明收益。
+
 | 接入方式 | 版本与范围 | 已验证行为 |
 | --- | --- | --- |
 | Codex CLI | 2026-10-29：官方 `0.165.0`；应用附带的 `0.165.0-alpha.1.2` 另在本机 Windows 验证 | 真实客户端、合成 ChatGPT 凭据和模拟上游下，WebSocket 续接、最终 MCP 工具执行及结果回传通过；写入结果依宿主环境而异，见下方 CI 记录。旧版失败记录保留 |
@@ -18,7 +20,7 @@ Windows amd64 已进行原生客户端联调。2026-10-28 的 Windows、Linux、
 
 2026-10-29，[原生客户端流水线](NATIVE-CI.md) 已公开并完成三平台执行：固定客户端依赖，按当前平台打包，并实际运行 ZIP 解压后的独立服务和插件。三个 runner 的四组客户端普通/race 检查均为 10 通过、0 跳过；macOS arm64 的五个写文件场景也通过。Ubuntu amd64 和托管 Windows 的五个写入场景全部失败。后续无账号对照确认，Ubuntu 的独立 user namespace/UID 映射命令被拒绝，该 Windows runner 的 MXC 不可用；这些证据尚不能解释全部补丁失败。此前本机 Windows 的五场景成功记录单独保留。Linux arm64/macOS amd64 尚缺原生验证。
 
-后续单独授权的 [Ubuntu 兼容对照](LINUX-SANDBOX-CONTROL.md)在同一 runner 证明：只安装依赖时直接沙箱命令仍失败，加载固定发行版配置并接受精确 ABI 告警后，普通/race 各 10 项、五个原有写入场景及文件/网络边界全部通过；移除配置后直接命令再次被拒绝。全局限制和客户端二进制未变。Ubuntu 的通过范围依赖这些明确前提，默认原生 CI 和托管 Windows 的写入失败仍保留。
+后续单独授权的 [Ubuntu 兼容对照](LINUX-SANDBOX-CONTROL.md)在同一 runner 证明：只安装依赖时直接沙箱命令仍失败，加载固定发行版配置并接受精确 ABI 告警后，普通/race 各 10 项、五个原有写入场景及文件/网络边界全部通过；移除配置后直接命令再次被拒绝。全局限制和客户端二进制未变。这份历史通过记录依赖上述前提，当时默认原生 CI 的失败原样保留；11 月 4 日的新通过另行记录。
 
 2026-10-26 测得官方 `0.164.0` 和应用附带的 `0.164.0-alpha.11.1` 写入失败；本地加入上游修复后通过，见 [历史复现](NATIVE-WRITE-PROBE.md)。2026-10-29，上表两版未修改的官方客户端在本机 Windows 均通过无账号预检、五个写入场景和协议/插件 race 定向检查。这是本机新版本的离线行为证据，真实会话仍未完整验收。见 [新版本复测](NATIVE-CLIENT-2026-10-29.md)。
 
@@ -44,7 +46,7 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 尚未完成
 
-原生 Windows CLI 已有无工具失败的真实续接功能记录，批次有用户手动配置变动的审计例外，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。全面真实账号覆盖、登录刷新、Codex Desktop/dot、托管 Windows 写入问题、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入尚未执行；二进制已作为上述预发布提供。源码已公开，macOS arm64 及满足上述固定前提的 Ubuntu amd64 已有离线客户端和构件证据；其他 Linux 宿主尚不能直接推广。评测器的 4 项任务、34 个检查点已自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
+原生 Windows CLI 已有无工具失败的真实续接功能记录，批次有用户手动配置变动的审计例外；最新开关对照完整结束但未触发续接，严格验收状态未变，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。全面真实账号覆盖、登录刷新、Codex Desktop/dot、Linux arm64/macOS amd64 原生客户端与构件验收、生产接入尚未完成，托管 Windows 写入问题仍未解决。二进制已预发布，macOS arm64 和 11 月 4 日的默认 Ubuntu amd64 runner 有离线客户端及构件通过证据，不能推广到所有 Linux 主机。默认四任务 34 个评分点及可选维护任务已有评分器自检，尚无质量改善结论。插件安装成功或 `/healthz` 正常，只说明相应组件可用，不证明模型请求已经经过 Reflow。
 
 以下历史实测保留当时结论和累计数字，当前状态以[总表](NATIVE-LOGIN-ACCEPTANCE.md)为准。
 

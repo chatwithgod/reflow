@@ -1,0 +1,705 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-04T12:32:21.021840+00:00",
+  "date_local": "2026-11-04",
+  "scope": "One serial native ChatGPT-login off/on scheduler pair on Windows amd64 using the published dev.5 binary.",
+  "source_commit": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+  "release_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+  "authorization": {
+    "source": "User standing native ChatGPT-login acceptance authorization: no per-run permission requests, retained concurrency and duration limits.",
+    "source_user_reply": "我一次性给你授权，以后不用申请",
+    "proposal_sha256": "f92bb15ebd8394e9d038ae3cc8b3fd1ba20ba7ac3844d3e5ec97e969f59a68c8",
+    "max_sessions": 2,
+    "trial_concurrency": 1,
+    "per_session_timeout_seconds": 180,
+    "extra_continuations_per_round": 1,
+    "api_key_use": false,
+    "scope": "The remaining paired native-login check in the active Reflow goal; no production integration, Desktop/dot, remote push or application submission."
+  },
+  "frozen_proposal": {
+    "status": "ready_under_standing_authorization",
+    "prepared_utc": "2026-11-04T12:05:01.447240+00:00",
+    "source_plan": {
+      "path": "build/evaluations/20261104-114729-969448/results.json",
+      "sha256": "68b810c6968d78702a6a28e9c59b9f80bf3fe4530ae0048242a28cb50040214f"
+    },
+    "wrapper_sha256": "f88b8bcd92ef12a7d5f5e5e8f1634b169bd152c1aaca7242d5f7b89a030b4889",
+    "client": {
+      "path": ".tools/codex-0.165.0/node_modules/@openai/codex-win32-x64/vendor/x86_64-pc-windows-msvc/bin/codex.exe",
+      "sha256": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "version": "0.165.0",
+      "code_mode_host_sha256": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    },
+    "proxy": {
+      "path": "dist/0.1.0-dev.5/20261031-071533-585/reflow_0.1.0-dev.5_windows_amd64/reflow.exe",
+      "sha256": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7",
+      "version": "0.1.0-dev.5",
+      "release_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008"
+    },
+    "scope": "One paired fixed-command scheduler evaluation; off then on, one session each. Stop before the next session after any non-clean trial or protected-source change. No automatic rerun if continuation does not occur.",
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "max_sessions": 2,
+    "concurrency": 1,
+    "timeout_per_session_seconds": 180,
+    "interval_seconds": 30,
+    "on_max_continue": 1,
+    "native_subagents_enabled": false,
+    "new_api_key_use": false,
+    "desktop_dot_included": false,
+    "source_push_included": false,
+    "production_modified": false
+  },
+  "execution": {
+    "kind": "paired_task_evaluation",
+    "seed": 17,
+    "model": "gpt-6.1-sol",
+    "effort": "high",
+    "timeout_seconds": 180,
+    "live_execution": true,
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "code_mode_enabled": true,
+    "interval_seconds": 30,
+    "workspace_smoke_check": true,
+    "fixed_workspace_commands": true,
+    "starter_variant": "seeded",
+    "stop_on_continuation_success": false,
+    "runner_sha256": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95",
+    "task_sources": {
+      "tasks.py": "7ebbf99e727af7e1653346e88c47c301dcadddcccb552a05748edfd0252cd95c",
+      "score.py": "81aa881a94e87143c4a5ecab2fbbbe227cdedb9c0913e10e041c1dbca361911d",
+      "prompts.json": "e6c48ff9fa6a46f67f92a1f0f8bc12f28fb768dcda664a375264f5f0e0430079",
+      "client_preflight.py": "f235387d8173da4d693c1887c96a0a101cffa6b929942e00b0f2f46751ae11d8",
+      "ledger_task.py": "e0bae726cfe98435f6e05a4d93f42e533b2eff913fa93174f9f6f2bdb09c0e08",
+      "event_diagnostics.py": "0a092b243cc347dc61dbf22309ece5bb7ed554102c41e949f22d64ff4530678f",
+      "workspace_fixture.py": "1eb8185478cc15cbb7881603ef84c33eab25e5a8b12ddc4c684b6112466fbb77",
+      "fold_diagnostics.py": "f137a17d1174806f353a16c3a9fb0ee20971e92fbf003f4c9106e392bacde877",
+      "scheduler_task.py": "9d1451b13f02dcd4784828785a5c801c9626094baa17efa6bd798656838f0ea9",
+      "acceptance.py": "6e17667171ec4b60726d20e8226897990e21643dc7ff036432c2ce909bdb706c"
+    },
+    "trials": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "off",
+        "max_continue": 0
+      },
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1
+      }
+    ],
+    "results": [
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "off",
+        "max_continue": 0,
+        "starter_variant": "seeded",
+        "initial_solution_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 52.842,
+        "client_reported_usage": {
+          "input_tokens": 68089,
+          "cached_input_tokens": 62976,
+          "output_tokens": 1243,
+          "reasoning_output_tokens": 721
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 2,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 7.86,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 8.49,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.49,
+            "counter_probe_finished_seconds": 8.523,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 9.652,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 9.652,
+            "counter_probe_finished_seconds": 9.671,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 38.911,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 42.217,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.217,
+            "counter_probe_finished_seconds": 42.239,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 42.456,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 42.456,
+            "counter_probe_finished_seconds": 42.473,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 44.621,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 44.621,
+            "counter_probe_finished_seconds": 44.643,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 45.537,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 45.537,
+            "counter_probe_finished_seconds": 45.556,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 48.108,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 6,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 4,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 4,
+          "failed": 0,
+          "usage_reports": 4,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 68089,
+          "output_tokens": 1243,
+          "cached_tokens": 62976,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 721,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 0,
+            "rule_not_matched": 0,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            721,
+            0,
+            0
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 68089,
+          "output_tokens": 1243,
+          "cached_tokens": 62976,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 721
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true,
+          "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+          "reader_unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      },
+      {
+        "task": "scheduler",
+        "repeat": 0,
+        "condition": "on",
+        "max_continue": 1,
+        "starter_variant": "seeded",
+        "initial_solution_sha256": "d0ac7586009ee620116a44d57ccbd7cde1be5bc122e7c1ec5c6ef44986ceec2b",
+        "status": "finished",
+        "exit_code": 0,
+        "elapsed_seconds": 61.638,
+        "client_reported_usage": {
+          "input_tokens": 67437,
+          "cached_input_tokens": 62592,
+          "output_tokens": 1313,
+          "reasoning_output_tokens": 787
+        },
+        "completed_turns": 1,
+        "error_events": 0,
+        "command_events": 2,
+        "file_change_events": 1,
+        "tool_failure_events": 0,
+        "rate_limit_detected": false,
+        "event_trace": [
+          {
+            "at_seconds": 8.173,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 8.412,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 8.412,
+            "counter_probe_finished_seconds": 8.432,
+            "proxy_counters": {
+              "requests": 1,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 9.32,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 1,
+            "counter_probe_started_seconds": 9.32,
+            "counter_probe_finished_seconds": 9.34,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 1,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 51.137,
+            "event": "item.completed",
+            "kind": "agent_message"
+          },
+          {
+            "at_seconds": 51.157,
+            "event": "item.started",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 51.157,
+            "counter_probe_finished_seconds": 51.176,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 51.401,
+            "event": "item.completed",
+            "kind": "file_change",
+            "tool_ordinal": 2,
+            "counter_probe_started_seconds": 51.401,
+            "counter_probe_finished_seconds": 51.42,
+            "proxy_counters": {
+              "requests": 2,
+              "completed": 2,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed"
+          },
+          {
+            "at_seconds": 53.661,
+            "event": "item.started",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 53.661,
+            "counter_probe_finished_seconds": 53.68,
+            "proxy_counters": {
+              "requests": 3,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "in_progress"
+          },
+          {
+            "at_seconds": 54.517,
+            "event": "item.completed",
+            "kind": "command_execution",
+            "tool_ordinal": 3,
+            "counter_probe_started_seconds": 54.517,
+            "counter_probe_finished_seconds": 54.536,
+            "proxy_counters": {
+              "requests": 4,
+              "completed": 3,
+              "continuations": 0,
+              "continued_tool_responses": 0,
+              "continued_tool_calls": 0,
+              "continued_tool_results": 0,
+              "tool_tracking_drops": 0
+            },
+            "status": "completed",
+            "exit_code": 0
+          },
+          {
+            "at_seconds": 57.728,
+            "event": "item.completed",
+            "kind": "agent_message"
+          }
+        ],
+        "event_trace_truncated": false,
+        "event_diagnostics": {
+          "version": 1,
+          "counter_probes": 6,
+          "counter_probe_errors": 0,
+          "counter_probes_disabled": false,
+          "failure_marker_counts": {
+            "python_assertion": 0,
+            "python_syntax": 0,
+            "python_import": 0,
+            "python_name_or_type": 0,
+            "python_value_or_key": 0,
+            "powershell_parser": 0,
+            "command_unavailable": 0,
+            "permission_denied": 0,
+            "unclassified": 0
+          },
+          "tool_id_tracking_drops": 0,
+          "unfinished_tracked_tools": 0
+        },
+        "upstream_metrics": {
+          "requests": 4,
+          "continuations": 0,
+          "warmups": 1,
+          "completed": 4,
+          "failed": 0,
+          "usage_reports": 4,
+          "parse_errors": 0,
+          "unsupported_responses": 0,
+          "input_tokens": 67437,
+          "output_tokens": 1313,
+          "cached_tokens": 62592,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 787,
+          "continued_tool_responses": 0,
+          "continued_tool_calls": 0,
+          "continued_tool_results": 0,
+          "tool_tracking_drops": 0,
+          "fold_diagnostics_valid": true,
+          "diagnostics_version": 1,
+          "fold_decisions": {
+            "continue": 0,
+            "rule_not_matched": 4,
+            "no_encrypted_content": 0,
+            "max_continue": 0,
+            "unresolved_parent": 0,
+            "upstream_tool_already_executed": 0,
+            "upstream_terminal": 0,
+            "other": 0
+          },
+          "reasoning_token_samples": [
+            0,
+            787,
+            0,
+            0
+          ],
+          "reasoning_sample_drops": 0,
+          "reasoning_missing_reports": 0,
+          "usage_complete": true,
+          "scope": "streaming_responses"
+        },
+        "upstream_reported_usage": {
+          "input_tokens": 67437,
+          "output_tokens": 1313,
+          "cached_tokens": 62592,
+          "cache_write_tokens": 0,
+          "reasoning_tokens": 787
+        },
+        "model_evidence_valid": true,
+        "upstream_inference_observed": true,
+        "tool_roundtrip_metrics_available": true,
+        "continuation_tool_result_observed": false,
+        "mode": "live",
+        "artifact_changed": true,
+        "workspace_fixture": {
+          "enabled": true,
+          "checker_sha256": "870aeb0be7fa038249def6e3a64ca355646b865179fab40599dca9bf9b697e16",
+          "unchanged": true,
+          "reader_sha256": "1d159c2ed1923a5bcc5ae9eda6e909c30fa9c9ba83da4cb4dcc956dc3d778739",
+          "reader_unchanged": true
+        },
+        "score": {
+          "status": "scored",
+          "total": 18,
+          "passed": 18,
+          "failed": []
+        },
+        "success": true
+      }
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "binary_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7"
+    }
+  },
+  "invariants": {
+    "status": "runner_returned",
+    "started_utc": "2026-11-04T12:06:41.091403+00:00",
+    "finished_utc": "2026-11-04T12:09:11.081740+00:00",
+    "trial_concurrency": 1,
+    "native_subagents_enabled": false,
+    "max_sessions": 2,
+    "sessions_started": 2,
+    "completed_conditions": [
+      "off",
+      "on"
+    ],
+    "execution_preflight": {
+      "kind": "windows_mxc",
+      "status": "pass",
+      "code_mode_host_present": true,
+      "code_mode_host_launchable": true,
+      "command_write_verified": true,
+      "workspace_write_verified": true,
+      "exit_code": 0,
+      "timed_out": false,
+      "model_calls": 0,
+      "native_filesystem_write_verified": true,
+      "out_of_workspace_write_blocked": true,
+      "native_filesystem_reason": "pass"
+    },
+    "native_login_precheck": true,
+    "protected_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "remaining_trial_profiles": 0,
+    "remaining_preflight_profiles": 0,
+    "remaining_exact_executable_processes": {
+      "codex": 0,
+      "reflow": 0,
+      "code_mode_host": 0
+    },
+    "binary_sha256_after": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "reflow": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    },
+    "clean_pair_completed": true
+  },
+  "auth_type_verification": {
+    "same_as_executed_auth_fingerprint": true,
+    "auth_mode_chatgpt": true,
+    "explicit_api_key_present": false
+  },
+  "clean_trials": [
+    true,
+    true
+  ],
+  "same_initial_solution_and_fixed_files": true,
+  "completed_paired_execution": true,
+  "continuation_observed": false,
+  "strict_native_continuation_acceptance": false,
+  "quality_or_speed_benefit_established": false,
+  "interpretation": "Both tasks completed 18/18 with zero observed errors, but the on condition recorded four rule_not_matched decisions. No continuation was activated. A single fixed-order pair cannot establish quality or speed effects. This clean audit does not replace the earlier continued sample with its failed production-config invariant.",
+  "totals": {
+    "sessions": 2,
+    "observed_inference_requests": 8,
+    "continuations": 0,
+    "input_tokens": 135526,
+    "cached_input_tokens": 125568,
+    "output_tokens": 2556,
+    "reasoning_tokens": 1508,
+    "warmups": 2
+  },
+  "raw_prompt_answer_command_or_credentials_saved": false,
+  "api_key_used": false,
+  "production_integration": false,
+  "desktop_dot_tested": false,
+  "additional_sampling_or_reruns": 0,
+  "evidence_sources": [
+    {
+      "path": "build/evaluations/20261104-120641-094148/results.json",
+      "sha256": "3661becf3bef7160e8e68aaf71200d3ddc83b75b3ad93656e58160785cf0c5d7",
+      "bytes": 17432
+    },
+    {
+      "path": "build/evaluations/20261104-114729-969448/results.json",
+      "sha256": "68b810c6968d78702a6a28e9c59b9f80bf3fe4530ae0048242a28cb50040214f",
+      "bytes": 1728
+    },
+    {
+      "path": "build/native-pair-preparation-20261104/proposal.json",
+      "sha256": "f92bb15ebd8394e9d038ae3cc8b3fd1ba20ba7ac3844d3e5ec97e969f59a68c8",
+      "bytes": 1598
+    },
+    {
+      "path": "build/live-native-pair-dev5-20261104/authorization.json",
+      "sha256": "81723f08925930b1de7ef017fbb3cc3f376ea266c448465a51f28f79fa7b4c91",
+      "bytes": 632
+    },
+    {
+      "path": "build/live-native-pair-dev5-20261104/invariants.json",
+      "sha256": "f740eeede038fa390572f0d4a1c00db66dc26a41c6498b07e68a1ae14c0b40c7",
+      "bytes": 2328
+    },
+    {
+      "path": "build/live-native-pair-dev5-20261104/auth-type-verification.json",
+      "sha256": "e92ae303eb0db90845d9b1c0146352a492d840255cea4c1836b67ea7048d2a15",
+      "bytes": 119
+    },
+    {
+      "path": "build/run-native-pair-dev5-20261104.py",
+      "sha256": "f88b8bcd92ef12a7d5f5e5e8f1634b169bd152c1aaca7242d5f7b89a030b4889",
+      "bytes": 10167
+    }
+  ]
+}

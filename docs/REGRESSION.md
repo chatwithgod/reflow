@@ -39,3 +39,5 @@ Magpie 的 `scripts/check-magpie.py` 支持 `--phase suite --race`，可用 `--c
 2026-10-31 新增独立的 `scripts/check-magpie-external.py`，在固定且未修改的 Magpie checkout 前启动独立 Reflow，串行运行 7 场景普通/race、账号故障和标准模式对照。Reflow 与 Magpie 两侧均启用 race；原生客户端、真实账号及完整宿主测试不在此范围。该入口尚未接入 CI，命令及通过记录见[外置方案](../adapters/magpie/EXTERNAL.md)。本地完整 Reflow 普通/race 各 90 通过、4 跳过，vet 通过；使用当前项目文件的隔离副本，避免收进 build 目录中的历史故障样本。
 
 随后 `3e0ea18` 的 main 与 `v0.1.0-dev.5` 标签常规 CI 均在三平台通过，普通/race 各 90 通过、4 跳过，vet/fuzz 与评测自检通过。原生 CI 的已知宿主失败没有转为通过。发布构件与特定 CI 二进制的散列对应关系见[发布记录](RELEASE-0.1.0-dev.5.md)。
+
+2026-11-04，文档提交 `6d6cfbf` 的[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641884)三平台通过，普通/race 仍各 90 通过、4 跳过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641810)普通/race 各 14 项通过，Ubuntu/macOS 的写入五场景和 Pi 探针普通/race 各 4 项也通过；托管 Windows 保留旧写入失败。源码和工作流未改，Ubuntu 新通过的原因尚未确定，旧失败保留。完整模拟结果见[本轮证据](evidence/documentation-ci-2026-11-04.json)，与另外的真实账号测试分开计算。

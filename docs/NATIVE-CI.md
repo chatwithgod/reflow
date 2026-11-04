@@ -2,11 +2,27 @@
 
 原有 `offline.yml` 会在没有安装客户端时跳过 Codex CLI、app-server、Pi 和插件联调。新增的 `native-clients.yml` 专门运行这四组测试，并增加原生写文件探针。缺少客户端、测试被跳过或缺少预期测试的完成记录，都会使这条流水线失败。
 
-这条流水线已随 `066973b` 公开并在三个 GitHub runner 执行。macOS arm64 全部通过；Ubuntu amd64 和托管 Windows 的四组客户端普通/race 检查通过，但五个写文件场景全部失败。此前本机 Windows 的成功记录继续保留，不能将两种宿主环境混为一谈。
+这条流水线最初随 `066973b` 公开并在三个 GitHub runner 执行。当时 macOS arm64 全部通过；Ubuntu amd64 和托管 Windows 的四组客户端普通/race 检查通过，但五个写文件场景全部失败。以下保留历史失败，最新结果单列。此前本机 Windows 的成功记录不能与托管 Windows 混为一谈。
 
-后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；默认 Ubuntu 和托管 Windows 的失败结果仍保留。
+后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；当时默认 Ubuntu 和托管 Windows 的失败结果原样保留。
 
-## 最新公开 CI：2026-10-31
+## 最新公开 CI：2026-11-04
+
+文档提交 `6d6cfbf` 经授权推送，运行代码与工作流未改。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641884)三平台通过，普通/race 各 90 通过、4 跳过，vet/fuzz、评测器与宿主控制自检通过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641810)结果如下：
+
+| 平台 | 客户端普通/race | 原有写入场景 | Pi 探针普通/race | 整体 |
+| --- | --- | --- | --- | --- |
+| Ubuntu amd64 runner | 各 14 通过 | 5/5 通过 | 各 4 通过 | 通过 |
+| 托管 Windows amd64 | 各 14 通过 | 0/5 通过 | 写入失败后未执行 | 失败 |
+| macOS arm64 runner | 各 14 通过 | 5/5 通过 | 各 4 通过 | 通过 |
+
+写入场景含父测试共 6 个测试项。Windows 的失败名称和固定错误标记与旧记录一致；其后续二进制未变及临时目录清理的最终检查未执行，不能补写为通过。Ubuntu/macOS 的这些最终检查均通过。
+
+Ubuntu 本次从失败转为通过，但原因未确定。与 10 月 31 日标签运行相比，固定客户端与 Code Mode host 二进制、CI 源码输入、已记录内核版本及全局 namespace 设置相同；通用 user/mount/network namespace 对照仍被拒绝，直接 Codex 沙箱命令则从失败转为成功。工作流未修改宿主配置。这些记录不足以证明具体环境变化，也不能把通过归因于文档提交或推广到所有 Linux 主机。
+
+三个原生任务实际串行执行，并发 1，没有重跑或手动调度，真实模型调用 0。整体原生 CI 因 Windows 失败仍为失败；未发现新增失败。完整计数、时间区间、来源散列及 Ubuntu 比较见[本轮证据](evidence/documentation-ci-2026-11-04.json)。这里的模拟 CI 与另行记录的[真实开关对照](LIVE-SCHEDULER-PAIR-2026-11-04.md)分开计算。
+
+## 2026-10-31 公开检查点
 
 经用户授权，13 个提交已推送至 `304a67c`。本轮[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41125692514)三平台全部通过，普通/race 各 80 通过、4 跳过，vet、fuzz、合成评测和宿主控制自检通过；Ubuntu 的 34 项宿主控制检查全部执行，Windows/macOS 跳过其中 3 项 Linux 专用检查。
 
@@ -116,7 +132,7 @@ python scripts/check-native-clients.py
 
 ## 验收边界
 
-macOS arm64 的结果覆盖所测官方客户端、Pi 和 ZIP 解压包；Ubuntu amd64 在上述固定发行版配置下也已完成同范围验证，默认宿主上的失败没有改写。托管 Windows 的写入失败仍未解决，Linux arm64 和 macOS amd64 也未新增原生运行证据。这些结果只证明所覆盖的客户端与打包构件在合成登录、本地上游及指定宿主条件下可用；真实续接后的工具成功和正常结束、真实 Token 刷新及 Desktop/dot 仍需各自的验收证据。
+macOS arm64 的结果覆盖所测官方客户端、Pi 和 ZIP 解压包；Ubuntu amd64 除历史固定配置对照外，11 月 4 日的默认 runner 也通过同范围检查，旧失败没有改写。托管 Windows 的写入失败仍未解决，Linux arm64 和 macOS amd64 也未新增原生运行证据。这些结果只证明所覆盖的客户端与打包构件在合成登录、本地上游及指定宿主条件下可用；真实续接、Token 刷新及 Desktop/dot 仍按各自证据判断，不能用模拟 CI 替代。
 
 这条流水线没有增加真实会话，不使用现有登录文件或真实验证的一次性入口。CI 结束时累计值仍为 7 次真实会话、40 次观察到的推理请求、1 次续接。之后另获授权执行的官方 `0.165.0` 单次真实验证单独记在 [官方版实测](LIVE-OFFICIAL-0165-2026-10-29.md)，不计入本页离线 CI 结果。
 

@@ -1,0 +1,618 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-04T12:32:21.021840+00:00",
+  "date_local": "2026-11-04",
+  "ci": {
+    "date_local": "2026-11-04",
+    "timezone": "Asia/Shanghai",
+    "recorded_utc": "2026-11-04T11:36:50.766781+00:00",
+    "published_head": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+    "published_commits": [
+      "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b"
+    ],
+    "commit_count": 1,
+    "remote_head_verified": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+    "automatic_runs": [
+      {
+        "id": 41820641810,
+        "name": "Native client fixtures",
+        "head_sha": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41820641810",
+        "created_at": "2026-11-04T11:24:50Z",
+        "updated_at": "2026-11-04T11:33:04Z"
+      },
+      {
+        "id": 41820641884,
+        "name": "Offline regression",
+        "head_sha": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41820641884",
+        "created_at": "2026-11-04T11:24:50Z",
+        "updated_at": "2026-11-04T11:27:24Z"
+      }
+    ],
+    "offline_results": [
+      {
+        "name": "offline (macos-latest)",
+        "job_id": 126542604131,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "506ae2859ed69e5c78e6baf9436bbce7748fe9a9794999b5c0a3a24d74c797ea",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "job_id": 126542604600,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "1032b4cc7ebae69ed2f184d7d83167e2bc68275570f3508f1e858e6db6a92a2c",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (windows-latest)",
+        "job_id": 126542604755,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "30c1afb9d2bb5fbd55546679c605d952b6361763dfdbda87aeedcced8ad02db6",
+        "raw_log_persisted": false
+      }
+    ],
+    "native_platforms": {
+      "ubuntu": {
+        "platform": "linux/amd64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "034365f17a2bece022628d1bc3f5eded2dd5505b202d20f46864ac356bfd5eaf",
+        "artifact_id": 13317385590,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      },
+      "windows": {
+        "platform": "windows/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "d55a532c912e6fa1b941521a83017c19408b960e887458d5ae829e70ad1f2f19",
+        "artifact_id": 13316209694,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "macos": {
+        "platform": "darwin/arm64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "ddaacb177836633be34daae9f14b0bc602307f09985c6f2091d6bf352fdeba50",
+        "artifact_id": 13317606492,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      }
+    },
+    "native_execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_at": "2026-11-04T11:24:55Z",
+        "completed_at": "2026-11-04T11:26:57Z",
+        "conclusion": "success"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_at": "2026-11-04T11:27:00Z",
+        "completed_at": "2026-11-04T11:30:12Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_at": "2026-11-04T11:30:15Z",
+        "completed_at": "2026-11-04T11:33:03Z",
+        "conclusion": "success"
+      }
+    ],
+    "native_max_parallel": 1,
+    "native_execution_overlapped": false,
+    "new_observed_failures": false,
+    "new_observed_host_passes": [
+      "ubuntu"
+    ],
+    "model_calls": 0,
+    "manual_workflow_dispatches": 0,
+    "workflow_reruns": 0,
+    "new_upstream_messages": 0,
+    "external_magpie_chain_in_automatic_ci": false,
+    "goal_complete": false
+  },
+  "ubuntu_comparison": {
+    "platform": "ubuntu",
+    "old_source_commit": "3e0ea1858d1af83a5efe156be101e50b1713d008",
+    "new_source_commit": "6d6cfbfcb32fb9ab46cf65be512558b5e035a85b",
+    "old_summary_sha256": "3ce0d8ef242de336da5a31eb12b82b47e0f047a35727396492b97ea41048bafa",
+    "new_summary_sha256": "034365f17a2bece022628d1bc3f5eded2dd5505b202d20f46864ac356bfd5eaf",
+    "client_binaries_equal": true,
+    "ci_source_inputs_equal": true,
+    "old_host": {
+      "host_configuration_modified": false,
+      "kernel_release": "7.0.0-1017-azure",
+      "kernel_settings": {
+        "kernel/apparmor_restrict_unprivileged_userns": 1,
+        "kernel/unprivileged_userns_clone": 1,
+        "user/max_user_namespaces": 58121
+      },
+      "parent_apparmor_unconfined": true,
+      "namespace_controls": {
+        "user": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        },
+        "user_mount": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        },
+        "user_network": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        }
+      },
+      "native_sandbox_command": {
+        "status": "fail",
+        "exit_code": 1,
+        "timed_out": false,
+        "stdout_bytes": 0,
+        "stderr_bytes": 61,
+        "matching_output": {
+          "operation_not_permitted": 1,
+          "bubblewrap": 1
+        },
+        "workspace_marker_verified": false
+      }
+    },
+    "new_host": {
+      "host_configuration_modified": false,
+      "kernel_release": "7.0.0-1017-azure",
+      "kernel_settings": {
+        "kernel/apparmor_restrict_unprivileged_userns": 1,
+        "kernel/unprivileged_userns_clone": 1,
+        "user/max_user_namespaces": 58121
+      },
+      "parent_apparmor_unconfined": true,
+      "namespace_controls": {
+        "user": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        },
+        "user_mount": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        },
+        "user_network": {
+          "status": "fail",
+          "exit_code": 1,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 66,
+          "matching_output": {
+            "operation_not_permitted": 1,
+            "namespace_setup": 1,
+            "uid_gid_mapping": 1
+          }
+        }
+      },
+      "native_sandbox_command": {
+        "status": "pass",
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "matching_output": {},
+        "workspace_marker_verified": true
+      }
+    },
+    "new_checks": {
+      "native": {
+        "pass": 14,
+        "skip": 0,
+        "fail": 0
+      },
+      "race": {
+        "pass": 14,
+        "skip": 0,
+        "fail": 0
+      },
+      "write": {
+        "pass": 6,
+        "skip": 0,
+        "fail": 0
+      },
+      "pi_probe": {
+        "pass": 4,
+        "skip": 0,
+        "fail": 0
+      },
+      "pi_probe_race": {
+        "pass": 4,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "interpretation": "A new unmodified-runner pass was observed with the same pinned client binaries and CI source inputs. General namespace controls and recorded global settings remain unchanged. This is not proof of the specific environmental cause or of all Linux hosts being fixed."
+  },
+  "change_scope": "Fourteen Markdown/JSON files only; runtime and workflows unchanged.",
+  "ubuntu_pass_cause_established": false,
+  "all_linux_hosts_accepted": false,
+  "historical_tag_failures_preserved": true,
+  "evidence_sources": [
+    {
+      "path": "build/push-6d6cfbf-20261104/ci-summary.json",
+      "sha256": "ccbcd61a9c66db973d93625238bcd552f9a25f3e7058eeda807eac8a84a77ebf",
+      "bytes": 12444
+    },
+    {
+      "path": "build/push-6d6cfbf-20261104/ubuntu-new-pass.json",
+      "sha256": "ce99fbe2858bc35d8ed936e3ba3c1f77e2399e9f1296f491e107d2554af7ec23",
+      "bytes": 4311
+    },
+    {
+      "path": "build/push-6d6cfbf-20261104/artifacts/ubuntu/summary.json",
+      "sha256": "034365f17a2bece022628d1bc3f5eded2dd5505b202d20f46864ac356bfd5eaf",
+      "bytes": 11949
+    },
+    {
+      "path": "build/push-6d6cfbf-20261104/artifacts/windows/summary.json",
+      "sha256": "d55a532c912e6fa1b941521a83017c19408b960e887458d5ae829e70ad1f2f19",
+      "bytes": 13866
+    },
+    {
+      "path": "build/push-6d6cfbf-20261104/artifacts/macos/summary.json",
+      "sha256": "ddaacb177836633be34daae9f14b0bc602307f09985c6f2091d6bf352fdeba50",
+      "bytes": 10682
+    }
+  ]
+}
