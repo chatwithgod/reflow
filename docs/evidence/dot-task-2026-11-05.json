@@ -1,0 +1,214 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-11-05T00:37:19.113795+00:00",
+  "source_commit": "24c1a0fcf407f60668fbf4376c9b029deed79fe6",
+  "scope": "Dot device identity audit, one authorized local-task attempt that failed during project assignment, verified manual authorization restoration, and an offline correction to the test launcher.",
+  "versions": {
+    "desktop_appx": "26.1029.7803.0",
+    "backend": "0.166.0-alpha.6",
+    "reflow": "0.1.0-dev.5"
+  },
+  "identity_audit": {
+    "separate_original_and_isolated_installation_id_hashes": true,
+    "separate_original_and_isolated_exec_server_processes": true,
+    "user_observed_isolated_allow_access_before_grant": true
+  },
+  "authorized_trial": {
+    "user_prompts_sent": 1,
+    "native_concurrency_limit": 1,
+    "local_model_seconds": 180,
+    "max_extra_continuations_per_round": 1,
+    "automatic_relaunch": false,
+    "api_key_used": false,
+    "test_device_access_user_confirmed": true,
+    "dot_acknowledged_creation_then_reported_internal_error": true,
+    "project_assignment_error": {
+      "method": "taskProject/assign",
+      "error_type": "Error",
+      "fixed_message": "thread not loaded: <id>"
+    },
+    "isolated_or_original_native_state_database_contains_errored_thread_id": false,
+    "native_model_request_observed": false,
+    "local_model_timer_started": false,
+    "last_observed_metrics_before_proxy_stop": {
+      "requests": 0,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 0,
+      "failed": 0,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "native_rollout_counts": {
+      "turns_started": 0,
+      "turns_completed": 0,
+      "turn_errors": 0,
+      "command_results": 0,
+      "command_failures": 0,
+      "final_messages": 0,
+      "verified_model_contexts": 0
+    },
+    "probe_marker_received": false,
+    "file_read_verified": false,
+    "cloud_model_call_count_known": false,
+    "cloud_task_completion_proven": false
+  },
+  "cleanup": {
+    "stop_reason": "requested_stop",
+    "proxy_stopped": true,
+    "trial_desktop_processes_remaining": 0,
+    "restore_desktop_processes_remaining": 0,
+    "owned_root_and_proxy_pids_absent_on_recheck": true,
+    "isolated_config_exactly_restored_after_trial": true,
+    "isolated_config_exactly_restored_after_restoration": true,
+    "fixture_files_unchanged": {
+      "dot_probe.txt": true,
+      "read_dot_probe.py": true,
+      "AGENTS.md": true,
+      "read_fixture.py": true,
+      "verify_fixture.py": true,
+      "solution.py": true
+    },
+    "production_files_unchanged_during_trial": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "production_files_unchanged_during_restoration": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "user_confirmed_test_access_revoked": true,
+    "user_confirmed_original_computer_online_and_authorized": true,
+    "device_restoration_is_user_observation": true
+  },
+  "test_harness_correction": {
+    "prior_force_cli_flag_disabled_cloud_websocket_selection": true,
+    "cloud_project_assignment_reads_durable_host": true,
+    "new_candidate_removes_force_cli_flag": true,
+    "explicit_local_cli_and_isolated_profile_preserved": true,
+    "installed_route_selector_fixture_checks_passed": 6,
+    "cloud_host_classifier_in_fixture_is_synthetic": true,
+    "windows_local_daemon_excluded_by_installed_source": true,
+    "startup_and_restore_preflight_passed": true,
+    "fixed_reader_verified_offline": true,
+    "production_code_or_installed_app_changed": false,
+    "new_live_trial_run": false,
+    "causal_live_verification_complete": false,
+    "offline_route_details": {
+      "route_function_sha256": "2486e8c6a066c91e1af938503b409efa2e1a5df45e96c512936624653fe43224",
+      "local_route_function_sha256": "8c2c9ff0aba3c7fc26236624d1fe7d623b95572445fb318c76d8ab28d7dc9f51",
+      "installed_main_chunk_sha256": "c16675e64dae86bdb09f7720f038a8c2f2beacf0e85bbadd369f407d38662aa4",
+      "installed_transport_chunk_sha256": "db838cd7b1ac94f74a732e3f3438b69a6f233b799222b054db35f90b9d4a5dc7",
+      "route_check": {
+        "cases": [
+          {
+            "name": "old_flag_cloud",
+            "passed": true,
+            "websocket_selected": false
+          },
+          {
+            "name": "old_flag_local",
+            "passed": true,
+            "websocket_selected": false
+          },
+          {
+            "name": "fixed_cloud",
+            "passed": true,
+            "websocket_selected": true
+          },
+          {
+            "name": "fixed_local",
+            "passed": true,
+            "websocket_selected": false
+          },
+          {
+            "name": "fixed_cloud_without_url",
+            "passed": true,
+            "websocket_selected": false
+          },
+          {
+            "name": "fixed_local_explicit_ws_fixture",
+            "passed": true,
+            "websocket_selected": true
+          }
+        ],
+        "passed": true,
+        "network_connections": 0,
+        "desktop_launched": false
+      },
+      "candidate_environment_checks": {
+        "force_cli_absent": true,
+        "local_websocket_override_absent": true,
+        "isolated_home_preserved": true,
+        "explicit_installed_cli_preserved": true,
+        "isolated_electron_profile_preserved": true,
+        "api_key_absent": true,
+        "access_token_override_absent": true
+      }
+    }
+  },
+  "acceptance": {
+    "dot_entry_and_basic_reply_previous_evidence_retained": true,
+    "dot_local_task_execution": false,
+    "dot_inference_through_reflow": false,
+    "desktop_real_continuation": false,
+    "goal_complete": false
+  },
+  "privacy": {
+    "raw_task_or_reply_bodies_exported": false,
+    "raw_device_or_thread_ids_exported": false,
+    "random_marker_exported": false
+  },
+  "official_references": [
+    "https://learn.chatgpt.com/docs/dots/computers-and-apps",
+    "https://learn.chatgpt.com/docs/dots/tasks-and-memory",
+    "https://learn.chatgpt.com/docs/enterprise/cloud-local-access"
+  ],
+  "local_source_record_sha256": {
+    "dot-device-inspect-state.json": "85f7ef5d5114354eac6a9620af2fd818e30b0d126d071b73e68c546dde8c5f27",
+    "dot-device-inspect-user-observation.json": "7b6bdc3c85f226750f99c5f9e0ea3822d78abec75ce8330347ae8673978e619f",
+    "dot-device-runtime-snapshot.json": "7034f20a30444a281c361fd46055d6c2a3bde435feefe6b4159fc9b4b3b7b06e",
+    "dot-task-preparation.json": "1cc72468e7adf082ec2d76a4e4a58fca7c89d27bac8675ed5d0c1ba406c24691",
+    "dot-task-device-authorization.json": "a81047ece90be391a5f51d76672a65aea4d7762c246ca416b7cc6d40c2e1e0a2",
+    "dot-task-device-connected.json": "961c8de3bf60031835199dab205209f1030d6b24e35b56caa47a663953117191",
+    "dot-task-state.json": "ede21407ef4e5e8cfaa08df3239eac8daa89a9fde740eb9b074088529c63b644",
+    "dot-task-user-result.json": "11e3abbf12b0837348e07b4158c901a7d51c95b23dbf752acaaa7c22e614df8c",
+    "dot-task-project-assignment-error.json": "7dfbe9e781469de9606113594c76eeac9d2c7fd72f51e1d9ae71374b7d353426",
+    "dot-task-errored-thread-location.json": "6a5cd7ba631ceed95ad9cd8cdae85f496cb85150301ab5d6c2d6a55981a2c6ca",
+    "dot-device-restore-state.json": "ea2ecb48078ba933d67e56b0a1db5b90fa7a74f123392ccc1f8514bb854b6bf8",
+    "dot-task-device-restoration-observation.json": "2544557f0fcb4b0931a6ba7e690fd55f1574df00a101f92a9f58d8e85bf358cf",
+    "dot-cloud-route-offline-correction.json": "6006ed15a13ea21d0d8b1584b868c4521e0fd680814ee5192b01d6ff14eb6a5a",
+    "dot-task-v2-preparation.json": "50c800d345350adc5718f82fdd0cf31096259e156ce8e42f795f3ffcab31d434"
+  },
+  "local_source_records_frozen": true
+}

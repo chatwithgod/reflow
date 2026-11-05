@@ -46,7 +46,7 @@ Codex 使用固定源码加已合并的上游 Windows 修复，不是官方发�
 - `CODEX_ELECTRON_USER_DATA_PATH`：在获取单实例锁前设置 Electron 用户数据目录。
 - `CODEX_HOME`：选择 Codex 配置目录；启动环境重载时保留显式值还依赖同时设置上述用户数据目录。
 - `CODEX_CLI_PATH`：指定后端 CLI。
-- `CODEX_APP_SERVER_FORCE_CLI=1`：选择 CLI 后端而非已配置的 WebSocket 地址。
+- `CODEX_APP_SERVER_FORCE_CLI=1`：选择 CLI 后端而非已配置的 WebSocket 地址。11 月 5 日补充：当前 Windows Desktop 中它也会取消云端任务的 WebSocket 路径，不能将其作为 Desktop/dot 隔离启动的通用参数；见[人工验收后续](DESKTOP-DOT-2026-11-05-FOLLOWUP.md)。
 
 这些只是安装包源码观察，未通过 GUI 运行验证，不能据此保证整个桌面状态已隔离。没有生成或执行未验证的桌面启动器。当前自动化工具未提供原生桌面控制，也未暴露 Dot 浏览器操作入口；这不表示产品没有 dot 入口。专用 Codex 工具也未提供可用的正常文本会话 UI 控制路径。
 
