@@ -1,0 +1,324 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "timezone": "Asia/Shanghai",
+  "recorded_utc": "2026-11-05T02:18:28.050416+00:00",
+  "source_commit": "92a8eb73926a25806bdae7b9f94a01fe171a2159",
+  "scope": "Successful dot local-file challenge after isolated Desktop transport and proxy corrections; not native Reflow inference or continuation acceptance.",
+  "versions": {
+    "desktop_appx": "26.1029.7803.0",
+    "backend": "0.166.0-alpha.6",
+    "reflow": "0.1.0-dev.5",
+    "offline_fixture_packaged_node": "v24.22.1"
+  },
+  "isolation_and_authorization": {
+    "local_physical_computers_tested": 1,
+    "original_and_test_are_profiles_on_same_windows_computer": true,
+    "separate_profile_and_executor_registration_records_observed": true,
+    "separate_physical_computers_claimed": false,
+    "filesystem_permission_isolation_proven": false,
+    "user_requested_device_authorization_retained": true,
+    "permission_changes_requested_during_successful_trial": false,
+    "authorization_revocation_or_original_connection_restoration_claimed_after_successful_trial": false
+  },
+  "earlier_corrected_transport_trial": {
+    "local_proxy_metrics_before_stop": {
+      "requests": 0,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 0,
+      "failed": 0,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "failure_stage": "cloud_websocket_before_established",
+    "fixed_error_message": "WebSocket was closed before the connection was established",
+    "file_read_verified": false,
+    "stop_reason": "setup_idle_limit",
+    "remaining_test_processes": 0,
+    "production_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "prior_failure_retained": true
+  },
+  "offline_proxy_check": {
+    "checked_utc": "2026-11-05T01:18:07.579512+00:00",
+    "cases": [
+      {
+        "node": "v24.22.1",
+        "ok": true,
+        "status": 101,
+        "tlsAuthorized": true,
+        "name": "old_socks_env_without_node_switch",
+        "process_exit_code": 0,
+        "proxy_connects": 0,
+        "tls_upgrades": 1,
+        "passed": true
+      },
+      {
+        "node": "v24.22.1",
+        "ok": true,
+        "status": 101,
+        "tlsAuthorized": true,
+        "name": "http_proxy_with_node_switch",
+        "process_exit_code": 0,
+        "proxy_connects": 1,
+        "tls_upgrades": 1,
+        "passed": true
+      },
+      {
+        "node": "v24.22.1",
+        "ok": true,
+        "status": 101,
+        "tlsAuthorized": true,
+        "name": "socks_scheme_falls_back_to_direct",
+        "process_exit_code": 0,
+        "proxy_connects": 0,
+        "tls_upgrades": 1,
+        "passed": true,
+        "direct_fallback_observed": true
+      },
+      {
+        "node": "v24.22.1",
+        "ok": true,
+        "status": 101,
+        "tlsAuthorized": true,
+        "name": "local_endpoint_bypasses_proxy",
+        "process_exit_code": 0,
+        "proxy_connects": 0,
+        "tls_upgrades": 1,
+        "passed": true
+      }
+    ],
+    "passed": true,
+    "only_loopback_listeners_and_forward_targets": true,
+    "fixture_hostname_lookup_pinned_to_loopback": true,
+    "fixture_ca_supplied_per_request": true,
+    "system_trust_store_changed": false,
+    "tls_verification_disabled": false,
+    "real_account_used": false,
+    "real_model_calls": 0,
+    "desktop_launched": false,
+    "does_not_prove_official_cloud_connectivity": true,
+    "first_fixture_expected_an_exception_for_socks_but_observed_direct_fallback": true,
+    "first_failed_expectation_retained_separately": true,
+    "counters": {
+      "proxy_connects": 1,
+      "tls_upgrades": 4,
+      "rejected_proxy_targets": 0
+    }
+  },
+  "no_task_desktop_observation": {
+    "max_window_seconds": 180,
+    "local_model_endpoint_disabled": true,
+    "model_task_sent_by_launcher": false,
+    "websocket_handshake_observed": false,
+    "stop_reason": "time_limit",
+    "remaining_test_processes": 0,
+    "conclusion": "No task connection was triggered during this bounded observation; not a successful or failed cloud connection verdict."
+  },
+  "successful_trial": {
+    "user_requested_model": "gpt-6.1-sol",
+    "user_requested_effort": "high",
+    "actual_cloud_model_and_effort_independently_verified": false,
+    "requested_tasks": 1,
+    "native_concurrency_limit": 1,
+    "local_model_session_limit_seconds": 180,
+    "local_model_timer_started": false,
+    "max_extra_continuations_per_round": 1,
+    "automatic_relaunch": false,
+    "api_key_used": false,
+    "fresh_random_marker_exposed_before_task": false,
+    "user_reported_final_reply_matches_fixture": true,
+    "comparison_ignores_surrounding_whitespace": true,
+    "probe_file_sha256": "fa98be0e238345745f71bd4f11b7397874ea483ac0c5cf02ded30811e4044e92",
+    "fixture_files_unchanged": {
+      "dot_probe.txt": true,
+      "read_dot_probe.py": true,
+      "AGENTS.md": true,
+      "read_fixture.py": true,
+      "verify_fixture.py": true,
+      "solution.py": true,
+      "dot_probe_v2.txt": true,
+      "read_dot_probe_v2.py": true,
+      "dot_probe_v3.txt": true,
+      "read_dot_probe_v3.py": true
+    },
+    "cloud_websocket_handshake_and_connected_state_observed": true,
+    "cloud_connection_timeline": [
+      {
+        "utc": "2026-11-05T01:43:03",
+        "fixed_markers": [],
+        "next_state": "disconnected"
+      },
+      {
+        "utc": "2026-11-05T01:43:05",
+        "fixed_markers": [],
+        "next_state": "disconnected"
+      },
+      {
+        "utc": "2026-11-05T01:43:12",
+        "fixed_markers": [],
+        "next_state": "disconnected"
+      },
+      {
+        "utc": "2026-11-05T01:43:12",
+        "fixed_markers": [],
+        "next_state": "disconnected"
+      },
+      {
+        "utc": "2026-11-05T01:43:32",
+        "fixed_markers": [],
+        "next_state": "connecting"
+      },
+      {
+        "utc": "2026-11-05T01:43:33",
+        "fixed_markers": [],
+        "next_state": "connecting"
+      },
+      {
+        "utc": "2026-11-05T01:43:33",
+        "fixed_markers": [
+          "compression_negotiated"
+        ],
+        "next_state": null
+      },
+      {
+        "utc": "2026-11-05T01:43:34",
+        "fixed_markers": [],
+        "next_state": "connected"
+      },
+      {
+        "utc": "2026-11-05T01:43:34",
+        "fixed_markers": [],
+        "next_state": "connected"
+      }
+    ],
+    "local_proxy_metrics_before_stop": {
+      "requests": 0,
+      "continuations": 0,
+      "continued_tool_responses": 0,
+      "continued_tool_calls": 0,
+      "continued_tool_results": 0,
+      "tool_tracking_drops": 0,
+      "warmups": 0,
+      "completed": 0,
+      "failed": 0,
+      "usage_reports": 0,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "cached_tokens": 0,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 0,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 0,
+        "rule_not_matched": 0,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "metrics_snapshot_is_not_post_cleanup_total": true,
+    "native_rollout_counts": {
+      "turns_started": 0,
+      "turns_completed": 0,
+      "turn_errors": 0,
+      "command_results": 0,
+      "command_failures": 0,
+      "final_messages": 0,
+      "verified_model_contexts": 0,
+      "cloud_transport_errors": 0
+    },
+    "individual_cloud_tool_exit_codes_observed": false,
+    "cloud_model_call_count_and_usage_known": false,
+    "window_wall_seconds": 239.322,
+    "window_time_is_not_model_execution_time": true
+  },
+  "cleanup": {
+    "stop_reason": "requested_stop",
+    "proxy_stopped": true,
+    "remaining_test_processes": 0,
+    "owned_root_and_proxy_absent_on_recheck": true,
+    "isolated_config_exactly_restored": true,
+    "production_files_unchanged": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "device_authorization_retained_per_user_instruction": true,
+    "cleanup_errors": []
+  },
+  "acceptance": {
+    "dot_entry_and_basic_reply": true,
+    "dot_reads_file_on_connected_windows_computer": true,
+    "dot_inference_through_local_reflow_observed": false,
+    "desktop_real_continuation_observed": false,
+    "all_dot_features_verified": false,
+    "goal_complete": false
+  },
+  "privacy": {
+    "raw_task_reply_or_marker_exported": false,
+    "credentials_or_encrypted_reasoning_exported": false
+  },
+  "official_references": [
+    "https://learn.chatgpt.com/docs/dots/computers-and-apps",
+    "https://learn.chatgpt.com/docs/dots/tasks-and-memory",
+    "https://nodejs.org/learn/http/enterprise-network-configuration"
+  ],
+  "local_source_record_sha256": {
+    "dot-task-v2-state.json": "5c79c2d35308644937406b4f071bcda084aa05973147e9b8279e7f3a5155da04",
+    "dot-task-v2-user-result.json": "911985c4be146bc0765ea3d6d2e78a26389e0ab1f4b313ef11762a1b80f03736",
+    "dot-task-v2-current-errors.json": "b4cd4928c1495b7b0a467e7a05e5514290f266d540b25a63bca0d4f9427988eb",
+    "dot-device-restore-v2-state.json": "e882bbfc1feec30cc10d878200298c02cf6c8299ac53aab03a2101f107da4756",
+    "dot-task-v2-user-cleanup-observation.json": "f29c1d3795c0a3424bc7c31f809880c10c7abb598aed74b1d65face27b7d968b",
+    "dot-device-retention-policy.json": "017cbb4b5c7b0f12cbfd39e1992d4779dbbdddb2a237434d8ac032fdc3074bff",
+    "node-proxy-offline-first-result.json": "6ac7dbd1deac817971177877e60d9cfd60e63e15bced4e9cfcc5ee4e0faa002c",
+    "node-proxy-offline-v2-result.json": "ae6cf7ce87781cf84cd8ee1baeeb4018038ff0f7939168e74bfa9472a5c30356",
+    "cloud-connection-check-controller.json": "d34cb228cbf6c018c244738596cc4f24309fc3b595dd2e102415e2246790361a",
+    "cloud-connection-check-state.json": "50be405cfdb1c75f66a6b9c959c564a3516516d30d7371309cf784333d657e54",
+    "dot-task-v3-preparation.json": "b372fd19d69eebc807f5a3cb95fb8d0e7fbc1006bd15a49107ab2af7814a7101",
+    "dot-task-v3-device-authorization.json": "d0691bc5488168090647ed1b25ee03a4b277d09dc6b3361ae6e43859210b241e",
+    "dot-task-v3-state.json": "505bf7a9bc882f24660ba90271b34bfb5c48390f1dac86066c583f003c74ef83",
+    "dot-task-v3-user-result.json": "36df3633b2bbdbc76b10dbdeb4d64bd462ddcff66aaa5a972c7705a33fbf87fb"
+  },
+  "local_source_records_frozen": true
+}

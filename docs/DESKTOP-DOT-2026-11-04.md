@@ -23,7 +23,7 @@
 
 只读检查当前安装包，仍能找到 `CODEX_HOME`、`CODEX_ELECTRON_USER_DATA_PATH`、`CODEX_CLI_PATH` 和 `CODEX_APP_SERVER_FORCE_CLI`。启动代码在单实例锁判断之前选择用户数据目录；环境重载时，保留显式 `CODEX_HOME` 还依赖同时指定 Electron 用户数据目录。
 
-11 月 5 日补充：发现 `CODEX_APP_SERVER_FORCE_CLI=1` 还会取消 dot 云端任务连接，因此新的隔离启动候选移除了该参数，继续显式指定本地 CLI 和配置目录。新候选目前只有离线验证，见[后续记录](DESKTOP-DOT-2026-11-05-FOLLOWUP.md)；以下保留本页准备时的检查范围。
+11 月 5 日补充：发现 `CODEX_APP_SERVER_FORCE_CLI=1` 还会取消 dot 云端任务连接，因此修正的隔离启动环境移除了该参数，继续显式指定本地 CLI 和配置目录。后续再修正 Node 代理环境，dot 已成功读取本机随机标记文件；该次本地 Reflow 推理请求为 0，见[后续记录](DESKTOP-DOT-2026-11-05-FOLLOWUP.md)。以下保留本页准备时的检查范围。
 
 这些是当前包的源码观察，尚未运行 GUI 验证，也不是跨版本稳定接口的承诺。官方文档说明 [CODEX_HOME 可以选择其他配置目录](https://learn.chatgpt.com/docs/agent-configuration/agents-md)，但这不足以证明桌面的全部状态或云端授权一起隔离。
 
