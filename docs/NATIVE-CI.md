@@ -6,7 +6,13 @@
 
 后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；当时默认 Ubuntu 和托管 Windows 的失败结果原样保留。
 
-## 最新公开 CI：2026-11-04
+## 最新公开 CI：2026-11-05
+
+Desktop/dot 的四个文档提交已公开至 `1bece8f`，没有运行代码或工作流改动。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150159)三平台普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150411)三个平台的客户端普通/race 各 14 项通过；Ubuntu/macOS 的五个写入场景和 Pi 普通/race 各 4 项也通过。
+
+托管 Windows 的五个写入场景仍失败，含父测试共 6 项；失败名称和固定错误标记与前一轮 `cb1f747` 一致，后续 Pi 探针未执行。原生 CI 整体仍为失败，未发现新增失败。三个原生任务实际按并发 1 串行执行，无重跑、手动调度或真实模型调用。计数、执行时间区间、已知失败比较及来源散列见[本轮证据](evidence/publication-desktop-dot-2026-11-05.json)。
+
+## 2026-11-04 公开检查点
 
 文档提交 `6d6cfbf` 经授权推送，运行代码与工作流未改。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641884)三平台通过，普通/race 各 90 通过、4 跳过，vet/fuzz、评测器与宿主控制自检通过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641810)结果如下：
 

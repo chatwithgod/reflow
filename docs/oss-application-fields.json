@@ -48,7 +48,7 @@
     "Pi was accepted under the user-selected simulation scope and is not waiting on a real-login test.",
     "No application fields were entered on the website and no support or maintainer-role option was selected."
   ],
-  "latest_offline_ci_record": "evidence/documentation-ci-2026-11-04.json",
+  "latest_offline_ci_record": "evidence/publication-desktop-dot-2026-11-05.json",
   "verified_project_fields": {
     "public_github_repository_url": "https://github.com/chatwithgod/reflow",
     "repository_owner_login": "chatwithgod",
@@ -67,8 +67,8 @@
     "support_selection_and_any_dependent_required_fields"
   ],
   "form_ui_conditional_requirements_verified": false,
-  "published_documentation_checkpoint": "cb1f74735c2feb92fad3114e7f63554188bc80ab",
+  "published_documentation_checkpoint": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
   "latest_desktop_record": "evidence/desktop-followup-2026-11-05.json",
   "latest_dot_record": "evidence/dot-local-file-2026-11-05.json",
-  "new_desktop_and_dot_records_published": false
+  "new_desktop_and_dot_records_published": true
 }

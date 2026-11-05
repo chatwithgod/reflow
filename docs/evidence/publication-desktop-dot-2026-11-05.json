@@ -1,0 +1,453 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-11-05T03:04:46.552212+00:00",
+  "status": "completed_with_known_host_failures",
+  "authorized_scope": "Four documentation commits and their automatic CI; no runtime, workflow or release change",
+  "published_documentation_files": 16,
+  "ci": {
+    "date_local": "2026-11-05",
+    "timezone": "Asia/Shanghai",
+    "recorded_utc": "2026-11-05T03:00:02.967538+00:00",
+    "published_head": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
+    "published_commits": [
+      "43858ed8ae1b7a7b95145b637cf94a2aa3f24ba3",
+      "24c1a0fcf407f60668fbf4376c9b029deed79fe6",
+      "92a8eb73926a25806bdae7b9f94a01fe171a2159",
+      "1bece8ff9b04fcff0f6045328c377bffe695bab3"
+    ],
+    "commit_count": 4,
+    "remote_head_verified": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
+    "automatic_runs": [
+      {
+        "id": 41957150159,
+        "name": "Offline regression",
+        "head_sha": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "success",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41957150159",
+        "created_at": "2026-11-05T02:44:28Z",
+        "updated_at": "2026-11-05T02:47:06Z"
+      },
+      {
+        "id": 41957150411,
+        "name": "Native client fixtures",
+        "head_sha": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
+        "event": "push",
+        "status": "completed",
+        "conclusion": "failure",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/41957150411",
+        "created_at": "2026-11-05T02:44:28Z",
+        "updated_at": "2026-11-05T02:53:55Z"
+      }
+    ],
+    "offline_results": [
+      {
+        "name": "offline (windows-latest)",
+        "job_id": 127014678765,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "ca62a7d6640c7277de18e0ce134e9bea423bfa7388d406a51b35c253fd4a2317",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (macos-latest)",
+        "job_id": 127014678922,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "39b12073cbe9ac6b0df5fe447b00ac07138590ccba10a02fa85d9845499ff0e6",
+        "raw_log_persisted": false
+      },
+      {
+        "name": "offline (ubuntu-latest)",
+        "job_id": 127014679269,
+        "conclusion": "success",
+        "test_counts_combined": {
+          "pass": 180,
+          "skip": 8,
+          "fail": 0
+        },
+        "each_test_result_observed_twice": true,
+        "normal_and_race_each": {
+          "pass": 90,
+          "skip": 4,
+          "fail": 0
+        },
+        "failed_names": [],
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Go regressions, race, vet and decoder fuzz",
+            "conclusion": "success"
+          },
+          {
+            "name": "Synthetic evaluation process and grader checks",
+            "conclusion": "success"
+          },
+          {
+            "name": "Linux host-control orchestration without host changes",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Run actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ],
+        "raw_log_sha256": "5e3a6d7f3a4faefd2963068842efc9ccac60e8c7893a00a50f82a2a3eb8c5a6c",
+        "raw_log_persisted": false
+      }
+    ],
+    "native_platforms": {
+      "ubuntu": {
+        "platform": "linux/amd64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "b08de84bc88cb936ac103bd30875067710c8aafd45f2a5cfcdd5678620a4c1ec",
+        "artifact_id": 13383712707,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "previous_host_status": "pass",
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      },
+      "windows": {
+        "platform": "windows/amd64",
+        "status": "fail",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "fail",
+            "tests": {
+              "pass": 0,
+              "skip": 0,
+              "fail": 6
+            },
+            "failed_names": [
+              "TestCodexNativeWriteProbe",
+              "TestCodexNativeWriteProbe/command_via_reflow",
+              "TestCodexNativeWriteProbe/patch_add_direct",
+              "TestCodexNativeWriteProbe/patch_direct",
+              "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+              "TestCodexNativeWriteProbe/patch_via_reflow"
+            ]
+          }
+        },
+        "summary_sha256": "9b9ddf20ed29be504e5f19ffb1f0637a48a97351afcad2231f12b7d4635f322b",
+        "artifact_id": 13384276805,
+        "same_known_write_failure_names_and_markers": true,
+        "pi_probe_executed": false,
+        "previous_host_status": "fail",
+        "final_binary_check": null,
+        "final_profile_cleanup_check": null
+      },
+      "macos": {
+        "platform": "darwin/arm64",
+        "status": "pass",
+        "checks": {
+          "native": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "race": {
+            "status": "pass",
+            "tests": {
+              "pass": 14,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "write": {
+            "status": "pass",
+            "tests": {
+              "pass": 6,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          },
+          "pi_probe_race": {
+            "status": "pass",
+            "tests": {
+              "pass": 4,
+              "skip": 0,
+              "fail": 0
+            },
+            "failed_names": []
+          }
+        },
+        "summary_sha256": "c58602d1d141ad1a655a05ff72b6224fcf42df835ace8deb31fe9612823f8c95",
+        "artifact_id": 13384386068,
+        "same_known_write_failure_names_and_markers": false,
+        "pi_probe_executed": true,
+        "previous_host_status": "pass",
+        "final_binary_check": true,
+        "final_profile_cleanup_check": true
+      }
+    },
+    "native_execution_intervals": [
+      {
+        "name": "native-clients (ubuntu-latest)",
+        "started_at": "2026-11-05T02:44:32Z",
+        "completed_at": "2026-11-05T02:46:45Z",
+        "conclusion": "success"
+      },
+      {
+        "name": "native-clients (windows-latest)",
+        "started_at": "2026-11-05T02:46:49Z",
+        "completed_at": "2026-11-05T02:50:02Z",
+        "conclusion": "failure"
+      },
+      {
+        "name": "native-clients (macos-latest)",
+        "started_at": "2026-11-05T02:50:09Z",
+        "completed_at": "2026-11-05T02:53:54Z",
+        "conclusion": "success"
+      }
+    ],
+    "native_max_parallel": 1,
+    "native_execution_overlapped": false,
+    "new_observed_failures": false,
+    "new_observed_host_passes": [],
+    "model_calls": 0,
+    "manual_workflow_dispatches": 0,
+    "workflow_reruns": 0,
+    "new_upstream_messages": 0,
+    "external_magpie_chain_in_automatic_ci": false,
+    "goal_complete": false
+  },
+  "windows_write_failure_includes_parent_test": true,
+  "windows_write_scenarios_failed": 5,
+  "new_local_desktop_observer_included_in_this_push_or_ci": false,
+  "release_changed": false,
+  "application_submitted": false,
+  "raw_ci_logs_saved": false,
+  "initial_result_downloads_hit_tls_handshake_timeouts": true,
+  "result_downloads_completed_using_existing_http_proxy_in_gh_child_only": true,
+  "production_or_system_proxy_modified": false,
+  "local_source_sha256": {
+    "frozen-ci-summary.json": "2cd709fc8a177514f9b09481005a21f4fa627d8b8cc86fd9cd864d403039acf8",
+    "prepared.json": "9ea6454e6cdc576f318590e8dc7846377bd09d03de0137d5e020abf3c24a5616",
+    "pushed.json": "0dd1927b56223019cd3e04b692777a58dd4c1d80ab1f63ce8f8fcb0685fbd083"
+  }
+}

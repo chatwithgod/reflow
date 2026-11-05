@@ -1,6 +1,6 @@
 # Codex for OSS 申请草稿
 
-官方项目页和申请表最近核对于 2026-10-31；项目事实更新至 2026-11-05：已公开的 `cb1f747` 检查点，以及后续本地 Desktop 两轮任务和 dot 本机读取记录。新增桌面证据尚未推送，发布构件仍固定于 `3e0ea18` 的 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)。下面是未提交的草稿。此前核对的页面要求三段文字各不超过 500 字符，以下字符数包含空格与标点；可复制文本另存于[结构化草稿](oss-application-fields.json)。
+官方项目页和申请表最近核对于 2026-10-31；项目事实更新至 2026-11-05：Desktop 两轮任务、dot 本机读取及历史失败记录已随四个文档提交公开至 `1bece8f`，对应自动 CI 未发现新增失败，见[发布与 CI 记录](evidence/publication-desktop-dot-2026-11-05.json)。运行代码和发布构件未改，仍固定于 `3e0ea18` 的 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)。下面是未提交的草稿。此前核对的页面要求三段文字各不超过 500 字符，以下字符数包含空格与标点；可复制文本另存于[结构化草稿](oss-application-fields.json)。
 
 [官方计划](https://developers.openai.com/community/codex-for-oss)允许申请者说明项目的生态价值，[申请表](https://openai.com/form/codex-for-oss/)同时关注实际使用和持续维护证据。当前 Reflow 是早期项目，申请理由集中在可复用的协议兼容性维护，不声称已被广泛采用或能够提高回答质量。
 
@@ -28,8 +28,8 @@ One native-login sample completed continuation, tool use and 18/18, with a batch
 | --- | --- |
 | 独立核心、客户端与插件接入 | [兼容性](COMPATIBILITY.md)、[插件说明](../plugins/codex/README.md)、[Pi 适配](../adapters/pi/README.md)。Pi 按用户选择通过模拟验收，不再等待真实登录 |
 | 可安装的公开预发布 | [dev.5 Release](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)及[核验记录](RELEASE-0.1.0-dev.5.md)：五平台 10 个 ZIP，全部 12 个附件公开下载散列一致；其中两个平台只有交叉编译证据 |
-| 共享回归与维护流程 | [11 月 4 日常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641884)：三平台普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过。计数包含父测试和子测试，不作为采用量 |
-| 原生客户端的覆盖与已知失败 | [11 月 4 日原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41820641810)：三个平台普通/race 各 14 项通过；Ubuntu/macOS 后续写入与 Pi 探针通过，托管 Windows 保留旧写入失败，整体仍为失败。Ubuntu 新通过的原因未确定，旧失败保留 |
+| 共享回归与维护流程 | [11 月 5 日常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150159)：三平台普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过。计数包含父测试和子测试，不作为采用量 |
+| 原生客户端的覆盖与已知失败 | [11 月 5 日原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150411)：三个平台普通/race 各 14 项通过；Ubuntu/macOS 后续写入与 Pi 探针通过，托管 Windows 保留相同的五个写入场景失败，整体仍为失败。原生任务实际串行，未手动重跑；此前 Ubuntu 转为通过的原因未确定 |
 | 有限真实功能证据 | [原生验收总表](NATIVE-LOGIN-ACCEPTANCE.md)：26 次会话、134 次已观察请求、4 次续接。历史功能闭环样本保留配置审计例外；新开关对照及随后三个开启样本均正常结束、18/18、保护文件未变，但未触发续接，严格验收状态未变 |
 | Desktop 与 dot 的有限人工验收 | [11 月 5 日后续记录](DESKTOP-DOT-2026-11-05-FOLLOWUP.md)：Desktop 两轮真实任务和两次校验成功；dot 本机随机文件读取通过，但本地 Reflow 推理请求为 0。没有 Desktop 真实续接或 dot 经本地 Reflow 推理的证据；历史失败保留，设备授权按用户要求保留 |
 | 官方 API 路径 | [独立记录](LIVE-API-KEY-2026-10-29.md)：1 次会话、2 次推理请求、0 次续接，与原生登录和订阅用量分开 |
