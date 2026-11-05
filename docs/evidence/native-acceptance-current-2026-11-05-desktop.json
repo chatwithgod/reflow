@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "updated_date": "2026-11-05",
+  "current_native_continuation_sample": "desktop",
+  "desktop_sample_functional_acceptance": true,
+  "desktop_sample_protected_file_audit": true,
+  "strict_native_sample_scope": "Current Desktop sample only; historical CLI audit exception remains unchanged",
+  "cli_cumulative": {
+    "sessions": 26,
+    "observed_inference_requests": 134,
+    "continuations": 4
+  },
+  "cli_historical_config_audit_exception_retained": true,
+  "desktop_cumulative": {
+    "sessions": 3,
+    "observed_inference_requests": 18,
+    "continuations": 1,
+    "failed_stream_requests": 4
+  },
+  "desktop_latest": {
+    "observed_inference_requests": 6,
+    "continuations": 1,
+    "retained_tool_calls": 1,
+    "matched_retained_tool_results": 1,
+    "score_total": 18,
+    "score_passed": 18,
+    "normal_user_turn_completion": true,
+    "protected_files_unchanged": true,
+    "model_seconds": 46.928903
+  },
+  "official_api_totals": {
+    "sessions": 1,
+    "observed_inference_requests": 2,
+    "continuations": 0
+  },
+  "dot_cloud_model_calls_known": false,
+  "new_real_account_session_count": 1,
+  "models_or_rule_changed_to_force_continuation": false,
+  "quality_benefit_established": false,
+  "sources": [
+    {
+      "path": "docs/evidence/native-acceptance-current-2026-11-04-sampling.json",
+      "sha256": "9aff8ee17aacac646ea1a94cab4859ca3631de5f423d60449ebf7a9e7012e227"
+    },
+    {
+      "path": "docs/evidence/desktop-manual-2026-11-05.json",
+      "sha256": "0992ad73ce105ba00a6ed6631e4398bd349ea252cd0f25b3f3dee5d06bfe2883"
+    },
+    {
+      "path": "docs/evidence/desktop-followup-2026-11-05.json",
+      "sha256": "e5ade84fae79767b0472fe2f4dd555eef9562def700cebb83c14875eca1e162a"
+    },
+    {
+      "path": "docs/evidence/desktop-continuation-2026-11-05.json",
+      "sha256": "12347f41d4fa7afd6cb0fecfe524557fe24251675745cbe2247b1a836c0f7c93"
+    },
+    {
+      "path": "docs/evidence/dot-local-file-2026-11-05.json",
+      "sha256": "2715a88361fc8f7f55554c13de723dfc1dc96711c030eb3c135621e9850d8257"
+    }
+  ],
+  "repository_source_hash_format": "SHA-256 of repository file bytes with CRLF normalized to LF, matching Git text storage; binary and frozen local source hashes remain byte-exact"
+}

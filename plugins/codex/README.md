@@ -30,6 +30,6 @@ reflow codex-config --action restore
 
 停止代理前，调用 `restore_codex_config`。还原会保留其他配置项的后续修改；若路由已被手动改动，工具会拒绝覆盖。实际还原后重启 Codex，再停止服务；重复调用没有改动时不会要求重启。
 
-安装插件、服务健康、路由生效是不同的状态。`status` 不调用模型，也不证明真实模型请求已经通过 Reflow。真实账号、Desktop/dot 和质量评测仍需单独验收。
+安装插件、服务健康、路由生效是不同的状态。`status` 不调用模型，也不证明真实模型请求已经通过 Reflow。独立代理已有[原生登录 Desktop 真实续接](../../docs/DESKTOP-CONTINUATION-2026-11-05.md)及[dot 本机读取](../../docs/DESKTOP-DOT-2026-11-05-FOLLOWUP.md)的分别实测；插件工具本身的验证范围如下，不能从安装或状态查询推导质量收益。
 
 开发验收使用真实 Codex CLI、本地市场、合成登录和模拟上游，已验证安装缓存、4 个 stdio 工具，以及会话经 Code Mode 调用 `status`。测试还核对返回的配置目录属于安装该插件的隔离环境。

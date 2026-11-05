@@ -1,0 +1,200 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "recorded_utc": "2026-11-05T04:05:29.439411+00:00",
+  "record_type": "prepublication_requirement_audit",
+  "scope": "Original cross-ecosystem development goal with explicit Pi simulation acceptance; no production rollout or application submission",
+  "repository": {
+    "full_name": "chatwithgod/reflow",
+    "private": false,
+    "license": "MIT",
+    "stars": 1,
+    "forks": 0,
+    "open_issues": 0
+  },
+  "release_recheck": {
+    "checked_utc": "2026-11-05T03:47:24.203489+00:00",
+    "public_assets_checked": 12,
+    "current_server_reported_sha256_matches_previously_downloaded_assets": true,
+    "repeat_asset_downloads": 0,
+    "package_runtime_source_diff_from_release": [],
+    "source_checkpoint": "1703fd9",
+    "runtime_or_release_rebuilt": false
+  },
+  "upstream_discussion": {
+    "html_url": "https://github.com/yetone/magpie/issues/4497",
+    "state": "open",
+    "comments": 0,
+    "updated_at": "2026-10-30T21:39:29Z"
+  },
+  "program_recheck": {
+    "checked_date": "2026-11-05",
+    "urls": [
+      "https://developers.openai.com/community/codex-for-oss",
+      "https://openai.com/form/codex-for-oss/"
+    ],
+    "application_text_fields": 3,
+    "max_characters_each": 500,
+    "form_ui_conditional_requirements_verified": false,
+    "website_fields_entered": false,
+    "support_options_selected": false
+  },
+  "requirements": [
+    {
+      "id": "independent_core_and_service",
+      "status": "verified",
+      "basis": [
+        "go.mod",
+        "core/session.go",
+        "core/fold.go",
+        "cmd/reflow/main.go"
+      ],
+      "scope": "Shared Go core and independently released proxy without CPA/Codex/Magpie SDK dependency"
+    },
+    {
+      "id": "native_chatgpt_login_continuation",
+      "status": "verified_with_recorded_scope",
+      "basis": [
+        "docs/evidence/desktop-continuation-2026-11-05.json",
+        "docs/evidence/native-acceptance-current-2026-11-05-desktop.json"
+      ],
+      "scope": "Current same-session Windows Desktop sample; earlier CLI functional sample retains its original batch config-audit exception"
+    },
+    {
+      "id": "http_sse_websocket_warmup_cancel_compression_recovery",
+      "status": "verified_simulated_boundaries",
+      "basis": [
+        "proxy/server_test.go",
+        "proxy/websocket_test.go",
+        "proxy/recovery_test.go",
+        "proxy/compression_test.go",
+        "integration/app_server_test.go",
+        "docs/evidence/desktop-backend-2026-11-04.json",
+        "docs/evidence/publication-desktop-dot-2026-11-05.json"
+      ],
+      "scope": "Defined protocol cases, native client fixtures and cold app-server resume; not all real-network recovery or OAuth refresh scenarios"
+    },
+    {
+      "id": "dot_compatibility",
+      "status": "verified_with_recorded_scope",
+      "basis": [
+        "docs/evidence/dot-local-file-2026-11-05.json"
+      ],
+      "scope": "Entry, reply and connected-machine random file read; local Reflow inference zero, no all-dot-feature claim"
+    },
+    {
+      "id": "native_plugin_install_configuration_diagnostics",
+      "status": "verified_native_client_with_synthetic_login",
+      "basis": [
+        "integration/plugin_test.go",
+        "plugins/codex/README.md",
+        "docs/evidence/release-dev5-2026-10-31.json",
+        "docs/evidence/publication-desktop-dot-2026-11-05.json"
+      ],
+      "scope": "Native marketplace/cache installation, four MCP tools, exact configuration restore and actual CLI plugin invocation; store submission is not claimed"
+    },
+    {
+      "id": "another_oauth_harness",
+      "status": "accepted_under_explicit_user_simulation_scope",
+      "basis": [
+        "adapters/pi/README.md",
+        "docs/evidence/pi-simulated-acceptance-2026-10-30.json"
+      ],
+      "scope": "Pi 1.4.0 legacy SSE/WS and new public OpenAI OAuth/API-key SSE; no additional live Pi login required"
+    },
+    {
+      "id": "magpie_adapter_and_reviewable_extension_work",
+      "status": "verified_pinned_external_adapter",
+      "basis": [
+        "adapters/magpie/EXTERNAL.md",
+        "adapters/magpie/PR-DRAFTS.md",
+        "docs/evidence/magpie-external-chain-2026-10-31.json"
+      ],
+      "scope": "Unmodified pinned Magpie external adapter, seven simulated cases ordinary/race and fault controls; historical extension patches preserved, no upstream acceptance claimed"
+    },
+    {
+      "id": "shared_regressions_and_reproducible_off_on_evaluation",
+      "status": "verified_with_host_limitations",
+      "basis": [
+        "docs/evidence/publication-desktop-dot-2026-11-05.json",
+        "docs/evidence/live-scheduler-pair-dev5-official-0165-2026-11-04.json",
+        "docs/EVALUATION.md"
+      ],
+      "scope": "Three-OS ordinary/race/vet/fuzz, native fixtures and completed real off/on pair; hosted Windows writes remain known failures, no quality gain inferred"
+    },
+    {
+      "id": "compatibility_maintenance_and_oss_application_material",
+      "status": "prepared_for_publication_review",
+      "basis": [
+        "docs/COMPATIBILITY.md",
+        "docs/OSS-READINESS.md",
+        "docs/OSS-APPLICATION-DRAFT.md",
+        "docs/oss-application-fields.json"
+      ],
+      "scope": "Versioned evidence, bounded claims, three application texts within current 500-character limit; personal application fields and formal submission are separate"
+    },
+    {
+      "id": "preserve_stable_artifacts_credentials_and_production",
+      "status": "verified_for_current_trial_and_release",
+      "basis": [
+        "docs/evidence/desktop-continuation-2026-11-05.json",
+        "docs/evidence/release-dev5-2026-10-31.json",
+        "THIRD_PARTY_NOTICES.md",
+        "LICENSE"
+      ],
+      "scope": "Latest production/auth/config and fixture checks pass, processes cleaned, released runtime unchanged; historical exceptions remain recorded"
+    }
+  ],
+  "remaining_closure_steps_at_preparation": [
+    "Explicit authorization for the prepared new commits",
+    "Publish those commits and inspect their automatic CI before declaring the goal complete"
+  ],
+  "current_public_head": "1bece8ff9b04fcff0f6045328c377bffe695bab3",
+  "latest_public_ci_new_failures": false,
+  "native_concurrency": 1,
+  "new_observer_offline_checks_passed": 12,
+  "new_observer_full_remote_ci_completed": false,
+  "application_submitted": false,
+  "external_adoption_verified": false,
+  "quality_benefit_established": false,
+  "goal_marked_complete": false,
+  "sources": [
+    {
+      "path": "docs/evidence/desktop-continuation-2026-11-05.json",
+      "sha256": "12347f41d4fa7afd6cb0fecfe524557fe24251675745cbe2247b1a836c0f7c93"
+    },
+    {
+      "path": "docs/evidence/native-acceptance-current-2026-11-05-desktop.json",
+      "sha256": "4cf6a18cf18cf4ee6dbb2fe7c14bdd6cf8951bbb110ccb64f71809a08e01941f"
+    },
+    {
+      "path": "docs/evidence/dot-local-file-2026-11-05.json",
+      "sha256": "2715a88361fc8f7f55554c13de723dfc1dc96711c030eb3c135621e9850d8257"
+    },
+    {
+      "path": "docs/evidence/pi-simulated-acceptance-2026-10-30.json",
+      "sha256": "256faa41931a0f4e2dae5b63f313abdeb11d61492cb52ec1257977f288edf1e3"
+    },
+    {
+      "path": "docs/evidence/magpie-external-chain-2026-10-31.json",
+      "sha256": "468cd7294f11c4addbc8f798efffbee81610ec80d1b74274c4c13401b892c851"
+    },
+    {
+      "path": "docs/evidence/live-scheduler-pair-dev5-official-0165-2026-11-04.json",
+      "sha256": "b1335f04a2bdd7a2643288a07b0ada627bfa8278862489d14f9958dc59046eeb"
+    },
+    {
+      "path": "docs/evidence/publication-desktop-dot-2026-11-05.json",
+      "sha256": "71b8f89ab5e3de93c8fc61ddb1bcaa078584de9ec80292558158ab6901a7d8f5"
+    },
+    {
+      "path": "docs/evidence/release-dev5-2026-10-31.json",
+      "sha256": "31624983c08ade87e7ec427a0e6836e77d0b871f3756e4625a831eaa750d0d98"
+    }
+  ],
+  "local_snapshot_sha256": {
+    "external-metadata.json": "5acb0afe433844251b08cce3030f73f12ee32c90f6f1a24573a43ba2fe3eec93",
+    "release-recheck.json": "2a78b4e7e2e3eb01c5bcebc281eb1bf4705904540472845011bb21c4d2a828d0"
+  },
+  "repository_source_hash_format": "SHA-256 of repository file bytes with CRLF normalized to LF, matching Git text storage; binary and frozen local source hashes remain byte-exact"
+}

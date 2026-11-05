@@ -1,0 +1,300 @@
+{
+  "schema_version": 1,
+  "date_local": "2026-11-05",
+  "recorded_utc": "2026-11-05T03:42:22.003265+00:00",
+  "source_commit": "1703fd96a44611e9ae9ed4e9ce417262bacd38af",
+  "scope": "One native ChatGPT-login Desktop session through released independent Reflow; same-session real continuation and successful tool roundtrip",
+  "versions": {
+    "desktop": "26.1029.7803.0",
+    "backend": "0.166.0-alpha.6",
+    "reflow": "0.1.0-dev.5",
+    "model": "gpt-6.1-sol",
+    "effort": "high"
+  },
+  "authorization": {
+    "standing_native_testing_authorization": true,
+    "user_manually_selected_workspace_and_sent_once": true,
+    "native_concurrency": 1,
+    "subagents_enabled": false,
+    "model_session_limit_seconds": 180,
+    "max_extra_continuations_per_round": 1,
+    "automatic_relaunch": false,
+    "api_key_used": false,
+    "device_authorization_retained": true,
+    "grant_or_revoke_requested": false
+  },
+  "task": {
+    "name": "scheduler",
+    "existing_starter_and_18_point_grader_unchanged": true,
+    "new_workspace_preserves_previous_trial_files": true,
+    "guidance_addition": "Report complete command tool return metadata without inventing values",
+    "baseline_score": {
+      "total": 18,
+      "passed": 15
+    },
+    "final_score": {
+      "status": "scored",
+      "total": 18,
+      "passed": 18,
+      "failed": []
+    },
+    "solution_changed": true,
+    "solution_sha256": "0e90643863669b34e93eae85cd9ed53f42208a8cd1fb600b08cf32b1543fee5d",
+    "fixed_helpers_unchanged": {
+      "AGENTS.md": true,
+      "read_fixture.py": true,
+      "verify_fixture.py": true
+    }
+  },
+  "execution": {
+    "terminal_event": "task_complete",
+    "terminal_message_present": true,
+    "ui_closed_by_controller_after_completed_turn": true,
+    "stop_reason": "one_user_turn_completed",
+    "model_seconds_to_proxy_stop": 46.928903,
+    "rollout_counts": {
+      "turns_started": 1,
+      "turns_completed": 1,
+      "turn_errors": 0,
+      "command_results": 0,
+      "command_failures": 0,
+      "final_messages": 0,
+      "verified_model_contexts": 1
+    },
+    "generic_tool_diagnostics": {
+      "version": 1,
+      "tool_calls": 3,
+      "tool_results": 3,
+      "reported_command_exits": 2,
+      "reported_command_failures": 0,
+      "nonterminal_command_records": 0,
+      "explicit_tool_errors": 0,
+      "unclassified_results": 1,
+      "malformed_command_records": 0,
+      "output_limit_hits": 0,
+      "duplicate_calls": 0,
+      "duplicate_results": 0,
+      "orphan_results": 0,
+      "tracking_drops": 0,
+      "unfinished_calls": 0,
+      "observed_failure": false,
+      "all_individual_tool_successes_proven": false
+    },
+    "case_specific_tool_steps": [
+      {
+        "ordinal": 1,
+        "started_utc": "2026-11-05T03:24:13.430Z",
+        "completed_utc": "2026-11-05T03:24:14.300Z",
+        "labels": [
+          "read_fixture"
+        ],
+        "explicit_tool_error": false,
+        "script_completed_marker": true,
+        "reported_exit_codes": [
+          0
+        ],
+        "empty_object_return": false
+      },
+      {
+        "ordinal": 2,
+        "started_utc": "2026-11-05T03:24:49.919Z",
+        "completed_utc": "2026-11-05T03:24:50.308Z",
+        "labels": [
+          "apply_patch"
+        ],
+        "explicit_tool_error": false,
+        "script_completed_marker": true,
+        "reported_exit_codes": [],
+        "empty_object_return": true,
+        "patch_argument": {
+          "utc": "2026-11-05T03:24:49.919Z",
+          "argument_format": "json_string_literal",
+          "patch_file_count": 1,
+          "only_solution_target": true,
+          "has_begin_and_end_markers": true
+        },
+        "exact_patch_effect_matches_actual_file": true
+      },
+      {
+        "ordinal": 3,
+        "started_utc": "2026-11-05T03:24:52.956Z",
+        "completed_utc": "2026-11-05T03:24:53.676Z",
+        "labels": [
+          "verify_fixture"
+        ],
+        "explicit_tool_error": false,
+        "script_completed_marker": true,
+        "reported_exit_codes": [
+          0
+        ],
+        "empty_object_return": false,
+        "fixed_checker": {
+          "utc": "2026-11-05T03:24:53.676Z",
+          "exit_code": 0,
+          "smoke_checks": 6,
+          "passed": 6
+        }
+      }
+    ],
+    "fixed_checker_results": [
+      {
+        "utc": "2026-11-05T03:24:53.676Z",
+        "exit_code": 0,
+        "smoke_checks": 6,
+        "passed": 6
+      }
+    ],
+    "patch_effect_verification": {
+      "checked_utc": "2026-11-05T03:34:08.096426+00:00",
+      "patch_calls": 1,
+      "patch_hunks": 3,
+      "only_solution_updated": true,
+      "all_hunks_matched_original_starter_uniquely": true,
+      "reconstructed_patch_result_matches_actual_solution_bytes": true,
+      "solution_sha256": "0e90643863669b34e93eae85cd9ed53f42208a8cd1fb600b08cf32b1543fee5d",
+      "patch_or_source_body_exported": false,
+      "new_model_calls": 0
+    },
+    "proxy_metrics_before_stop": {
+      "requests": 6,
+      "continuations": 1,
+      "continued_tool_responses": 1,
+      "continued_tool_calls": 1,
+      "continued_tool_results": 1,
+      "tool_tracking_drops": 0,
+      "warmups": 2,
+      "completed": 6,
+      "failed": 0,
+      "usage_reports": 6,
+      "parse_errors": 0,
+      "unsupported_responses": 0,
+      "input_tokens": 130489,
+      "output_tokens": 1287,
+      "cached_tokens": 106624,
+      "cache_write_tokens": 0,
+      "reasoning_tokens": 579,
+      "usage_complete": true,
+      "fold_diagnostics_valid": true,
+      "diagnostics_version": 1,
+      "fold_decisions": {
+        "continue": 1,
+        "rule_not_matched": 5,
+        "no_encrypted_content": 0,
+        "max_continue": 0,
+        "unresolved_parent": 0,
+        "upstream_tool_already_executed": 0,
+        "upstream_terminal": 0,
+        "other": 0
+      },
+      "reasoning_token_samples": [
+        0,
+        0,
+        516,
+        54,
+        9,
+        0
+      ],
+      "reasoning_sample_drops": 0,
+      "reasoning_missing_reports": 0
+    },
+    "metrics_snapshot_not_post_cleanup_total": true,
+    "client_total_usage": {
+      "input_tokens": 94084,
+      "cached_input_tokens": 83328,
+      "output_tokens": 1008,
+      "reasoning_output_tokens": 579,
+      "total_tokens": 95092
+    },
+    "reasoning_usage_matches": true,
+    "native_transport_guard": {
+      "observed_error_rows": 0,
+      "fixed_error_counts": {
+        "http_401": 0,
+        "http_403": 0,
+        "http_429": 0,
+        "http_5xx": 0,
+        "timeout": 0,
+        "connect_failed": 0,
+        "stream_disconnected": 0
+      }
+    }
+  },
+  "interpretation": {
+    "generic_unknown_result_retained": true,
+    "unknown_result_is_non_command_apply_patch": true,
+    "patch_success_established_by_completed_call_and_exact_file_effect": true,
+    "no_exit_code_invented_for_patch_tool": true,
+    "final_message_counter_did_not_recognize_absent_phase": true,
+    "completion_verified_from_task_complete_and_nonempty_last_message": true,
+    "all_three_observed_tool_operations_have_success_evidence": true,
+    "one_continuation_and_matching_retained_tool_result_observed": true,
+    "specific_retained_tool_identity_not_exported_or_inferred_from_timing_alone": true,
+    "single_sample_no_quality_or_reliability_gain_claim": true
+  },
+  "cleanup": {
+    "proxy_stopped": true,
+    "remaining_test_processes": 0,
+    "isolated_config_exactly_restored": true,
+    "production_files_unchanged_within_trial": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "production_files_unchanged_after_independent_grading": {
+      "native_auth": true,
+      "production_config": true,
+      "cpa_native_oauth": true
+    },
+    "installed_binaries_unchanged": {
+      "1": true,
+      "2": true,
+      "3": true
+    },
+    "cleanup_errors": [],
+    "final_process_recheck": {
+      "checked_utc": "2026-11-05T03:42:21.991466+00:00",
+      "recorded_controller_app_and_proxy_pids_absent": true,
+      "isolated_profile_process_count": 0,
+      "launcher_finished_normally": true,
+      "no_device_grant_or_revoke_requested": true
+    }
+  },
+  "acceptance": {
+    "desktop_same_session_functional_continuation": true,
+    "desktop_sample_protected_file_audit": true,
+    "historical_cli_audit_exception_repaired": false,
+    "all_platforms_or_all_dot_features_accepted": false,
+    "quality_benefit_established": false
+  },
+  "privacy": {
+    "raw_model_code_arguments_outputs_or_final_reply_exported": false
+  },
+  "local_source_record_sha256": {
+    "desktop-reflow-v6-prepared.json": "8c4bedc903bfb4dbaa1c9cc07db77cbb41ced46295db727a4fe9795b58e9c3b4",
+    "desktop-reflow-v6-fixture.json": "aa5a4331b1165368bcad4bea2100925b7ca93f7f33c2dfe3ac1400e1aab23315",
+    "v6-production-baseline.json": "ba3e219f62d61da6cc63ccbda63a5f689cabf2a5044d71ca1dc40d061add0f33",
+    "desktop-reflow-v6-user-observation.json": "7c7df7818a5cd58f3f50216d8cd28b21cab6d0cf92c550cc336776b494e0e48a",
+    "desktop-reflow-v6-controller.json": "3c6f65ad02a980935d9b5d7ef447fe195537e155eeb26a871a16ee82dba395c5",
+    "launcher-v6-status.json": "9756aa20c4ff0456090e06e3182670ef3c24fe7de64c954f7a9750c9081e8868",
+    "desktop-reflow-v6-state.json": "154b4e4c813b8553c1b238fd63d2ec51e3f8cf534a5a85e1be0c4851c6185ca9",
+    "desktop-reflow-v6-score.json": "9a526be6fc2bf6ab705b199ddf27f8f6a847a4c1a8dc50a55e7a7cd35c060f54",
+    "desktop-reflow-v6-tool-audit.json": "917da06fc8a06dea0cf1ba424e06538661977389047168fcf655dd8580020262",
+    "desktop-reflow-v6-tool-audit-v2.json": "ef87e6cadc3df5846805a5d07af20138ecedd612a4a62ac471f2af402bb9b49e",
+    "desktop-reflow-v6-patch-effect.json": "5b998d4493ae266d3f8f96a7d287aeb02748025d0ebe4af836299e119d9a334c",
+    "desktop-reflow-v6-cleanup-recheck.json": "2db82ebdb69d1320a70545a7bb285df8804c31dd5d0d7829f5a9156b12f11808"
+  },
+  "local_source_records_frozen": true,
+  "binary_sha256": {
+    "ChatGPT.exe": "74dcbc67421c5d5406ea5e4cc80d9c8d8a05d0df62f1d7be5690f090f182e71f",
+    "codex.exe": "925c7d0665ffa49b0dcf748e034a805a04da984164ac92301432073b47789b99",
+    "codex-code-mode-host.exe": "ddd144291738f99b3f2254e0d9759fd7f8adac057405883ed8f1ccd9ad4502b4",
+    "reflow.exe": "3f7ad77bdeb072bfb6b857e491f3c46fb0a99a9918db0c72bd06160b691ff6f7"
+  },
+  "source_files_sha256": {
+    "run_desktop_reflow_v6.py": "bc144ef4fd51048cdeaf442edd2ea5d876ac4e3a3919065cac1092acede26757",
+    "desktop_launcher_v6.py": "4588a0dc8678efff8062322f5892363d34ba30ea455e004025e47102d5c980c7",
+    "13-test-desktop-observer.cmd": "5a56cb515bc38b209924726c899ccd8f41a3093af0e319b08f696d90645fa672",
+    "desktop-reflow-v6-fixture.json": "aa5a4331b1165368bcad4bea2100925b7ca93f7f33c2dfe3ac1400e1aab23315",
+    "desktop_events.py": "100f6abb9d76f452ad982648846d1c50720d05e9cd12af13cf880653c9c8a295"
+  }
+}

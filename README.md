@@ -14,10 +14,12 @@ Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依
 
 2026-11-04，已发布的 Windows 独立包完成一组[原生登录开关对照](docs/LIVE-SCHEDULER-PAIR-2026-11-04.md)：两组均正常结束、18/18、工具失败 0，生产配置和登录文件未变；开启组未触发续接。累计为 23 次会话、122 次已观察请求、4 次续接。新对照不能抵消旧样本的审计例外，也没有建立质量或速度收益结论。
 
-同日随后完成预先限定的[三个开启样本](docs/LIVE-SCHEDULER-SAMPLING-2026-11-04.md)，均正常结束、18/18、工具失败 0、保护文件未变，仍无续接。当前累计为 **26 次会话、134 次已观察请求、4 次续接**；批次已到上限，不再安排同任务重复采样以等待命中，严格验收结论保持未通过。
+同日随后完成预先限定的[三个开启样本](docs/LIVE-SCHEDULER-SAMPLING-2026-11-04.md)，均正常结束、18/18、工具失败 0、保护文件未变，仍无续接。CLI 累计为 **26 次会话、134 次已观察请求、4 次续接**；该批已到上限，历史 CLI 配置审计例外原样保留。
+
+2026-11-05，已发布 dev.5 在隔离的原生 ChatGPT 登录 Desktop 中完成[同一会话的真实续接闭环](docs/DESKTOP-CONTINUATION-2026-11-05.md)：**6 次请求、1 次续接、1 次匹配工具回传、18/18 和正常回合结束**，生产配置及登录文件未变，测试进程已清理。此样本不修补旧 CLI 审计记录，也不建立质量或长期稳定性结论。
 
 - **Codex CLI**：已有上述本机 Windows 真实会话功能证据；模拟上游还覆盖工具隔离、取消及协议恢复。
-- **Codex app-server / Desktop**：两种历史格式的后端模拟续接、工具回传、关闭进程后恢复和配置还原通过；11 月 5 日隔离桌面经独立 Reflow 完成两轮真实任务、18/18 和两次成功校验，未触发续接。修正隔离窗口的启动参数和代理环境后，dot 已成功读取本机随机标记文件，10 个测试文件未变；该次本地 Reflow 推理请求为 0，不作为续接证据。见[人工验收后续](docs/DESKTOP-DOT-2026-11-05-FOLLOWUP.md)。
+- **Codex app-server / Desktop**：两种历史格式的后端模拟续接、工具回传、关闭进程后恢复和配置还原通过；Desktop 已完成上述真实续接样本，之前同一聊天的两轮任务也通过。dot 成功读取本机随机标记文件，10 个测试文件未变；dot 那次本地 Reflow 推理请求为 0，与 Desktop 续接分开记录。见[人工验收后续](docs/DESKTOP-DOT-2026-11-05-FOLLOWUP.md)。
 - **Codex 原生插件**：本地市场安装、缓存二进制、4 个 MCP 配置/诊断入口及原生调用通过；代理服务独立运行。见[插件说明](plugins/codex/README.md)。
 - **Pi 1.4.0**：旧 `openai-codex` 入口的 SSE/WebSocket，以及新 `openai` 入口的 OAuth/API key SSE 均完成模拟续接和工具往返，按本项目约定通过模拟验收。见[Pi 适配](adapters/pi/README.md)。
 - **Magpie**：本地外置方案在未修改的固定上游上完成 HTTP/WebSocket、预热、续接、工具往返与取消的 7 场景模拟检查，普通/race 通过；使用显式的 `--upstream-profile magpie`。历史嵌入式补丁与宿主全量状态单列。见[外置接入](adapters/magpie/EXTERNAL.md)。
@@ -91,7 +93,7 @@ reflow codex-config --action restore
 
 Windows amd64 本机、macOS arm64 CI，以及 11 月 4 日默认 Ubuntu amd64 runner 已有原生客户端和打包构件的离线执行证据。默认三平台 CI 的协议/插件/Pi 普通及 race 检查通过；托管 Windows 写入仍失败，Linux arm64/macOS amd64 尚缺原生验证。Ubuntu 此前失败和固定发行版配置下的通过记录均保留，不推导为所有 Linux 主机可用。最新范围见[原生 CI 记录](docs/NATIVE-CI.md)与[兼容性](docs/COMPATIBILITY.md)；此前 [dev.2](docs/VERIFICATION-0.1.0-dev.2.md)与 [dev.1](docs/VERIFICATION-2026-10-26.md)记录继续保留。
 
-这些模拟测试只证明已覆盖场景的行为符合预期，不替代前文单列的真实账号证据。真实 Token 自动刷新、Desktop 真实续接、dot 的其他功能、跨连接恢复的完整边界和实际模型输出质量仍未验证。
+这些模拟测试只证明已覆盖场景的行为符合预期，不替代前文单列的真实账号证据。真实 Token 自动刷新、dot 的其他功能、跨连接恢复的所有边界和实际模型输出质量仍未验证。
 
 ## 开发与复现
 
