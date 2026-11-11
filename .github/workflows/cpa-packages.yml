@@ -2,9 +2,10 @@ name: CPA five-platform offline packages
 
 on:
   push:
-    paths: ['core/**', 'go.mod', 'go.sum', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
+    # Root line-ending rules affect the shared-source fingerprints too.
+    paths: ['core/**', 'go.mod', 'go.sum', '.gitattributes', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
   pull_request:
-    paths: ['core/**', 'go.mod', 'go.sum', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
+    paths: ['core/**', 'go.mod', 'go.sum', '.gitattributes', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
   workflow_dispatch:
 
 # Candidates only: no Release, tag, store PR or production writes.

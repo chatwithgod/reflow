@@ -84,3 +84,5 @@ python scripts/native_smoke.py build/0.1.4/codexreflow.dll --report build/0.1.4/
 第一次 Windows 打包的 ABI 检查已经通过，但根模块文件的 CRLF 使工作区源码指纹不同于 Git 对象。随后用 `.gitattributes` 固定 `go.mod` / `go.sum` 为 LF，重新打包并复核。修正前后的 DLL 字节一致；新的源码指纹和来源提交以记录中的修正版为准，旧候选没有覆盖。
 
 本轮真实模型调用为 0，没有改生产配置、替换现有插件或执行发布。Linux/macOS、新版本的真实账号和完整 CPA 宿主集成仍未验收。
+
+同日随后已获授权推送整合分支：独立版三平台常规回归通过，原生客户端 Ubuntu/macOS 通过，托管 Windows 保留已知写入失败；CPA 五平台工作流未触发，不能当作验收通过。后续状态与触发配置补充见[首轮远程检查](CPA-INTEGRATION-CI-2026-11-12.md)。
