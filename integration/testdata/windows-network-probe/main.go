@@ -5,11 +5,30 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"os/user"
 	"strconv"
+	"strings"
 	"time"
 )
 
 func main() {
+	if len(os.Args) == 2 && os.Args[1] == "--identity" {
+		current, err := user.Current()
+		if err != nil {
+			os.Exit(65)
+		}
+		name := strings.ToLower(current.Username)
+		name = name[strings.LastIndexAny(name, `\/`)+1:]
+		switch name {
+		case "codexsandboxoffline":
+			fmt.Println("REFLOW_IDENTITY_OFFLINE")
+		case "codexsandboxonline":
+			fmt.Println("REFLOW_IDENTITY_ONLINE")
+		default:
+			fmt.Println("REFLOW_IDENTITY_OTHER")
+		}
+		return
+	}
 	if len(os.Args) != 2 {
 		os.Exit(64)
 	}

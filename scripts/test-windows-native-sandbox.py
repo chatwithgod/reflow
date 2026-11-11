@@ -27,7 +27,7 @@ class FakeOperations:
         self.fail_setup = self.fail_cleanup = self.change_firewall = False
         self.state = {key: 0 for key in sandbox.RESOURCE_FIELDS}
         self.state.update(user='synthetic-private-owner', administrator=True, enabled_firewall_profiles=3,
-                          firewall_profile_mask=7)
+                          firewall_profile_mask=7, enabled_firewall_rules=0, firewall_service_running=1)
 
     def guard(self):
         self.calls.append('guard')
@@ -52,6 +52,10 @@ class FakeOperations:
             self.state['firewall_profile_mask'] = 0
         return {'status': 'pass'}
 
+    def marker(self):
+        self.calls.append('marker')
+        return {'version': 5, 'allow_local_binding': False, 'proxy_port_count': 0}
+
 
 class LifecycleTests(unittest.TestCase):
     def setUp(self):
@@ -65,7 +69,7 @@ class LifecycleTests(unittest.TestCase):
             self.assertEqual(env['REFLOW_NATIVE_WINDOWS_SANDBOX'], 'elevated')
             self.assertEqual(env['REFLOW_NATIVE_WINDOWS_SETUP_READY'], '1')
             self.assertNotIn('uninstall', self.ops.calls)
-        self.assertEqual(self.ops.calls, ['guard', 'snapshot', 'setup', 'uninstall', 'snapshot'])
+        self.assertEqual(self.ops.calls, ['guard', 'snapshot', 'setup', 'snapshot', 'marker', 'uninstall', 'snapshot'])
         self.assertTrue(self.record['resources_removed'])
         self.assertEqual(self.record['status'], 'pass')
         self.assertNotIn('synthetic-private-owner', json.dumps(self.record))
@@ -201,6 +205,17 @@ class NetworkTests(unittest.TestCase):
             b'private-body-canary', b'failed to start private-path-canary'))
         self.assertEqual(data['matching_output'], {'process_launch_error': 1})
         self.assertNotIn('canary', json.dumps(data))
+
+    def test_identity_requires_offline_account(self):
+        for marker, expected in ((b'REFLOW_IDENTITY_OFFLINE', True), (b'REFLOW_IDENTITY_ONLINE', False),
+                                 (b'private-account-canary', False)):
+            with self.subTest(marker=marker):
+                results = [subprocess.CompletedProcess([], 0, b'REFLOW_IDENTITY_OTHER'),
+                           subprocess.CompletedProcess([], 0, marker)]
+                result = sandbox.sandbox_identity(Path('codex'), Path('probe'), Path('.'), {},
+                                                  run=lambda *args, **kwargs: results.pop(0))
+                self.assertEqual(result['offline_identity_verified'], expected)
+                self.assertNotIn('canary', json.dumps(result))
 
 
 class FilesystemTests(unittest.TestCase):

@@ -93,6 +93,7 @@ if (Test-Path -LiteralPath $hidden) {
 $firewallMask = 0
 $firewallBits = @{ Domain = 1; Private = 2; Public = 4 }
 $firewallProfiles = @(Get-NetFirewallProfile)
+$sandboxRules = @(Get-NetFirewallRule -PolicyStore ActiveStore | Where-Object { $_.DisplayName -in $rules })
 foreach ($profile in $firewallProfiles) {
   if (-not $firewallBits.ContainsKey([string]$profile.Name)) { throw 'unknown_firewall_profile' }
   if ($profile.Enabled -eq $true) { $firewallMask = $firewallMask -bor $firewallBits[[string]$profile.Name] }
@@ -102,7 +103,9 @@ foreach ($profile in $firewallProfiles) {
   administrator = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
   users = @(Get-LocalUser | Where-Object { $_.Name -in $names }).Count
   groups = @(Get-LocalGroup | Where-Object { $_.Name -eq 'CodexSandboxUsers' }).Count
-  firewall_rules = @(Get-NetFirewallRule -PolicyStore ActiveStore | Where-Object { $_.DisplayName -in $rules }).Count
+  firewall_rules = $sandboxRules.Count
+  enabled_firewall_rules = @($sandboxRules | Where-Object Enabled -eq $true).Count
+  firewall_service_running = [int]((Get-Service -Name MpsSvc).Status -eq 'Running')
   installation_keys = [int](Test-Path -LiteralPath $installation)
   hidden_users = $hiddenCount
   services = @(Get-Service -Name '*codex*sandbox*').Count
@@ -140,9 +143,18 @@ class Operations:
     def uninstall(self):
         return self.observe([str(self.codex), 'sandbox', 'uninstall'], self.env, self.profile, timeout=120)
 
+    def marker(self):
+        # The setup marker has no credentials. Never read .sandbox-secrets.
+        data = json.loads((Path(self.env['CODEX_HOME']) / '.sandbox/setup_marker.json').read_text(encoding='utf-8'))
+        require(type(data.get('version')) is int and type(data.get('allow_local_binding')) is bool
+                and isinstance(data.get('proxy_ports'), list), 'invalid_setup_marker')
+        return {'version': data['version'], 'allow_local_binding': data['allow_local_binding'],
+                'proxy_port_count': len(data['proxy_ports'])}
+
 
 def public_snapshot(data):
-    fields = (*RESOURCE_FIELDS, 'enabled_firewall_profiles', 'firewall_profile_mask')
+    fields = (*RESOURCE_FIELDS, 'enabled_firewall_profiles', 'firewall_profile_mask',
+              'enabled_firewall_rules', 'firewall_service_running')
     require(all(type(data.get(key)) is int and 0 <= data[key] < 1000 for key in fields), 'invalid_host_snapshot')
     return {key: data[key] for key in fields}
 
@@ -162,6 +174,8 @@ def provision(ops, record, env):
     try:
         ops.setup(user)
         record['setup_completed'] = True
+        record['after_setup'] = public_snapshot(ops.snapshot())
+        record['setup_marker'] = ops.marker()
         # Each sequential fixture provisions its own isolated CODEX_HOME. No
         # sandbox credential is copied or reused after another setup rotates it.
         yield {**env, 'REFLOW_NATIVE_WINDOWS_SANDBOX': 'elevated',
@@ -221,6 +235,23 @@ def network_observation(result):
             'reachable_marker': stdout.strip() == NETWORK_REACHABLE,
             'blocked_marker': stdout.strip() == NETWORK_BLOCKED,
             'matching_output': {key: 1 for key, needles in signals.items() if any(n in text for n in needles)}}
+
+
+def sandbox_identity(codex, helper, work, env, run=capture_control):
+    """Export a fixed account class, never a username or SID."""
+    child = [str(helper), '--identity']
+    command = [str(codex), '-c', 'windows.sandbox="elevated"', 'sandbox', '--include-managed-config',
+               '--permission-profile', ':workspace', '-C', str(work), '--', *child]
+    observations = {}
+    for label, argv in (('outside', child), ('sandbox', command)):
+        result = run(argv, env=env, cwd=work, stdin=subprocess.DEVNULL, capture_output=True, timeout=30)
+        kinds = {b'REFLOW_IDENTITY_OFFLINE': 'offline', b'REFLOW_IDENTITY_ONLINE': 'online',
+                 b'REFLOW_IDENTITY_OTHER': 'other'}
+        observations[label] = {'exit_code': result.returncode,
+                               'identity_class': kinds.get((result.stdout or b'').strip(), 'unknown')}
+    return {'controls': observations,
+            'offline_identity_verified': observations['outside'] == {'exit_code': 0, 'identity_class': 'other'}
+            and observations['sandbox'] == {'exit_code': 0, 'identity_class': 'offline'}}
 
 
 def network_boundary(codex, helper, work, env, run=capture_control):

@@ -374,11 +374,13 @@ def run_checks(args, report, summary):
                                         {**env, 'CGO_ENABLED': '0'}, ROOT, timeout=120)
             host_checks['network_probe_build'] = build
             require(build['status'] == 'pass' and helper.is_file(), 'Network control build failed')
+            host_checks['sandbox_identity'] = windows_native_sandbox.sandbox_identity(codex, helper, work, env)
+            require(host_checks['sandbox_identity']['offline_identity_verified'], 'Offline sandbox identity not verified')
             network = windows_native_sandbox.network_boundary(codex, helper, work, env)
             network['probe_sha256'] = digest(helper)
             host_checks['network_boundary'] = network
-            require(all(network.get(key) is True for key in windows_native_sandbox.NETWORK_GATES),
-                    'Elevated sandbox network boundary failed')
+            host_checks['after_network_resources'] = windows_native_sandbox.public_snapshot(ops.snapshot())
+            host_checks['after_network_setup_marker'] = ops.marker()
 
         dist = ROOT / 'dist' / (ROOT / 'VERSION').read_text().strip()
         before = set(dist.glob('*/manifest.json'))
@@ -446,6 +448,12 @@ def run_checks(args, report, summary):
         for entry in summary['packages']:
             require(digest(extracted[entry['kind']]) == entry['binary_sha256'], 'A Reflow binary changed during verification')
             entry['runtime_tested'] = True
+        if args.windows_elevated:
+            # Collect the original five write outcomes before reporting a network
+            # gate failure. The workflow must still fail if the boundary failed.
+            require(all(summary['host_diagnostics']['network_boundary'].get(key) is True
+                        for key in windows_native_sandbox.NETWORK_GATES),
+                    'Elevated sandbox network boundary failed')
     summary['isolated_profile_removed'] = not profile.exists()
     require(summary['isolated_profile_removed'], 'Isolated profile was not removed')
 
