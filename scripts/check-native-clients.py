@@ -374,7 +374,11 @@ def run_checks(args, report, summary):
                                         {**env, 'CGO_ENABLED': '0'}, ROOT, timeout=120)
             host_checks['network_probe_build'] = build
             require(build['status'] == 'pass' and helper.is_file(), 'Network control build failed')
-            host_checks['sandbox_identity'] = windows_native_sandbox.sandbox_identity(codex, helper, work, env)
+            system_root = next(value for name, value in env.items() if name.upper() == 'SYSTEMROOT')
+            whoami = Path(system_root) / 'System32/whoami.exe'
+            require(whoami.is_file(), 'System identity tool is missing')
+            host_checks['sandbox_identity'] = windows_native_sandbox.sandbox_identity(codex, whoami, work, env)
+            host_checks['sandbox_identity']['tool_sha256'] = digest(whoami)
             require(host_checks['sandbox_identity']['offline_identity_verified'], 'Offline sandbox identity not verified')
             network = windows_native_sandbox.network_boundary(codex, helper, work, env)
             network['probe_sha256'] = digest(helper)

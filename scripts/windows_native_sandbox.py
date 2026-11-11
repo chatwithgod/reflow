@@ -237,18 +237,22 @@ def network_observation(result):
             'matching_output': {key: 1 for key, needles in signals.items() if any(n in text for n in needles)}}
 
 
-def sandbox_identity(codex, helper, work, env, run=capture_control):
+def sandbox_identity(codex, whoami, work, env, run=capture_control):
     """Export a fixed account class, never a username or SID."""
-    child = [str(helper), '--identity']
+    # Go os/user.Current also requires a profile directory and impersonation
+    # capabilities. whoami queries Windows identity without those dependencies.
+    child = [str(whoami)]
     command = [str(codex), '-c', 'windows.sandbox="elevated"', 'sandbox', '--include-managed-config',
                '--permission-profile', ':workspace', '-C', str(work), '--', *child]
     observations = {}
     for label, argv in (('outside', child), ('sandbox', command)):
         result = run(argv, env=env, cwd=work, stdin=subprocess.DEVNULL, capture_output=True, timeout=30)
-        kinds = {b'REFLOW_IDENTITY_OFFLINE': 'offline', b'REFLOW_IDENTITY_ONLINE': 'online',
-                 b'REFLOW_IDENTITY_OTHER': 'other'}
+        raw = (result.stdout or b'').strip().lower()
+        kind = 'unknown'
+        if 0 < len(raw) <= 512 and b'\\' in raw and b'\n' not in raw and b'\r' not in raw:
+            kind = {b'codexsandboxoffline': 'offline', b'codexsandboxonline': 'online'}.get(raw.rsplit(b'\\', 1)[1], 'other')
         observations[label] = {'exit_code': result.returncode,
-                               'identity_class': kinds.get((result.stdout or b'').strip(), 'unknown')}
+                               'identity_class': kind}
     return {'controls': observations,
             'offline_identity_verified': observations['outside'] == {'exit_code': 0, 'identity_class': 'other'}
             and observations['sandbox'] == {'exit_code': 0, 'identity_class': 'offline'}}

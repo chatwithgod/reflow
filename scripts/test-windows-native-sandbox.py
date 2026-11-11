@@ -207,10 +207,10 @@ class NetworkTests(unittest.TestCase):
         self.assertNotIn('canary', json.dumps(data))
 
     def test_identity_requires_offline_account(self):
-        for marker, expected in ((b'REFLOW_IDENTITY_OFFLINE', True), (b'REFLOW_IDENTITY_ONLINE', False),
-                                 (b'private-account-canary', False)):
+        for marker, expected in ((b'fixture\\CodexSandboxOffline', True), (b'fixture\\CodexSandboxOnline', False),
+                                 (b'private-account-canary', False), (b'fixture\\CodexSandboxOffline\nextra', False)):
             with self.subTest(marker=marker):
-                results = [subprocess.CompletedProcess([], 0, b'REFLOW_IDENTITY_OTHER'),
+                results = [subprocess.CompletedProcess([], 0, b'fixture\\runner'),
                            subprocess.CompletedProcess([], 0, marker)]
                 result = sandbox.sandbox_identity(Path('codex'), Path('probe'), Path('.'), {},
                                                   run=lambda *args, **kwargs: results.pop(0))
