@@ -10,6 +10,8 @@ Reflow 为长思考过程提供自动续接支持。同一套核心可作为独�
 
 当前源码已将 CPA `v0.1.3` 的代码和提交历史汇入 `adapters/cpa`，共用不依赖宿主 SDK 的续接判断、事件合并、用量计算和流解码。独立版候选为 `0.1.0-dev.6`，CPA 候选为 `0.1.4`；它们分别构建、分别验证，尚未发布。CPA 的工具参数恢复修复仍在 CPA 层。结构、验证入口与迁移边界见[共用核心与 CPA 接入](docs/CPA-INTEGRATION.md)。
 
+2026-11-12 本机 Windows 离线检查通过：独立版普通/race 各 97 通过、4 跳过；CPA 各 220 通过，vet 通过；CPA 动态库打包前后各 46 个 ABI 场景通过。新独立包完成模拟续接，两个产品仍独立打包。数字和未覆盖范围见[本轮记录](docs/evidence/cpa-integration-2026-11-12.json)。
+
 已发布下载仍分别为[独立版 dev.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)与[CPA 插件 v0.1.3](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)。以下真实账号和平台验收属于这些历史版本，不自动覆盖本次合并候选。
 
 Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。2026-10-31，dev.5 源码、[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)、原生实测、Pi 适配及 Magpie 新入口补丁曾随 13 个提交公开至 `304a67c`。随后发布了固定 `3e0ea18` 的 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)，提供五平台独立服务和 Codex 插件包；12 个附件已完成公开下载核验。平台差异与标签 CI 见[发布记录](docs/RELEASE-0.1.0-dev.5.md)，此前源码推送见[历史记录](docs/evidence/publication-dev5-2026-10-31.json)。

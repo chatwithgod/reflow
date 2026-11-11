@@ -1,0 +1,152 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-11T17:26:49.789210+00:00",
+  "scope": "local shared-core integration; Windows offline validation only",
+  "standalone_baseline": "6d32acd01d96d28514e9107a5ae82df78ba69f6b",
+  "cpa_import": "ad0a644c5612548bdca12cee5ea0a311fb62a680",
+  "import_commit": "bb7a272",
+  "implementation_commit": "4554f15622a987d9224f0fc6c99f5d4a79d85421",
+  "line_ending_fix_commit": "01a7b06418279a620792d0e96cc78ff488514003",
+  "shared_core_depends_on_cpa_sdk": false,
+  "versions": {
+    "standalone": "0.1.0-dev.6",
+    "cpa": "0.1.4"
+  },
+  "go_checks": {
+    "standalone": {
+      "test": {
+        "exit_code": 0,
+        "pass": 97,
+        "skip": 4,
+        "fail": 0
+      },
+      "race": {
+        "exit_code": 0,
+        "pass": 97,
+        "skip": 4,
+        "fail": 0
+      },
+      "vet": {
+        "exit_code": 0,
+        "pass": 0,
+        "skip": 0,
+        "fail": 0
+      }
+    },
+    "cpa": {
+      "test": {
+        "exit_code": 0,
+        "pass": 220,
+        "skip": 0,
+        "fail": 0
+      },
+      "race": {
+        "exit_code": 0,
+        "pass": 220,
+        "skip": 0,
+        "fail": 0
+      },
+      "vet": {
+        "exit_code": 0,
+        "pass": 0,
+        "skip": 0,
+        "fail": 0
+      }
+    }
+  },
+  "python_checks": {
+    "passed": 52,
+    "failed": 0
+  },
+  "cpa_native_package": {
+    "schema_version": 1,
+    "plugin": "codexreflow",
+    "version": "0.1.4",
+    "repository": "https://github.com/chatwithgod/reflow",
+    "goos": "windows",
+    "goarch": "amd64",
+    "source_commit": "01a7b06418279a620792d0e96cc78ff488514003",
+    "root_go_source_sha256": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+    "sdk_version": "8.0.13",
+    "go_version": "go1.26.8",
+    "archive": "codexreflow_0.1.4_windows_amd64.zip",
+    "archive_sha256": "79f3be0028638d4f13fe9f8744d8cf685addbba0f75ebc0e96945c58de37545e",
+    "library_sha256": "6f48dbf0406873b8bda31577c743a537e0bf9bd1555ebe019223069e3802d9d4",
+    "reports": {
+      "native-smoke.json": "a6610420be4b7defe6f3574d3d55c1d1fb0f2e5d7feecf10f8df075772367ae8",
+      "packaged-native-smoke.json": "a6610420be4b7defe6f3574d3d55c1d1fb0f2e5d7feecf10f8df075772367ae8"
+    },
+    "go_unit_race_vet_fuzz_passed": true,
+    "python_tests_passed": true,
+    "native_case_executions": 46,
+    "packaged_native_case_executions": 46,
+    "validation_scope": "offline native ABI; not full CPA integration or live models",
+    "production_changes": false,
+    "billable_model_calls": 0,
+    "published": false
+  },
+  "standalone_archives": [
+    {
+      "name": "reflow_0.1.0-dev.6_windows_amd64.zip",
+      "sha256": "927631dd0f3f6f985e5809a069ecc779634146729849a64519fba8979a54d999",
+      "binary_sha256": "1eaeb92338b808402a2a8446584fd52adeeff4ed324b3e3a87ee2e66fc25d2e0",
+      "entries": 184,
+      "contains_cpa_payload": false
+    },
+    {
+      "name": "reflow_plugin_0.1.0-dev.6_windows_amd64.zip",
+      "sha256": "628c884d5452af13470c9509b07fb873228c564ceb2c76da3200f7431a201133",
+      "binary_sha256": "1eaeb92338b808402a2a8446584fd52adeeff4ed324b3e3a87ee2e66fc25d2e0",
+      "entries": 8,
+      "contains_cpa_payload": false
+    }
+  ],
+  "standalone_package_smoke": {
+    "version": "0.1.0-dev.6",
+    "binary_sha256": "1eaeb92338b808402a2a8446584fd52adeeff4ed324b3e3a87ee2e66fc25d2e0",
+    "synthetic_upstream_requests": 2,
+    "continuations": 1,
+    "schema_preserved": true,
+    "discarded_tool_hidden": true,
+    "final_tool_visible": true,
+    "folded_usage_checked": true,
+    "real_model_calls": 0,
+    "passed": true
+  },
+  "line_ending_checks": {
+    "source_file_count": 31,
+    "worktree_matches_git_blobs": true,
+    "autocrlf_fingerprints": {
+      "true": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "false": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1"
+    },
+    "passed": true
+  },
+  "unchanged_cpa_boundaries": [
+    "main.go",
+    "config.go",
+    "model_selection.go",
+    "tool_schema_restore.go"
+  ],
+  "workflow_checks": {
+    "yaml": "pass",
+    "cpa_native_matrix_jobs": 5,
+    "cpa_native_max_parallel": 1,
+    "permissions": "contents: read",
+    "remote_executed": false
+  },
+  "limitations": [
+    "Windows amd64 only; Linux/macOS and five-platform assembly await CI",
+    "New native artifacts have no live-account or production CPA acceptance",
+    "Historical Desktop/dot acceptance applies to dev.5",
+    "CPA compatibility policies remain distinct from standalone strict event/hosted-tool guards"
+  ],
+  "initial_packaging_observation": {
+    "windows_abi": "pass",
+    "module_line_endings": "working tree CRLF differed from Git blobs; fixed and repackaged",
+    "superseded_source_fingerprint": "073b58cbadd4ddbbbaa3deb98b8706f347c717e1be7c2ddb852b07b1d52e1ca2"
+  },
+  "real_model_calls": 0,
+  "production_changes": false,
+  "published": false
+}
