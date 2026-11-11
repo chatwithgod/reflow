@@ -6,9 +6,11 @@
 
 后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；当时默认 Ubuntu 和托管 Windows 的失败结果原样保留。
 
-## Windows 修复准备：2026-11-12
+## Windows 文件检查修复：2026-11-12
 
-最新 `297966b` 的[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43099211239)仍只有托管 Windows 的五个写文件场景失败，直接 MXC 对照命中 `mxc_unavailable`。现已准备使用官方 `elevated` 后端的 CI 修复，保留五项写入断言并新增文件、网络及清理检查；本机默认 MXC 回归通过，托管 Windows 的新后端尚未实测。见[修改范围与本地验证](WINDOWS-NATIVE-CI-2026-11-12.md)。
+`297966b` 的[旧原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43099211239)因托管 Windows 不支持强制选择的 MXC，五个写文件场景失败。`2758e3e` 使用官方 `elevated` 后端后，托管 Windows 原有五项写入、客户端普通/race 各 14 项和 Pi 探针各 4 项均通过；文件越界拒绝、离线账号身份与清理通过。
+
+该次[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43108621939)仍因新增的回环网络门槛失败：规则已启用，但沙箱内能连接本机端口。用户已确认本轮按原五项文件功能验收；后续保留网络真实结果为已知限制，不宣称完整网络隔离。所有原有写入断言保留，本机默认 MXC 不变。见[完整结果与验收范围](WINDOWS-NATIVE-CI-2026-11-12.md)。
 
 ## 2026-11-05 公开检查点
 

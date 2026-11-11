@@ -171,7 +171,7 @@ class NetworkTests(unittest.TestCase):
         result, calls = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
                                     subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED),
                                     subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
-        self.assertTrue(all(result[key] for key in sandbox.NETWORK_GATES))
+        self.assertTrue(all(result[key] for key in sandbox.NETWORK_CHECKS))
         self.assertEqual(calls[0][-1], calls[1][-1])
         self.assertEqual(calls[0], calls[2])
         self.assertIn('windows.sandbox="elevated"', calls[1])
@@ -183,7 +183,7 @@ class NetworkTests(unittest.TestCase):
                                subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
         self.assertFalse(result['local_listener_blocked_in_sandbox'])
 
-    def test_network_leak_fails(self):
+    def test_reachable_network_is_not_isolation(self):
         result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
                                subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
                                subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
@@ -191,14 +191,14 @@ class NetworkTests(unittest.TestCase):
 
     def test_missing_positive_control_stops(self):
         result, calls = self.probe([subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED)])
-        self.assertFalse(any(result[key] for key in sandbox.NETWORK_GATES))
+        self.assertFalse(any(result[key] for key in sandbox.NETWORK_CHECKS))
         self.assertEqual(len(calls), 1)
 
     def test_listener_must_still_work_after_block(self):
         result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
                                subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED),
                                subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED)])
-        self.assertFalse(all(result[key] for key in sandbox.NETWORK_GATES))
+        self.assertFalse(all(result[key] for key in sandbox.NETWORK_CHECKS))
 
     def test_diagnostics_keep_no_output_text(self):
         data = sandbox.network_observation(subprocess.CompletedProcess([], 1,
@@ -216,6 +216,30 @@ class NetworkTests(unittest.TestCase):
                                                   run=lambda *args, **kwargs: results.pop(0))
                 self.assertEqual(result['offline_identity_verified'], expected)
                 self.assertNotIn('canary', json.dumps(result))
+
+    def test_known_loopback_limit_is_not_reported_as_isolation(self):
+        result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)] * 3)
+        acceptance = sandbox.network_acceptance(result)
+        self.assertEqual(acceptance['status'], 'known_loopback_limitation')
+        self.assertFalse(acceptance['loopback_isolation_verified'])
+        self.assertFalse(result['local_listener_blocked_in_sandbox'])
+
+    def test_verified_block_has_distinct_acceptance(self):
+        result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
+                               subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED),
+                               subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
+        acceptance = sandbox.network_acceptance(result)
+        self.assertEqual(acceptance['status'], 'blocked')
+        self.assertTrue(acceptance['loopback_isolation_verified'])
+
+    def test_known_limit_does_not_accept_broken_controls_or_unknown_exit(self):
+        base, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)] * 3)
+        for label in ('before', 'after', 'sandbox'):
+            with self.subTest(label=label):
+                result = copy.deepcopy(base)
+                result['controls'][label]['exit_code'] = 1
+                with self.assertRaises(RuntimeError):
+                    sandbox.network_acceptance(result)
 
 
 class FilesystemTests(unittest.TestCase):

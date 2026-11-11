@@ -19,7 +19,7 @@ RESOURCE_FIELDS = ('users', 'groups', 'firewall_rules', 'installation_keys',
                    'hidden_users', 'services', 'wfp_provider', 'wfp_sublayer')
 NETWORK_REACHABLE = b'REFLOW_NETWORK_REACHABLE'
 NETWORK_BLOCKED = b'REFLOW_NETWORK_BLOCKED'
-NETWORK_GATES = ('local_listener_reachable_without_sandbox', 'local_listener_blocked_in_sandbox',
+NETWORK_CHECKS = ('local_listener_reachable_without_sandbox', 'local_listener_blocked_in_sandbox',
                  'local_listener_reachable_after_sandbox')
 
 
@@ -237,6 +237,30 @@ def network_observation(result):
             'matching_output': {key: 1 for key, needles in signals.items() if any(n in text for n in needles)}}
 
 
+def network_acceptance(result):
+    """File-fixture acceptance explicitly excludes the observed loopback limit.
+
+    Keep the actual isolation result. A broken probe or listener is still an
+    error, not an excuse to silently accept missing network evidence.
+    """
+    controls = result.get('controls', {})
+    for label, flag in (('before', 'local_listener_reachable_without_sandbox'),
+                        ('after', 'local_listener_reachable_after_sandbox')):
+        item = controls.get(label, {})
+        require(result.get(flag) is True and item.get('exit_code') == 0
+                and item.get('reachable_marker') is True, 'network_positive_control_failed')
+    item = controls.get('sandbox', {})
+    blocked = (item.get('exit_code') == 42 and item.get('blocked_marker') is True
+               and result.get('local_listener_blocked_in_sandbox') is True)
+    reachable = (item.get('exit_code') == 0 and item.get('reachable_marker') is True
+                 and result.get('local_listener_blocked_in_sandbox') is False)
+    require(blocked or reachable, 'network_probe_outcome_unclassified')
+    return {'status': 'blocked' if blocked else 'known_loopback_limitation',
+            'loopback_isolation_verified': blocked,
+            'scope': 'original file fixtures; loopback isolation is diagnostic',
+            'positive_controls_verified': True}
+
+
 def sandbox_identity(codex, whoami, work, env, run=capture_control):
     """Export a fixed account class, never a username or SID."""
     # Go os/user.Current also requires a profile directory and impersonation
@@ -268,7 +292,7 @@ def network_boundary(codex, helper, work, env, run=capture_control):
         options = {'env': env, 'cwd': work, 'stdin': subprocess.DEVNULL, 'capture_output': True, 'timeout': 30}
         reachable = network_observation(run(child, **options))
         positive = reachable['exit_code'] == 0 and reachable['reachable_marker']
-        record = dict.fromkeys(NETWORK_GATES, False)
+        record = dict.fromkeys(NETWORK_CHECKS, False)
         record['controls'] = {'before': reachable}
         if not positive:
             return record
