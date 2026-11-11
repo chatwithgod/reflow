@@ -1,0 +1,316 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-11-11T19:02:57.984412+00:00",
+  "head": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+  "branch": "integrate/cpa-shared-core",
+  "main_head": "6d32acd01d96d28514e9107a5ae82df78ba69f6b",
+  "runs": [
+    {
+      "id": 43078611711,
+      "name": "Native client fixtures",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_attempt": 1,
+      "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611711",
+      "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf"
+    },
+    {
+      "id": 43078611753,
+      "name": "Offline regression",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 1,
+      "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611753",
+      "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf"
+    },
+    {
+      "id": 43078611703,
+      "name": "CPA five-platform offline packages",
+      "status": "completed",
+      "conclusion": "success",
+      "run_attempt": 2,
+      "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611703",
+      "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf"
+    }
+  ],
+  "cpa_platforms": [
+    {
+      "platform": "windows/amd64",
+      "source_commit": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+      "source_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "archive_sha256": "4df140742c0b8229f0bfbd51e5496add90b200ed88e32a1b0a6a34e1fdeef62f",
+      "library_sha256": "d69483ae4c5da7913d9207e875caa38c1ca5bca9b24ce62ac071b5660a7dd1cc",
+      "native_cases": 46,
+      "packaged_native_cases": 46,
+      "artifact_id": 13884738177,
+      "artifact_zip_sha256": "988df9e6ad971fa5b15bad0ab172f20af91dbee43b0273f16b1022dbc14f2049"
+    },
+    {
+      "platform": "darwin/amd64",
+      "source_commit": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+      "source_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "archive_sha256": "ffe653993271f9c1e4d7db56568608e1399722b613314d57cdf90b44e0a0ca80",
+      "library_sha256": "ce90c433ec6bd1ec06699e62fc2a9957d528505cebe2e9a56d3472a4180de3c3",
+      "native_cases": 46,
+      "packaged_native_cases": 46,
+      "artifact_id": 13884370159,
+      "artifact_zip_sha256": "5aeafb0b7c26d28cb838121b26801157ebee5205d15b02e04a0de941cb5763f2"
+    },
+    {
+      "platform": "linux/amd64",
+      "source_commit": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+      "source_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "archive_sha256": "c85f149009fb64d835f6e247e7fb63b34ed46dc8178518859e88198afeb51921",
+      "library_sha256": "dd03a1d591ef6ae416d58bd8afe6b7556af9cceb76588d1cc41bdde64edce6c1",
+      "native_cases": 46,
+      "packaged_native_cases": 46,
+      "artifact_id": 13883670365,
+      "artifact_zip_sha256": "aebffd9e4f5387909d39ffa288ecc9b046563ea47b49703fd7d2c718c3643e37"
+    },
+    {
+      "platform": "darwin/arm64",
+      "source_commit": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+      "source_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "archive_sha256": "8ab2181b9e972eb5ba3d57dc0dcc14e73bd703aa37f5ee777083e62945989dab",
+      "library_sha256": "84a5e22440eb5baac12d680f4bb9d88aafe6786b2ab1ebb7f9e7ecd53fcfe642",
+      "native_cases": 46,
+      "packaged_native_cases": 46,
+      "artifact_id": 13883668896,
+      "artifact_zip_sha256": "f912cb01e0f1c98daf77ea582b7dedd0189de652fc092a373cf1c0aa710ff2be"
+    },
+    {
+      "platform": "linux/arm64",
+      "source_commit": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+      "source_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+      "archive_sha256": "e2b2213c9581bd7282986e164d8fb6ba1fff706d1d38955b82e33f46d6104142",
+      "library_sha256": "e7accc0a526e4bb9a0c2df2131b5d3ed08dafdb61dc217a76cfb797102f6c3dc",
+      "native_cases": 46,
+      "packaged_native_cases": 46,
+      "artifact_id": 13882674550,
+      "artifact_zip_sha256": "ff579c0916553c112d071e31dab14646065ce5ee6e864b56687adf8861ecaee3"
+    }
+  ],
+  "aggregate": {
+    "artifact_id": 13885516696,
+    "artifact_zip_sha256": "7c69d543978c52f5ab81ebedf084704866b1422228efa80f7e48b78e5b5a32f5",
+    "members": 7,
+    "matches_independent_local_assembly": true
+  },
+  "ordinary_and_race": {
+    "offline (macos-latest)": {
+      "ordinary": {
+        "pass": 97,
+        "skip": 4
+      },
+      "race": {
+        "pass": 97,
+        "skip": 4
+      }
+    },
+    "offline (ubuntu-latest)": {
+      "ordinary": {
+        "pass": 97,
+        "skip": 4
+      },
+      "race": {
+        "pass": 97,
+        "skip": 4
+      }
+    },
+    "offline (windows-latest)": {
+      "ordinary": {
+        "pass": 97,
+        "skip": 4
+      },
+      "race": {
+        "pass": 97,
+        "skip": 4
+      }
+    }
+  },
+  "native_client_results": {
+    "native-client-summary-ubuntu-latest": {
+      "status": "pass",
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          }
+        }
+      },
+      "artifact_id": 13884805308,
+      "artifact_zip_sha256": "86fc6357cf11b39aa09fb084e6b3dc36c1e0858282a438c17e08b8c1495120b6"
+    },
+    "native-client-summary-macos-latest": {
+      "status": "pass",
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          }
+        }
+      },
+      "artifact_id": 13884010867,
+      "artifact_zip_sha256": "d3e8b87a725e88cff99585e99ff03d212bce2a6e5bce7698ca57b142e861f1b7"
+    },
+    "native-client-summary-windows-latest": {
+      "status": "fail",
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          }
+        },
+        "write": {
+          "exit_code": 1,
+          "tests": {
+            "pass": 0,
+            "skip": 0,
+            "fail": 6
+          }
+        }
+      },
+      "artifact_id": 13882784892,
+      "artifact_zip_sha256": "ca26378bbc70a93e7b8337f6f87ec08f8b988373ab013cb1926248a42b6b5683"
+    }
+  },
+  "queue_recovery": {
+    "created_utc": "2026-11-11T18:51:38.494002+00:00",
+    "head": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+    "reason": "no runners assigned after prolonged queue; three platforms already complete",
+    "pending_jobs": [
+      "native-darwin-arm64",
+      "native-windows-amd64"
+    ],
+    "source_modified": false,
+    "model_calls": 0,
+    "cancel_exit_code": 0,
+    "rerun_failed_exit_code": 0
+  },
+  "model_calls": 0,
+  "main_merged": false,
+  "release_published": false,
+  "production_modified": false,
+  "remaining_limitations": [
+    "Hosted Windows native client still fails the original five workspace-write scenarios",
+    "New candidates have offline validation only; no new real-account or production CPA acceptance"
+  ],
+  "scope": "Accepted integration source and downloaded artifacts before the main fast-forward; historical CI records retained.",
+  "review": {
+    "head": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+    "core_fingerprint": "40b8a1ae0374b0935a4afef3166828b83536aa173aad1746bb5c9598664960e1",
+    "base_ancestry_preserved": true,
+    "cpa_history_preserved": true,
+    "cpa_host_boundaries_unchanged": true,
+    "runs": [
+      {
+        "id": 43078611711,
+        "name": "Native client fixtures",
+        "conclusion": "failure",
+        "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611711"
+      },
+      {
+        "id": 43078611753,
+        "name": "Offline regression",
+        "conclusion": "success",
+        "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+        "run_attempt": 1,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611753"
+      },
+      {
+        "id": 43078611703,
+        "name": "CPA five-platform offline packages",
+        "conclusion": "success",
+        "head_sha": "c25d27755e9994aa55e6b02c9f4805735fb591cf",
+        "run_attempt": 2,
+        "html_url": "https://github.com/chatwithgod/reflow/actions/runs/43078611703"
+      }
+    ],
+    "findings_blocking_merge": [],
+    "known_exception": "hosted Windows native workspace write probes; unchanged fixtures and retained failures",
+    "new_real_model_calls": 0
+  }
+}

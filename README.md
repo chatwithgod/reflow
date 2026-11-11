@@ -10,6 +10,8 @@ Reflow 为长思考过程提供自动续接支持。同一套核心可作为独�
 
 当前源码已将 CPA `v0.1.3` 的代码和提交历史汇入 `adapters/cpa`，共用不依赖宿主 SDK 的续接判断、事件合并、用量计算和流解码。独立版候选为 `0.1.0-dev.6`，CPA 候选为 `0.1.4`；它们分别构建、分别验证，尚未发布。CPA 的工具参数恢复修复仍在 CPA 层。结构、验证入口与迁移边界见[共用核心与 CPA 接入](docs/CPA-INTEGRATION.md)。
 
+2026-11-12，整合源码 `c25d277` 的 CPA 五平台原生检查与汇总全部通过，五份平台包和总包下载核验一致；独立版三平台常规回归通过。托管 Windows 的原生客户端仍保留五个写入失败，完整范围及历史失败见[合并审查与离线验收](docs/CPA-INTEGRATION-ACCEPTANCE-2026-11-12.md)。本次整合没有新增真实模型调用，也没有发布或替换现有安装。
+
 2026-11-12 本机 Windows 离线检查通过：独立版普通/race 各 97 通过、4 跳过；CPA 各 220 通过，vet 通过；CPA 动态库打包前后各 46 个 ABI 场景通过。新独立包完成模拟续接，两个产品仍独立打包。数字和未覆盖范围见[本轮记录](docs/evidence/cpa-integration-2026-11-12.json)。
 
 已发布下载仍分别为[独立版 dev.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)与[CPA 插件 v0.1.3](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)。以下真实账号和平台验收属于这些历史版本，不自动覆盖本次合并候选。

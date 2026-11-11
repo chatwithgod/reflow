@@ -62,7 +62,7 @@ python scripts/native_smoke.py build/0.1.4/codexreflow.dll --report build/0.1.4/
 
 当前是未发布候选：独立版 `0.1.0-dev.6`，CPA `0.1.4`。旧公开版本的真实账号、Desktop/dot 和多平台验收不自动适用于新构件；本次结果以新的离线记录为准。
 
-远程推送、CI 实际运行、商店地址迁移、旧仓库归档和发布都属于后续步骤。先核对新仓库中的候选与旧 CPA 安装入口，再决定是否把旧仓库保留为下载兼容入口。代码历史的导入不会自动合并两边的 Star、Issue 或 Release。
+整合源码已推送并完成[五平台离线验收及合并审查](CPA-INTEGRATION-ACCEPTANCE-2026-11-12.md)。旧 CPA 仓库继续保留历史下载与现有商店入口；商店迁移、旧仓库归档和发布属于后续步骤。代码历史的导入不会自动合并两边的 Star、Issue 或 Release。
 
 ## 2026-11-12 本机离线结果
 
@@ -88,3 +88,5 @@ python scripts/native_smoke.py build/0.1.4/codexreflow.dll --report build/0.1.4/
 同日随后已获授权推送整合分支：独立版三平台常规回归通过，原生客户端 Ubuntu/macOS 通过，托管 Windows 保留已知写入失败；CPA 五平台工作流未触发，不能当作验收通过。后续状态与触发配置补充见[首轮远程检查](CPA-INTEGRATION-CI-2026-11-12.md)。
 
 再次获授权推送 `b041cd4` 后，CPA 五平台工作流已运行：两个 Linux 平台通过；macOS 两架构和 Windows 因同一个临时路径别名比较误判停止。测试修正及本机负向/正向对照已完成，远程复验待进行，详见[路径测试修正](CPA-INTEGRATION-PATHS-2026-11-12.md)。
+
+上述历史记录之后，修正 `c25d277` 已推送并完成复验：CPA 五平台及汇总全部通过，所有平台构件和总包下载核验一致；独立版三平台常规检查通过，原生客户端托管 Windows 的已知写入失败保留。当前审查结论和限制以[最终验收记录](CPA-INTEGRATION-ACCEPTANCE-2026-11-12.md)为准。
