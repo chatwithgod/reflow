@@ -1,0 +1,1028 @@
+package main
+
+import (
+	"crypto/sha1"
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
+	"time"
+
+	"github.com/router-for-me/CLIProxyAPI/v8/sdk/pluginabi"
+	"github.com/router-for-me/CLIProxyAPI/v8/sdk/pluginapi"
+)
+
+type rpcModelRouteRequest struct {
+	pluginapi.ModelRouteRequest
+	HostCallbackID string `json:"host_callback_id,omitempty"`
+}
+
+type rpcExecutorRequest struct {
+	pluginapi.ExecutorRequest
+	StreamID       string `json:"stream_id,omitempty"`
+	HostCallbackID string `json:"host_callback_id,omitempty"`
+}
+
+type hostModelStreamResponse struct {
+	StatusCode int         `json:"status_code"`
+	Headers    http.Header `json:"headers"`
+	StreamID   string      `json:"stream_id"`
+}
+
+type hostModelStreamReadResponse struct {
+	Payload []byte `json:"payload"`
+	Error   string `json:"error"`
+	Done    bool   `json:"done"`
+}
+
+const (
+	cpaSessionHeader         = "X-CPA-Session-Id"
+	codexReflowSessionHeader = "X-CodexReflow-Session-Id"
+	codexCompSessionHeader   = "X-CodexComp-Session-Id" // legacy compatibility
+	claudeCodeSessionHeader  = "X-Claude-Code-Session-Id"
+)
+
+const (
+	continueReasonTruncation         = "truncation"
+	continueReasonLowReasoningTokens = "low_reasoning_tokens"
+	startupProbeWindow               = 250 * time.Millisecond
+)
+
+var sessionHeaders = []string{
+	cpaSessionHeader,
+	codexReflowSessionHeader,
+	codexCompSessionHeader,
+	claudeCodeSessionHeader,
+}
+
+func extractSessionID(req rpcExecutorRequest) string {
+	for _, header := range sessionHeaders {
+		if sid := strings.TrimSpace(req.Headers.Get(header)); sid != "" {
+			return sid
+		}
+	}
+	if len(req.OriginalRequest) == 0 {
+		return ""
+	}
+	var payload struct {
+		Metadata struct {
+			UserID string `json:"user_id"`
+		} `json:"metadata"`
+	}
+	if err := json.Unmarshal(req.OriginalRequest, &payload); err != nil {
+		return ""
+	}
+	userID := payload.Metadata.UserID
+	if userID == "" {
+		return ""
+	}
+	if strings.HasPrefix(userID, "{") {
+		var uid struct {
+			SessionID string `json:"session_id"`
+		}
+		if err := json.Unmarshal([]byte(userID), &uid); err == nil {
+			return strings.TrimSpace(uid.SessionID)
+		}
+		return ""
+	}
+	if idx := strings.LastIndex(userID, "_session_"); idx >= 0 {
+		return strings.TrimSpace(userID[idx+len("_session_"):])
+	}
+	return ""
+}
+
+func stablePromptCacheKey(model, sessionID string) string {
+	name := strings.Join([]string{pluginIdentifier, "prompt-cache", model, "session:" + sessionID}, ":")
+	h := sha1.Sum([]byte(name))
+	return fmt.Sprintf("%x", h)
+}
+
+type streamEmitRequest struct {
+	StreamID string `json:"stream_id"`
+	Payload  []byte `json:"payload"`
+	Error    string `json:"error,omitempty"`
+}
+
+type streamCloseRequest struct {
+	StreamID string `json:"stream_id"`
+	Error    string `json:"error,omitempty"`
+}
+
+func emitChunk(streamID string, payload []byte) error {
+	if streamID == "" || len(payload) == 0 {
+		return nil
+	}
+	_, err := callHost(pluginabi.MethodHostStreamEmit, streamEmitRequest{
+		StreamID: streamID,
+		Payload:  payload,
+	})
+	return err
+}
+
+func closeStream(streamID, errMsg string) {
+	if streamID == "" {
+		return
+	}
+	_, _ = callHost(pluginabi.MethodHostStreamClose, streamCloseRequest{StreamID: streamID, Error: errMsg})
+}
+
+func modelInAllowlist(model string) bool {
+	// Retain the helper name for inherited tests; it now implements both the
+	// zero-configuration auto selector and the backward-compatible whitelist.
+	return currentFoldConfig().matchesModel(model)
+}
+
+func routeModel(raw []byte) ([]byte, error) {
+	var req rpcModelRouteRequest
+	if err := json.Unmarshal(raw, &req); err != nil {
+		return nil, fmt.Errorf("decode model.route request: %w", err)
+	}
+
+	if !modelInAllowlist(req.RequestedModel) {
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+	switch req.SourceFormat {
+	case "openai-response", "openai", "claude":
+		// accepted: CPA adapter will translate to/from codex internally
+	default:
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+	if !req.Stream {
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+
+	var body map[string]any
+	if err := json.Unmarshal(req.Body, &body); err != nil {
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+
+	// WebSocket warmups prepare native request state without producing an
+	// answer. Leave them on CPA's route instead of starting a reasoning fold.
+	if body["generate"] == false {
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+
+	if _, hasPRI := body["previous_response_id"]; hasPRI {
+		return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+	}
+
+	if req.SourceFormat == "openai-response" {
+		input, ok := body["input"]
+		if !ok {
+			return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+		}
+		if _, isArray := input.([]any); !isArray {
+			return okEnvelope(pluginapi.ModelRouteResponse{Handled: false})
+		}
+	}
+
+	return okEnvelope(pluginapi.ModelRouteResponse{
+		Handled:    true,
+		TargetKind: pluginapi.ModelRouteTargetSelf,
+		Reason:     "codexreflow_reasoning_fold",
+	})
+}
+
+func execute(raw []byte) ([]byte, error) {
+	var req rpcExecutorRequest
+	if err := json.Unmarshal(raw, &req); err != nil {
+		return nil, fmt.Errorf("decode executor.execute request: %w", err)
+	}
+
+	body := req.OriginalRequest
+	if len(req.Payload) > 0 {
+		body = req.Payload
+	}
+
+	entryProtocol := "codex"
+	if sid := extractSessionID(req); sid != "" {
+		var bodyMap map[string]any
+		if err := json.Unmarshal(body, &bodyMap); err == nil {
+			bodyMap["prompt_cache_key"] = stablePromptCacheKey(req.Model, sid)
+			body, _ = json.Marshal(bodyMap)
+			entryProtocol = "openai-response"
+		}
+	}
+
+	result, err := callHost(pluginabi.MethodHostModelExecute, hostModelExecRequest{
+		EntryProtocol:  entryProtocol,
+		ExitProtocol:   "codex",
+		Model:          req.Model,
+		Stream:         false,
+		Body:           body,
+		Headers:        cloneHeader(req.Headers),
+		Query:          req.Query,
+		Alt:            req.Alt,
+		HostCallbackID: req.HostCallbackID,
+	})
+	if err != nil {
+		return errorEnvelope("executor_error", err.Error()), nil
+	}
+
+	var resp pluginapi.HostModelExecutionResponse
+	if err := json.Unmarshal(result, &resp); err != nil {
+		return nil, fmt.Errorf("decode host.model.execute result: %w", err)
+	}
+	return okEnvelope(pluginapi.ExecutorResponse{Payload: resp.Body, Headers: resp.Headers})
+}
+
+func executeStream(raw []byte) ([]byte, error) {
+	var req rpcExecutorRequest
+	if err := json.Unmarshal(raw, &req); err != nil {
+		return nil, fmt.Errorf("decode executor.execute_stream request: %w", err)
+	}
+
+	streamID := strings.TrimSpace(req.StreamID)
+	if streamID == "" {
+		return errorEnvelope("executor_error", "stream_id is required for executor.execute_stream"), nil
+	}
+
+	baseBody := map[string]any{}
+	bodyBytes := req.OriginalRequest
+	if len(req.Payload) > 0 {
+		bodyBytes = req.Payload
+	}
+	if err := json.Unmarshal(bodyBytes, &baseBody); err != nil {
+		closeStream(streamID, "decode request body: "+err.Error())
+		return okEnvelope(map[string]any{
+			"headers": http.Header{"Content-Type": []string{"text/event-stream"}},
+		})
+	}
+
+	sessionID := extractSessionID(req)
+	if sessionID != "" {
+		baseBody["prompt_cache_key"] = stablePromptCacheKey(req.Model, sessionID)
+	}
+
+	restoreCollaborationToolSchemaTypes(baseBody, req.OriginalRequest)
+
+	origInput, _ := baseBody["input"].([]any)
+	// Keep an empty array non-nil: a nil slice would encode as input:null.
+	origInput = append([]any{}, origInput...)
+
+	fs := newFoldState(baseBody, origInput, req, req.HostCallbackID)
+	logReflowEvent(fs.diagnosticEvent("fold_started"))
+	firstRoundCh, firstRound := probeRoundStart(fs.startRound, startupProbeWindow)
+	if firstRound != nil && firstRound.err != nil {
+		status := http.StatusBadGateway
+		if upstreamErr, ok := firstRound.err.(*upstreamError); ok {
+			status = upstreamErr.status
+		}
+		fs.logResult("startup_error", "not_emitted", "upstream_error")
+		return errorEnvelopeWithStatus("executor_error", firstRound.err.Error(), status), nil
+	}
+	if firstRound != nil {
+		firstRoundCh <- *firstRound
+	}
+	runFoldAsync(fs, firstRoundCh, streamID)
+
+	return okEnvelope(map[string]any{
+		"headers": http.Header{"Content-Type": []string{"text/event-stream"}},
+	})
+}
+
+func probeRoundStart(start func() (hostModelStreamResponse, error), window time.Duration) (chan roundStartResult, *roundStartResult) {
+	firstRoundCh := make(chan roundStartResult, 1)
+	go func() {
+		result := roundStartResult{}
+		defer func() {
+			if recovered := recover(); recovered != nil {
+				result.err = fmt.Errorf("start round panic: %v", recovered)
+			}
+			firstRoundCh <- result
+		}()
+		result.response, result.err = start()
+	}()
+
+	timer := time.NewTimer(window)
+	defer timer.Stop()
+	var firstRound *roundStartResult
+	select {
+	case result := <-firstRoundCh:
+		firstRound = &result
+	case <-timer.C:
+		// Prefer a startup result that completed at the probe boundary.
+		select {
+		case result := <-firstRoundCh:
+			firstRound = &result
+		default:
+		}
+	}
+	return firstRoundCh, firstRound
+}
+
+type roundStartResult struct {
+	response hostModelStreamResponse
+	err      error
+}
+
+func runFoldAsync(fs *foldState, firstRound <-chan roundStartResult, streamID string) {
+	go func() {
+		closeErr := ""
+		defer func() {
+			if recovered := recover(); recovered != nil {
+				closeErr = fmt.Sprintf("fold panic: %v", recovered)
+			}
+			closeStreamSafely(streamID, closeErr)
+		}()
+		runFold(fs, <-firstRound, streamID)
+	}()
+}
+
+func closeStreamSafely(streamID, errMsg string) {
+	defer func() {
+		_ = recover()
+	}()
+	closeStream(streamID, errMsg)
+}
+
+func runFold(fs *foldState, firstRound roundStartResult, streamID string) {
+	result, emission, stopReason := "aborted", "not_emitted", "aborted"
+	defer func() { fs.logResult(result, emission, stopReason) }()
+	pendingRound := &firstRound
+	for {
+		var terminal map[string]any
+		var usage map[string]any
+		var roundErr error
+		if pendingRound != nil {
+			roundErr = pendingRound.err
+			if roundErr == nil {
+				terminal, usage, _, roundErr = fs.consumeRound(pendingRound.response, streamID)
+			}
+			pendingRound = nil
+		} else {
+			terminal, usage, _, roundErr = fs.openRound(streamID)
+		}
+
+		if roundErr != nil {
+			stopReason = "upstream_error"
+			var fev map[string]any
+			if _, isMid := roundErr.(*midStreamError); isMid {
+				fev = fs.incompleteEvent("upstream_error")
+			} else if fs.roundNo == 1 {
+				status := 502
+				if ue, ok := roundErr.(*upstreamError); ok {
+					status = ue.status
+				}
+				fev = failedEvent(status, roundErr.Error())
+			} else {
+				fev = fs.incompleteEvent("upstream_error")
+			}
+			fs.stamp(fev)
+			fs.annotateEvent(fev, "upstream_error")
+			result, _ = fev["type"].(string)
+			if err := fs.emit(streamID, sseEvent(fev)); err == nil {
+				emission = "host_accepted"
+			} else {
+				emission = "emit_failed"
+			}
+			_ = emitDone(streamID)
+			return
+		}
+
+		if terminal == nil {
+			stopReason = "upstream_eof"
+			iev := fs.incompleteEvent("upstream_eof")
+			fs.stamp(iev)
+			result = "response.incomplete"
+			if err := fs.emit(streamID, sseEvent(iev)); err == nil {
+				emission = "host_accepted"
+			} else {
+				emission = "emit_failed"
+			}
+			_ = emitDone(streamID)
+			return
+		}
+
+		fs.endRound(terminal, usage)
+		fs.debugDecision()
+
+		if fs.shouldContinue() {
+			fs.debugf("continuing after round=%d reasoning_tokens=%s", fs.roundNo, optionalIntString(reasoningTokens(fs.usage)))
+			fs.prepareNextRound()
+			continue
+		}
+
+		if err := fs.flushCleanStop(streamID); err != nil {
+			stopReason = "downstream_emit_error"
+			emission = "emit_failed"
+			_ = emitDone(streamID)
+			return
+		}
+		// Publish the alias before accepting the terminal chunk: a fast client
+		// may send its next delta as soon as that chunk is visible. Revoke only
+		// this revision if emission fails, never a newer concurrent replacement.
+		lease, bridgeStatus := fs.registerWSAlias()
+		replayLease := fs.commitWSReplay()
+		fs.bridgeStatus = bridgeStatus
+		stopReason = fs.terminalStopReason()
+		ev := fs.terminalEvent()
+		fs.stamp(ev)
+		if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+			if bridgeStatus == "response_alias" {
+				foldedWSAliases.revoke(lease)
+			}
+			foldedWSReplays.revoke(replayLease)
+			emission = "emit_failed"
+			return
+		}
+		result, _ = ev["type"].(string)
+		emission = "host_accepted"
+		_ = emitDone(streamID)
+		return
+	}
+}
+
+func emitDone(streamID string) error {
+	return emitChunk(streamID, []byte("data: [DONE]\n\n"))
+}
+
+type upstreamError struct {
+	status int
+	msg    string
+}
+
+func (e *upstreamError) Error() string { return e.msg }
+
+type midStreamError struct{ msg string }
+
+func (e *midStreamError) Error() string { return e.msg }
+
+func sseEvent(ev map[string]any) []byte {
+	raw, _ := json.Marshal(ev)
+	return append([]byte("data: "), append(raw, '\n', '\n')...)
+}
+
+type foldState struct {
+	runID          string
+	bridgeStatus   string
+	nativeWS       bool
+	emitter        func([]byte) error
+	beforeChunk    func([]byte) error
+	baseBody       map[string]any
+	origInput      []any
+	req            rpcExecutorRequest
+	hostCallbackID string
+
+	roundNo      int
+	dsOI         int
+	seq          int
+	baseResponse map[string]any
+	finalOutput  []map[string]any
+	replayTail   []any
+	summedUsage  map[string]any
+	firstUsage   map[string]any
+	roundsInfo   []map[string]any
+
+	roundReasoning []map[string]any
+	kind           map[int]string
+	oiToDS         map[int]int
+	buffered       []bufferedEntry
+	terminal       map[string]any
+	usage          map[string]any
+
+	decoder eventDecoder
+	config  foldConfig
+}
+
+func (fs *foldState) emit(streamID string, payload []byte) error {
+	if fs.emitter != nil {
+		return fs.emitter(payload)
+	}
+	return emitChunk(streamID, payload)
+}
+
+type bufferedEntry struct {
+	oi     int
+	item   map[string]any
+	events []map[string]any
+}
+
+func newFoldState(baseBody map[string]any, origInput []any, req rpcExecutorRequest, hostCallbackID string) *foldState {
+	return &foldState{
+		runID:          newReflowRunID(),
+		baseBody:       baseBody,
+		origInput:      origInput,
+		req:            req,
+		hostCallbackID: hostCallbackID,
+		summedUsage:    map[string]any{},
+		kind:           map[int]string{},
+		oiToDS:         map[int]int{},
+		config:         currentFoldConfig(),
+	}
+}
+
+func (fs *foldState) openRound(streamID string) (map[string]any, map[string]any, http.Header, error) {
+	streamResp, err := fs.startRound()
+	if err != nil {
+		return nil, nil, nil, err
+	}
+	return fs.consumeRound(streamResp, streamID)
+}
+
+func (fs *foldState) startRound() (hostModelStreamResponse, error) {
+	fs.roundNo++
+	fs.roundReasoning = nil
+	fs.kind = map[int]string{}
+	fs.oiToDS = map[int]int{}
+	fs.buffered = nil
+	fs.terminal = nil
+	fs.usage = nil
+	fs.decoder = eventDecoder{}
+
+	var bodyBytes []byte
+	var err error
+	bodyBytes, err = json.Marshal(nextRoundBody(fs.baseBody, append(fs.origInput, fs.replayTail...)))
+	if err != nil {
+		return hostModelStreamResponse{}, err
+	}
+
+	entryProtocol := "codex"
+	if _, hasKey := fs.baseBody["prompt_cache_key"]; hasKey {
+		entryProtocol = "openai-response"
+	}
+
+	result, err := callHost(pluginabi.MethodHostModelExecuteStream, hostModelExecRequest{
+		EntryProtocol:  entryProtocol,
+		ExitProtocol:   "codex",
+		Model:          fs.req.Model,
+		Stream:         true,
+		Body:           bodyBytes,
+		Headers:        cloneHeader(fs.req.Headers),
+		Query:          fs.req.Query,
+		Alt:            fs.req.Alt,
+		HostCallbackID: fs.hostCallbackID,
+	})
+	if err != nil {
+		return hostModelStreamResponse{}, err
+	}
+
+	var streamResp hostModelStreamResponse
+	if err := json.Unmarshal(result, &streamResp); err != nil {
+		return hostModelStreamResponse{}, fmt.Errorf("decode host.model.execute_stream result: %w", err)
+	}
+	if streamResp.StatusCode >= 400 {
+		if streamResp.StreamID != "" {
+			_, _ = callHost(pluginabi.MethodHostModelStreamClose, map[string]any{"stream_id": streamResp.StreamID})
+		}
+		return hostModelStreamResponse{}, &upstreamError{status: streamResp.StatusCode, msg: fmt.Sprintf("upstream returned status %d", streamResp.StatusCode)}
+	}
+	if streamResp.StreamID == "" {
+		return hostModelStreamResponse{}, fmt.Errorf("host.model.execute_stream returned empty stream_id")
+	}
+	return streamResp, nil
+}
+
+func (fs *foldState) consumeRound(streamResp hostModelStreamResponse, streamID string) (map[string]any, map[string]any, http.Header, error) {
+	defer func() {
+		_, _ = callHost(pluginabi.MethodHostModelStreamClose, map[string]any{"stream_id": streamResp.StreamID})
+	}()
+
+	for {
+		readResult, err := callHost(pluginabi.MethodHostModelStreamRead, map[string]any{"stream_id": streamResp.StreamID})
+		if err != nil {
+			return nil, nil, streamResp.Headers, &midStreamError{msg: err.Error()}
+		}
+		var readResp hostModelStreamReadResponse
+		if err := json.Unmarshal(readResult, &readResp); err != nil {
+			return nil, nil, streamResp.Headers, &midStreamError{msg: err.Error()}
+		}
+		if len(readResp.Payload) > 0 {
+			term, perr := fs.processAndEmit(readResp.Payload, streamID)
+			if perr != nil {
+				return nil, nil, streamResp.Headers, &midStreamError{msg: perr.Error()}
+			}
+			if term != nil {
+				return fs.terminal, fs.usage, streamResp.Headers, nil
+			}
+		}
+		if readResp.Error != "" {
+			return nil, nil, streamResp.Headers, &midStreamError{msg: readResp.Error}
+		}
+		if readResp.Done {
+			if err := fs.decoder.finish(); err != nil {
+				return nil, nil, streamResp.Headers, &midStreamError{msg: err.Error()}
+			}
+			return fs.terminal, fs.usage, streamResp.Headers, nil
+		}
+	}
+}
+
+// The CPA host callback returns SSE data frames for HTTP, but raw JSON events
+// for downstream WebSocket requests. Decode both before using the same fold.
+func (fs *foldState) processAndEmit(payload []byte, streamID string) (map[string]any, error) {
+	if fs.beforeChunk != nil {
+		if err := fs.beforeChunk(payload); err != nil {
+			return nil, err
+		}
+	}
+	if err := fs.decoder.feed(payload); err != nil {
+		return nil, err
+	}
+	for {
+		ev, ready, err := fs.decoder.next()
+		if err != nil {
+			return nil, err
+		}
+		if !ready {
+			return nil, nil
+		}
+
+		term, err := fs.processEvent(ev, streamID)
+		if err != nil {
+			return nil, err
+		}
+		if term != nil {
+			return term, nil
+		}
+	}
+}
+
+func findSubstring(data, sub []byte) int {
+	if len(sub) == 0 || len(data) < len(sub) {
+		return -1
+	}
+	for i := 0; i <= len(data)-len(sub); i++ {
+		match := true
+		for j := 0; j < len(sub); j++ {
+			if data[i+j] != sub[j] {
+				match = false
+				break
+			}
+		}
+		if match {
+			return i
+		}
+	}
+	return -1
+}
+
+func findJSONEnd(data []byte, start int) int {
+	depth := 0
+	inString := false
+	escaped := false
+	for i := start; i < len(data); i++ {
+		c := data[i]
+		if escaped {
+			escaped = false
+			continue
+		}
+		if c == '\\' {
+			escaped = true
+			continue
+		}
+		if c == '"' {
+			inString = !inString
+			continue
+		}
+		if inString {
+			continue
+		}
+		if c == '{' {
+			depth++
+		} else if c == '}' {
+			depth--
+			if depth == 0 {
+				return i
+			}
+		}
+	}
+	return -1
+}
+
+func (fs *foldState) processEvent(ev map[string]any, streamID string) (map[string]any, error) {
+	etype, _ := ev["type"].(string)
+	if etype == "response.done" {
+		// CPA currently normalizes this upstream alias, but accepting it here
+		// also keeps host callbacks and standalone event fixtures compatible.
+		etype = "response.completed"
+		if response, ok := ev["response"].(map[string]any); ok {
+			switch response["status"] {
+			case "failed":
+				etype = "response.failed"
+			case "incomplete":
+				etype = "response.incomplete"
+			}
+		}
+		ev["type"] = etype
+	}
+	if etype == "error" {
+		return nil, fmt.Errorf("upstream returned an error event")
+	}
+
+	if etype == "response.created" || etype == "response.in_progress" {
+		if fs.roundNo == 1 {
+			if etype == "response.created" {
+				if r, ok := ev["response"].(map[string]any); ok {
+					fs.baseResponse = r
+				}
+			}
+			fs.stamp(ev)
+			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+				return nil, err
+			}
+		}
+		return nil, nil
+	}
+
+	if terminalTypes[etype] {
+		fs.terminal = ev
+		if r, ok := ev["response"].(map[string]any); ok {
+			if u, ok := r["usage"].(map[string]any); ok {
+				fs.usage = cloneUsage(u)
+			}
+		}
+		return ev, nil
+	}
+
+	oi := -1
+	if v, ok := ev["output_index"].(float64); ok {
+		oi = int(v)
+	}
+
+	if etype == "response.output_item.added" {
+		item, _ := ev["item"].(map[string]any)
+		if item == nil {
+			item = map[string]any{}
+		}
+		itemType, _ := item["type"].(string)
+		if itemType == "reasoning" {
+			fs.kind[oi] = "reasoning"
+			fs.oiToDS[oi] = fs.dsOI
+			ev["output_index"] = fs.dsOI
+			fs.dsOI++
+			fs.stamp(ev)
+			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+				return nil, err
+			}
+		} else {
+			fs.kind[oi] = "buffered"
+			fs.buffered = append(fs.buffered, bufferedEntry{oi: oi, item: item, events: []map[string]any{ev}})
+		}
+		return nil, nil
+	}
+
+	k := fs.kind[oi]
+	if k == "reasoning" {
+		if ds, ok := fs.oiToDS[oi]; ok {
+			ev["output_index"] = ds
+		}
+		if etype == "response.output_item.done" {
+			if item, ok := ev["item"].(map[string]any); ok {
+				fs.roundReasoning = append(fs.roundReasoning, item)
+				fs.finalOutput = append(fs.finalOutput, item)
+			}
+		}
+		fs.stamp(ev)
+		if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+			return nil, err
+		}
+	} else if k == "buffered" {
+		for i := range fs.buffered {
+			if fs.buffered[i].oi == oi {
+				fs.buffered[i].events = append(fs.buffered[i].events, ev)
+				if etype == "response.output_item.done" {
+					if item, ok := ev["item"].(map[string]any); ok {
+						fs.buffered[i].item = item
+					}
+				}
+				break
+			}
+		}
+	} else {
+		fs.stamp(ev)
+		if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+			return nil, err
+		}
+	}
+	return nil, nil
+}
+
+func (fs *foldState) stamp(ev map[string]any) {
+	ev["sequence_number"] = fs.seq
+	fs.seq++
+}
+
+func (fs *foldState) endRound(terminal map[string]any, usage map[string]any) {
+	fs.terminal = terminal
+	fs.usage = usage
+	sumUsage(fs.summedUsage, usage)
+	if fs.roundNo == 1 {
+		fs.firstUsage = cloneUsage(usage)
+	}
+
+	rt := reasoningTokens(usage)
+	n := tierN(rt)
+	fs.roundsInfo = append(fs.roundsInfo, map[string]any{
+		"round":            fs.roundNo,
+		"reasoning_tokens": rt,
+		"n":                n,
+	})
+	fs.debugf("round=%d completed reasoning_tokens=%s tier=%s", fs.roundNo, optionalIntString(rt), optionalIntString(n))
+	logReflowEvent(fs.roundTelemetry())
+}
+
+func (fs *foldState) minReasoningThreshold() int {
+	if fs.config.MinReasoningTokens == nil {
+		return 0
+	}
+	threshold, ok := fs.config.MinReasoningTokens[fs.req.Model]
+	if !ok {
+		return 0
+	}
+	return threshold
+}
+
+func (fs *foldState) totalReasoningTokens() *int {
+	if fs.summedUsage == nil {
+		return nil
+	}
+	details, _ := fs.summedUsage["output_tokens_details"].(map[string]any)
+	if details == nil {
+		return nil
+	}
+	raw, ok := details["reasoning_tokens"]
+	if !ok || raw == nil {
+		return nil
+	}
+	f, ok := raw.(float64)
+	if !ok {
+		return nil
+	}
+	n := int(f)
+	return &n
+}
+
+func (fs *foldState) continueReason() string {
+	rt := reasoningTokens(fs.usage)
+	n := tierN(rt)
+	if inContinueWindow(n, fs.config.MaxTierN) {
+		return continueReasonTruncation
+	}
+
+	threshold := fs.minReasoningThreshold()
+	if threshold <= 0 {
+		return ""
+	}
+	totalReasoning := fs.totalReasoningTokens()
+	if totalReasoning == nil {
+		return ""
+	}
+	if *totalReasoning < threshold {
+		return continueReasonLowReasoningTokens
+	}
+	return ""
+}
+
+func (fs *foldState) markLastRoundContinueReason(reason string) {
+	if reason == "" || len(fs.roundsInfo) == 0 {
+		return
+	}
+	fs.roundsInfo[len(fs.roundsInfo)-1]["continue_reason"] = reason
+}
+
+func (fs *foldState) shouldContinue() bool {
+	if fs.terminal == nil {
+		return false
+	}
+	etype, _ := fs.terminal["type"].(string)
+	if etype != "response.completed" {
+		return false
+	}
+	reason := fs.continueReason()
+	if reason == "" {
+		return false
+	}
+	if !fs.hasEncryptedContent() {
+		return false
+	}
+	if fs.roundNo > fs.config.MaxContinue {
+		return false
+	}
+	fs.markLastRoundContinueReason(reason)
+	return true
+}
+
+func (fs *foldState) debugDecision() {
+	if !fs.config.DebugLog {
+		return
+	}
+	reason := fs.continueReason()
+	rt := reasoningTokens(fs.usage)
+	total := fs.totalReasoningTokens()
+	fs.debugf(
+		"decision model=%s round=%d reasoning_tokens=%s total_reasoning_tokens=%s min_reasoning_tokens=%d trigger=%s has_encrypted_content=%t max_continue=%d",
+		fs.req.Model,
+		fs.roundNo,
+		optionalIntString(rt),
+		optionalIntString(total),
+		fs.minReasoningThreshold(),
+		reason,
+		fs.hasEncryptedContent(),
+		fs.config.MaxContinue,
+	)
+}
+
+func (fs *foldState) stoppedReason() string {
+	etype, _ := fs.terminal["type"].(string)
+	if etype != "response.completed" {
+		return ""
+	}
+	rt := reasoningTokens(fs.usage)
+	n := tierN(rt)
+	trigger := fs.continueReason()
+	if !fs.hasEncryptedContent() {
+		if trigger != "" {
+			return "no_encrypted_content"
+		}
+		return ""
+	}
+	if fs.roundNo > fs.config.MaxContinue {
+		if trigger != "" {
+			return "max_continue"
+		}
+		return ""
+	}
+	if n == nil {
+		return ""
+	}
+	if !inContinueWindow(n, fs.config.MaxTierN) {
+		return "tier_out_of_window"
+	}
+	return ""
+}
+
+func (fs *foldState) hasEncryptedContent() bool {
+	if len(fs.roundReasoning) == 0 {
+		return false
+	}
+	last := fs.roundReasoning[len(fs.roundReasoning)-1]
+	s, ok := last["encrypted_content"].(string)
+	return ok && s != ""
+}
+
+func (fs *foldState) prepareNextRound() {
+	tail := make([]any, 0, len(fs.roundReasoning)+1)
+	for _, r := range fs.roundReasoning {
+		tail = append(tail, r)
+	}
+	tail = append(tail, commentaryNudge(fs.config.MarkerText))
+	fs.replayTail = append(fs.replayTail, tail...)
+}
+
+func (fs *foldState) debugf(format string, args ...any) {
+	if !fs.config.DebugLog {
+		return
+	}
+	pluginLog("debug", fmt.Sprintf(format, args...))
+}
+
+func optionalIntString(value *int) string {
+	if value == nil {
+		return ""
+	}
+	return fmt.Sprintf("%d", *value)
+}
+
+func (fs *foldState) flushCleanStop(streamID string) error {
+	for _, entry := range fs.buffered {
+		for _, ev := range entry.events {
+			if _, ok := ev["output_index"]; ok {
+				ev["output_index"] = fs.dsOI
+			}
+			fs.stamp(ev)
+			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
+				return err
+			}
+		}
+		fs.dsOI++
+		fs.finalOutput = append(fs.finalOutput, entry.item)
+	}
+	return nil
+}
+
+func (fs *foldState) terminalEvent() map[string]any {
+	return fs.annotateEvent(terminalEvent(
+		fs.terminal,
+		fs.baseResponse,
+		fs.finalOutput,
+		agentUsage(fs.firstUsage, fs.summedUsage, fs.usage, true),
+		fs.roundsInfo,
+		fs.summedUsage,
+		fs.stoppedReason(),
+		"",
+	), fs.terminalStopReason())
+}
+
+func (fs *foldState) incompleteEvent(reason string) map[string]any {
+	return fs.annotateEvent(terminalEvent(
+		nil,
+		fs.baseResponse,
+		fs.finalOutput,
+		agentUsage(fs.firstUsage, fs.summedUsage, fs.usage, false),
+		fs.roundsInfo,
+		fs.summedUsage,
+		reason,
+		reason,
+	), reason)
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="596" viewBox="0 0 1120 596" role="img" aria-labelledby="title desc">
+  <title id="title">同一道题：516 与较长推理的回答表现</title>
+  <desc id="desc">社区作者记录：第1、2次推理516 token，答案29，错误；第3、4、5次分别5884、3904、7766 token，答案21，正确。这不是CodexReflow开关对照测试。</desc>
+  <!-- Original visualization of factual observations reported by gydx6:
+       https://github.com/openai/codex/issues/29353
+       Five English-prompt trials only. No CodexReflow benchmark is claimed. -->
+  <rect x="1" y="1" width="1118" height="594" rx="20" fill="#fbfcfe" stroke="#dbe4ed"/>
+  <g font-family="Segoe UI, Microsoft YaHei, PingFang SC, Noto Sans CJK SC, sans-serif">
+    <text x="48" y="42" font-size="12" font-weight="700" letter-spacing="2" fill="#51697a">COMMUNITY OBSERVATION</text>
+    <text x="48" y="83" font-size="30" font-weight="700" fill="#173447">同一道题：516 与较长推理的回答表现</text>
+    <text x="48" y="115" font-size="16" fill="#526779">社区报告 · GPT-5.5 / xhigh · 5 次英文题面新对话</text>
+    <text x="48" y="158" font-size="14" font-weight="600" fill="#526779">测试轮次</text>
+    <text x="190" y="158" font-size="14" font-weight="600" fill="#526779">思考 token</text>
+    <text x="940" y="158" font-size="14" font-weight="600" fill="#526779">答案 / 结果</text>
+    <line x1="190" y1="176" x2="190" y2="444" stroke="#e2e9f0"/>
+    <text x="190" y="469" text-anchor="middle" font-size="13" fill="#65788a">0</text>
+    <line x1="352.5" y1="176" x2="352.5" y2="444" stroke="#e2e9f0"/>
+    <text x="352.5" y="469" text-anchor="middle" font-size="13" fill="#65788a">2,000</text>
+    <line x1="515" y1="176" x2="515" y2="444" stroke="#e2e9f0"/>
+    <text x="515" y="469" text-anchor="middle" font-size="13" fill="#65788a">4,000</text>
+    <line x1="677.5" y1="176" x2="677.5" y2="444" stroke="#e2e9f0"/>
+    <text x="677.5" y="469" text-anchor="middle" font-size="13" fill="#65788a">6,000</text>
+    <line x1="840" y1="176" x2="840" y2="444" stroke="#e2e9f0"/>
+    <text x="840" y="469" text-anchor="middle" font-size="13" fill="#65788a">8,000</text>
+    <text x="48" y="201" font-size="16" fill="#294759">第 1 次</text>
+    <rect x="190" y="182" width="41.925" height="28" rx="5" fill="#dc7b64"/>
+    <text x="243.925" y="201" font-size="16" font-weight="600" fill="#294759">516</text>
+    <rect x="932" y="179" width="140" height="34" rx="17" fill="#fbe5df"/>
+    <text x="1002" y="201" text-anchor="middle" font-size="15" font-weight="600" fill="#993d2e">29 · 错误</text>
+    <text x="48" y="257" font-size="16" fill="#294759">第 2 次</text>
+    <rect x="190" y="238" width="41.925" height="28" rx="5" fill="#dc7b64"/>
+    <text x="243.925" y="257" font-size="16" font-weight="600" fill="#294759">516</text>
+    <rect x="932" y="235" width="140" height="34" rx="17" fill="#fbe5df"/>
+    <text x="1002" y="257" text-anchor="middle" font-size="15" font-weight="600" fill="#993d2e">29 · 错误</text>
+    <text x="48" y="313" font-size="16" fill="#294759">第 3 次</text>
+    <rect x="190" y="294" width="478.075" height="28" rx="5" fill="#469f88"/>
+    <text x="680.075" y="313" font-size="16" font-weight="600" fill="#294759">5,884</text>
+    <rect x="932" y="291" width="140" height="34" rx="17" fill="#dbf1ea"/>
+    <text x="1002" y="313" text-anchor="middle" font-size="15" font-weight="600" fill="#155d4c">21 · 正确</text>
+    <text x="48" y="369" font-size="16" fill="#294759">第 4 次</text>
+    <rect x="190" y="350" width="317.2" height="28" rx="5" fill="#469f88"/>
+    <text x="519.2" y="369" font-size="16" font-weight="600" fill="#294759">3,904</text>
+    <rect x="932" y="347" width="140" height="34" rx="17" fill="#dbf1ea"/>
+    <text x="1002" y="369" text-anchor="middle" font-size="15" font-weight="600" fill="#155d4c">21 · 正确</text>
+    <text x="48" y="425" font-size="16" fill="#294759">第 5 次</text>
+    <rect x="190" y="406" width="630.987" height="28" rx="5" fill="#469f88"/>
+    <text x="832.987" y="425" font-size="16" font-weight="600" fill="#294759">7,766</text>
+    <rect x="932" y="403" width="140" height="34" rx="17" fill="#dbf1ea"/>
+    <text x="1002" y="425" text-anchor="middle" font-size="15" font-weight="600" fill="#155d4c">21 · 正确</text>
+    <line x1="48" y1="503" x2="1072" y2="503" stroke="#dbe4ed"/>
+    <text x="48" y="536" font-size="16" font-weight="600" fill="#294759">社区单题观察，不是 CodexReflow 开关对照测试</text>
+    <text x="48" y="564" font-size="14" fill="#65788a">数据来源：gydx6 · openai/codex #29353　｜　图表：CodexReflow 根据公开记录重绘</text>
+  </g>
+</svg>

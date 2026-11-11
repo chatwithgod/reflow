@@ -1,0 +1,14 @@
+.tools/
+build/
+dist/
+__pycache__/
+*.pyc
+*.dll
+*.so
+*.dylib
+*.h
+*.test
+coverage.out
+.env
+*.local.yaml
+*.local.toml
