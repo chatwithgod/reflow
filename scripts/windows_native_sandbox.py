@@ -5,7 +5,6 @@ This module never configures a local workstation, copies sandbox credentials,
 or switches to full access. Its public evidence contains fixed labels/counts.
 """
 from contextlib import contextmanager
-import base64
 import ctypes
 import json
 import os
@@ -20,6 +19,8 @@ RESOURCE_FIELDS = ('users', 'groups', 'firewall_rules', 'installation_keys',
                    'hidden_users', 'services', 'wfp_provider', 'wfp_sublayer')
 NETWORK_REACHABLE = b'REFLOW_NETWORK_REACHABLE'
 NETWORK_BLOCKED = b'REFLOW_NETWORK_BLOCKED'
+NETWORK_GATES = ('local_listener_reachable_without_sandbox', 'local_listener_blocked_in_sandbox',
+                 'local_listener_reachable_after_sandbox')
 
 
 def require(condition, code):
@@ -205,33 +206,43 @@ def capture_control(command, **kwargs):
         process.stderr.close()
 
 
-def network_boundary(codex, pwsh, work, env, run=capture_control):
-    """Same fixed command must connect outside the sandbox and be blocked inside."""
+def network_observation(result):
+    """Keep only exit status, lengths and a fixed marker/error vocabulary."""
+    stdout, stderr = result.stdout or b'', result.stderr or b''
+    text = (stdout + stderr).decode('utf-8', errors='replace').lower()
+    signals = {
+        'permission_denied': ('permission denied', 'access denied', 'access is denied'),
+        'process_launch_error': ('failed to spawn', 'failed to launch', 'failed to start'),
+        'language_mode': ('constrainedlanguage', 'constrained language', 'methodinvocationnotsupportedinconstrainedlanguage'),
+        'configuration_error': ('error loading config', 'invalid value', 'unrecognized subcommand'),
+        'sandbox_error': ('windows sandbox failed', 'sandbox setup failed'),
+    }
+    return {'exit_code': result.returncode, 'stdout_bytes': len(stdout), 'stderr_bytes': len(stderr),
+            'reachable_marker': stdout.strip() == NETWORK_REACHABLE,
+            'blocked_marker': stdout.strip() == NETWORK_BLOCKED,
+            'matching_output': {key: 1 for key, needles in signals.items() if any(n in text for n in needles)}}
+
+
+def network_boundary(codex, helper, work, env, run=capture_control):
+    """Require connect/block/connect using one fixed native TCP helper."""
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as listener:
         listener.bind(('127.0.0.1', 0))
         listener.listen(4)
         port = listener.getsockname()[1]
-        script = r'''
-$ErrorActionPreference = 'Stop'
-$client = [Net.Sockets.TcpClient]::new()
-try {
-  $pending = $client.BeginConnect('127.0.0.1', PORT, $null, $null)
-  if (-not $pending.AsyncWaitHandle.WaitOne(2000)) { Write-Output 'REFLOW_NETWORK_BLOCKED'; exit 42 }
-  $client.EndConnect($pending)
-  Write-Output 'REFLOW_NETWORK_REACHABLE'; exit 0
-} catch [Net.Sockets.SocketException] {
-  Write-Output 'REFLOW_NETWORK_BLOCKED'; exit 42
-} finally { $client.Dispose() }
-'''.replace('PORT', str(port))
-        payload = base64.b64encode(script.encode('utf-16-le')).decode('ascii')
-        child = [pwsh, '-NoProfile', '-NonInteractive', '-EncodedCommand', payload]
+        child = [str(helper), f'127.0.0.1:{port}']
         options = {'env': env, 'cwd': work, 'stdin': subprocess.DEVNULL, 'capture_output': True, 'timeout': 30}
-        reachable = run(child, **options)
-        positive = reachable.returncode == 0 and reachable.stdout.strip() == NETWORK_REACHABLE
+        reachable = network_observation(run(child, **options))
+        positive = reachable['exit_code'] == 0 and reachable['reachable_marker']
+        record = dict.fromkeys(NETWORK_GATES, False)
+        record['controls'] = {'before': reachable}
         if not positive:
-            return {'local_listener_reachable_without_sandbox': False, 'local_listener_blocked_in_sandbox': False}
+            return record
         command = [str(codex), '-c', 'windows.sandbox="elevated"', 'sandbox', '--include-managed-config',
                    '--permission-profile', ':workspace', '-C', str(work), '--', *child]
-        blocked = run(command, **options)
-        return {'local_listener_reachable_without_sandbox': True,
-                'local_listener_blocked_in_sandbox': blocked.returncode == 42 and blocked.stdout.strip() == NETWORK_BLOCKED}
+        blocked = network_observation(run(command, **options))
+        after = network_observation(run(child, **options))
+        record['controls'].update(sandbox=blocked, after=after)
+        record.update(local_listener_reachable_without_sandbox=True,
+                      local_listener_blocked_in_sandbox=blocked['exit_code'] == 42 and blocked['blocked_marker'],
+                      local_listener_reachable_after_sandbox=after['exit_code'] == 0 and after['reachable_marker'])
+        return record

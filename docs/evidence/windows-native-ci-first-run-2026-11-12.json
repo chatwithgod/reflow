@@ -1,0 +1,631 @@
+{
+  "date": "2026-11-12",
+  "tested_commit": "af60eb166f9f90e0fb110f660f6d998f07380053",
+  "native_ci_url": "https://github.com/chatwithgod/reflow/actions/runs/43104607408",
+  "offline_ci": {
+    "run_id": 43104607402,
+    "log_archive_sha256": "b7281806be66b297a601b718a50c16eb8d56917bc85be13151db404c77f0edd5",
+    "platforms": {
+      "ubuntu": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "failed": 0
+      },
+      "windows": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "failed": 0
+      },
+      "macos": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "failed": 0
+      }
+    }
+  },
+  "native_intervals": [
+    {
+      "name": "native-clients (ubuntu-latest)",
+      "started_at": "2026-11-11T21:36:58Z",
+      "completed_at": "2026-11-11T21:39:20Z",
+      "conclusion": "success"
+    },
+    {
+      "name": "native-clients (windows-latest)",
+      "started_at": "2026-11-11T21:39:22Z",
+      "completed_at": "2026-11-11T21:40:48Z",
+      "conclusion": "failure"
+    },
+    {
+      "name": "native-clients (macos-latest)",
+      "started_at": "2026-11-11T21:40:51Z",
+      "completed_at": "2026-11-11T21:44:24Z",
+      "conclusion": "success"
+    }
+  ],
+  "native_intervals_disjoint": true,
+  "model_calls": 0,
+  "max_native_clients": 1,
+  "platforms": {
+    "windows": {
+      "artifact_summary_sha256": "d161760bcb5ef2da68e790569bb24971024f650c89663af50343657e338c1d5c",
+      "status": "fail",
+      "checks": {},
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": true,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": true,
+          "pwsh": true,
+          "powershell": true
+        },
+        "windows_sandbox": "elevated",
+        "windows_version": {
+          "major": 10,
+          "minor": 0,
+          "build": 26100,
+          "product_type": 3
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        },
+        "native_filesystem_rpc": {
+          "native_filesystem_write_verified": true,
+          "out_of_workspace_write_blocked": true,
+          "native_filesystem_reason": "pass"
+        },
+        "network_boundary": {
+          "local_listener_reachable_without_sandbox": true,
+          "local_listener_blocked_in_sandbox": false
+        }
+      },
+      "sandbox_setup": {
+        "status": "fail",
+        "before": {
+          "users": 0,
+          "groups": 0,
+          "firewall_rules": 0,
+          "installation_keys": 0,
+          "hidden_users": 0,
+          "services": 0,
+          "wfp_provider": 0,
+          "wfp_sublayer": 0,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7
+        },
+        "backend": "elevated",
+        "max_native_clients": 1,
+        "model_calls": 0,
+        "host_configuration_modified": true,
+        "setup_completed": true,
+        "cleanup": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 273,
+          "matching_output": {}
+        },
+        "after": {
+          "users": 0,
+          "groups": 0,
+          "firewall_rules": 0,
+          "installation_keys": 0,
+          "hidden_users": 0,
+          "services": 0,
+          "wfp_provider": 0,
+          "wfp_sublayer": 0,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7
+        },
+        "resources_removed": true,
+        "firewall_profile_state_unchanged": true,
+        "acl_restoration_claimed": false
+      },
+      "error": "Elevated sandbox network boundary failed"
+    },
+    "ubuntu": {
+      "artifact_summary_sha256": "fff26af1d4373131ab4ba39bb06ecffcb9e58361548345b945447baef3971f0e",
+      "status": "pass",
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "8463bc15f15fdea00f3ca76cf59a4109148fa9d29f9a971e6b914597e611738d"
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "d68067a90ec6fda14a2532ba462b9f11a658a3c74cb5dcb8b077628587352f19"
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "a46f89b6381af1bc719ea1494431cd5acd77682cdfafac5feceef15cbfccb1c9"
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "e02837c2fcd0e4c10ed6fe0a901f8782d7f6c8df2b94e6dccf018d5023659cd0"
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "1adf219d882fde0d5c5d284170d4848b5430a16e9d22c75dd38298b847f315b1"
+        }
+      },
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1019-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58109
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      }
+    },
+    "macos": {
+      "artifact_summary_sha256": "2e3554e2d05ff0e386bc936a14fa423fbcdc6ec956680eb11c123cb5fe44c732",
+      "status": "pass",
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "f0f6df6defe0fd04d25037e6911fe88a5392db800e97f895d6a35afbd5d05253"
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "c91be3b81eb333f78e684dd7726b5d1e5c4c106d55144cc9ad8fa40a9cbb2dd5"
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "a890476a2da0372787a81417ca55b1ccbc6ecae730cd11587e67bf2c42ab96c6"
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "bee2092defa0773dd55fda1c24495603169b80b10a4a0adb374123821d5a8c71"
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "49e40c95623520a4889d4ddafa3d16af715d9b4638c8b3271628057c224c1bd0"
+        }
+      },
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": true
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      }
+    }
+  },
+  "candidate_network_probe": {
+    "status": "local_controls_pass_remote_pending",
+    "python_controls_passed": 22,
+    "local_real_tcp_controls": {
+      "model_calls": 0,
+      "sandbox_setup": false,
+      "native_codex_processes": 0,
+      "max_test_processes": 1,
+      "checks": {
+        "reachable": {
+          "exit_code": 0,
+          "stdout_bytes": 25,
+          "stderr_bytes": 0,
+          "reachable_marker": true,
+          "blocked_marker": false,
+          "matching_output": {}
+        },
+        "closed_listener": {
+          "exit_code": 42,
+          "stdout_bytes": 23,
+          "stderr_bytes": 0,
+          "reachable_marker": false,
+          "blocked_marker": true,
+          "matching_output": {}
+        },
+        "no_endpoint": {
+          "exit_code": 64
+        },
+        "hostname_refused": {
+          "exit_code": 64
+        },
+        "remote_refused": {
+          "exit_code": 64
+        },
+        "invalid_port": {
+          "exit_code": 64
+        },
+        "unsandboxed_negative_control_rejected": true
+      },
+      "helper_sha256": "bcb04cc314edc317b51fbe787fdea730e952455f843a59ec0b589c6ddb61088c",
+      "vet": "pass",
+      "status": "pass",
+      "temporary_profile_removed": true
+    },
+    "previous_powershell_handler_local_check": {
+      "scope": "ordinary PowerShell with reachable and bound-but-not-listening loopback ports; no sandbox setup or Codex process",
+      "model_calls": 0,
+      "observations": [
+        {
+          "exit_code": 0,
+          "reachable_marker": true,
+          "blocked_marker": false,
+          "stdout_bytes": 26,
+          "stderr_bytes": 0,
+          "signals": {
+            "socketexception": false,
+            "methodinvocationexception": false,
+            "constrainedlanguage": false,
+            "parsererror": false,
+            "access denied": false
+          }
+        },
+        {
+          "exit_code": 42,
+          "reachable_marker": false,
+          "blocked_marker": true,
+          "stdout_bytes": 24,
+          "stderr_bytes": 0,
+          "signals": {
+            "socketexception": false,
+            "methodinvocationexception": false,
+            "constrainedlanguage": false,
+            "parsererror": false,
+            "access denied": false
+          }
+        }
+      ]
+    },
+    "source_sha256": {
+      "integration/testdata/windows-network-probe/main.go": "426984f0e921d46a2d9a27c0499c390972aa6e79ee23684cd40b3e817434d2d6",
+      "scripts/windows_native_sandbox.py": "9efce5e2f57020aa0fc43cf1a3e53bdb3e2b28b477d5193c3d243cbb97e2ed09",
+      "scripts/check-native-clients.py": "9ed158619a03209ede02ad5f149dfc8d485a2e72551b62432118d8d7984e0e38",
+      "scripts/test-windows-native-sandbox.py": "9f3c3cf173117e5fc5e7f7bf07009899672af5b275747a4a9c32d1ed52743e92"
+    }
+  }
+}

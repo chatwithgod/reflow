@@ -160,31 +160,47 @@ class NetworkTests(unittest.TestCase):
             calls.append(args)
             return results.pop(0)
 
-        result = sandbox.network_boundary(Path('codex'), 'pwsh', Path('.'), {}, run=run)
+        result = sandbox.network_boundary(Path('codex'), Path('tcp-probe'), Path('.'), {}, run=run)
         return result, calls
 
     def test_real_block_marker_required(self):
         result, calls = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
-                                    subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED)])
-        self.assertTrue(all(result.values()))
+                                    subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED),
+                                    subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
+        self.assertTrue(all(result[key] for key in sandbox.NETWORK_GATES))
         self.assertEqual(calls[0][-1], calls[1][-1])
+        self.assertEqual(calls[0], calls[2])
         self.assertIn('windows.sandbox="elevated"', calls[1])
         self.assertIn(':workspace', calls[1])
 
     def test_sandbox_start_error_is_not_network_isolation(self):
         result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
-                               subprocess.CompletedProcess([], 1, b'failed to start')])
+                               subprocess.CompletedProcess([], 1, b'failed to start'),
+                               subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
         self.assertFalse(result['local_listener_blocked_in_sandbox'])
 
     def test_network_leak_fails(self):
         result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
+                               subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
                                subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE)])
         self.assertFalse(result['local_listener_blocked_in_sandbox'])
 
     def test_missing_positive_control_stops(self):
         result, calls = self.probe([subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED)])
-        self.assertFalse(any(result.values()))
+        self.assertFalse(any(result[key] for key in sandbox.NETWORK_GATES))
         self.assertEqual(len(calls), 1)
+
+    def test_listener_must_still_work_after_block(self):
+        result, _ = self.probe([subprocess.CompletedProcess([], 0, sandbox.NETWORK_REACHABLE),
+                               subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED),
+                               subprocess.CompletedProcess([], 42, sandbox.NETWORK_BLOCKED)])
+        self.assertFalse(all(result[key] for key in sandbox.NETWORK_GATES))
+
+    def test_diagnostics_keep_no_output_text(self):
+        data = sandbox.network_observation(subprocess.CompletedProcess([], 1,
+            b'private-body-canary', b'failed to start private-path-canary'))
+        self.assertEqual(data['matching_output'], {'process_launch_error': 1})
+        self.assertNotIn('canary', json.dumps(data))
 
 
 class FilesystemTests(unittest.TestCase):

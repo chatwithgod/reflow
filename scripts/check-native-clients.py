@@ -367,9 +367,18 @@ def run_checks(args, report, summary):
             fs = host_checks['native_filesystem_rpc']
             require(fs['native_filesystem_write_verified'] and fs['out_of_workspace_write_blocked'],
                     'Elevated sandbox file boundary failed')
-            network = windows_native_sandbox.network_boundary(codex, pwsh, profile / 'native-host-probe', env)
+            work = profile / 'native-host-probe'
+            helper = work / 'network-control.exe'
+            build = command_observation([go, 'build', '-trimpath', '-o', str(helper),
+                                         './integration/testdata/windows-network-probe'],
+                                        {**env, 'CGO_ENABLED': '0'}, ROOT, timeout=120)
+            host_checks['network_probe_build'] = build
+            require(build['status'] == 'pass' and helper.is_file(), 'Network control build failed')
+            network = windows_native_sandbox.network_boundary(codex, helper, work, env)
+            network['probe_sha256'] = digest(helper)
             host_checks['network_boundary'] = network
-            require(all(network.values()), 'Elevated sandbox network boundary failed')
+            require(all(network.get(key) is True for key in windows_native_sandbox.NETWORK_GATES),
+                    'Elevated sandbox network boundary failed')
 
         dist = ROOT / 'dist' / (ROOT / 'VERSION').read_text().strip()
         before = set(dist.glob('*/manifest.json'))
@@ -458,7 +467,7 @@ def main():
                'ci/native-clients/package.json', 'ci/native-clients/package-lock.json',
                '.github/workflows/native-clients.yml', 'adapters/pi/reflow.ts',
                'adapters/pi/reflow-openai.ts', 'adapters/pi/lib/openai-transport.mjs',
-               'integration/pi_openai_transport.test.mjs',
+               'integration/pi_openai_transport.test.mjs', 'integration/testdata/windows-network-probe/main.go',
                'plugins/codex/plugin.json', 'plugins/codex/mcp.json', 'evaluations/client_preflight.py',
                'evaluations/pi_probe.py', 'evaluations/pi_events.py', 'evaluations/pi_probe_guard.ts', 'evaluations/run.py',
                'go.mod', 'go.sum', 'VERSION']
