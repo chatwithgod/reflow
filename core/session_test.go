@@ -220,7 +220,7 @@ func TestHostedToolsAreNotDiscardedAndReexecuted(t *testing.T) {
 	if err != nil || d.Next != nil || d.Result.StopReason != "upstream_tool_already_executed" {
 		t.Fatalf("decision=%v err=%v", d, err)
 	}
-	if s.output[len(s.output)-1]["type"] != "image_generation_call" {
+	if s.FinalOutput[len(s.FinalOutput)-1]["type"] != "image_generation_call" {
 		t.Fatal("hosted result lost")
 	}
 }

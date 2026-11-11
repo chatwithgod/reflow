@@ -170,14 +170,14 @@ func TestDecoderChecksLimitBeforeAllocating(t *testing.T) {
 	if err := d.feed(make([]byte, maxStreamBufferSize+1)); err == nil {
 		t.Fatal("oversized input accepted")
 	}
-	if len(d.buffer) != 0 {
+	if d.BufferedBytes() != 0 {
 		t.Fatal("oversized data allocated before validation")
 	}
 }
 
 func TestWebSocketRawEventsKeepEncryptedReasoningAndToolCall(t *testing.T) {
 	fs := newFoldState(map[string]any{}, nil, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	fixtures := []string{
 		`{"type":"response.created","response":{"id":"r"}}`,
 		`{"type":"response.output_item.added","output_index":0,"item":{"type":"reasoning","id":"rs"}}`,
@@ -198,16 +198,16 @@ func TestWebSocketRawEventsKeepEncryptedReasoningAndToolCall(t *testing.T) {
 	if terminal == nil || !fs.hasEncryptedContent() {
 		t.Fatal("raw JSON was not processed as a completed reasoning round")
 	}
-	fs.endRound(terminal, fs.usage)
+	fs.endRound(terminal, fs.Usage)
 	if fs.shouldContinue() {
 		t.Fatal("a normal 40-token round must not trigger continuation")
 	}
 	if err := fs.flushCleanStop(""); err != nil {
 		t.Fatal(err)
 	}
-	if len(fs.finalOutput) != 2 || fs.finalOutput[1]["call_id"] != "call_1" ||
-		fs.finalOutput[0]["encrypted_content"] != "opaque-test-only" {
-		t.Fatalf("reasoning or tool call lost: %v", fs.finalOutput)
+	if len(fs.FinalOutput) != 2 || fs.FinalOutput[1]["call_id"] != "call_1" ||
+		fs.FinalOutput[0]["encrypted_content"] != "opaque-test-only" {
+		t.Fatalf("reasoning or tool call lost: %v", fs.FinalOutput)
 	}
 }
 

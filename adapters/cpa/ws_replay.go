@@ -164,15 +164,15 @@ func (fs *foldState) commitWSReplay() wsReplayLease {
 	if !valid {
 		return wsReplayLease{}
 	}
-	if fs.terminal["type"] != "response.completed" {
+	if fs.Terminal["type"] != "response.completed" {
 		foldedWSReplays.invalidate(scope)
 		return wsReplayLease{}
 	}
-	visible, _ := fs.baseResponse["id"].(string)
-	response, _ := fs.terminal["response"].(map[string]any)
+	visible, _ := fs.BaseResponse["id"].(string)
+	response, _ := fs.Terminal["response"].(map[string]any)
 	upstream, _ := response["id"].(string)
 	input := append([]any(nil), fs.origInput...)
-	for _, item := range fs.finalOutput {
+	for _, item := range fs.FinalOutput {
 		input = append(input, item)
 	}
 	lease, _ := foldedWSReplays.putWithSettings(scope, visible, upstream, input, fs.baseBody)

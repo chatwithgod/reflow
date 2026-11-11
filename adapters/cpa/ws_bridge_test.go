@@ -202,9 +202,9 @@ func TestFoldRegistersOnlyCompletedSocketAlias(t *testing.T) {
 	defer func() { foldedWSAliases = original }()
 	req := rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-6-sol", SourceFormat: "openai-response", Metadata: map[string]any{cpaExecutionSessionMetadataKey: "fixture-socket"}}}
 	fs := newFoldState(map[string]any{}, nil, req, "")
-	fs.roundNo = 2
-	fs.baseResponse = map[string]any{"id": "visible-A"}
-	fs.terminal = map[string]any{"type": "response.completed", "response": map[string]any{"id": "latest-B"}}
+	fs.RoundNo = 2
+	fs.BaseResponse = map[string]any{"id": "visible-A"}
+	fs.Terminal = map[string]any{"type": "response.completed", "response": map[string]any{"id": "latest-B"}}
 	lease, status := fs.registerWSAlias()
 	if status != "response_alias" {
 		t.Fatalf("bridge=%s", status)
@@ -216,7 +216,7 @@ func TestFoldRegistersOnlyCompletedSocketAlias(t *testing.T) {
 		t.Fatalf("CPA-translated input bridge=%s", status)
 	}
 	foldedWSAliases.revoke(lease)
-	fs.terminal["type"] = "response.failed"
+	fs.Terminal["type"] = "response.failed"
 	if _, status := fs.registerWSAlias(); status != "not_committed" {
 		t.Fatal("failed terminal committed alias")
 	}
@@ -224,7 +224,7 @@ func TestFoldRegistersOnlyCompletedSocketAlias(t *testing.T) {
 	if _, status := fs.registerWSAlias(); status != "no_socket_scope" {
 		t.Fatal("no-scope request retained state")
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	if _, status := fs.registerWSAlias(); status != "not_needed" {
 		t.Fatal("single round created alias")
 	}

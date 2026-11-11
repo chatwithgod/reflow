@@ -144,7 +144,7 @@ func TestNativeWSMissDoesNotCallModelAndPreservesTools(t *testing.T) {
 			terminal = event
 		}
 	}
-	if terminal == nil || terminal["type"] != "response.completed" || state.fs.roundNo != 1 {
+	if terminal == nil || terminal["type"] != "response.completed" || state.fs.RoundNo != 1 {
 		t.Fatal("context miss made a model call", terminal)
 	}
 	response := terminal["response"].(map[string]any)

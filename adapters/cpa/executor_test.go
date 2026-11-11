@@ -9,12 +9,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/chatwithgod/reflow/core"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/pluginapi"
 )
 
 func TestReasoningTokens(t *testing.T) {
 	tests := []struct {
-		usage  map[string]any
+		Usage  map[string]any
 		expect *int
 	}{
 		{map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}}, intPtr(516)},
@@ -26,13 +27,13 @@ func TestReasoningTokens(t *testing.T) {
 		{map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": "516"}}, nil},
 	}
 	for _, tt := range tests {
-		got := reasoningTokens(tt.usage)
+		got := reasoningTokens(tt.Usage)
 		if tt.expect == nil && got != nil {
-			t.Errorf("reasoningTokens(%v) = %d, want nil", tt.usage, *got)
+			t.Errorf("reasoningTokens(%v) = %d, want nil", tt.Usage, *got)
 		} else if tt.expect != nil && got == nil {
-			t.Errorf("reasoningTokens(%v) = nil, want %d", tt.usage, *tt.expect)
+			t.Errorf("reasoningTokens(%v) = nil, want %d", tt.Usage, *tt.expect)
 		} else if tt.expect != nil && got != nil && *got != *tt.expect {
-			t.Errorf("reasoningTokens(%v) = %d, want %d", tt.usage, *got, *tt.expect)
+			t.Errorf("reasoningTokens(%v) = %d, want %d", tt.Usage, *got, *tt.expect)
 		}
 	}
 }
@@ -155,17 +156,17 @@ func TestHasEncryptedContent(t *testing.T) {
 		t.Error("empty should be false")
 	}
 
-	fs.roundReasoning = []map[string]any{{"type": "reasoning"}}
+	fs.RoundReasoning = []map[string]any{{"type": "reasoning"}}
 	if fs.hasEncryptedContent() {
 		t.Error("missing key should be false")
 	}
 
-	fs.roundReasoning = []map[string]any{{"encrypted_content": ""}}
+	fs.RoundReasoning = []map[string]any{{"encrypted_content": ""}}
 	if fs.hasEncryptedContent() {
 		t.Error("empty string should be false")
 	}
 
-	fs.roundReasoning = []map[string]any{
+	fs.RoundReasoning = []map[string]any{
 		{"encrypted_content": "abc"},
 		{"type": "reasoning"},
 	}
@@ -173,7 +174,7 @@ func TestHasEncryptedContent(t *testing.T) {
 		t.Error("only checks last item, last has no enc")
 	}
 
-	fs.roundReasoning = []map[string]any{
+	fs.RoundReasoning = []map[string]any{
 		{"type": "reasoning"},
 		{"encrypted_content": "abc123"},
 	}
@@ -183,81 +184,73 @@ func TestHasEncryptedContent(t *testing.T) {
 }
 
 func TestShouldContinue(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		config:         defaultFoldConfig(),
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}}}, config: defaultFoldConfig(),
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	if !fs.shouldContinue() {
 		t.Error("516 + enc + round 1 should continue")
 	}
 
-	fs.roundNo = defaultMaxContinue + 1
+	fs.RoundNo = defaultMaxContinue + 1
 	if fs.shouldContinue() {
 		t.Error("should not continue beyond maxContinue")
 	}
 }
 
 func TestShouldContinueNoEnc(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
-		roundReasoning: []map[string]any{{"type": "reasoning"}},
-		config:         defaultFoldConfig(),
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
+		RoundReasoning: []map[string]any{{"type": "reasoning"}}}, config: defaultFoldConfig(),
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	if fs.shouldContinue() {
 		t.Error("no enc should not continue")
 	}
 }
 
 func TestShouldContinueNoTruncation(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		config:         defaultFoldConfig(),
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}}}, config: defaultFoldConfig(),
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	if fs.shouldContinue() {
 		t.Error("non-truncation should not continue")
 	}
 }
 
 func TestShouldContinueNilTerminal(t *testing.T) {
-	fs := &foldState{usage: map[string]any{}, config: defaultFoldConfig()}
-	fs.roundNo = 1
+	fs := &foldState{FoldState: core.FoldState{Usage: map[string]any{}}, config: defaultFoldConfig()}
+	fs.RoundNo = 1
 	if fs.shouldContinue() {
 		t.Error("nil terminal should not continue")
 	}
 }
 
 func TestStoppedReason(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
-		roundReasoning: []map[string]any{{"type": "reasoning"}},
-		config:         defaultFoldConfig(),
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
+		RoundReasoning: []map[string]any{{"type": "reasoning"}}}, config: defaultFoldConfig(),
 	}
 	if fs.stoppedReason() != "no_encrypted_content" {
 		t.Errorf("got %s, want no_encrypted_content", fs.stoppedReason())
 	}
 
-	fs.roundReasoning = []map[string]any{{"encrypted_content": "abc"}}
-	fs.roundNo = defaultMaxContinue + 1
+	fs.RoundReasoning = []map[string]any{{"encrypted_content": "abc"}}
+	fs.RoundNo = defaultMaxContinue + 1
 	if fs.stoppedReason() != "max_continue" {
 		t.Errorf("got %s, want max_continue", fs.stoppedReason())
 	}
 
-	fs.roundNo = 1
-	fs.usage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(3624)}}
+	fs.RoundNo = 1
+	fs.Usage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(3624)}}
 	if fs.stoppedReason() != "tier_out_of_window" {
 		t.Errorf("got %s, want tier_out_of_window (n=7)", fs.stoppedReason())
 	}
 
-	fs.usage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}
+	fs.Usage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}
 	if fs.stoppedReason() != "" {
 		t.Errorf("non-truncation should be empty, got %s", fs.stoppedReason())
 	}
@@ -834,24 +827,21 @@ func TestRouteModelWithCustomAllowlist(t *testing.T) {
 }
 
 func TestShouldContinueConfigurableMaxContinue(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		config:         foldConfig{MarkerText: defaultMarkerText, MaxTierN: defaultMaxTierN, MaxContinue: 0},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}}}, config: foldConfig{MarkerText: defaultMarkerText, MaxTierN: defaultMaxTierN, MaxContinue: 0},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	if fs.shouldContinue() {
 		t.Error("max_continue=0 should disable continuation")
 	}
 }
 
 func TestPrepareNextRound(t *testing.T) {
-	fs := &foldState{
-		roundReasoning: []map[string]any{
-			{"type": "reasoning", "encrypted_content": "abc"},
-			{"type": "reasoning", "encrypted_content": "def"},
-		},
+	fs := &foldState{FoldState: core.FoldState{RoundReasoning: []map[string]any{
+		{"type": "reasoning", "encrypted_content": "abc"},
+		{"type": "reasoning", "encrypted_content": "def"},
+	}},
 	}
 	fs.prepareNextRound()
 
@@ -866,8 +856,8 @@ func TestPrepareNextRound(t *testing.T) {
 }
 
 func TestProcessEventResponseCreated(t *testing.T) {
-	fs := &foldState{seq: 0}
-	fs.roundNo = 1
+	fs := &foldState{FoldState: core.FoldState{Sequence: 0}}
+	fs.RoundNo = 1
 
 	ev := map[string]any{
 		"type":     "response.created",
@@ -880,7 +870,7 @@ func TestProcessEventResponseCreated(t *testing.T) {
 	if term != nil {
 		t.Error("response.created should not be terminal")
 	}
-	if fs.baseResponse == nil || fs.baseResponse["id"] != "resp_123" {
+	if fs.BaseResponse == nil || fs.BaseResponse["id"] != "resp_123" {
 		t.Error("baseResponse should be set")
 	}
 	if ev["sequence_number"].(int) != 0 {
@@ -890,13 +880,13 @@ func TestProcessEventResponseCreated(t *testing.T) {
 
 func TestProcessEventResponseCreatedRound2(t *testing.T) {
 	fs := &foldState{}
-	fs.roundNo = 2
+	fs.RoundNo = 2
 	ev := map[string]any{"type": "response.created", "response": map[string]any{"id": "resp_456"}}
 	term, _ := fs.processEvent(ev, "")
 	if term != nil {
 		t.Error("should not be terminal")
 	}
-	if fs.baseResponse != nil {
+	if fs.BaseResponse != nil {
 		t.Error("baseResponse should not be set in round 2+")
 	}
 }
@@ -911,17 +901,17 @@ func TestProcessEventTerminal(t *testing.T) {
 	if term == nil {
 		t.Error("should return terminal")
 	}
-	if fs.terminal == nil {
+	if fs.Terminal == nil {
 		t.Error("fs.terminal should be set")
 	}
-	if fs.usage == nil {
+	if fs.Usage == nil {
 		t.Error("fs.usage should be set")
 	}
 }
 
 func TestProcessEventReasoningAdded(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	ev := map[string]any{
 		"type":         "response.output_item.added",
@@ -935,23 +925,23 @@ func TestProcessEventReasoningAdded(t *testing.T) {
 	if term != nil {
 		t.Error("should not be terminal")
 	}
-	if fs.kind[0] != "reasoning" {
+	if fs.Kinds[0] != "reasoning" {
 		t.Error("kind[0] should be reasoning")
 	}
-	if fs.oiToDS[0] != 0 {
+	if fs.Indexes[0] != 0 {
 		t.Error("oiToDS[0] should be 0")
 	}
 	if ev["output_index"].(int) != 0 {
 		t.Error("output_index should be dsOI=0")
 	}
-	if fs.dsOI != 1 {
+	if fs.OutputIndex != 1 {
 		t.Error("dsOI should increment to 1")
 	}
 }
 
 func TestProcessEventBufferedAdded(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	ev := map[string]any{
 		"type":         "response.output_item.added",
@@ -962,20 +952,20 @@ func TestProcessEventBufferedAdded(t *testing.T) {
 	if term != nil {
 		t.Error("should not be terminal")
 	}
-	if fs.kind[1] != "buffered" {
+	if fs.Kinds[1] != "buffered" {
 		t.Error("kind[1] should be buffered")
 	}
-	if len(fs.buffered) != 1 {
+	if len(fs.Buffered) != 1 {
 		t.Error("should have 1 buffered entry")
 	}
 }
 
 func TestProcessEventReasoningDone(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
-	fs.kind[0] = "reasoning"
-	fs.oiToDS[0] = 0
-	fs.dsOI = 1
+	fs.RoundNo = 1
+	fs.Kinds[0] = "reasoning"
+	fs.Indexes[0] = 0
+	fs.OutputIndex = 1
 
 	ev := map[string]any{
 		"type":         "response.output_item.done",
@@ -984,22 +974,22 @@ func TestProcessEventReasoningDone(t *testing.T) {
 	}
 	fs.processEvent(ev, "")
 
-	if len(fs.roundReasoning) != 1 {
+	if len(fs.RoundReasoning) != 1 {
 		t.Error("should append to roundReasoning")
 	}
-	if len(fs.finalOutput) != 1 {
+	if len(fs.FinalOutput) != 1 {
 		t.Error("should append to finalOutput")
 	}
-	if fs.roundReasoning[0]["encrypted_content"] != "abc123" {
+	if fs.RoundReasoning[0]["encrypted_content"] != "abc123" {
 		t.Error("should preserve encrypted_content")
 	}
 }
 
 func TestProcessEventBufferedDone(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
-	fs.kind[1] = "buffered"
-	fs.buffered = []bufferedEntry{{oi: 1, item: nil, events: []map[string]any{}}}
+	fs.RoundNo = 1
+	fs.Kinds[1] = "buffered"
+	fs.Buffered = []bufferedEntry{{Index: 1, Item: nil, Events: []map[string]any{}}}
 
 	ev := map[string]any{
 		"type":         "response.output_item.done",
@@ -1008,17 +998,17 @@ func TestProcessEventBufferedDone(t *testing.T) {
 	}
 	fs.processEvent(ev, "")
 
-	if fs.buffered[0].item == nil {
+	if fs.Buffered[0].Item == nil {
 		t.Error("should set buffered item")
 	}
-	if len(fs.buffered[0].events) != 1 {
-		t.Errorf("should have 1 events, got %d", len(fs.buffered[0].events))
+	if len(fs.Buffered[0].Events) != 1 {
+		t.Errorf("should have 1 events, got %d", len(fs.Buffered[0].Events))
 	}
 }
 
 func TestProcessEventUnknownKindForwarded(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	ev := map[string]any{
 		"type":         "response.reasoning_text.delta",
@@ -1035,7 +1025,7 @@ func TestProcessEventUnknownKindForwarded(t *testing.T) {
 
 func TestProcessEventFailedNotContinued(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	fs.processEvent(map[string]any{
 		"type": "response.output_item.added", "output_index": float64(0),
@@ -1061,7 +1051,7 @@ func TestProcessEventFailedNotContinued(t *testing.T) {
 
 func TestProcessEventIncompleteNotContinued(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	fs.processEvent(map[string]any{
 		"type": "response.output_item.added", "output_index": float64(0),
@@ -1087,7 +1077,7 @@ func TestProcessEventIncompleteNotContinued(t *testing.T) {
 
 func TestStoppedReasonEmptyForFailed(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	fs.processEvent(map[string]any{
 		"type": "response.output_item.added", "output_index": float64(0),
@@ -1119,7 +1109,7 @@ func TestStoppedReasonEmptyForFailed(t *testing.T) {
 
 func TestStoppedReasonEmptyForIncomplete(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	fs.processEvent(map[string]any{
 		"type": "response.output_item.added", "output_index": float64(0),
@@ -1151,17 +1141,17 @@ func TestStoppedReasonEmptyForIncomplete(t *testing.T) {
 
 func TestFlushCleanStop(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
-	fs.dsOI = 5
+	fs.RoundNo = 1
+	fs.OutputIndex = 5
 
-	fs.buffered = []bufferedEntry{
-		{oi: 1, item: map[string]any{"type": "message", "id": "msg_1"},
-			events: []map[string]any{
+	fs.Buffered = []bufferedEntry{
+		{Index: 1, Item: map[string]any{"type": "message", "id": "msg_1"},
+			Events: []map[string]any{
 				{"type": "response.output_item.added", "output_index": float64(1), "item": map[string]any{"type": "message"}},
 				{"type": "response.output_item.done", "output_index": float64(1), "item": map[string]any{"type": "message", "id": "msg_1"}},
 			}},
-		{oi: 2, item: map[string]any{"type": "tool_call", "id": "tc_1"},
-			events: []map[string]any{
+		{Index: 2, Item: map[string]any{"type": "tool_call", "id": "tc_1"},
+			Events: []map[string]any{
 				{"type": "response.output_item.added", "output_index": float64(2), "item": map[string]any{"type": "tool_call"}},
 			}},
 	}
@@ -1171,44 +1161,44 @@ func TestFlushCleanStop(t *testing.T) {
 		t.Fatalf("error: %v", err)
 	}
 
-	for _, ev := range fs.buffered[0].events {
+	for _, ev := range fs.Buffered[0].Events {
 		if ev["output_index"].(int) != 5 {
 			t.Errorf("all events in first entry should have output_index=5, got %v", ev["output_index"])
 		}
 	}
-	for _, ev := range fs.buffered[1].events {
+	for _, ev := range fs.Buffered[1].Events {
 		if ev["output_index"].(int) != 6 {
 			t.Errorf("all events in second entry should have output_index=6, got %v", ev["output_index"])
 		}
 	}
-	if fs.dsOI != 7 {
-		t.Errorf("dsOI should be 7, got %d", fs.dsOI)
+	if fs.OutputIndex != 7 {
+		t.Errorf("dsOI should be 7, got %d", fs.OutputIndex)
 	}
-	if len(fs.finalOutput) != 2 {
+	if len(fs.FinalOutput) != 2 {
 		t.Error("should have 2 finalOutput items")
 	}
 }
 
 func TestFlushCleanStopSequenceNumbers(t *testing.T) {
 	fs := newFoldState(map[string]any{}, []any{}, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
-	fs.seq = 10
-	fs.dsOI = 0
+	fs.RoundNo = 1
+	fs.Sequence = 10
+	fs.OutputIndex = 0
 
-	fs.buffered = []bufferedEntry{
-		{oi: 0, item: map[string]any{"type": "message"},
-			events: []map[string]any{{"type": "response.output_item.added", "output_index": float64(0)}}},
-		{oi: 1, item: map[string]any{"type": "message"},
-			events: []map[string]any{{"type": "response.output_item.added", "output_index": float64(1)}}},
+	fs.Buffered = []bufferedEntry{
+		{Index: 0, Item: map[string]any{"type": "message"},
+			Events: []map[string]any{{"type": "response.output_item.added", "output_index": float64(0)}}},
+		{Index: 1, Item: map[string]any{"type": "message"},
+			Events: []map[string]any{{"type": "response.output_item.added", "output_index": float64(1)}}},
 	}
 
 	fs.flushCleanStop("")
 
-	if fs.buffered[0].events[0]["sequence_number"].(int) != 10 {
-		t.Errorf("first seq should be 10, got %v", fs.buffered[0].events[0]["sequence_number"])
+	if fs.Buffered[0].Events[0]["sequence_number"].(int) != 10 {
+		t.Errorf("first seq should be 10, got %v", fs.Buffered[0].Events[0]["sequence_number"])
 	}
-	if fs.buffered[1].events[0]["sequence_number"].(int) != 11 {
-		t.Errorf("second seq should be 11, got %v", fs.buffered[1].events[0]["sequence_number"])
+	if fs.Buffered[1].Events[0]["sequence_number"].(int) != 11 {
+		t.Errorf("second seq should be 11, got %v", fs.Buffered[1].Events[0]["sequence_number"])
 	}
 }
 
@@ -1218,14 +1208,14 @@ func TestTwoRoundHappyPath(t *testing.T) {
 		[]any{map[string]any{"type": "message", "role": "user"}},
 		rpcExecutorRequest{}, "",
 	)
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	// Round 1: response.created
 	fs.processEvent(map[string]any{
 		"type":     "response.created",
 		"response": map[string]any{"id": "resp_1", "model": "gpt-5.5", "created_at": float64(1000)},
 	}, "")
-	if fs.baseResponse["id"] != "resp_1" {
+	if fs.BaseResponse["id"] != "resp_1" {
 		t.Error("baseResponse should be set")
 	}
 
@@ -1238,7 +1228,7 @@ func TestTwoRoundHappyPath(t *testing.T) {
 		"type": "response.output_item.done", "output_index": float64(0),
 		"item": map[string]any{"type": "reasoning", "id": "rs_1", "encrypted_content": "enc_abc"},
 	}, "")
-	if len(fs.roundReasoning) != 1 {
+	if len(fs.RoundReasoning) != 1 {
 		t.Error("should have 1 roundReasoning")
 	}
 	if !fs.hasEncryptedContent() {
@@ -1250,7 +1240,7 @@ func TestTwoRoundHappyPath(t *testing.T) {
 		"type": "response.output_item.added", "output_index": float64(1),
 		"item": map[string]any{"type": "message", "id": "msg_bad"},
 	}, "")
-	if len(fs.finalOutput) != 1 {
+	if len(fs.FinalOutput) != 1 {
 		t.Error("buffered item should not enter finalOutput yet")
 	}
 
@@ -1279,13 +1269,13 @@ func TestTwoRoundHappyPath(t *testing.T) {
 	}
 
 	// Round 2: clean stop
-	fs.roundNo = 2
-	fs.roundReasoning = nil
-	fs.kind = map[int]string{}
-	fs.oiToDS = map[int]int{}
-	fs.buffered = nil
-	fs.terminal = nil
-	fs.usage = nil
+	fs.RoundNo = 2
+	fs.RoundReasoning = nil
+	fs.Kinds = map[int]string{}
+	fs.Indexes = map[int]int{}
+	fs.Buffered = nil
+	fs.Terminal = nil
+	fs.Usage = nil
 
 	// Round 2: message (buffered, the real answer)
 	fs.processEvent(map[string]any{
@@ -1432,18 +1422,18 @@ func TestSSEBufferChunkedJSON(t *testing.T) {
 
 func TestSSEMultipleEventsOnePayload(t *testing.T) {
 	fs := &foldState{}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	payload := `data: {"type":"response.created","response":{"id":"r1"}}` +
 		`data: {"type":"response.in_progress","response":{"id":"r1"}}`
 	_, err := fs.processAndEmit([]byte(payload), "")
 	if err != nil {
 		t.Fatalf("error: %v", err)
 	}
-	if fs.baseResponse == nil || fs.baseResponse["id"] != "r1" {
+	if fs.BaseResponse == nil || fs.BaseResponse["id"] != "r1" {
 		t.Error("baseResponse should be set from response.created")
 	}
-	if fs.seq != 2 {
-		t.Errorf("should have stamped 2 events, got seq=%d", fs.seq)
+	if fs.Sequence != 2 {
+		t.Errorf("should have stamped 2 events, got seq=%d", fs.Sequence)
 	}
 }
 
@@ -1457,7 +1447,9 @@ func TestSSEDoneHandled(t *testing.T) {
 
 func TestSSEBufferLimit(t *testing.T) {
 	fs := &foldState{}
-	fs.decoder.buffer = make([]byte, maxStreamBufferSize-1)
+	if err := fs.decoder.feed(make([]byte, maxStreamBufferSize-1)); err != nil {
+		t.Fatal(err)
+	}
 	_, err := fs.processAndEmit([]byte("data: x"), "")
 	if err == nil {
 		t.Fatal("should error")
@@ -1466,20 +1458,20 @@ func TestSSEBufferLimit(t *testing.T) {
 
 func TestSSEDataColonNoSpace(t *testing.T) {
 	fs := &foldState{}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	payload := `data:{"type":"response.created","response":{"id":"r"}}`
 	_, err := fs.processAndEmit([]byte(payload), "")
 	if err != nil {
 		t.Fatalf("data: without space should work: %v", err)
 	}
-	if fs.baseResponse == nil || fs.baseResponse["id"] != "r" {
+	if fs.BaseResponse == nil || fs.BaseResponse["id"] != "r" {
 		t.Error("should parse event and set baseResponse")
 	}
 }
 
 func TestSSEChunkSplitAtDataPrefix(t *testing.T) {
 	fs := &foldState{}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 	_, err := fs.processAndEmit([]byte("da"), "")
 	if err != nil {
 		t.Fatalf("error: %v", err)
@@ -1488,19 +1480,19 @@ func TestSSEChunkSplitAtDataPrefix(t *testing.T) {
 	if err != nil {
 		t.Fatalf("error: %v", err)
 	}
-	if fs.baseResponse == nil || fs.baseResponse["id"] != "r" {
+	if fs.BaseResponse == nil || fs.BaseResponse["id"] != "r" {
 		t.Error("should parse event after split chunks")
 	}
 }
 
 func TestStamp(t *testing.T) {
-	fs := &foldState{seq: 5}
+	fs := &foldState{FoldState: core.FoldState{Sequence: 5}}
 	ev := map[string]any{"type": "response.created"}
 	fs.stamp(ev)
 	if ev["sequence_number"].(int) != 5 {
 		t.Error("seq should be 5")
 	}
-	if fs.seq != 6 {
+	if fs.Sequence != 6 {
 		t.Error("seq should increment to 6")
 	}
 }
@@ -1820,13 +1812,11 @@ func TestMinReasoningThreshold(t *testing.T) {
 }
 
 func TestShouldContinueLowReasoningTokens(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundsInfo:     []map[string]any{{"round": 1}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundsInfo:     []map[string]any{{"round": 1}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1834,23 +1824,21 @@ func TestShouldContinueLowReasoningTokens(t *testing.T) {
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	if !fs.shouldContinue() {
 		t.Error("should continue when total reasoning tokens < threshold")
 	}
-	if fs.roundsInfo[0]["continue_reason"] != continueReasonLowReasoningTokens {
-		t.Errorf("continue_reason = %v, want %s", fs.roundsInfo[0]["continue_reason"], continueReasonLowReasoningTokens)
+	if fs.RoundsInfo[0]["continue_reason"] != continueReasonLowReasoningTokens {
+		t.Errorf("continue_reason = %v, want %s", fs.RoundsInfo[0]["continue_reason"], continueReasonLowReasoningTokens)
 	}
 }
 
 func TestShouldContinueLowReasoningTokensNotTriggered(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(1500)}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(1500)}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1858,7 +1846,7 @@ func TestShouldContinueLowReasoningTokensNotTriggered(t *testing.T) {
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	if fs.shouldContinue() {
 		t.Error("should not continue when total reasoning tokens >= threshold")
@@ -1866,13 +1854,11 @@ func TestShouldContinueLowReasoningTokensNotTriggered(t *testing.T) {
 }
 
 func TestShouldContinueTruncationPriority(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundsInfo:     []map[string]any{{"round": 1}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(516)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundsInfo:     []map[string]any{{"round": 1}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1880,28 +1866,26 @@ func TestShouldContinueTruncationPriority(t *testing.T) {
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	if !fs.shouldContinue() {
 		t.Error("truncation trigger should take priority")
 	}
-	if fs.roundsInfo[0]["continue_reason"] != continueReasonTruncation {
-		t.Errorf("continue_reason = %v, want %s", fs.roundsInfo[0]["continue_reason"], continueReasonTruncation)
+	if fs.RoundsInfo[0]["continue_reason"] != continueReasonTruncation {
+		t.Errorf("continue_reason = %v, want %s", fs.RoundsInfo[0]["continue_reason"], continueReasonTruncation)
 	}
 }
 
 func TestShouldContinueLowReasoningTokensNoEnc(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"type": "reasoning"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"type": "reasoning"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	if fs.shouldContinue() {
 		t.Error("low reasoning tokens trigger should still require encrypted_content")
@@ -1912,12 +1896,10 @@ func TestShouldContinueLowReasoningTokensNoEnc(t *testing.T) {
 }
 
 func TestShouldContinueLowReasoningTokensMaxContinue(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1925,7 +1907,7 @@ func TestShouldContinueLowReasoningTokensMaxContinue(t *testing.T) {
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = defaultMaxContinue + 1
+	fs.RoundNo = defaultMaxContinue + 1
 
 	if fs.shouldContinue() {
 		t.Error("low reasoning tokens trigger should still respect max_continue")
@@ -1936,12 +1918,10 @@ func TestShouldContinueLowReasoningTokensMaxContinue(t *testing.T) {
 }
 
 func TestStoppedReasonLowReasoningTokensThresholdMetIsNaturalStop(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(984)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(1500)}},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(984)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(1500)}}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1949,7 +1929,7 @@ func TestStoppedReasonLowReasoningTokensThresholdMetIsNaturalStop(t *testing.T) 
 			MinReasoningTokens: map[string]int{"gpt-5.6-luna": 1200},
 		},
 	}
-	fs.roundNo = 1
+	fs.RoundNo = 1
 
 	reason := fs.stoppedReason()
 	if reason != "" {
@@ -1958,12 +1938,10 @@ func TestStoppedReasonLowReasoningTokensThresholdMetIsNaturalStop(t *testing.T) 
 }
 
 func TestContinueReasonsRecordedInRoundsInfo(t *testing.T) {
-	fs := &foldState{
-		terminal:       map[string]any{"type": "response.completed"},
-		usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
-		roundReasoning: []map[string]any{{"encrypted_content": "abc"}},
-		summedUsage:    map[string]any{},
-		req:            rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
+	fs := &foldState{FoldState: core.FoldState{Terminal: map[string]any{"type": "response.completed"},
+		Usage:          map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}},
+		RoundReasoning: []map[string]any{{"encrypted_content": "abc"}},
+		SummedUsage:    map[string]any{}}, req: rpcExecutorRequest{ExecutorRequest: pluginapi.ExecutorRequest{Model: "gpt-5.6-luna"}},
 		config: foldConfig{
 			MarkerText:         defaultMarkerText,
 			MaxTierN:           defaultMaxTierN,
@@ -1973,35 +1951,35 @@ func TestContinueReasonsRecordedInRoundsInfo(t *testing.T) {
 	}
 
 	// Round 1: low_reasoning_tokens trigger
-	fs.roundNo = 1
-	fs.summedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}
-	fs.roundsInfo = append(fs.roundsInfo, map[string]any{"round": 1})
+	fs.RoundNo = 1
+	fs.SummedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(100)}}
+	fs.RoundsInfo = append(fs.RoundsInfo, map[string]any{"round": 1})
 	if !fs.shouldContinue() {
 		t.Error("round 1 should continue")
 	}
 
 	// Round 2: still below threshold
-	fs.roundNo = 2
-	fs.summedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(200)}}
-	fs.roundsInfo = append(fs.roundsInfo, map[string]any{"round": 2})
+	fs.RoundNo = 2
+	fs.SummedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(200)}}
+	fs.RoundsInfo = append(fs.RoundsInfo, map[string]any{"round": 2})
 	if !fs.shouldContinue() {
 		t.Error("round 2 should continue")
 	}
 
 	// Round 3: threshold met
-	fs.roundNo = 3
-	fs.summedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(350)}}
-	fs.roundsInfo = append(fs.roundsInfo, map[string]any{"round": 3})
+	fs.RoundNo = 3
+	fs.SummedUsage = map[string]any{"output_tokens_details": map[string]any{"reasoning_tokens": float64(350)}}
+	fs.RoundsInfo = append(fs.RoundsInfo, map[string]any{"round": 3})
 	if fs.shouldContinue() {
 		t.Error("round 3 should not continue (threshold met)")
 	}
 
 	for i := 0; i < 2; i++ {
-		if fs.roundsInfo[i]["continue_reason"] != continueReasonLowReasoningTokens {
-			t.Errorf("roundsInfo[%d].continue_reason = %v, want %s", i, fs.roundsInfo[i]["continue_reason"], continueReasonLowReasoningTokens)
+		if fs.RoundsInfo[i]["continue_reason"] != continueReasonLowReasoningTokens {
+			t.Errorf("roundsInfo[%d].continue_reason = %v, want %s", i, fs.RoundsInfo[i]["continue_reason"], continueReasonLowReasoningTokens)
 		}
 	}
-	if _, ok := fs.roundsInfo[2]["continue_reason"]; ok {
-		t.Errorf("final natural-stop round should not have continue_reason: %v", fs.roundsInfo[2])
+	if _, ok := fs.RoundsInfo[2]["continue_reason"]; ok {
+		t.Errorf("final natural-stop round should not have continue_reason: %v", fs.RoundsInfo[2])
 	}
 }

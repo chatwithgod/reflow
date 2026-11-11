@@ -199,9 +199,9 @@ func TestWebSocketRawEventsKeepEncryptedReasoningAndToolCall(t *testing.T) {
 	if err != nil || d.Next != nil {
 		t.Fatalf("finish=%v err=%v", d, err)
 	}
-	if len(fs.output) != 2 || fs.output[1]["call_id"] != "call_1" ||
-		fs.output[0]["encrypted_content"] != "opaque-test-only" {
-		t.Fatalf("reasoning or tool call lost: %v", fs.output)
+	if len(fs.FinalOutput) != 2 || fs.FinalOutput[1]["call_id"] != "call_1" ||
+		fs.FinalOutput[0]["encrypted_content"] != "opaque-test-only" {
+		t.Fatalf("reasoning or tool call lost: %v", fs.FinalOutput)
 	}
 }
 

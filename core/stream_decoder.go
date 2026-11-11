@@ -9,11 +9,13 @@ import (
 
 const maxStreamBufferSize = 8 * 1024 * 1024
 
+const MaxStreamBufferSize = maxStreamBufferSize
+
 // eventDecoder accepts the host's raw WebSocket JSON events and SSE data:
 // payloads (with or without trailing newlines). JSON boundaries, not searching
 // for "data:" within arbitrary bytes, delimit events. Its incremental scanner
 // avoids rescanning a large JSON string after every fragmented host read.
-type eventDecoder struct {
+type EventDecoder struct {
 	buffer       []byte
 	awaitingData bool
 	jsonStarted  bool
@@ -23,7 +25,7 @@ type eventDecoder struct {
 	escaped      bool
 }
 
-func (d *eventDecoder) feed(payload []byte) error {
+func (d *EventDecoder) Feed(payload []byte) error {
 	// CPA's HTTP Codex executor uses bufio.Scanner: an event:/id:/retry:/
 	// comment line and the following data: line arrive in separate callbacks,
 	// WITHOUT their newlines. Preserve that logical boundary when the next
@@ -52,7 +54,7 @@ func startsSSEField(b []byte) bool {
 	return len(b) > 0 && (bytes.HasPrefix(b, []byte("data:")) || isSSEControl(b))
 }
 
-func (d *eventDecoder) next() (map[string]any, bool, error) {
+func (d *EventDecoder) Next() (map[string]any, bool, error) {
 	for {
 		if !d.jsonStarted {
 			d.buffer = bytes.TrimLeft(d.buffer, " \t\r\n")
@@ -147,9 +149,19 @@ func isPartialFramePrefix(b []byte, awaitingData bool) bool {
 	return false
 }
 
-func (d *eventDecoder) finish() error {
+func (d *EventDecoder) Finish() error {
 	if d.awaitingData || d.jsonStarted || len(bytes.TrimSpace(d.buffer)) != 0 {
 		return fmt.Errorf("upstream stream ended with an incomplete event")
 	}
 	return nil
 }
+
+// Keep package-local callers on the same decoder implementation.
+type eventDecoder = EventDecoder
+
+func (d *EventDecoder) feed(payload []byte) error   { return d.Feed(payload) }
+func (d *EventDecoder) next() (Object, bool, error) { return d.Next() }
+func (d *EventDecoder) finish() error               { return d.Finish() }
+
+// BufferedBytes reports resource use, never the buffered payload.
+func (d *EventDecoder) BufferedBytes() int { return len(d.buffer) }

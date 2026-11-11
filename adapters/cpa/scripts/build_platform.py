@@ -13,9 +13,10 @@ import tempfile
 
 from package_release import (NATIVE_CASES, archive_name, host_platform, library_name, license_bytes,
                              source_fingerprint, validate_archive, validate_native_report)
+from source_layout import snapshot_source
 
 ROOT = Path(__file__).resolve().parents[1]
-REPOSITORY = "https://github.com/chatwithgod/cpa-plugin-codexreflow"
+REPOSITORY = "https://github.com/chatwithgod/reflow"
 
 
 def run(*args, cwd=ROOT):
@@ -66,14 +67,13 @@ def main():
     tools = ROOT / ".tools"
     tools.mkdir(exist_ok=True)
     library = build / library_name(args.goos, args.goarch)
-    # Ignored build/ may contain older CPA source checkouts. Test only the root
-    # Go module snapshot, not arbitrary ignored nested projects, on every OS.
+    # Snapshot both modules. A copied adapter alone would lose its ../.. core
+    # dependency, and hashing only adapter files would miss core changes.
     with tempfile.TemporaryDirectory(prefix="platform-source-", dir=tools) as temporary:
-        snapshot = Path(temporary).resolve()
-        if not snapshot.is_relative_to(tools.resolve()):
+        snapshot_root = Path(temporary).resolve()
+        if not snapshot_root.is_relative_to(tools.resolve()):
             raise ValueError("unexpected temporary source location")
-        for path in list(ROOT.glob("*.go")) + [ROOT / "go.mod", ROOT / "go.sum"]:
-            shutil.copyfile(path, snapshot / path.name)
+        snapshot = snapshot_source(ROOT, snapshot_root)
         unformatted = subprocess.check_output(["gofmt", "-l", *map(str, snapshot.glob("*.go"))], cwd=snapshot)
         if unformatted:
             raise ValueError("Go source is not formatted")

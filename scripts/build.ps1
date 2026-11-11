@@ -35,7 +35,12 @@ foreach ($platform in $platforms) {
     foreach ($file in @('LICENSE','THIRD_PARTY_LICENSES.txt','THIRD_PARTY_NOTICES.md','VERSION','README.md','PLAN.md')) {
         if (Test-Path -LiteralPath (Join-Path $projectRoot $file)) { Copy-Item -LiteralPath (Join-Path $projectRoot $file) -Destination $packageDir }
     }
-    Copy-Item -LiteralPath (Join-Path $projectRoot 'adapters') -Destination $packageDir -Recurse
+    # CPA is a separate native package; never recurse into its build/cache tree.
+    $adapterDocs = Join-Path $packageDir 'adapters'
+    New-Item -ItemType Directory -Path $adapterDocs | Out-Null
+    foreach ($adapter in @('pi', 'magpie')) {
+        Copy-Item -LiteralPath (Join-Path $projectRoot "adapters/$adapter") -Destination $adapterDocs -Recurse
+    }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs') -Destination $packageDir -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'contrib') -Destination $packageDir -Recurse
     $pluginDocs = Join-Path $packageDir 'plugins/codex'

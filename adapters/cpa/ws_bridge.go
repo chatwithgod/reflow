@@ -189,7 +189,7 @@ func interceptWSParentAfter(raw []byte) ([]byte, error) {
 }
 
 func (fs *foldState) registerWSAlias() (wsAliasLease, string) {
-	if fs.roundNo <= 1 {
+	if fs.RoundNo <= 1 {
 		return wsAliasLease{}, "not_needed"
 	}
 	// CPA's self-executor adapter translates Responses input to the declared
@@ -204,11 +204,11 @@ func (fs *foldState) registerWSAlias() (wsAliasLease, string) {
 	if !valid {
 		return wsAliasLease{}, "no_socket_scope"
 	}
-	if fs.terminal["type"] != "response.completed" {
+	if fs.Terminal["type"] != "response.completed" {
 		return wsAliasLease{}, "not_committed"
 	}
-	visible, _ := fs.baseResponse["id"].(string)
-	response, _ := fs.terminal["response"].(map[string]any)
+	visible, _ := fs.BaseResponse["id"].(string)
+	response, _ := fs.Terminal["response"].(map[string]any)
 	upstream, _ := response["id"].(string)
 	if visible != "" && visible == upstream {
 		return wsAliasLease{}, "not_needed"

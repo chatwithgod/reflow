@@ -1,0 +1,110 @@
+name: CPA five-platform offline packages
+
+on:
+  push:
+    paths: ['core/**', 'go.mod', 'go.sum', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
+  pull_request:
+    paths: ['core/**', 'go.mod', 'go.sum', 'adapters/cpa/**', '.github/workflows/cpa-packages.yml']
+  workflow_dispatch:
+
+# Candidates only: no Release, tag, store PR or production writes.
+permissions:
+  contents: read
+
+concurrency:
+  group: cpa-packages-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: adapters/cpa
+
+jobs:
+  native:
+    name: native-${{ matrix.goos }}-${{ matrix.goarch }}
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        include:
+          - runner: ubuntu-24.04
+            goos: linux
+            goarch: amd64
+          - runner: ubuntu-24.04-arm
+            goos: linux
+            goarch: arm64
+          - runner: macos-15-intel
+            goos: darwin
+            goarch: amd64
+          - runner: macos-15
+            goos: darwin
+            goarch: arm64
+          - runner: windows-2025
+            goos: windows
+            goarch: amd64
+    env:
+      CGO_ENABLED: '1'
+      GOTOOLCHAIN: local
+      GOWORK: 'off'
+      GOTELEMETRY: 'off'
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        if: matrix.goos != 'windows'
+        with:
+          go-version: '1.26.8'
+          cache-dependency-path: |
+            go.sum
+            adapters/cpa/go.sum
+      - name: Native POSIX build, tests, package and packaged-byte tests
+        if: matrix.goos != 'windows'
+        run: python scripts/build_platform.py --goos '${{ matrix.goos }}' --goarch '${{ matrix.goarch }}'
+      - name: Native Windows build with checksum-verified local tools
+        if: matrix.goos == 'windows'
+        shell: pwsh
+        run: |
+          python scripts/bootstrap_windows_tools.py
+          if ($LASTEXITCODE -ne 0) { throw 'Tool bootstrap failed.' }
+          . ./scripts/dev_env.ps1
+          python scripts/build_platform.py --goos windows --goarch amd64
+          if ($LASTEXITCODE -ne 0) { throw 'Native package validation failed.' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: platform-${{ matrix.goos }}-${{ matrix.goarch }}
+          path: adapters/cpa/dist/${{ env.PACKAGE_VERSION }}/${{ matrix.goos }}_${{ matrix.goarch }}/
+          if-no-files-found: error
+          retention-days: 14
+  assemble:
+    name: verify-five-platform-bundle
+    needs: native
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          pattern: platform-*
+          path: adapters/cpa/.tools/platform-artifacts
+      - name: Check exact targets, matching source/ABI evidence and all ZIP bytes
+        run: >-
+          python scripts/assemble_release.py
+          --input-dir .tools/platform-artifacts --output-dir dist/full-platform-candidate
+          --repository https://github.com/chatwithgod/reflow
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: codexreflow-five-platform-candidate
+          path: adapters/cpa/dist/full-platform-candidate/*
+          if-no-files-found: error
+          retention-days: 14

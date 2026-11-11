@@ -3,6 +3,7 @@
 - Reply in Chinese by default. Evaluate claims independently and explain plain language first.
 - Keep changes narrow, reversible, and covered by regression tests. End task reports with a useful next step.
 - This is an independent fork of CodexComp v0.1.7. Retain upstream attribution and licenses.
+- This subtree now builds against the repository's shared core via its own Go module. Keep CPA SDK dependencies here; retain the shared core in source snapshots and provenance fingerprints. Nested .github workflows are historical; active workflows are at the repository root.
 - Never modify production ECPA/CPA/Codex configuration, enable either plugin, switch transports, or make billable model calls without explicit authorization for that step.
 - Do not publish a repository, push commits/tags, create a Release, or submit a store PR without explicit authorization.
 - Do not embed local paths, prompts, API keys, management secrets, OAuth records, or live response/encrypted content in committed fixtures.

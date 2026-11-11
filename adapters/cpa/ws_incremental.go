@@ -159,7 +159,7 @@ func prepareNativeWSFold(req pluginapi.StreamChunkInterceptRequest) (*nativeWSFo
 		Headers: cloneHeader(req.RequestHeaders), Metadata: req.Metadata,
 	}}, "")
 	fs.nativeWS = true
-	fs.roundNo = 1 // Round one is already executing on CPA's native path.
+	fs.RoundNo = 1 // Round one is already executing on CPA's native path.
 	return &nativeWSFold{fs: fs, scope: scope, context: context,
 		expires: time.Now().Add(nativeWSTTL), requestSize: len(req.RequestBody) + len(inputBytes)}, ""
 }
@@ -198,7 +198,7 @@ func interceptNativeWSChunk(raw []byte) ([]byte, error) {
 	defer func() { fs.emitter, fs.beforeChunk = nil, nil }()
 	fs.hostCallbackID = req.HostCallbackID
 	fs.beforeChunk = func(payload []byte) error {
-		if fs.roundNo == 1 {
+		if fs.RoundNo == 1 {
 			return nil // Native first-round bytes are reserved below.
 		}
 		state.streamSize += len(payload)
@@ -215,14 +215,14 @@ func interceptNativeWSChunk(raw []byte) ([]byte, error) {
 		// Resource exhaustion is explicit and recoverable by a full replay.
 		// Never silently drop a parent/history or forward half-buffered tools.
 		state.finishError(&emitted, "stream_size_limit")
-		state.fs.baseBody, state.fs.origInput, state.fs.buffered = nil, nil, nil
+		state.fs.baseBody, state.fs.origInput, state.fs.Buffered = nil, nil, nil
 		return okEnvelope(pluginapi.StreamChunkInterceptResponse{Body: emitted.Bytes()})
 	}
 	terminal, err := fs.processAndEmit(req.Body, "")
 	if err != nil {
 		state.finishError(&emitted, "upstream_error")
 	} else if terminal != nil {
-		fs.endRound(fs.terminal, fs.usage)
+		fs.endRound(fs.Terminal, fs.Usage)
 		for !state.limited && state.context == "available" && fs.shouldContinue() {
 			fs.prepareNextRound()
 			terminal, usage, _, roundErr := fs.openRound("")

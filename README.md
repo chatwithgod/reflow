@@ -1,12 +1,16 @@
-# Reflow (0.1.0-dev.5 预发布)
+# Reflow（0.1.0-dev.6 开发候选）
 
-Reflow 是一个运行在本地的轻量代理服务，用于为 Codex 终端提供长思考过程的自动续接支持。
+Reflow 为长思考过程提供自动续接支持。同一套核心可作为独立本地代理运行，也可构建为 CPA 的 CodexReflow 插件。
 
 当模型输出符合特定用量特征、携带加密推理状态且仍在设定的轮次预算内时，Reflow 会在后台自动发起续接请求。在此期间，服务会暂存中间的回答内容与工具调用，并在达到停止条件后，将保留的最终结果与整理后的总用量合并返回给 Codex。
 
 续接会在后台增加上游请求次数和等待时间；常见的“516”特征也只是触发判断的一种启发式线索，无法作为推理是否充分展开或输出质量好坏的确定依据。
 
 ## 当前状态
+
+当前源码已将 CPA `v0.1.3` 的代码和提交历史汇入 `adapters/cpa`，共用不依赖宿主 SDK 的续接判断、事件合并、用量计算和流解码。独立版候选为 `0.1.0-dev.6`，CPA 候选为 `0.1.4`；它们分别构建、分别验证，尚未发布。CPA 的工具参数恢复修复仍在 CPA 层。结构、验证入口与迁移边界见[共用核心与 CPA 接入](docs/CPA-INTEGRATION.md)。
+
+已发布下载仍分别为[独立版 dev.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)与[CPA 插件 v0.1.3](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)。以下真实账号和平台验收属于这些历史版本，不自动覆盖本次合并候选。
 
 Reflow 的核心源自 `chatwithgod/cpa-plugin-codexreflow`，已提取为不依赖 CPA SDK 的 Go 程序。2026-10-31，dev.5 源码、[实际续接决策数字诊断](docs/DECISION-DIAGNOSTICS.md)、原生实测、Pi 适配及 Magpie 新入口补丁曾随 13 个提交公开至 `304a67c`。随后发布了固定 `3e0ea18` 的 [dev.5 预发布版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)，提供五平台独立服务和 Codex 插件包；12 个附件已完成公开下载核验。平台差异与标签 CI 见[发布记录](docs/RELEASE-0.1.0-dev.5.md)，此前源码推送见[历史记录](docs/evidence/publication-dev5-2026-10-31.json)。
 
@@ -114,6 +118,17 @@ go test ./...
 go test -race ./...
 go vet ./...
 ```
+
+CPA 使用单独的 Go 模块；根目录的 `go test ./...` 不会测试该模块，需另外运行：
+
+```sh
+cd adapters/cpa
+go test ./...
+go test -race ./...
+go vet ./...
+```
+
+CPA 还需 C 编译器及原生 ABI 模拟宿主检查。根目录的 `cpa-packages.yml` 会串行检查五个平台，并分别验证打包前后的动态库。它只生成候选构件，不发布 Release；详见[开发说明](docs/CPA-INTEGRATION.md)。
 
 真实客户端的隔离测试默认跳过。设置 `REFLOW_CODEX_BIN` 指向 Codex CLI，或设置 `REFLOW_PI_CLI` 指向 Pi 1.4.0 的 `dist/bundle/cli.js` 后，可以运行对应测试；`REFLOW_NODE_BIN` 指定 Node，`REFLOW_PROXY_BIN` 指定待验收的 Reflow 构件，`REFLOW_PLUGIN_MARKETPLACE` 指定已打包的本地插件市场目录。测试自行创建合成凭证，不读取现有账号。
 

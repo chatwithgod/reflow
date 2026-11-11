@@ -71,20 +71,20 @@ func diagnosticToken(value any) any {
 
 func (fs *foldState) roundTelemetry() map[string]any {
 	fields := fs.diagnosticEvent("round_finished")
-	fields["round"] = fs.roundNo
-	kind, _ := fs.terminal["type"].(string)
+	fields["round"] = fs.RoundNo
+	kind, _ := fs.Terminal["type"].(string)
 	switch kind {
 	case "response.completed", "response.incomplete", "response.failed":
 		fields["terminal"] = kind
 	default:
 		fields["terminal"] = "unknown"
 	}
-	inputDetails, _ := fs.usage["input_tokens_details"].(map[string]any)
-	outputDetails, _ := fs.usage["output_tokens_details"].(map[string]any)
+	inputDetails, _ := fs.Usage["input_tokens_details"].(map[string]any)
+	outputDetails, _ := fs.Usage["output_tokens_details"].(map[string]any)
 	fields["reported_usage"] = map[string]any{
-		"input_tokens":     diagnosticToken(fs.usage["input_tokens"]),
-		"output_tokens":    diagnosticToken(fs.usage["output_tokens"]),
-		"total_tokens":     diagnosticToken(fs.usage["total_tokens"]),
+		"input_tokens":     diagnosticToken(fs.Usage["input_tokens"]),
+		"output_tokens":    diagnosticToken(fs.Usage["output_tokens"]),
+		"total_tokens":     diagnosticToken(fs.Usage["total_tokens"]),
 		"cached_tokens":    diagnosticToken(inputDetails["cached_tokens"]),
 		"reasoning_tokens": diagnosticToken(outputDetails["reasoning_tokens"]),
 	}
@@ -105,9 +105,9 @@ func (fs *foldState) telemetry(stopReason string) map[string]any {
 		// CPA UsageRecord.RequestID (queue execution_id) is not exposed to the
 		// executor/stream hooks. A lifecycle ID or WS trace is NOT that join key.
 		"usage_join": "unavailable",
-		"handled":    true, "rounds_started": fs.roundNo, "rounds_completed": len(fs.roundsInfo),
-		"continuations_started":   nonNegative(fs.roundNo - 1),
-		"continuations_completed": nonNegative(len(fs.roundsInfo) - 1),
+		"handled":    true, "rounds_started": fs.RoundNo, "rounds_completed": len(fs.RoundsInfo),
+		"continuations_started":   nonNegative(fs.RoundNo - 1),
+		"continuations_completed": nonNegative(len(fs.RoundsInfo) - 1),
 		"stop_reason":             stopReason, "ws_context_bridge": bridge,
 	}
 	if fs.nativeWS {
@@ -131,7 +131,7 @@ func (fs *foldState) annotateEvent(event map[string]any, stopReason string) map[
 }
 
 func (fs *foldState) terminalStopReason() string {
-	switch fs.terminal["type"] {
+	switch fs.Terminal["type"] {
 	case "response.failed":
 		return "upstream_failed"
 	case "response.incomplete":

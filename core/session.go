@@ -55,35 +55,15 @@ type Decision struct {
 	Result Result
 }
 
-type itemBuffer struct {
-	index  int
-	item   Object
-	events []Object
-}
-
 type Session struct {
-	config       Config
-	base         Object
-	input        []any
-	tail         []any
-	roundInput   Object
-	replayable   bool
-	round        int
-	seq          int
-	outputIndex  int
-	baseResponse Object
-	terminal     Object
-	usage        Object
-	firstUsage   Object
-	summed       Object
-	rounds       []Object
-	output       []Object
-	reasoning    []Object
-	kinds        map[int]string
-	indexes      map[int]int
-	buffer       []itemBuffer
-	bufferBytes  int
-	finished     bool
+	FoldState
+	config     Config
+	base       Object
+	input      []any
+	tail       []any
+	roundInput Object
+	replayable bool
+	finished   bool
 }
 
 // New starts one client request. replayBase is the complete effective request,
@@ -118,7 +98,7 @@ func New(config Config, request Object, replayBase Object) (*Session, error) {
 	default:
 		return nil, errors.New("input must be an array or string")
 	}
-	s := &Session{config: config, base: base, input: input, replayable: replayable, summed: Object{}}
+	s := &Session{config: config, base: base, input: input, replayable: replayable, FoldState: FoldState{SummedUsage: Object{}}}
 	s.start(base)
 	return s, nil
 }
@@ -136,186 +116,47 @@ func Clone(in Object) (Object, error) {
 }
 
 func (s *Session) start(body Object) {
-	s.round++
+	s.RoundNo++
 	s.roundInput = body
-	s.terminal, s.usage, s.reasoning, s.buffer = nil, nil, nil, nil
-	s.kinds, s.indexes = map[int]string{}, map[int]int{}
-	s.bufferBytes = 0
+	s.ResetRound()
 }
 
-func (s *Session) stamp(ev Object) Object {
-	ev["sequence_number"] = s.seq
-	s.seq++
-	if id, _ := s.baseResponse["id"].(string); id != "" {
-		if _, ok := ev["response_id"]; ok {
-			ev["response_id"] = id
-		}
-	}
-	return ev
-}
+func (s *Session) stamp(ev Object) Object { return s.Stamp(ev, true) }
 
-// Push owns a clone of ev. Only reasoning is forwarded until the continuation
-// decision is known; client tool calls from discarded rounds stay invisible.
+// Push owns a clone of ev and delegates event folding to the shared core.
 func (s *Session) Push(ev Object) ([]Object, error) {
-	if s.finished || s.terminal != nil {
+	if s.finished {
 		return nil, errors.New("event after terminal")
 	}
-	ev, err := Clone(ev)
-	if err != nil {
-		return nil, err
-	}
-	typ, _ := ev["type"].(string)
-	if typ == "" {
-		return nil, errors.New("event type is missing")
-	}
-	if typ == "error" {
-		return nil, errors.New("upstream error event")
-	}
-	if typ == "response.done" {
-		typ = "response.completed"
-		if response, ok := ev["response"].(map[string]any); ok {
-			if response["status"] == "failed" {
-				typ = "response.failed"
-			}
-			if response["status"] == "incomplete" {
-				typ = "response.incomplete"
-			}
-		}
-		ev["type"] = typ
-	}
-	if terminalTypes[typ] {
-		s.terminal = ev
-		if response, ok := ev["response"].(map[string]any); ok {
-			if usage, ok := response["usage"].(map[string]any); ok {
-				s.usage = cloneUsage(usage)
-			}
-			if s.baseResponse == nil {
-				s.baseResponse, _ = Clone(response)
-			}
-		}
-		return nil, nil
-	}
-	if typ == "response.created" || typ == "response.in_progress" {
-		if s.round != 1 {
-			return nil, nil
-		}
-		if response, ok := ev["response"].(map[string]any); ok && s.baseResponse == nil {
-			s.baseResponse, _ = Clone(response)
-		}
-		return []Object{s.stamp(ev)}, nil
-	}
-	index := -1
-	if value, ok := ev["output_index"].(float64); ok {
-		index = int(value)
-	}
-	if typ == "response.output_item.added" {
-		item, ok := ev["item"].(map[string]any)
-		if !ok || index < 0 {
-			return nil, errors.New("invalid output item event")
-		}
-		if _, exists := s.kinds[index]; exists {
-			return nil, errors.New("duplicate output item index")
-		}
-		if item["type"] == "reasoning" {
-			s.kinds[index], s.indexes[index] = "reasoning", s.outputIndex
-			ev["output_index"] = s.outputIndex
-			s.outputIndex++
-			return []Object{s.stamp(ev)}, nil
-		}
-		s.kinds[index] = "buffered"
-		s.buffer = append(s.buffer, itemBuffer{index: index, item: item})
-	}
-	switch s.kinds[index] {
-	case "reasoning":
-		ev["output_index"] = s.indexes[index]
-		if typ == "response.output_item.done" {
-			if item, ok := ev["item"].(map[string]any); ok {
-				s.reasoning = append(s.reasoning, item)
-				s.output = append(s.output, item)
-			}
-		}
-		return []Object{s.stamp(ev)}, nil
-	case "buffered":
-		encoded, _ := json.Marshal(ev)
-		s.bufferBytes += len(encoded)
-		if s.bufferBytes > s.config.MaxBufferedBytes {
-			return nil, errors.New("output buffer limit exceeded")
-		}
-		for i := range s.buffer {
-			if s.buffer[i].index != index {
-				continue
-			}
-			s.buffer[i].events = append(s.buffer[i].events, ev)
-			if typ == "response.output_item.done" {
-				if item, ok := ev["item"].(map[string]any); ok {
-					s.buffer[i].item = item
-				}
-			}
-			break
-		}
-		return nil, nil
-	default:
-		if index >= 0 {
-			return nil, errors.New("output event without an item")
-		}
-		return []Object{s.stamp(ev)}, nil
-	}
+	var events []Object
+	err := s.Process(ev, EventPolicy{Strict: true, MaxBufferedBytes: s.config.MaxBufferedBytes}, func(ev Object) error {
+		events = append(events, ev)
+		return nil
+	})
+	return events, err
 }
 
-func (s *Session) HasTerminal() bool { return s.terminal != nil }
+func (s *Session) HasTerminal() bool { return s.Terminal != nil }
 
 // Rounds is the number of upstream attempts opened for this client request.
-func (s *Session) Rounds() int { return s.round }
+func (s *Session) Rounds() int { return s.RoundNo }
 
 func (s *Session) reason() string {
-	if s.terminal["type"] != "response.completed" {
-		return "upstream_terminal"
-	}
-	if !s.replayable {
-		return "unresolved_parent"
-	}
-	// A hosted tool may already have performed work upstream. Unlike a client
-	// function call, buffering its event cannot undo that work. Do not discard
-	// such an output or replay its original request speculatively.
-	for _, entry := range s.buffer {
-		switch entry.item["type"] {
-		case "message", "function_call", "custom_tool_call":
-		default:
-			return "upstream_tool_already_executed"
-		}
-	}
-	if !inContinueWindow(tierN(reasoningTokens(s.usage)), s.config.MaxTierN) {
-		return "rule_not_matched"
-	}
-	if len(s.reasoning) == 0 {
-		return "no_encrypted_content"
-	}
-	if enc, _ := s.reasoning[len(s.reasoning)-1]["encrypted_content"].(string); enc == "" {
-		return "no_encrypted_content"
-	}
-	if s.round > s.config.MaxContinue {
-		return "max_continue"
-	}
-	return "continue"
+	return s.DecideContinuation(ContinuationPolicy{
+		MaxContinue: s.config.MaxContinue, MaxTierN: s.config.MaxTierN,
+		Replayable: s.replayable, GuardHostedTools: true,
+	}).StopReason
 }
 
 // Finish returns the next upstream body or the one final downstream result.
 func (s *Session) Finish() (Decision, error) {
-	if s.finished || s.terminal == nil {
+	if s.finished || s.Terminal == nil {
 		return Decision{}, errors.New("response terminal required")
 	}
-	sumUsage(s.summed, s.usage)
-	if s.round == 1 {
-		s.firstUsage = cloneUsage(s.usage)
-	}
-	rt := reasoningTokens(s.usage)
-	s.rounds = append(s.rounds, Object{"round": s.round, "reasoning_tokens": rt})
+	s.RecordRound(s.Terminal, s.Usage, false)
 	reason := s.reason()
 	if reason == "continue" {
-		for _, item := range s.reasoning {
-			s.tail = append(s.tail, item)
-		}
-		s.tail = append(s.tail, commentaryNudge(s.config.MarkerText))
+		s.tail = ContinueReplay(s.tail, s.RoundReasoning, s.config.MarkerText)
 		items := append(append([]any{}, s.input...), s.tail...)
 		next := nextRoundBody(s.base, items)
 		delete(next, "generate")
@@ -323,22 +164,15 @@ func (s *Session) Finish() (Decision, error) {
 		return Decision{Next: next}, nil
 	}
 	var events []Object
-	completed := s.terminal["type"] == "response.completed"
+	completed := s.Terminal["type"] == "response.completed"
 	if completed {
-		for _, entry := range s.buffer {
-			for _, ev := range entry.events {
-				ev["output_index"] = s.outputIndex
-				events = append(events, s.stamp(ev))
-			}
-			s.outputIndex++
-			s.output = append(s.output, entry.item)
-		}
+		_ = s.Flush(func(ev Object) error { events = append(events, ev); return nil }, true)
 	}
-	ev := terminalEvent(s.terminal, s.baseResponse, s.output, agentUsage(s.firstUsage, s.summed, s.usage, completed), s.rounds, s.summed, reason, "")
+	ev := terminalEvent(s.Terminal, s.BaseResponse, s.FinalOutput, agentUsage(s.FirstUsage, s.SummedUsage, s.Usage, completed), s.RoundsInfo, s.SummedUsage, reason, "")
 	// Retain the final upstream error and completion fields, not the initial
 	// in-progress values. Identity, visible output and usage belong to the fold.
 	response, _ := ev["response"].(map[string]any)
-	final, _ := s.terminal["response"].(map[string]any)
+	final, _ := s.Terminal["response"].(map[string]any)
 	for key, value := range final {
 		switch key {
 		case "id", "output", "usage", "metadata":
@@ -367,11 +201,11 @@ func (s *Session) Finish() (Decision, error) {
 }
 
 func (s *Session) result(reason string) Result {
-	visible, _ := s.baseResponse["id"].(string)
-	final, _ := s.terminal["response"].(map[string]any)
+	visible, _ := s.BaseResponse["id"].(string)
+	final, _ := s.Terminal["response"].(map[string]any)
 	upstream, _ := final["id"].(string)
 	status, _ := final["status"].(string)
-	return Result{VisibleID: visible, UpstreamID: upstream, Status: status, Rounds: s.round, StopReason: reason, BilledUsage: cloneUsage(s.summed)}
+	return Result{VisibleID: visible, UpstreamID: upstream, Status: status, Rounds: s.RoundNo, StopReason: reason, BilledUsage: cloneUsage(s.SummedUsage)}
 }
 
 // Abort emits an incomplete result. Reasons are fixed codes, not upstream bodies.
@@ -382,18 +216,18 @@ func (s *Session) Abort(reason string) Object {
 	default:
 		reason = "upstream_error"
 	}
-	output := s.output
+	output := s.FinalOutput
 	if reason == "interrupted" {
 		// Native response.interrupt uses discard_partial_items: the canceled
 		// response must not publish partial output as reusable history.
 		output = nil
 	}
-	ev := terminalEvent(nil, s.baseResponse, output, agentUsage(s.firstUsage, s.summed, s.usage, false), s.rounds, s.summed, reason, reason)
+	ev := terminalEvent(nil, s.BaseResponse, output, agentUsage(s.FirstUsage, s.SummedUsage, s.Usage, false), s.RoundsInfo, s.SummedUsage, reason, reason)
 	return s.stamp(ev)
 }
 
 func (s *Session) String() string {
-	return fmt.Sprintf("Reflow session rounds=%d finished=%t", s.round, s.finished)
+	return fmt.Sprintf("Reflow session rounds=%d finished=%t", s.RoundNo, s.finished)
 }
 
 // Eligible is a conservative text-model naming rule; it does not claim a model's

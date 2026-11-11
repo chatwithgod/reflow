@@ -17,6 +17,7 @@ import sys
 import zipfile
 
 from native_smoke import OfflineHost
+from source_layout import source_files
 
 ROOT = Path(__file__).resolve().parents[1]
 VERSION_PATTERN = r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)"
@@ -142,8 +143,8 @@ def license_bytes(root):
 
 
 def source_fingerprint(root):
-    files = sorted(root.glob("*.go")) + [root / "go.mod", root / "go.sum"]
-    hashes = {path.name: hashlib.sha256(path.read_bytes()).hexdigest() for path in files}
+    hashes = {name: hashlib.sha256(path.read_bytes()).hexdigest()
+              for name, path in source_files(root).items()}
     return hashlib.sha256(json.dumps(hashes, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 

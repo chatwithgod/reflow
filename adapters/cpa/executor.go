@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/chatwithgod/reflow/core"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/pluginabi"
 	"github.com/router-for-me/CLIProxyAPI/v8/sdk/pluginapi"
 )
@@ -359,7 +360,7 @@ func runFold(fs *foldState, firstRound roundStartResult, streamID string) {
 			var fev map[string]any
 			if _, isMid := roundErr.(*midStreamError); isMid {
 				fev = fs.incompleteEvent("upstream_error")
-			} else if fs.roundNo == 1 {
+			} else if fs.RoundNo == 1 {
 				status := 502
 				if ue, ok := roundErr.(*upstreamError); ok {
 					status = ue.status
@@ -398,7 +399,7 @@ func runFold(fs *foldState, firstRound roundStartResult, streamID string) {
 		fs.debugDecision()
 
 		if fs.shouldContinue() {
-			fs.debugf("continuing after round=%d reasoning_tokens=%s", fs.roundNo, optionalIntString(reasoningTokens(fs.usage)))
+			fs.debugf("continuing after round=%d reasoning_tokens=%s", fs.RoundNo, optionalIntString(reasoningTokens(fs.Usage)))
 			fs.prepareNextRound()
 			continue
 		}
@@ -454,6 +455,7 @@ func sseEvent(ev map[string]any) []byte {
 }
 
 type foldState struct {
+	core.FoldState
 	runID          string
 	bridgeStatus   string
 	nativeWS       bool
@@ -461,28 +463,11 @@ type foldState struct {
 	beforeChunk    func([]byte) error
 	baseBody       map[string]any
 	origInput      []any
+	replayTail     []any
 	req            rpcExecutorRequest
 	hostCallbackID string
-
-	roundNo      int
-	dsOI         int
-	seq          int
-	baseResponse map[string]any
-	finalOutput  []map[string]any
-	replayTail   []any
-	summedUsage  map[string]any
-	firstUsage   map[string]any
-	roundsInfo   []map[string]any
-
-	roundReasoning []map[string]any
-	kind           map[int]string
-	oiToDS         map[int]int
-	buffered       []bufferedEntry
-	terminal       map[string]any
-	usage          map[string]any
-
-	decoder eventDecoder
-	config  foldConfig
+	decoder        eventDecoder
+	config         foldConfig
 }
 
 func (fs *foldState) emit(streamID string, payload []byte) error {
@@ -492,23 +477,18 @@ func (fs *foldState) emit(streamID string, payload []byte) error {
 	return emitChunk(streamID, payload)
 }
 
-type bufferedEntry struct {
-	oi     int
-	item   map[string]any
-	events []map[string]any
-}
+type bufferedEntry = core.BufferedItem
 
 func newFoldState(baseBody map[string]any, origInput []any, req rpcExecutorRequest, hostCallbackID string) *foldState {
-	return &foldState{
-		runID:          newReflowRunID(),
+	return &foldState{FoldState: core.FoldState{SummedUsage: map[string]any{},
+		Kinds:   map[int]string{},
+		Indexes: map[int]int{}}, runID: newReflowRunID(),
 		baseBody:       baseBody,
 		origInput:      origInput,
 		req:            req,
 		hostCallbackID: hostCallbackID,
-		summedUsage:    map[string]any{},
-		kind:           map[int]string{},
-		oiToDS:         map[int]int{},
-		config:         currentFoldConfig(),
+
+		config: currentFoldConfig(),
 	}
 }
 
@@ -521,13 +501,8 @@ func (fs *foldState) openRound(streamID string) (map[string]any, map[string]any,
 }
 
 func (fs *foldState) startRound() (hostModelStreamResponse, error) {
-	fs.roundNo++
-	fs.roundReasoning = nil
-	fs.kind = map[int]string{}
-	fs.oiToDS = map[int]int{}
-	fs.buffered = nil
-	fs.terminal = nil
-	fs.usage = nil
+	fs.RoundNo++
+	fs.ResetRound()
 	fs.decoder = eventDecoder{}
 
 	var bodyBytes []byte
@@ -593,7 +568,7 @@ func (fs *foldState) consumeRound(streamResp hostModelStreamResponse, streamID s
 				return nil, nil, streamResp.Headers, &midStreamError{msg: perr.Error()}
 			}
 			if term != nil {
-				return fs.terminal, fs.usage, streamResp.Headers, nil
+				return fs.Terminal, fs.Usage, streamResp.Headers, nil
 			}
 		}
 		if readResp.Error != "" {
@@ -603,7 +578,7 @@ func (fs *foldState) consumeRound(streamResp hostModelStreamResponse, streamID s
 			if err := fs.decoder.finish(); err != nil {
 				return nil, nil, streamResp.Headers, &midStreamError{msg: err.Error()}
 			}
-			return fs.terminal, fs.usage, streamResp.Headers, nil
+			return fs.Terminal, fs.Usage, streamResp.Headers, nil
 		}
 	}
 }
@@ -690,135 +665,21 @@ func findJSONEnd(data []byte, start int) int {
 	return -1
 }
 
+// CPA owns the surrounding callbacks and legacy metadata; folding is shared.
 func (fs *foldState) processEvent(ev map[string]any, streamID string) (map[string]any, error) {
-	etype, _ := ev["type"].(string)
-	if etype == "response.done" {
-		// CPA currently normalizes this upstream alias, but accepting it here
-		// also keeps host callbacks and standalone event fixtures compatible.
-		etype = "response.completed"
-		if response, ok := ev["response"].(map[string]any); ok {
-			switch response["status"] {
-			case "failed":
-				etype = "response.failed"
-			case "incomplete":
-				etype = "response.incomplete"
-			}
-		}
-		ev["type"] = etype
+	err := fs.Process(ev, core.EventPolicy{}, func(event core.Object) error { return fs.emit(streamID, sseEvent(event)) })
+	if err != nil {
+		return nil, err
 	}
-	if etype == "error" {
-		return nil, fmt.Errorf("upstream returned an error event")
-	}
-
-	if etype == "response.created" || etype == "response.in_progress" {
-		if fs.roundNo == 1 {
-			if etype == "response.created" {
-				if r, ok := ev["response"].(map[string]any); ok {
-					fs.baseResponse = r
-				}
-			}
-			fs.stamp(ev)
-			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
-				return nil, err
-			}
-		}
-		return nil, nil
-	}
-
-	if terminalTypes[etype] {
-		fs.terminal = ev
-		if r, ok := ev["response"].(map[string]any); ok {
-			if u, ok := r["usage"].(map[string]any); ok {
-				fs.usage = cloneUsage(u)
-			}
-		}
-		return ev, nil
-	}
-
-	oi := -1
-	if v, ok := ev["output_index"].(float64); ok {
-		oi = int(v)
-	}
-
-	if etype == "response.output_item.added" {
-		item, _ := ev["item"].(map[string]any)
-		if item == nil {
-			item = map[string]any{}
-		}
-		itemType, _ := item["type"].(string)
-		if itemType == "reasoning" {
-			fs.kind[oi] = "reasoning"
-			fs.oiToDS[oi] = fs.dsOI
-			ev["output_index"] = fs.dsOI
-			fs.dsOI++
-			fs.stamp(ev)
-			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
-				return nil, err
-			}
-		} else {
-			fs.kind[oi] = "buffered"
-			fs.buffered = append(fs.buffered, bufferedEntry{oi: oi, item: item, events: []map[string]any{ev}})
-		}
-		return nil, nil
-	}
-
-	k := fs.kind[oi]
-	if k == "reasoning" {
-		if ds, ok := fs.oiToDS[oi]; ok {
-			ev["output_index"] = ds
-		}
-		if etype == "response.output_item.done" {
-			if item, ok := ev["item"].(map[string]any); ok {
-				fs.roundReasoning = append(fs.roundReasoning, item)
-				fs.finalOutput = append(fs.finalOutput, item)
-			}
-		}
-		fs.stamp(ev)
-		if err := fs.emit(streamID, sseEvent(ev)); err != nil {
-			return nil, err
-		}
-	} else if k == "buffered" {
-		for i := range fs.buffered {
-			if fs.buffered[i].oi == oi {
-				fs.buffered[i].events = append(fs.buffered[i].events, ev)
-				if etype == "response.output_item.done" {
-					if item, ok := ev["item"].(map[string]any); ok {
-						fs.buffered[i].item = item
-					}
-				}
-				break
-			}
-		}
-	} else {
-		fs.stamp(ev)
-		if err := fs.emit(streamID, sseEvent(ev)); err != nil {
-			return nil, err
-		}
-	}
-	return nil, nil
+	return fs.Terminal, nil
 }
 
-func (fs *foldState) stamp(ev map[string]any) {
-	ev["sequence_number"] = fs.seq
-	fs.seq++
-}
+func (fs *foldState) stamp(ev map[string]any) { fs.Stamp(ev, false) }
 
 func (fs *foldState) endRound(terminal map[string]any, usage map[string]any) {
-	fs.terminal = terminal
-	fs.usage = usage
-	sumUsage(fs.summedUsage, usage)
-	if fs.roundNo == 1 {
-		fs.firstUsage = cloneUsage(usage)
-	}
-
+	fs.RecordRound(terminal, usage, true)
 	rt := reasoningTokens(usage)
-	n := tierN(rt)
-	fs.roundsInfo = append(fs.roundsInfo, map[string]any{
-		"round":            fs.roundNo,
-		"reasoning_tokens": rt,
-		"n":                n,
-	})
-	fs.debugf("round=%d completed reasoning_tokens=%s tier=%s", fs.roundNo, optionalIntString(rt), optionalIntString(n))
+	fs.debugf("round=%d completed reasoning_tokens=%s tier=%s", fs.RoundNo, optionalIntString(rt), optionalIntString(tierN(rt)))
 	logReflowEvent(fs.roundTelemetry())
 }
 
@@ -833,74 +694,30 @@ func (fs *foldState) minReasoningThreshold() int {
 	return threshold
 }
 
-func (fs *foldState) totalReasoningTokens() *int {
-	if fs.summedUsage == nil {
-		return nil
-	}
-	details, _ := fs.summedUsage["output_tokens_details"].(map[string]any)
-	if details == nil {
-		return nil
-	}
-	raw, ok := details["reasoning_tokens"]
-	if !ok || raw == nil {
-		return nil
-	}
-	f, ok := raw.(float64)
-	if !ok {
-		return nil
-	}
-	n := int(f)
-	return &n
-}
+func (fs *foldState) totalReasoningTokens() *int { return core.ReasoningTokens(fs.SummedUsage) }
 
 func (fs *foldState) continueReason() string {
-	rt := reasoningTokens(fs.usage)
-	n := tierN(rt)
-	if inContinueWindow(n, fs.config.MaxTierN) {
-		return continueReasonTruncation
-	}
-
-	threshold := fs.minReasoningThreshold()
-	if threshold <= 0 {
-		return ""
-	}
-	totalReasoning := fs.totalReasoningTokens()
-	if totalReasoning == nil {
-		return ""
-	}
-	if *totalReasoning < threshold {
-		return continueReasonLowReasoningTokens
-	}
-	return ""
+	return core.ContinuationTrigger(fs.Usage, fs.SummedUsage, fs.config.MaxTierN, fs.minReasoningThreshold())
 }
 
 func (fs *foldState) markLastRoundContinueReason(reason string) {
-	if reason == "" || len(fs.roundsInfo) == 0 {
+	if reason == "" || len(fs.RoundsInfo) == 0 {
 		return
 	}
-	fs.roundsInfo[len(fs.roundsInfo)-1]["continue_reason"] = reason
+	fs.RoundsInfo[len(fs.RoundsInfo)-1]["continue_reason"] = reason
 }
 
 func (fs *foldState) shouldContinue() bool {
-	if fs.terminal == nil {
-		return false
+	// Parent resolution and native resource checks remain in the CPA adapter.
+	// Preserve its existing model-specific threshold and host-tool policy.
+	decision := fs.DecideContinuation(core.ContinuationPolicy{
+		MaxContinue: fs.config.MaxContinue, MaxTierN: fs.config.MaxTierN,
+		MinReasoningTokens: fs.minReasoningThreshold(), Replayable: true,
+	})
+	if decision.Continue {
+		fs.markLastRoundContinueReason(decision.Trigger)
 	}
-	etype, _ := fs.terminal["type"].(string)
-	if etype != "response.completed" {
-		return false
-	}
-	reason := fs.continueReason()
-	if reason == "" {
-		return false
-	}
-	if !fs.hasEncryptedContent() {
-		return false
-	}
-	if fs.roundNo > fs.config.MaxContinue {
-		return false
-	}
-	fs.markLastRoundContinueReason(reason)
-	return true
+	return decision.Continue
 }
 
 func (fs *foldState) debugDecision() {
@@ -908,12 +725,12 @@ func (fs *foldState) debugDecision() {
 		return
 	}
 	reason := fs.continueReason()
-	rt := reasoningTokens(fs.usage)
+	rt := reasoningTokens(fs.Usage)
 	total := fs.totalReasoningTokens()
 	fs.debugf(
 		"decision model=%s round=%d reasoning_tokens=%s total_reasoning_tokens=%s min_reasoning_tokens=%d trigger=%s has_encrypted_content=%t max_continue=%d",
 		fs.req.Model,
-		fs.roundNo,
+		fs.RoundNo,
 		optionalIntString(rt),
 		optionalIntString(total),
 		fs.minReasoningThreshold(),
@@ -924,11 +741,11 @@ func (fs *foldState) debugDecision() {
 }
 
 func (fs *foldState) stoppedReason() string {
-	etype, _ := fs.terminal["type"].(string)
+	etype, _ := fs.Terminal["type"].(string)
 	if etype != "response.completed" {
 		return ""
 	}
-	rt := reasoningTokens(fs.usage)
+	rt := reasoningTokens(fs.Usage)
 	n := tierN(rt)
 	trigger := fs.continueReason()
 	if !fs.hasEncryptedContent() {
@@ -937,7 +754,7 @@ func (fs *foldState) stoppedReason() string {
 		}
 		return ""
 	}
-	if fs.roundNo > fs.config.MaxContinue {
+	if fs.RoundNo > fs.config.MaxContinue {
 		if trigger != "" {
 			return "max_continue"
 		}
@@ -952,22 +769,10 @@ func (fs *foldState) stoppedReason() string {
 	return ""
 }
 
-func (fs *foldState) hasEncryptedContent() bool {
-	if len(fs.roundReasoning) == 0 {
-		return false
-	}
-	last := fs.roundReasoning[len(fs.roundReasoning)-1]
-	s, ok := last["encrypted_content"].(string)
-	return ok && s != ""
-}
+func (fs *foldState) hasEncryptedContent() bool { return fs.HasEncryptedContent() }
 
 func (fs *foldState) prepareNextRound() {
-	tail := make([]any, 0, len(fs.roundReasoning)+1)
-	for _, r := range fs.roundReasoning {
-		tail = append(tail, r)
-	}
-	tail = append(tail, commentaryNudge(fs.config.MarkerText))
-	fs.replayTail = append(fs.replayTail, tail...)
+	fs.replayTail = core.ContinueReplay(fs.replayTail, fs.RoundReasoning, fs.config.MarkerText)
 }
 
 func (fs *foldState) debugf(format string, args ...any) {
@@ -985,30 +790,17 @@ func optionalIntString(value *int) string {
 }
 
 func (fs *foldState) flushCleanStop(streamID string) error {
-	for _, entry := range fs.buffered {
-		for _, ev := range entry.events {
-			if _, ok := ev["output_index"]; ok {
-				ev["output_index"] = fs.dsOI
-			}
-			fs.stamp(ev)
-			if err := fs.emit(streamID, sseEvent(ev)); err != nil {
-				return err
-			}
-		}
-		fs.dsOI++
-		fs.finalOutput = append(fs.finalOutput, entry.item)
-	}
-	return nil
+	return fs.Flush(func(event core.Object) error { return fs.emit(streamID, sseEvent(event)) }, false)
 }
 
 func (fs *foldState) terminalEvent() map[string]any {
 	return fs.annotateEvent(terminalEvent(
-		fs.terminal,
-		fs.baseResponse,
-		fs.finalOutput,
-		agentUsage(fs.firstUsage, fs.summedUsage, fs.usage, true),
-		fs.roundsInfo,
-		fs.summedUsage,
+		fs.Terminal,
+		fs.BaseResponse,
+		fs.FinalOutput,
+		agentUsage(fs.FirstUsage, fs.SummedUsage, fs.Usage, true),
+		fs.RoundsInfo,
+		fs.SummedUsage,
 		fs.stoppedReason(),
 		"",
 	), fs.terminalStopReason())
@@ -1017,11 +809,11 @@ func (fs *foldState) terminalEvent() map[string]any {
 func (fs *foldState) incompleteEvent(reason string) map[string]any {
 	return fs.annotateEvent(terminalEvent(
 		nil,
-		fs.baseResponse,
-		fs.finalOutput,
-		agentUsage(fs.firstUsage, fs.summedUsage, fs.usage, false),
-		fs.roundsInfo,
-		fs.summedUsage,
+		fs.BaseResponse,
+		fs.FinalOutput,
+		agentUsage(fs.FirstUsage, fs.SummedUsage, fs.Usage, false),
+		fs.RoundsInfo,
+		fs.SummedUsage,
 		reason,
 		reason,
 	), reason)

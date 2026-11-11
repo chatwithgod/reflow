@@ -22,10 +22,10 @@ func TestReflowRunIDUniqueness(t *testing.T) {
 
 func TestRoundDiagnosticsWhitelistAndUnknownCounters(t *testing.T) {
 	fs := newFoldState(nil, nil, rpcExecutorRequest{}, "")
-	fs.roundNo = 2
+	fs.RoundNo = 2
 	fs.nativeWS = true
-	fs.terminal = map[string]any{"type": "response.completed", "response": map[string]any{"id": "private_response", "output": "private_output"}}
-	fs.usage = map[string]any{
+	fs.Terminal = map[string]any{"type": "response.completed", "response": map[string]any{"id": "private_response", "output": "private_output"}}
+	fs.Usage = map[string]any{
 		"input_tokens": float64(1000), "output_tokens": float64(526), "total_tokens": float64(1526),
 		"input_tokens_details":  map[string]any{"cached_tokens": float64(800), "private": "private_prompt"},
 		"output_tokens_details": map[string]any{"reasoning_tokens": float64(516), "encrypted_content": "private_encrypted"},
@@ -42,8 +42,8 @@ func TestRoundDiagnosticsWhitelistAndUnknownCounters(t *testing.T) {
 			t.Fatalf("diagnostic leaked %s", forbidden)
 		}
 	}
-	fs.terminal = map[string]any{"type": "private_event"}
-	fs.usage = nil
+	fs.Terminal = map[string]any{"type": "private_event"}
+	fs.Usage = nil
 	fields = fs.roundTelemetry()
 	if fields["terminal"] != "unknown" {
 		t.Fatal("untrusted event type logged")
@@ -81,8 +81,8 @@ func TestDiagnosticsDoNotInventUsageJoin(t *testing.T) {
 
 func TestReflowTelemetryDoesNotRetainPayload(t *testing.T) {
 	fs := newFoldState(map[string]any{"input": "private_fixture_prompt", "encrypted_content": "private_fixture_encrypted"}, nil, rpcExecutorRequest{}, "")
-	fs.roundNo = 3
-	fs.roundsInfo = []map[string]any{{"round": 1}, {"round": 2}}
+	fs.RoundNo = 3
+	fs.RoundsInfo = []map[string]any{{"round": 1}, {"round": 2}}
 	fs.bridgeStatus = "response_alias"
 	m := fs.telemetry("upstream_error")
 	if m["rounds_started"] != 3 || m["rounds_completed"] != 2 || m["continuations_started"] != 2 || m["continuations_completed"] != 1 {
@@ -98,9 +98,9 @@ func TestReflowTelemetryDoesNotRetainPayload(t *testing.T) {
 
 func TestReflowTelemetryPreservesMetadata(t *testing.T) {
 	fs := newFoldState(nil, nil, rpcExecutorRequest{}, "")
-	fs.roundNo = 1
-	fs.roundsInfo = []map[string]any{{"round": 1}}
-	ev := map[string]any{"type": "response.completed", "response": map[string]any{"metadata": map[string]any{"fixture": "preserved", "proxy_rounds": fs.roundsInfo}}}
+	fs.RoundNo = 1
+	fs.RoundsInfo = []map[string]any{{"round": 1}}
+	ev := map[string]any{"type": "response.completed", "response": map[string]any{"metadata": map[string]any{"fixture": "preserved", "proxy_rounds": fs.RoundsInfo}}}
 	fs.annotateEvent(ev, "")
 	meta := ev["response"].(map[string]any)["metadata"].(map[string]any)
 	info := meta["proxy_reflow"].(map[string]any)
@@ -118,7 +118,7 @@ func TestReflowResultTelemetryDoesNotMislabelErrors(t *testing.T) {
 		}
 	}
 	for kind, reason := range map[string]string{"response.failed": "upstream_failed", "response.incomplete": "upstream_incomplete"} {
-		fs.terminal = map[string]any{"type": kind}
+		fs.Terminal = map[string]any{"type": kind}
 		event := fs.terminalEvent()
 		info := event["response"].(map[string]any)["metadata"].(map[string]any)["proxy_reflow"].(map[string]any)
 		if info["stop_reason"] != reason || event["type"] != kind {
