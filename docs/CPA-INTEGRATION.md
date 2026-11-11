@@ -86,3 +86,5 @@ python scripts/native_smoke.py build/0.1.4/codexreflow.dll --report build/0.1.4/
 本轮真实模型调用为 0，没有改生产配置、替换现有插件或执行发布。Linux/macOS、新版本的真实账号和完整 CPA 宿主集成仍未验收。
 
 同日随后已获授权推送整合分支：独立版三平台常规回归通过，原生客户端 Ubuntu/macOS 通过，托管 Windows 保留已知写入失败；CPA 五平台工作流未触发，不能当作验收通过。后续状态与触发配置补充见[首轮远程检查](CPA-INTEGRATION-CI-2026-11-12.md)。
+
+再次获授权推送 `b041cd4` 后，CPA 五平台工作流已运行：两个 Linux 平台通过；macOS 两架构和 Windows 因同一个临时路径别名比较误判停止。测试修正及本机负向/正向对照已完成，远程复验待进行，详见[路径测试修正](CPA-INTEGRATION-PATHS-2026-11-12.md)。

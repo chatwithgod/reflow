@@ -36,7 +36,9 @@ class SharedSourceTests(unittest.TestCase):
             (adapter / "build/private.json").write_text("must not ship", encoding="utf-8")
             (root / "unrelated.go").write_text("must not ship", encoding="utf-8")
             snapshot = snapshot_source(adapter, Path(output))
-            self.assertEqual(snapshot, Path(output) / "adapters/cpa")
+            # Temp paths can use symlinks or Windows short names. Compare their
+            # canonical paths; dependency, byte and exclusion checks remain.
+            self.assertEqual(snapshot, (Path(output) / "adapters/cpa").resolve())
             self.assertEqual((snapshot / "../../core/fold.go").resolve().read_bytes(), (root / "core/fold.go").read_bytes())
             self.assertEqual(source_fingerprint(snapshot), source_fingerprint(adapter))
             self.assertFalse((snapshot / "build").exists())
