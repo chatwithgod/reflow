@@ -6,7 +6,11 @@
 
 后续单独授权的 [Ubuntu 发行版配置对照](LINUX-SANDBOX-CONTROL.md)在 `d86ac49` 上通过：固定依赖与 AppArmor 告警例外下，五个写入场景全部通过，文件/网络边界及清理检查也通过。该选项没有自动启用于本页的默认流水线；当时默认 Ubuntu 和托管 Windows 的失败结果原样保留。
 
-## 最新公开 CI：2026-11-05
+## Windows 修复准备：2026-11-12
+
+最新 `297966b` 的[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43099211239)仍只有托管 Windows 的五个写文件场景失败，直接 MXC 对照命中 `mxc_unavailable`。现已准备使用官方 `elevated` 后端的 CI 修复，保留五项写入断言并新增文件、网络及清理检查；本机默认 MXC 回归通过，托管 Windows 的新后端尚未实测。见[修改范围与本地验证](WINDOWS-NATIVE-CI-2026-11-12.md)。
+
+## 2026-11-05 公开检查点
 
 Desktop/dot 的四个文档提交已公开至 `1bece8f`，没有运行代码或工作流改动。[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150159)三平台普通/race 各 90 通过、4 跳过，vet/fuzz 和评测自检通过。[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/41957150411)三个平台的客户端普通/race 各 14 项通过；Ubuntu/macOS 的五个写入场景和 Pi 普通/race 各 4 项也通过。
 

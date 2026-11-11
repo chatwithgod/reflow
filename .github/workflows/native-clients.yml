@@ -47,7 +47,15 @@ jobs:
           npm ci --prefix .tools/native-clients --ignore-scripts --no-audit --no-fund --registry=https://registry.npmjs.org/
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Build and test extracted native packages with synthetic login
-        run: python scripts/check-native-clients.py
+        run: |
+          # Hosted Windows Server has no MXC. Provision the official elevated
+          # backend in this disposable runner; keep the five write assertions.
+          if ($IsWindows) {
+            python scripts/check-native-clients.py --windows-elevated
+          } else {
+            python scripts/check-native-clients.py
+          }
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Preserve numeric summaries
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

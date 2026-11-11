@@ -1,0 +1,640 @@
+{
+  "status": "prepared_remote_acceptance_pending",
+  "date": "2026-11-12",
+  "base_commit": "297966b5f312d71ca3b72d7fbc87bd5b04c66944",
+  "branch": "fix/windows-native-sandbox",
+  "model_calls": 0,
+  "max_native_clients": 1,
+  "existing_login_read": false,
+  "production_modified": false,
+  "local_host_provisioned": false,
+  "remote_elevated_tested": false,
+  "source_sha256": {
+    ".github/workflows/native-clients.yml": "cb3d349d7196dc0a50fcdae27ff3de01de1ed694930546a3d48879c65652b7b2",
+    ".github/workflows/offline.yml": "0db9bf43461415a4cfc53f901c1554f497624c79c91c566a23166960ff4c5e7e",
+    "evaluations/client_preflight.py": "32acf60942442b988f1644fe09fda687802aa82bf54dd3185373bca08fa5d805",
+    "integration/codex_test.go": "d7cbf7acbd7d16ca7bc74b1bd468cb11e3e7f5b5e1cd391d31ba64cc264f1426",
+    "integration/native_windows_sandbox_test.go": "8ccb1932d0cc414b313ca1c3798c785c8ae3a443b667f6ff144fd3370b056058",
+    "scripts/check-native-clients.py": "03b989bef76e05495f13e5db98ab70390fdd15cf7712a2ac7904f2d917f67d10",
+    "scripts/windows_native_sandbox.py": "720a6f2c28879ec1423f2dbca2ce801eebc80474dc0908354600f2d8cca1010e",
+    "scripts/test-windows-native-sandbox.py": "1829bb55e55cb5c221d583e516caea9b6b4d8680c629a63625b69c988d0e1d01"
+  },
+  "upstream": {
+    "tag": "rust-v0.165.0",
+    "commit": "360319d8dee62d87e2d59fc0c21805d79519cfed",
+    "files": [
+      {
+        "path": "codex-rs/config/src/types.rs",
+        "blob_sha1": "449b920f7f80080762cf8b55b02ec373d6f5cc0a",
+        "sha256": "1245e595fd1be62e2f8ec4a8510d29efae1f2be5f12b3db892e1cfe2d16c3530"
+      },
+      {
+        "path": "codex-rs/protocol/src/config_types.rs",
+        "blob_sha1": "87ffe6dc8bea4d093822a8c1e868df477490e669",
+        "sha256": "ce9b26223db7cc4b5cf474e571e4509e8cc52536e159510f153f94de0fcd37e8"
+      },
+      {
+        "path": "codex-rs/cli/src/sandbox_setup.rs",
+        "blob_sha1": "ba89d4c38d8ab31a00e591884fa8f8d8454b686a",
+        "sha256": "c7936821795c109518b197cb8629aa19a28c2d4545f8330cc4e75bb7bc4fd473"
+      },
+      {
+        "path": "codex-rs/cli/src/sandbox_uninstall.rs",
+        "blob_sha1": "49bc946f7424a8fca070291932058ae1989ca701",
+        "sha256": "f02733ee442c137d1774517500abe79b0d9db4f5beee5272a747432357c9ce65"
+      },
+      {
+        "path": "codex-rs/core/src/windows_sandbox.rs",
+        "blob_sha1": "2c2d1fdb366c9c587752762376427baaa6522339",
+        "sha256": "b120ff04b14577383e9d8229dd17a2ccaa9839caf55230ef37ad03c486eebf1c"
+      },
+      {
+        "path": "codex-rs/exec-server/src/fs_sandbox.rs",
+        "blob_sha1": "63eefde6ee8caf9f52f2cdb0c4c03622c32a311a",
+        "sha256": "29d0decd8ba36a25b2c3617051ec201be577d84989fb6396d550b52ccd4f5275"
+      },
+      {
+        "path": "codex-rs/exec-server/src/process_sandbox.rs",
+        "blob_sha1": "488b7c97f249ffd71a69def81a88f902246858f7",
+        "sha256": "e66a8116655beeef5ccb9070f43b9945f9688adf8277ed6a7a91b0a04969aebe"
+      },
+      {
+        "path": "codex-rs/exec-server/src/sandbox_selection.rs",
+        "blob_sha1": "03d3ed1e794dd61291cf6ec658822a8cb2cf7462",
+        "sha256": "8f47668b6adc311ba52763270331eee3a1c772961b01fe4eb10c8c741bc1a713"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/setup.rs",
+        "blob_sha1": "7c9cd6362c58425098f730aa7cdddeb4be403211",
+        "sha256": "8b839f4f3828198914ad8293504cd996fe50a31e350f499cd2e11880292cc92a"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/identity.rs",
+        "blob_sha1": "022c9f8ee5e203437f1619abd94fe0eb3bbf7ac3",
+        "sha256": "3b6c3ad4f48a19c5b294392fd18eb83a351751245d43716305baf4d6bd638327"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/setup_provisioning.rs",
+        "blob_sha1": "d4557688e93703b5a7e9a32d9f450e4581a992d7",
+        "sha256": "7f85d132adf69bca810db5a77f4faa5b1e021b764aad889020e47abba6f06ac3"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/setup_provisioning/sandbox_users.rs",
+        "blob_sha1": "480bbf7c399f584de954d004a95b0919fe7c0b32",
+        "sha256": "20bc1739fa0f5bac87b7168d4f0b394339b04f15489137724067f9a7dc7df92d"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/runtime_ownership.rs",
+        "blob_sha1": "d5ec71b6c0da1820786c2fc25785c4afb7a38cc8",
+        "sha256": "7b41010207ad5cd9f3822bac9962e4def6a66714f53944cd620d0845e9248f8d"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/installation_record.rs",
+        "blob_sha1": "3fc2f23ad25b7e427c6e74094f05bb180da7a2cc",
+        "sha256": "f56bf16c340cf45a2178d60b8446c5127a3760a3d146383a9f78033fe73b8bdc"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/uninstall_windows.rs",
+        "blob_sha1": "b8da90674926cbde8b5ba2c9f98a39ecdeb43429",
+        "sha256": "d185eba1a8a70863a065512d8d0ecc75d9e1ed40063a253cba6ca0d89acc7caa"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/uninstall_windows/firewall.rs",
+        "blob_sha1": "0e5c98d376047f458f02b8656993d12fc0d527ef",
+        "sha256": "211f70f95d0d5b355a4dfcb8cea159cec25bcef010660b290233e0870961b966"
+      },
+      {
+        "path": "codex-rs/windows-sandbox-rs/src/wfp.rs",
+        "blob_sha1": "d992bcdd931c77050de2b5b4fe04aaf00e247725",
+        "sha256": "82effcda9c951ad62d1f1b4afa9b4f0ad59b3d35d7c2feab53a9b6838dd93fc4"
+      }
+    ]
+  },
+  "baseline": {
+    "run_url": "https://github.com/chatwithgod/reflow/actions/runs/43099211239",
+    "source_commit": "297966b5f312d71ca3b72d7fbc87bd5b04c66944",
+    "codex_version": "codex-cli 0.165.0",
+    "host_diagnostics": {
+      "model_calls": 0,
+      "existing_login_read": false,
+      "host_configuration_modified": false,
+      "purpose": "diagnostic context only; original write-test gates remain mandatory",
+      "shells_available": {
+        "bash": true,
+        "sh": true,
+        "cmd": true,
+        "pwsh": true,
+        "powershell": true
+      },
+      "windows_version": {
+        "major": 10,
+        "minor": 0,
+        "build": 26100,
+        "product_type": 3
+      },
+      "native_sandbox_command": {
+        "status": "fail",
+        "exit_code": 1,
+        "timed_out": false,
+        "stdout_bytes": 0,
+        "stderr_bytes": 81,
+        "matching_output": {
+          "windows_mxc": 1,
+          "mxc_unavailable": 1
+        },
+        "workspace_marker_verified": false
+      },
+      "native_filesystem_rpc": {
+        "native_filesystem_write_verified": false,
+        "out_of_workspace_write_blocked": false,
+        "native_filesystem_reason": "filesystem_probe_failed"
+      }
+    },
+    "write": {
+      "exit_code": 1,
+      "tests": {
+        "pass": 0,
+        "skip": 0,
+        "fail": 6
+      },
+      "required_tests": [
+        "TestCodexNativeWriteProbe"
+      ],
+      "missing_tests": [
+        "TestCodexNativeWriteProbe"
+      ],
+      "passed_names": [],
+      "failed_names": [
+        "TestCodexNativeWriteProbe",
+        "TestCodexNativeWriteProbe/command_via_reflow",
+        "TestCodexNativeWriteProbe/patch_add_direct",
+        "TestCodexNativeWriteProbe/patch_direct",
+        "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+        "TestCodexNativeWriteProbe/patch_via_reflow"
+      ],
+      "package_passed": false,
+      "failure_observations": [
+        {
+          "test": "TestCodexNativeWriteProbe/command_via_reflow",
+          "matching_log_lines": {
+            "workspace_file_not_updated": 1,
+            "windows_mxc": 1,
+            "mxc_unavailable": 1
+          },
+          "upstream_tool_output": {
+            "observed_outputs": 1,
+            "empty_outputs": 0,
+            "matching_outputs": {
+              "mxc_unavailable": 1,
+              "unsupported_operation": 1,
+              "windows_mxc": 1
+            }
+          },
+          "client_error_kind": "none",
+          "client_exit_code": null,
+          "upstream_requests": 3,
+          "websocket_requests": 4,
+          "http_requests": 0,
+          "auth_header_seen": true,
+          "tool_result_seen": false,
+          "retained_tool_executions": 0,
+          "discarded_tool_executions": 0
+        },
+        {
+          "test": "TestCodexNativeWriteProbe/patch_add_direct",
+          "matching_log_lines": {
+            "workspace_file_not_updated": 1,
+            "windows_mxc": 1
+          },
+          "upstream_tool_output": {
+            "observed_outputs": 1,
+            "empty_outputs": 0,
+            "matching_outputs": {
+              "filesystem_error": 1
+            }
+          },
+          "client_error_kind": "none",
+          "client_exit_code": null,
+          "upstream_requests": 2,
+          "websocket_requests": 3,
+          "http_requests": 0,
+          "auth_header_seen": true,
+          "tool_result_seen": false,
+          "retained_tool_executions": 0,
+          "discarded_tool_executions": 0
+        },
+        {
+          "test": "TestCodexNativeWriteProbe/patch_direct",
+          "matching_log_lines": {
+            "workspace_file_not_updated": 1,
+            "windows_mxc": 1
+          },
+          "upstream_tool_output": {
+            "observed_outputs": 1,
+            "empty_outputs": 0,
+            "matching_outputs": {
+              "filesystem_error": 1
+            }
+          },
+          "client_error_kind": "none",
+          "client_exit_code": null,
+          "upstream_requests": 2,
+          "websocket_requests": 3,
+          "http_requests": 0,
+          "auth_header_seen": true,
+          "tool_result_seen": false,
+          "retained_tool_executions": 0,
+          "discarded_tool_executions": 0
+        },
+        {
+          "test": "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+          "matching_log_lines": {
+            "workspace_file_not_updated": 1,
+            "windows_mxc": 1
+          },
+          "upstream_tool_output": {
+            "observed_outputs": 1,
+            "empty_outputs": 0,
+            "matching_outputs": {
+              "filesystem_error": 1
+            }
+          },
+          "client_error_kind": "none",
+          "client_exit_code": null,
+          "upstream_requests": 2,
+          "websocket_requests": 3,
+          "http_requests": 0,
+          "auth_header_seen": true,
+          "tool_result_seen": false,
+          "retained_tool_executions": 0,
+          "discarded_tool_executions": 0
+        },
+        {
+          "test": "TestCodexNativeWriteProbe/patch_via_reflow",
+          "matching_log_lines": {
+            "workspace_file_not_updated": 1,
+            "windows_mxc": 1
+          },
+          "upstream_tool_output": {
+            "observed_outputs": 1,
+            "empty_outputs": 0,
+            "matching_outputs": {
+              "filesystem_error": 1
+            }
+          },
+          "client_error_kind": "none",
+          "client_exit_code": null,
+          "upstream_requests": 3,
+          "websocket_requests": 4,
+          "http_requests": 0,
+          "auth_header_seen": true,
+          "tool_result_seen": false,
+          "retained_tool_executions": 0,
+          "discarded_tool_executions": 0
+        }
+      ],
+      "status": "fail",
+      "log_sha256": "01876f026e9382a8141ae2e1c3b196c4f285145d7744a9b364b0a8726d8f1f31"
+    }
+  },
+  "local_native": {
+    "status": "pass",
+    "created_utc": "2026-11-11T21:25:26.509615+00:00",
+    "source_commit": "297966b5f312d71ca3b72d7fbc87bd5b04c66944",
+    "source_sha256": {
+      "scripts/check-native-clients.py": "03b989bef76e05495f13e5db98ab70390fdd15cf7712a2ac7904f2d917f67d10",
+      "scripts/windows_native_sandbox.py": "06acf51bceaf719c24806886869c1020d1893a264f88ca0f3d04d8e097911ac2",
+      "scripts/test-windows-native-sandbox.py": "67919ada99d4ae7e4788828b04d28bffee0aae0eb13d5f2c28e5a01f0a6dcf3d",
+      "scripts/build.ps1": "022f8b6b8e62397d27fcb3f4519b302df4947c1965b10ffdccbbac271f8e5fa0",
+      "scripts/archive.py": "290a8c5b5a9591f2bb8565d8ea2074742d623a630e3b763420757d3c222809d4",
+      "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+      "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+      ".github/workflows/native-clients.yml": "cb3d349d7196dc0a50fcdae27ff3de01de1ed694930546a3d48879c65652b7b2",
+      "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+      "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+      "adapters/pi/lib/openai-transport.mjs": "b0e0434678f7645323afe70b55b84afe14a23d8a0791337d33c77771f39df24c",
+      "integration/pi_openai_transport.test.mjs": "1ea19f8ee4fec4c5958771b5b4083de35269c254bb910278b577acbb7c391ea2",
+      "plugins/codex/plugin.json": "acedbc7617d5e73a8e8fcb26abc8a318494e0cb39f702c41de5e981080136b94",
+      "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+      "evaluations/client_preflight.py": "32acf60942442b988f1644fe09fda687802aa82bf54dd3185373bca08fa5d805",
+      "evaluations/pi_probe.py": "ff47c0cd8bbdbe9e1d7c0155f0742f5625f5ed759d1f2f47685995c4c556b3af",
+      "evaluations/pi_events.py": "a154f1be92ef9f9c0b16b33565b513a937359dd76ece685ed3ef495aa0e3e49a",
+      "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+      "evaluations/run.py": "583a9721247e1a6fed250c368d0b8e4603c82010da7dd981f7d93192d6a47b51",
+      "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+      "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+      "VERSION": "51847a7effd12c1dfa4c8031dbe67bb1d1eda35e1c13600720e424912eb6e2c1",
+      "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+      "integration/codex_test.go": "d7cbf7acbd7d16ca7bc74b1bd468cb11e3e7f5b5e1cd391d31ba64cc264f1426",
+      "integration/native_diagnostics_test.go": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4",
+      "integration/native_event_probe_test.go": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+      "integration/native_windows_sandbox_test.go": "8ccb1932d0cc414b313ca1c3798c785c8ae3a443b667f6ff144fd3370b056058",
+      "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+      "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+      "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+      "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+      "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+    },
+    "checks": {
+      "native": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 14,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiTransportBoundaries"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/public_api_key_sse",
+          "TestPiOAuthOffline/public_endpoint_only_control",
+          "TestPiOAuthOffline/public_oauth_sse",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket",
+          "TestPiTransportBoundaries"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "27adcade534a5b56c1930254f6add32bcc4827f84f0c67a21eb6798ceed2476f"
+      },
+      "race": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 14,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeLoginOffline",
+          "TestCodexAppServerOffline",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiTransportBoundaries"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexAppServerOffline",
+          "TestCodexAppServerOffline/legacy",
+          "TestCodexAppServerOffline/paginated",
+          "TestCodexNativeLoginOffline",
+          "TestCodexNativeLoginOffline/code_mode",
+          "TestCodexNativeLoginOffline/direct_mcp",
+          "TestCodexPluginInstallAndStdioOffline",
+          "TestPiOAuthOffline",
+          "TestPiOAuthOffline/public_api_key_sse",
+          "TestPiOAuthOffline/public_endpoint_only_control",
+          "TestPiOAuthOffline/public_oauth_sse",
+          "TestPiOAuthOffline/sse",
+          "TestPiOAuthOffline/websocket",
+          "TestPiTransportBoundaries"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "e57c6f7acd85fc3df3824733e75c57f0b22a7a199ad823201da8393de0246c07"
+      },
+      "write": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 6,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestCodexNativeWriteProbe",
+          "TestCodexNativeWriteProbe/patch_via_reflow",
+          "TestCodexNativeWriteProbe/patch_direct",
+          "TestCodexNativeWriteProbe/patch_add_direct",
+          "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+          "TestCodexNativeWriteProbe/command_via_reflow"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestCodexNativeWriteProbe",
+          "TestCodexNativeWriteProbe/command_via_reflow",
+          "TestCodexNativeWriteProbe/patch_add_direct",
+          "TestCodexNativeWriteProbe/patch_direct",
+          "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+          "TestCodexNativeWriteProbe/patch_via_reflow"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "c3ffa375ab027d52eda5ffaa24a70959cd3c630595f8138fa4128b6c68657600"
+      },
+      "pi_probe": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 4,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestPiProbeOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestPiProbeOffline",
+          "TestPiProbeOffline/blocked_read",
+          "TestPiProbeOffline/rate_limit",
+          "TestPiProbeOffline/success"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "a72be8d82ed32b2221c98e8cf06a2d55f1cc2011e09b9320930bd6c72a15a281"
+      },
+      "pi_probe_race": {
+        "exit_code": 0,
+        "tests": {
+          "pass": 4,
+          "skip": 0,
+          "fail": 0
+        },
+        "required_tests": [
+          "TestPiProbeOffline"
+        ],
+        "missing_tests": [],
+        "passed_names": [
+          "TestPiProbeOffline",
+          "TestPiProbeOffline/blocked_read",
+          "TestPiProbeOffline/rate_limit",
+          "TestPiProbeOffline/success"
+        ],
+        "failed_names": [],
+        "package_passed": true,
+        "failure_observations": [],
+        "status": "pass",
+        "log_sha256": "82c20eff9b028208c354d6c6a07b744e05d9c448d58024c2076e132ab028ef19"
+      }
+    },
+    "max_native_clients": 1,
+    "synthetic_auth": true,
+    "model_calls": 0,
+    "existing_login_read": false,
+    "production_modified": false,
+    "desktop_dot_ui_tested": false,
+    "scope": "native extracted packages and local fixture upstreams only",
+    "platform": "windows/amd64",
+    "node": {
+      "platform": "win32",
+      "arch": "x64",
+      "version": "v24.17.0"
+    },
+    "codex_version": "codex-cli 0.165.0",
+    "pi_version": "1.4.0",
+    "client_sha256": {
+      "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+      "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+    },
+    "host_diagnostics": {
+      "model_calls": 0,
+      "existing_login_read": false,
+      "host_configuration_modified": false,
+      "purpose": "diagnostic context only; original write-test gates remain mandatory",
+      "shells_available": {
+        "bash": false,
+        "sh": false,
+        "cmd": true,
+        "pwsh": true,
+        "powershell": true
+      },
+      "windows_sandbox": "mxc",
+      "windows_version": {
+        "major": 10,
+        "minor": 0,
+        "build": 26300,
+        "product_type": 1
+      },
+      "native_sandbox_command": {
+        "status": "pass",
+        "exit_code": 0,
+        "timed_out": false,
+        "stdout_bytes": 0,
+        "stderr_bytes": 0,
+        "matching_output": {},
+        "workspace_marker_verified": true
+      },
+      "native_filesystem_rpc": {
+        "native_filesystem_write_verified": true,
+        "out_of_workspace_write_blocked": true,
+        "native_filesystem_reason": "pass"
+      }
+    },
+    "packages": [
+      {
+        "kind": "standalone",
+        "platform": "windows/amd64",
+        "archive": "reflow_0.1.0-dev.6_windows_amd64.zip",
+        "sha256": "188c4354971342ba8f42e6548423942fc77d3a48db5afa43a1b1dc643223e967",
+        "binary_sha256": "1eaeb92338b808402a2a8446584fd52adeeff4ed324b3e3a87ee2e66fc25d2e0",
+        "binary_path": "reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.6/20261112-052528-603/reflow_0.1.0-dev.6_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      },
+      {
+        "kind": "codex-plugin",
+        "platform": "windows/amd64",
+        "archive": "reflow_plugin_0.1.0-dev.6_windows_amd64.zip",
+        "sha256": "0a83da0e676685fd2f1fc2aa1de75684984ca469fefe206375ce7b28d4c6b8f6",
+        "binary_sha256": "1eaeb92338b808402a2a8446584fd52adeeff4ed324b3e3a87ee2e66fc25d2e0",
+        "binary_path": "plugins/reflow/bin/reflow.exe",
+        "runtime_tested": true,
+        "source_archive": "dist/0.1.0-dev.6/20261112-052528-603/reflow_plugin_0.1.0-dev.6_windows_amd64.zip",
+        "archive_hash_verified": true,
+        "extracted_binary_verified": true
+      }
+    ],
+    "pi_adapter_files": [
+      {
+        "path": "reflow.ts",
+        "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+      },
+      {
+        "path": "reflow-openai.ts",
+        "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+      },
+      {
+        "path": "lib/openai-transport.mjs",
+        "sha256": "b0e0434678f7645323afe70b55b84afe14a23d8a0791337d33c77771f39df24c"
+      }
+    ],
+    "client_binaries_unchanged": true,
+    "isolated_profile_removed": true
+  },
+  "local_controls": {
+    "model_calls": 0,
+    "max_test_processes": 1,
+    "production_modified": false,
+    "host_provisioned": false,
+    "checks": [
+      {
+        "name": "python_controls",
+        "exit_code": 0,
+        "log_sha256": "bbd9da193bcf5739d1f149c04b397aaeb938686a95f9a9c545aaca6cd2927faa"
+      },
+      {
+        "name": "go_guards",
+        "exit_code": 0,
+        "log_sha256": "4abf362954d724c6419c563a3b2489a119cab2741f809391a780159cd315b458",
+        "tests": {
+          "pass": 9,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "go_guards_race",
+        "exit_code": 0,
+        "log_sha256": "b93f244f1345571f56ddedcdf53772d53c35c5a2836e46963327b46884971469",
+        "tests": {
+          "pass": 9,
+          "fail": 0,
+          "skip": 0
+        }
+      },
+      {
+        "name": "vet",
+        "exit_code": 0,
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "status": "pass",
+    "python_tests_passed": 20
+  },
+  "additional_read_only_checks": {
+    "windows_resource_snapshot": "pass",
+    "local_setup_guard": "hosted_windows_server_required",
+    "powershell_loopback_positive_control": "pass",
+    "elevated_setup_executed": false,
+    "elevated_network_enforcement_tested": false
+  },
+  "local_native_followup": {
+    "changed_after_native_run": [
+      "scripts/windows_native_sandbox.py",
+      "scripts/test-windows-native-sandbox.py"
+    ],
+    "reason": "Read-only firewall profile-name mapping corrected and missing/skip write-gate controls added; local native default does not execute elevated provisioning. Final 20 controls and real read-only snapshot passed."
+  }
+}

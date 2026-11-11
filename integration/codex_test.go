@@ -339,6 +339,10 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		defer cloud.Close()
 		chatgptURL, caPath = cloud.URL, certificate
 	}
+	windowsSandbox := "mxc"
+	if nativeWrite && runtime.GOOS == "windows" {
+		windowsSandbox = prepareNativeWindowsSandbox(t, bin, base, home, work)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 35*time.Second)
 	defer cancel()
 	prompt := "Synthetic local protocol test. Use the read-only fixture tool and report its final marker."
@@ -360,7 +364,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 		args = append(args, "-s", "read-only")
 	}
 	if nativeWrite && runtime.GOOS == "windows" {
-		args = append(args, "-c", "windows.sandbox=\"mxc\"")
+		args = append(args, "-c", fmt.Sprintf("windows.sandbox=%q", windowsSandbox))
 	}
 	args = append(args, prompt)
 	if mode.noDaemon {
@@ -368,12 +372,7 @@ func verifyNativeLoginOffline(t *testing.T, mode nativeLoginMode) {
 	}
 	cmd := exec.CommandContext(ctx, bin, args...)
 	cmd.Dir = work
-	for _, name := range []string{"PATH", "SystemRoot", "SystemDrive", "WINDIR", "COMSPEC", "PATHEXT", "ProgramData"} {
-		if value := os.Getenv(name); value != "" {
-			cmd.Env = append(cmd.Env, name+"="+value)
-		}
-	}
-	cmd.Env = append(cmd.Env, "CODEX_HOME="+home, "HOME="+base, "USERPROFILE="+base, "APPDATA="+filepath.Join(base, "appdata"), "LOCALAPPDATA="+filepath.Join(base, "localappdata"), "TEMP="+filepath.Join(base, "temp"), "TMP="+filepath.Join(base, "temp"), "TMPDIR="+filepath.Join(base, "temp"), "NO_PROXY=127.0.0.1,localhost", "RUST_LOG=warn")
+	cmd.Env = nativeClientEnv(base, home)
 	if caPath != "" {
 		cmd.Env = append(cmd.Env, "CODEX_CA_CERTIFICATE="+caPath)
 	}

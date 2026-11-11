@@ -1,6 +1,7 @@
 """Verify extracted native packages with pinned CLIs and synthetic login only."""
 import argparse
 from collections import Counter
+from contextlib import ExitStack
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
@@ -16,9 +17,13 @@ import sys
 import tempfile
 import zipfile
 
+import windows_native_sandbox
+
 ROOT = Path(__file__).resolve().parents[1]
 CLIENT_TESTS = ('TestCodexNativeLoginOffline', 'TestCodexAppServerOffline',
                 'TestCodexPluginInstallAndStdioOffline', 'TestPiOAuthOffline', 'TestPiTransportBoundaries')
+WRITE_TESTS = ('TestCodexNativeWriteProbe', *('TestCodexNativeWriteProbe/' + name for name in (
+    'patch_via_reflow', 'patch_direct', 'patch_add_direct', 'patch_direct_no_daemon', 'command_via_reflow')))
 TARGETS = {
     ('win32', 'x64'): ('windows/amd64', 'x86_64-pc-windows-msvc'),
     ('win32', 'arm64'): ('windows/arm64', 'aarch64-pc-windows-msvc'),
@@ -169,16 +174,17 @@ def command_observation(command, env, cwd, timeout=20):
                     stream.close()
 
 
-def host_diagnostics(codex, profile, env):
-    """Observe OS capabilities and an unchanged native sandbox, without setup."""
+def host_diagnostics(codex, profile, env, *, windows_sandbox='mxc'):
+    """Observe the selected native sandbox; setup is owned by the CI context."""
     work = profile / 'native-host-probe'
     work.mkdir()
-    record = {'model_calls': 0, 'existing_login_read': False, 'host_configuration_modified': False,
+    record = {'model_calls': 0, 'existing_login_read': False, 'host_configuration_modified': windows_sandbox == 'elevated',
               'purpose': 'diagnostic context only; original write-test gates remain mandatory',
               'shells_available': {name: shutil.which(name, path=env.get('PATH')) is not None
                                    for name in ('bash', 'sh', 'cmd', 'pwsh', 'powershell')}}
     if sys.platform == 'win32':
         version = sys.getwindowsversion()
+        record['windows_sandbox'] = windows_sandbox
         record['windows_version'] = {key: getattr(version, key) for key in ('major', 'minor', 'build', 'product_type')}
     elif sys.platform == 'linux':
         record['uid_is_root'] = os.geteuid() == 0
@@ -203,7 +209,7 @@ def host_diagnostics(codex, profile, env):
             record['namespace_control_tools_available'] = False
     command = [str(codex), '-c', 'cli_auth_credentials_store="file"']
     if os.name == 'nt':
-        command += ['-c', 'windows.sandbox="mxc"']
+        command += ['-c', f'windows.sandbox="{windows_sandbox}"']
     command += ['sandbox', '--include-managed-config', '--permission-profile', ':workspace', '-C', str(work), '--']
     command += (['cmd.exe', '/d', '/c', 'echo REFLOW_NATIVE_HOST_OK>host-probe.txt'] if os.name == 'nt' else
                 ['/bin/sh', '-c', "printf 'REFLOW_NATIVE_HOST_OK\\n' > host-probe.txt"])
@@ -214,12 +220,13 @@ def host_diagnostics(codex, profile, env):
         result['status'] = 'fail'
     record['native_sandbox_command'] = result
     if os.name == 'nt':
-        # Reuse the existing no-account filesystem/boundary probe unchanged.
+        # Same file contents and outside-workspace rejection for both backends.
         spec = importlib.util.spec_from_file_location('native_host_preflight', ROOT / 'evaluations/client_preflight.py')
         preflight = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(preflight)
         record['native_filesystem_rpc'] = preflight.filesystem_probe(
-            codex, profile, work, env, probe_spawn_options, stop_probe_process)
+            codex, profile, work, env, probe_spawn_options, stop_probe_process,
+            windows_sandbox=windows_sandbox)
     return record
 
 
@@ -318,8 +325,14 @@ def run_checks(args, report, summary):
         require(read_json(clients / 'node_modules' / name / 'package.json')['version'] == version,
                 f'Installed client version differs from the pin: {name}')
     # No inherited account, provider key, user configuration, or HTTP proxy.
-    temporary_root = Path(tempfile.gettempdir()).resolve()
-    with tempfile.TemporaryDirectory(prefix='rf-native-ci-', dir=temporary_root) as temporary:
+    if args.windows_elevated:
+        require(sys.platform == 'win32', 'Elevated CI sandbox requires Windows')
+        temporary_root = Path(os.environ.get('RUNNER_TEMP', ''))
+        require(temporary_root.is_absolute() and temporary_root.is_dir(), 'Hosted runner temp directory is required')
+        temporary_root = temporary_root.resolve()
+    else:
+        temporary_root = Path(tempfile.gettempdir()).resolve()
+    with tempfile.TemporaryDirectory(prefix='rf-native-ci-', dir=temporary_root) as temporary, ExitStack() as cleanup:
         profile = Path(temporary).resolve()
         require(profile.parent == temporary_root, 'Isolated profile escaped the temporary directory')
         env = isolated_env(profile, args.compiler)
@@ -341,7 +354,22 @@ def run_checks(args, report, summary):
         require(version == 'codex-cli ' + dependencies['@openai/codex'], 'Native Codex version does not match the pin')
         summary.update(platform=target, node=identity, codex_version=version,
                        pi_version=dependencies['@earendil-works/pi-coding-agent'], client_sha256=hashes_before)
-        summary['host_diagnostics'] = host_diagnostics(codex, profile, env)
+        backend = 'mxc'
+        if args.windows_elevated:
+            backend = 'elevated'
+            summary['windows_sandbox_setup'] = {}
+            ops = windows_native_sandbox.Operations(codex, pwsh, profile, env, command_observation)
+            env = cleanup.enter_context(windows_native_sandbox.provision(ops, summary['windows_sandbox_setup'], env))
+        summary['host_diagnostics'] = host_diagnostics(codex, profile, env, windows_sandbox=backend)
+        if args.windows_elevated:
+            host_checks = summary['host_diagnostics']
+            require(host_checks['native_sandbox_command']['status'] == 'pass', 'Elevated sandbox command failed')
+            fs = host_checks['native_filesystem_rpc']
+            require(fs['native_filesystem_write_verified'] and fs['out_of_workspace_write_blocked'],
+                    'Elevated sandbox file boundary failed')
+            network = windows_native_sandbox.network_boundary(codex, pwsh, profile / 'native-host-probe', env)
+            host_checks['network_boundary'] = network
+            require(all(network.values()), 'Elevated sandbox network boundary failed')
 
         dist = ROOT / 'dist' / (ROOT / 'VERSION').read_text().strip()
         before = set(dist.glob('*/manifest.json'))
@@ -386,7 +414,10 @@ def run_checks(args, report, summary):
                                           ('write', False, 'native_write_probe', ('TestCodexNativeWriteProbe',)),
                                           ('pi_probe', False, 'pi_probe', ('TestPiProbeOffline',)),
                                           ('pi_probe_race', True, 'pi_probe', ('TestPiProbeOffline',))]:
-            command = [go, 'test', '-p=1', '-parallel=1', '-json', '-count=1', '-timeout=5m']
+            # Per-home elevated setup is serial and bounded separately from each
+            # 35-second CLI fixture. Leave time for five 120-second setup limits.
+            command = [go, 'test', '-p=1', '-parallel=1', '-json', '-count=1',
+                       '-timeout=15m' if args.windows_elevated and phase == 'write' else '-timeout=5m']
             if race:
                 command += ['-race']
             if tag:
@@ -396,8 +427,9 @@ def run_checks(args, report, summary):
             log_path = report / (phase + '.jsonl')
             print(f'Native client phase: {phase}; one client at a time; synthetic login only.', flush=True)
             with log_path.open('w', encoding='utf-8') as log:
-                result = subprocess.run(command, cwd=ROOT, env=phase_env, stdout=log, stderr=subprocess.STDOUT, timeout=420)
-            summary['checks'][phase] = go_result(log_path, result.returncode, required)
+                result = subprocess.run(command, cwd=ROOT, env=phase_env, stdout=log, stderr=subprocess.STDOUT,
+                                        timeout=960 if args.windows_elevated and phase == 'write' else 420)
+            summary['checks'][phase] = go_result(log_path, result.returncode, WRITE_TESTS if phase == 'write' else required)
             summary['checks'][phase]['log_sha256'] = digest(log_path)
             require(summary['checks'][phase]['status'] == 'pass', f'Native phase {phase} failed; see {log_path}')
         summary['client_binaries_unchanged'] = hashes_before == {'codex': digest(codex), 'code_mode_host': digest(host)}
@@ -416,10 +448,13 @@ def main():
     parser.add_argument('--pwsh-exe', default='pwsh')
     parser.add_argument('--compiler', default='')
     parser.add_argument('--clients-dir', type=Path, default=ROOT / '.tools/native-clients')
+    parser.add_argument('--windows-elevated', action='store_true',
+                        help='Provision official elevated sandbox on disposable hosted Windows CI only')
     args = parser.parse_args()
     report = ROOT / 'build/native-client-ci' / datetime.now(timezone.utc).strftime('%Y%m%d-%H%M%S-%f')
     report.mkdir(parents=True)
-    sources = ['scripts/check-native-clients.py', 'scripts/build.ps1', 'scripts/archive.py',
+    sources = ['scripts/check-native-clients.py', 'scripts/windows_native_sandbox.py',
+               'scripts/test-windows-native-sandbox.py', 'scripts/build.ps1', 'scripts/archive.py',
                'ci/native-clients/package.json', 'ci/native-clients/package-lock.json',
                '.github/workflows/native-clients.yml', 'adapters/pi/reflow.ts',
                'adapters/pi/reflow-openai.ts', 'adapters/pi/lib/openai-transport.mjs',

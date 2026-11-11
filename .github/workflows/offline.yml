@@ -40,3 +40,5 @@ jobs:
         run: python scripts/check-evaluation.py
       - name: Linux host-control orchestration without host changes
         run: python scripts/test-linux-sandbox-control.py
+      - name: Windows sandbox orchestration without host changes
+        run: python scripts/test-windows-native-sandbox.py

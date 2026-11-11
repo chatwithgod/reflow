@@ -28,12 +28,14 @@ def code_mode_host_probe(codex, env, spawn_options, stop):
     return result
 
 
-def filesystem_probe(codex, profile, work, env, spawn_options, stop):
-    """Exercise the filesystem RPC used by apply_patch, with explicit MXC policy.
+def filesystem_probe(codex, profile, work, env, spawn_options, stop, *, windows_sandbox="mxc"):
+    """Exercise the filesystem RPC used by apply_patch, with an explicit sandbox.
 
     Also try one write outside the allowed workspace but inside the temporary
     profile. A successful RPC alone cannot pass the probe: inspect both files.
     """
+    if windows_sandbox not in ("mxc", "elevated"):
+        raise ValueError("unsupported_windows_sandbox")
     process = None
     readers = []
     output = {"native_filesystem_write_verified": False, "out_of_workspace_write_blocked": False,
@@ -52,7 +54,7 @@ def filesystem_probe(codex, profile, work, env, spawn_options, stop):
     sandbox = {"permissions": {"type": "managed", "file_system": {"type": "restricted", "entries": entries},
                                "network": "restricted"},
                "cwd": work.as_uri(), "workspaceRoots": [work.as_uri()], "userHomeDir": profile.as_uri(),
-               "windowsSandboxLevel": "mxc"}
+               "windowsSandboxLevel": windows_sandbox}
     try:
         process = subprocess.Popen([str(codex), "exec-server", "--listen", "stdio", "--concurrent-requests", "1"],
                                    cwd=work, env=env, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
