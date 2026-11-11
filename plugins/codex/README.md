@@ -2,7 +2,7 @@
 
 该插件包含 Reflow 二进制与 stdio MCP 工具：`status`、`preview_codex_config`、`connect_codex`、`restore_codex_config`，用于接入配置与状态诊断。真正的推理续接由本地代理服务完成。
 
-插件已作为 [dev.5 预发布压缩包](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)提供，尚未上架插件商店。按平台选择插件包，注册解压后的本地市场目录并安装：
+插件已作为 [dev.6 预发布压缩包](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.6)提供，尚未上架插件商店。按平台选择插件包，注册解压后的本地市场目录并安装：
 
 ```sh
 codex plugin marketplace add /absolute/path/to/marketplace --json

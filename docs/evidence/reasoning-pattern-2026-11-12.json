@@ -1,0 +1,449 @@
+{
+  "schema_version": 1,
+  "captured_utc": "2026-11-11T20:25:26.568382+00:00",
+  "source": "CPA/ECPA usage_events, private local usage database",
+  "read_only": true,
+  "model_calls": 0,
+  "raw_rows_exported": false,
+  "formula": "r = 518*n - 2, integer n >= 1",
+  "primary_denominator": "reasoning_tokens > 0",
+  "secondary_denominator": "all eligible successful generations, including recorded zero reasoning",
+  "time_rule": "start >= since and start + latency < until; bounds carry an explicit UTC offset",
+  "model_label": "recorded request model; not independently verified upstream model identity",
+  "windows": {
+    "retained_history": {
+      "since_inclusive": "2026-08-27T00:00:00+08:00",
+      "until_exclusive": "2026-11-12T00:00:00+08:00",
+      "funnel": [
+        {
+          "stage": "in_time_window",
+          "records": 36104,
+          "excluded_since_previous_stage": null
+        },
+        {
+          "stage": "codex_gpt_channel",
+          "records": 34209,
+          "excluded_since_previous_stage": 1895
+        },
+        {
+          "stage": "not_failed_or_canceled",
+          "records": 32476,
+          "excluded_since_previous_stage": 1733
+        },
+        {
+          "stage": "generation_not_prewarm",
+          "records": 31710,
+          "excluded_since_previous_stage": 766
+        },
+        {
+          "stage": "nonnegative_integer_reasoning",
+          "records": 31710,
+          "excluded_since_previous_stage": 0
+        }
+      ],
+      "totals": {
+        "successful_generations": 31710,
+        "positive_reasoning_records": 27638,
+        "zero_reasoning_records": 4072,
+        "pattern_matches": 3856,
+        "default_tier_window_matches": 3756,
+        "exactly_516": 2427,
+        "percent_of_positive_reasoning": "13.95",
+        "percent_of_all_successful_generations": "12.16"
+      },
+      "models": [
+        {
+          "model": "gpt-6-astra",
+          "successful_generations": 22998,
+          "positive_reasoning_records": 19817,
+          "zero_reasoning_records": 3181,
+          "pattern_matches": 3409,
+          "default_tier_window_matches": 3316,
+          "exactly_516": 2147,
+          "percent_of_positive_reasoning": "17.20",
+          "percent_of_all_successful_generations": "14.82"
+        },
+        {
+          "model": "gpt-5.6-sol",
+          "successful_generations": 5967,
+          "positive_reasoning_records": 5581,
+          "zero_reasoning_records": 386,
+          "pattern_matches": 100,
+          "default_tier_window_matches": 100,
+          "exactly_516": 62,
+          "percent_of_positive_reasoning": "1.79",
+          "percent_of_all_successful_generations": "1.68"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "successful_generations": 1321,
+          "positive_reasoning_records": 1117,
+          "zero_reasoning_records": 204,
+          "pattern_matches": 326,
+          "default_tier_window_matches": 319,
+          "exactly_516": 202,
+          "percent_of_positive_reasoning": "29.19",
+          "percent_of_all_successful_generations": "24.68"
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "successful_generations": 766,
+          "positive_reasoning_records": 663,
+          "zero_reasoning_records": 103,
+          "pattern_matches": 9,
+          "default_tier_window_matches": 9,
+          "exactly_516": 9,
+          "percent_of_positive_reasoning": "1.36",
+          "percent_of_all_successful_generations": "1.17"
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "successful_generations": 473,
+          "positive_reasoning_records": 428,
+          "zero_reasoning_records": 45,
+          "pattern_matches": 12,
+          "default_tier_window_matches": 12,
+          "exactly_516": 7,
+          "percent_of_positive_reasoning": "2.80",
+          "percent_of_all_successful_generations": "2.54"
+        },
+        {
+          "model": "gpt-6-luna",
+          "successful_generations": 185,
+          "positive_reasoning_records": 32,
+          "zero_reasoning_records": 153,
+          "pattern_matches": 0,
+          "default_tier_window_matches": 0,
+          "exactly_516": 0,
+          "percent_of_positive_reasoning": "0.00",
+          "percent_of_all_successful_generations": "0.00"
+        }
+      ],
+      "pattern_tiers": [
+        {
+          "n": 1,
+          "reasoning_tokens": 516,
+          "records": 2427
+        },
+        {
+          "n": 2,
+          "reasoning_tokens": 1034,
+          "records": 704
+        },
+        {
+          "n": 3,
+          "reasoning_tokens": 1552,
+          "records": 324
+        },
+        {
+          "n": 4,
+          "reasoning_tokens": 2070,
+          "records": 161
+        },
+        {
+          "n": 5,
+          "reasoning_tokens": 2588,
+          "records": 89
+        },
+        {
+          "n": 6,
+          "reasoning_tokens": 3106,
+          "records": 51
+        },
+        {
+          "n": 7,
+          "reasoning_tokens": 3624,
+          "records": 32
+        },
+        {
+          "n": 8,
+          "reasoning_tokens": 4142,
+          "records": 26
+        },
+        {
+          "n": 9,
+          "reasoning_tokens": 4660,
+          "records": 10
+        },
+        {
+          "n": 10,
+          "reasoning_tokens": 5178,
+          "records": 10
+        },
+        {
+          "n": 11,
+          "reasoning_tokens": 5696,
+          "records": 5
+        },
+        {
+          "n": 12,
+          "reasoning_tokens": 6214,
+          "records": 2
+        },
+        {
+          "n": 13,
+          "reasoning_tokens": 6732,
+          "records": 3
+        },
+        {
+          "n": 14,
+          "reasoning_tokens": 7250,
+          "records": 2
+        },
+        {
+          "n": 15,
+          "reasoning_tokens": 7768,
+          "records": 3
+        },
+        {
+          "n": 16,
+          "reasoning_tokens": 8286,
+          "records": 5
+        },
+        {
+          "n": 20,
+          "reasoning_tokens": 10358,
+          "records": 1
+        },
+        {
+          "n": 24,
+          "reasoning_tokens": 12430,
+          "records": 1
+        }
+      ],
+      "auth_types": [
+        {
+          "auth_type": "apikey",
+          "records": 144
+        },
+        {
+          "auth_type": "oauth",
+          "records": 31566
+        }
+      ],
+      "distinct_nonempty_reasoning_efforts": 5,
+      "response_model_labels": {
+        "populated_records": 19405,
+        "different_from_request_model": 0
+      },
+      "duplicate_event_key_and_timestamp_pairs": 0,
+      "count_unit": "one recorded upstream generation; may include Reflow continuation rounds"
+    },
+    "last_30_days": {
+      "since_inclusive": "2026-10-13T00:00:00+08:00",
+      "until_exclusive": "2026-11-12T00:00:00+08:00",
+      "funnel": [
+        {
+          "stage": "in_time_window",
+          "records": 19967,
+          "excluded_since_previous_stage": null
+        },
+        {
+          "stage": "codex_gpt_channel",
+          "records": 18301,
+          "excluded_since_previous_stage": 1666
+        },
+        {
+          "stage": "not_failed_or_canceled",
+          "records": 17612,
+          "excluded_since_previous_stage": 689
+        },
+        {
+          "stage": "generation_not_prewarm",
+          "records": 17205,
+          "excluded_since_previous_stage": 407
+        },
+        {
+          "stage": "nonnegative_integer_reasoning",
+          "records": 17205,
+          "excluded_since_previous_stage": 0
+        }
+      ],
+      "totals": {
+        "successful_generations": 17205,
+        "positive_reasoning_records": 15024,
+        "zero_reasoning_records": 2181,
+        "pattern_matches": 2246,
+        "default_tier_window_matches": 2163,
+        "exactly_516": 1304,
+        "percent_of_positive_reasoning": "14.95",
+        "percent_of_all_successful_generations": "13.05"
+      },
+      "models": [
+        {
+          "model": "gpt-6-astra",
+          "successful_generations": 16766,
+          "positive_reasoning_records": 14696,
+          "zero_reasoning_records": 2070,
+          "pattern_matches": 2209,
+          "default_tier_window_matches": 2126,
+          "exactly_516": 1283,
+          "percent_of_positive_reasoning": "15.03",
+          "percent_of_all_successful_generations": "13.18"
+        },
+        {
+          "model": "gpt-6.1-sol",
+          "successful_generations": 252,
+          "positive_reasoning_records": 224,
+          "zero_reasoning_records": 28,
+          "pattern_matches": 37,
+          "default_tier_window_matches": 37,
+          "exactly_516": 21,
+          "percent_of_positive_reasoning": "16.52",
+          "percent_of_all_successful_generations": "14.68"
+        },
+        {
+          "model": "gpt-5.6-terra",
+          "successful_generations": 62,
+          "positive_reasoning_records": 58,
+          "zero_reasoning_records": 4,
+          "pattern_matches": 0,
+          "default_tier_window_matches": 0,
+          "exactly_516": 0,
+          "percent_of_positive_reasoning": "0.00",
+          "percent_of_all_successful_generations": "0.00"
+        },
+        {
+          "model": "gpt-6-luna",
+          "successful_generations": 111,
+          "positive_reasoning_records": 32,
+          "zero_reasoning_records": 79,
+          "pattern_matches": 0,
+          "default_tier_window_matches": 0,
+          "exactly_516": 0,
+          "percent_of_positive_reasoning": "0.00",
+          "percent_of_all_successful_generations": "0.00"
+        },
+        {
+          "model": "gpt-5.6-luna",
+          "successful_generations": 14,
+          "positive_reasoning_records": 14,
+          "zero_reasoning_records": 0,
+          "pattern_matches": 0,
+          "default_tier_window_matches": 0,
+          "exactly_516": 0,
+          "percent_of_positive_reasoning": "0.00",
+          "percent_of_all_successful_generations": "0.00"
+        }
+      ],
+      "pattern_tiers": [
+        {
+          "n": 1,
+          "reasoning_tokens": 516,
+          "records": 1304
+        },
+        {
+          "n": 2,
+          "reasoning_tokens": 1034,
+          "records": 424
+        },
+        {
+          "n": 3,
+          "reasoning_tokens": 1552,
+          "records": 213
+        },
+        {
+          "n": 4,
+          "reasoning_tokens": 2070,
+          "records": 118
+        },
+        {
+          "n": 5,
+          "reasoning_tokens": 2588,
+          "records": 66
+        },
+        {
+          "n": 6,
+          "reasoning_tokens": 3106,
+          "records": 38
+        },
+        {
+          "n": 7,
+          "reasoning_tokens": 3624,
+          "records": 26
+        },
+        {
+          "n": 8,
+          "reasoning_tokens": 4142,
+          "records": 20
+        },
+        {
+          "n": 9,
+          "reasoning_tokens": 4660,
+          "records": 8
+        },
+        {
+          "n": 10,
+          "reasoning_tokens": 5178,
+          "records": 9
+        },
+        {
+          "n": 11,
+          "reasoning_tokens": 5696,
+          "records": 4
+        },
+        {
+          "n": 12,
+          "reasoning_tokens": 6214,
+          "records": 2
+        },
+        {
+          "n": 13,
+          "reasoning_tokens": 6732,
+          "records": 3
+        },
+        {
+          "n": 14,
+          "reasoning_tokens": 7250,
+          "records": 1
+        },
+        {
+          "n": 15,
+          "reasoning_tokens": 7768,
+          "records": 3
+        },
+        {
+          "n": 16,
+          "reasoning_tokens": 8286,
+          "records": 5
+        },
+        {
+          "n": 20,
+          "reasoning_tokens": 10358,
+          "records": 1
+        },
+        {
+          "n": 24,
+          "reasoning_tokens": 12430,
+          "records": 1
+        }
+      ],
+      "auth_types": [
+        {
+          "auth_type": "apikey",
+          "records": 144
+        },
+        {
+          "auth_type": "oauth",
+          "records": 17061
+        }
+      ],
+      "distinct_nonempty_reasoning_efforts": 4,
+      "response_model_labels": {
+        "populated_records": 17205,
+        "different_from_request_model": 0
+      },
+      "duplicate_event_key_and_timestamp_pairs": 0,
+      "count_unit": "one recorded upstream generation; may include Reflow continuation rounds"
+    }
+  },
+  "aggregate_sha256": "38ae11e56a6b5184da9283512276657711fa634329b8b4360dfc045264f19a56",
+  "limitations": [
+    "One installation and its retained history, not a random or representative model sample",
+    "Upstream rounds include continuation traffic; a repeated event_key alone is not a duplicate",
+    "Mixed tasks, reasoning efforts, auth types and historical plugin states or versions",
+    "Does not estimate first-round probability, user-message probability or actual continuation rate",
+    "Pattern matches alone do not establish truncation, quality loss or benefit from continuation",
+    "Recorded zero reasoning is reported separately; absent and true-zero upstream fields cannot be distinguished here"
+  ]
+}
