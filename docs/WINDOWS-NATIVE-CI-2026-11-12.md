@@ -71,6 +71,14 @@ Go `os/user.Current` 还会查询用户配置目录并处理模拟令牌，这�
 
 这一范围不宣称官方 elevated 沙箱具备完整网络隔离，也不改变本机默认 MXC；变更只用于隔离的合成 CI。26 项控制检查通过，后续以相应提交的 CI 验证文件集成与这项已知限制的明确记录。第四轮数字见[证据](evidence/windows-native-ci-file-acceptance-2026-11-12.json)。
 
+## 第五轮：文件集成 CI 通过
+
+`952bbba` 的[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438507)与[专用原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438307)三个平台全部通过。常规普通/race 各 106 项、4 项可选检查跳过，Windows 控制检查各 26 项通过。专用原生普通/race 各 14 项、五个文件场景全部通过，Pi 模拟探针普通/race 各 4 项通过。
+
+Windows 明确确认工作区写入、越界拒绝和离线账号身份；沙箱账号、组、规则及 WFP 对象清理后恢复为零，防火墙启用状态未改变，隔离临时目录已移除。客户端二进制未变，原生矩阵的实际任务时间没有重叠。
+
+网络观测仍为沙箱内可连接本机端口，摘要单列 `known_loopback_limitation` 和 `loopback_isolation_verified=false`。测试通过不代表这一限制已消失。已逐字核对原始五场景定义及实际断言部分未变，Reflow 运行源码、CPA 接入、客户端依赖锁和发布版本未改。完整[分支验收记录](evidence/windows-native-ci-branch-2026-11-12.json)保留本轮结果与来源提交。
+
 ## 入口
 
 普通本机检查仍使用：

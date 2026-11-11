@@ -1,0 +1,1089 @@
+{
+  "status": "pass",
+  "source_commit": "952bbba4771bf99e53bb8796f77bdf4a6b6e8bcd",
+  "native_ci_url": "https://github.com/chatwithgod/reflow/actions/runs/43110438307",
+  "offline_ci_url": "https://github.com/chatwithgod/reflow/actions/runs/43110438507",
+  "model_calls": 0,
+  "max_native_clients": 1,
+  "original_write_fixture_and_assertions_unchanged": true,
+  "runtime_sources_unchanged": true,
+  "native_intervals_disjoint": true,
+  "native_intervals": [
+    {
+      "name": "native-clients (ubuntu-latest)",
+      "started_at": "2026-11-11T22:17:02Z",
+      "completed_at": "2026-11-11T22:19:20Z"
+    },
+    {
+      "name": "native-clients (windows-latest)",
+      "started_at": "2026-11-11T22:19:22Z",
+      "completed_at": "2026-11-11T22:22:47Z"
+    },
+    {
+      "name": "native-clients (macos-latest)",
+      "started_at": "2026-11-11T22:22:50Z",
+      "completed_at": "2026-11-11T22:26:02Z"
+    }
+  ],
+  "platforms": {
+    "windows": {
+      "status": "pass",
+      "created_utc": "2026-11-11T22:20:15.193510+00:00",
+      "source_commit": "952bbba4771bf99e53bb8796f77bdf4a6b6e8bcd",
+      "source_sha256": {
+        "scripts/check-native-clients.py": "38c20a9c45d6a3a3fed91ff96d07a3ef5c92a90a4c7cc856a439552f27f2887a",
+        "scripts/windows_native_sandbox.py": "7d0bd609c04da7f5f73c53f627dabd25256bae88d9c2719195f93d07ab68deec",
+        "scripts/test-windows-native-sandbox.py": "be8fa96196dd8639be9bec7e106210430cbaf4e8e1a672b65c37c8f256741f87",
+        "scripts/build.ps1": "022f8b6b8e62397d27fcb3f4519b302df4947c1965b10ffdccbbac271f8e5fa0",
+        "scripts/archive.py": "290a8c5b5a9591f2bb8565d8ea2074742d623a630e3b763420757d3c222809d4",
+        "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+        "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+        ".github/workflows/native-clients.yml": "cb3d349d7196dc0a50fcdae27ff3de01de1ed694930546a3d48879c65652b7b2",
+        "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+        "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+        "adapters/pi/lib/openai-transport.mjs": "b0e0434678f7645323afe70b55b84afe14a23d8a0791337d33c77771f39df24c",
+        "integration/pi_openai_transport.test.mjs": "1ea19f8ee4fec4c5958771b5b4083de35269c254bb910278b577acbb7c391ea2",
+        "integration/testdata/windows-network-probe/main.go": "426984f0e921d46a2d9a27c0499c390972aa6e79ee23684cd40b3e817434d2d6",
+        "plugins/codex/plugin.json": "acedbc7617d5e73a8e8fcb26abc8a318494e0cb39f702c41de5e981080136b94",
+        "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+        "evaluations/client_preflight.py": "32acf60942442b988f1644fe09fda687802aa82bf54dd3185373bca08fa5d805",
+        "evaluations/pi_probe.py": "ff47c0cd8bbdbe9e1d7c0155f0742f5625f5ed759d1f2f47685995c4c556b3af",
+        "evaluations/pi_events.py": "a154f1be92ef9f9c0b16b33565b513a937359dd76ece685ed3ef495aa0e3e49a",
+        "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+        "evaluations/run.py": "583a9721247e1a6fed250c368d0b8e4603c82010da7dd981f7d93192d6a47b51",
+        "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+        "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+        "VERSION": "51847a7effd12c1dfa4c8031dbe67bb1d1eda35e1c13600720e424912eb6e2c1",
+        "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+        "integration/codex_test.go": "d7cbf7acbd7d16ca7bc74b1bd468cb11e3e7f5b5e1cd391d31ba64cc264f1426",
+        "integration/native_diagnostics_test.go": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4",
+        "integration/native_event_probe_test.go": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+        "integration/native_windows_sandbox_test.go": "8ccb1932d0cc414b313ca1c3798c785c8ae3a443b667f6ff144fd3370b056058",
+        "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+        "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+        "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+        "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+        "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+      },
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "9e3c283a7333666f1061141b814a7639005fc330be7709765b04435fa7e9201f"
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "be93a14c3325176645486ee6a0a97655650df432e53daae328d0d150a4523791"
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "30331072c642b5e076fea0ca21a67994e40ef31f91745f65f2992abb008366c3"
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "9617c5cc7b3be666fa8d66c8ab5458a210855ab328465d9546167e788e5acab4"
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "968ec1937225329097b83a05ecb2f23b8cd774276f0b36bab17bcb772bb97f34"
+        }
+      },
+      "max_native_clients": 1,
+      "synthetic_auth": true,
+      "model_calls": 0,
+      "existing_login_read": false,
+      "production_modified": false,
+      "desktop_dot_ui_tested": false,
+      "scope": "native extracted packages and local fixture upstreams only",
+      "platform": "windows/amd64",
+      "node": {
+        "platform": "win32",
+        "arch": "x64",
+        "version": "v24.17.0"
+      },
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "client_sha256": {
+        "codex": "d4b2e6a054ea1dfe53217f9d8942c5f8a9f4b76171a1e0bb76ced5759915300a",
+        "code_mode_host": "c15b0ec7c44be4bef2516c251cc8b9f3f4ab9f8727cf2d567d1f183fd415ef2d"
+      },
+      "windows_sandbox_setup": {
+        "status": "pass",
+        "before": {
+          "users": 0,
+          "groups": 0,
+          "firewall_rules": 0,
+          "installation_keys": 0,
+          "hidden_users": 0,
+          "services": 0,
+          "wfp_provider": 0,
+          "wfp_sublayer": 0,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7,
+          "enabled_firewall_rules": 0,
+          "firewall_service_running": 1
+        },
+        "backend": "elevated",
+        "max_native_clients": 1,
+        "model_calls": 0,
+        "host_configuration_modified": true,
+        "setup_completed": true,
+        "after_setup": {
+          "users": 2,
+          "groups": 1,
+          "firewall_rules": 4,
+          "installation_keys": 0,
+          "hidden_users": 2,
+          "services": 0,
+          "wfp_provider": 1,
+          "wfp_sublayer": 1,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7,
+          "enabled_firewall_rules": 4,
+          "firewall_service_running": 1
+        },
+        "setup_marker": {
+          "version": 5,
+          "allow_local_binding": false,
+          "proxy_port_count": 0
+        },
+        "cleanup": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 273,
+          "matching_output": {}
+        },
+        "after": {
+          "users": 0,
+          "groups": 0,
+          "firewall_rules": 0,
+          "installation_keys": 0,
+          "hidden_users": 0,
+          "services": 0,
+          "wfp_provider": 0,
+          "wfp_sublayer": 0,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7,
+          "enabled_firewall_rules": 0,
+          "firewall_service_running": 1
+        },
+        "resources_removed": true,
+        "firewall_profile_state_unchanged": true,
+        "acl_restoration_claimed": false
+      },
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": true,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": true,
+          "pwsh": true,
+          "powershell": true
+        },
+        "windows_sandbox": "elevated",
+        "windows_version": {
+          "major": 10,
+          "minor": 0,
+          "build": 26100,
+          "product_type": 3
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        },
+        "native_filesystem_rpc": {
+          "native_filesystem_write_verified": true,
+          "out_of_workspace_write_blocked": true,
+          "native_filesystem_reason": "pass"
+        },
+        "network_probe_build": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {}
+        },
+        "sandbox_identity": {
+          "controls": {
+            "outside": {
+              "exit_code": 0,
+              "identity_class": "other"
+            },
+            "sandbox": {
+              "exit_code": 0,
+              "identity_class": "offline"
+            }
+          },
+          "offline_identity_verified": true,
+          "tool_sha256": "23240ef9f8b0a9a324110b1c2331de31dc1b0e08f5359cb707e51a939af56cd3"
+        },
+        "network_boundary": {
+          "local_listener_reachable_without_sandbox": true,
+          "local_listener_blocked_in_sandbox": false,
+          "local_listener_reachable_after_sandbox": true,
+          "controls": {
+            "before": {
+              "exit_code": 0,
+              "stdout_bytes": 25,
+              "stderr_bytes": 0,
+              "reachable_marker": true,
+              "blocked_marker": false,
+              "matching_output": {}
+            },
+            "sandbox": {
+              "exit_code": 0,
+              "stdout_bytes": 25,
+              "stderr_bytes": 0,
+              "reachable_marker": true,
+              "blocked_marker": false,
+              "matching_output": {}
+            },
+            "after": {
+              "exit_code": 0,
+              "stdout_bytes": 25,
+              "stderr_bytes": 0,
+              "reachable_marker": true,
+              "blocked_marker": false,
+              "matching_output": {}
+            }
+          },
+          "probe_sha256": "223eb392cf69fd96ff069acb007d8137d636661a667207c7402cb6879f9a4b14"
+        },
+        "after_network_resources": {
+          "users": 2,
+          "groups": 1,
+          "firewall_rules": 4,
+          "installation_keys": 0,
+          "hidden_users": 2,
+          "services": 0,
+          "wfp_provider": 1,
+          "wfp_sublayer": 1,
+          "enabled_firewall_profiles": 3,
+          "firewall_profile_mask": 7,
+          "enabled_firewall_rules": 4,
+          "firewall_service_running": 1
+        },
+        "after_network_setup_marker": {
+          "version": 5,
+          "allow_local_binding": false,
+          "proxy_port_count": 0
+        },
+        "network_acceptance": {
+          "status": "known_loopback_limitation",
+          "loopback_isolation_verified": false,
+          "scope": "original file fixtures; loopback isolation is diagnostic",
+          "positive_controls_verified": true
+        }
+      },
+      "packages": [
+        {
+          "kind": "standalone",
+          "platform": "windows/amd64",
+          "archive": "reflow_0.1.0-dev.6_windows_amd64.zip",
+          "sha256": "d348227f3f307aca4c042da80e12db3ebba46415fd69619538a474abe0e7fe85",
+          "binary_sha256": "88f09cc7f3800aeb75ff1aaf30efe088ded0235b1098c585c95b2aa88236db85",
+          "binary_path": "reflow.exe",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-222038-716/reflow_0.1.0-dev.6_windows_amd64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        },
+        {
+          "kind": "codex-plugin",
+          "platform": "windows/amd64",
+          "archive": "reflow_plugin_0.1.0-dev.6_windows_amd64.zip",
+          "sha256": "91816cb441dec86659b383af9300207e0d0564dbe40494ed6f837d8990ecadd6",
+          "binary_sha256": "88f09cc7f3800aeb75ff1aaf30efe088ded0235b1098c585c95b2aa88236db85",
+          "binary_path": "plugins/reflow/bin/reflow.exe",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-222038-716/reflow_plugin_0.1.0-dev.6_windows_amd64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        }
+      ],
+      "pi_adapter_files": [
+        {
+          "path": "reflow.ts",
+          "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+        },
+        {
+          "path": "reflow-openai.ts",
+          "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+        },
+        {
+          "path": "lib/openai-transport.mjs",
+          "sha256": "b0e0434678f7645323afe70b55b84afe14a23d8a0791337d33c77771f39df24c"
+        }
+      ],
+      "client_binaries_unchanged": true,
+      "isolated_profile_removed": true
+    },
+    "ubuntu": {
+      "status": "pass",
+      "created_utc": "2026-11-11T22:17:29.629197+00:00",
+      "source_commit": "952bbba4771bf99e53bb8796f77bdf4a6b6e8bcd",
+      "source_sha256": {
+        "scripts/check-native-clients.py": "3c10a35d2927751b7ee78b72a5d1e621dc98aee1b3a91a7957c79ca38305d12d",
+        "scripts/windows_native_sandbox.py": "79abc1ae0f4f641cdf324c8450e3676b65886201266defb76900e0988278cd33",
+        "scripts/test-windows-native-sandbox.py": "b025c460cf8f35b8de0115f2547d166538c5c9544e98defc7eb8db42c7b072f4",
+        "scripts/build.ps1": "022f8b6b8e62397d27fcb3f4519b302df4947c1965b10ffdccbbac271f8e5fa0",
+        "scripts/archive.py": "7ec32e126fea3349338dc6cd1c53d8d83c4d60194257f2cdfa653d5fd486058f",
+        "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+        "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+        ".github/workflows/native-clients.yml": "7ae7e11c12495fd3a06471d6e1e8e75eabd00bb30cd1e6108dc654872ca5fa14",
+        "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+        "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+        "adapters/pi/lib/openai-transport.mjs": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520",
+        "integration/pi_openai_transport.test.mjs": "a3072631018f18396c259851f6106465e0b53ebb59b6e0f3b6185d87ea03c3d2",
+        "integration/testdata/windows-network-probe/main.go": "426984f0e921d46a2d9a27c0499c390972aa6e79ee23684cd40b3e817434d2d6",
+        "plugins/codex/plugin.json": "acedbc7617d5e73a8e8fcb26abc8a318494e0cb39f702c41de5e981080136b94",
+        "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+        "evaluations/client_preflight.py": "e28d724f832b2ca445bd27709dc45e2f6975f938bf1b37b4c1f86521093d778e",
+        "evaluations/pi_probe.py": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4",
+        "evaluations/pi_events.py": "e7c5f4428fd294c11eaa33404df77bd42b1995ffc841f8ef8c473e02605d95ee",
+        "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+        "evaluations/run.py": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95",
+        "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+        "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+        "VERSION": "e57d458fbe6a87f8c76553824ca9a44448249600ca8e7a0b03cd2377a08fe362",
+        "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+        "integration/codex_test.go": "d7cbf7acbd7d16ca7bc74b1bd468cb11e3e7f5b5e1cd391d31ba64cc264f1426",
+        "integration/native_diagnostics_test.go": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4",
+        "integration/native_event_probe_test.go": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+        "integration/native_windows_sandbox_test.go": "8ccb1932d0cc414b313ca1c3798c785c8ae3a443b667f6ff144fd3370b056058",
+        "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+        "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+        "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+        "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+        "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+      },
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "5ddb0ad5eb882e080b73d7b536f8a3566d03abd43c657268a42f1234fbaa10d7"
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "90e130862b8f0a7c3ba0e01415fb976aabb6e2facac2b4baffd657b518caa4ee"
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "e4207ee82024ece9943dd9f949524258f7b0b8dc8d7cd998f85567e8d61110af"
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "4c37a1afe66be0e7e2ceadc38c96e3ba364f59778e04dd8d31d61b781605a162"
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "0d3130594c247bf7ef4a75325f2c1739671b387e8b1a4af1eca6267266222996"
+        }
+      },
+      "max_native_clients": 1,
+      "synthetic_auth": true,
+      "model_calls": 0,
+      "existing_login_read": false,
+      "production_modified": false,
+      "desktop_dot_ui_tested": false,
+      "scope": "native extracted packages and local fixture upstreams only",
+      "platform": "linux/amd64",
+      "node": {
+        "platform": "linux",
+        "arch": "x64",
+        "version": "v24.17.0"
+      },
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "client_sha256": {
+        "codex": "c06a67fd8ac76508dc78bd99ce20c9f317b8d568beda59485f3f4134df9962d5",
+        "code_mode_host": "522935d4392ec9674fab60b239b5495992c6a93e4deb65113a216b6f5451ccd4"
+      },
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": false
+        },
+        "uid_is_root": false,
+        "kernel_release": "7.0.0-1019-azure",
+        "kernel_settings": {
+          "kernel/apparmor_restrict_unprivileged_userns": 1,
+          "kernel/unprivileged_userns_clone": 1,
+          "user/max_user_namespaces": 58121
+        },
+        "parent_apparmor_unconfined": true,
+        "namespace_controls": {
+          "user": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_mount": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          },
+          "user_network": {
+            "status": "fail",
+            "exit_code": 1,
+            "timed_out": false,
+            "stdout_bytes": 0,
+            "stderr_bytes": 66,
+            "matching_output": {
+              "operation_not_permitted": 1,
+              "namespace_setup": 1,
+              "uid_gid_mapping": 1
+            }
+          }
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      },
+      "packages": [
+        {
+          "kind": "standalone",
+          "platform": "linux/amd64",
+          "archive": "reflow_0.1.0-dev.6_linux_amd64.zip",
+          "sha256": "ebf4126d5cf91f688fd2dc5d1c22bd0b2b41f6e255b38e2d5aa2698389823a95",
+          "binary_sha256": "79c763e72b339ecdaba0ddc36e577dd94dfec92d14af88064f96bb1df286653c",
+          "binary_path": "reflow",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-221731-235/reflow_0.1.0-dev.6_linux_amd64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        },
+        {
+          "kind": "codex-plugin",
+          "platform": "linux/amd64",
+          "archive": "reflow_plugin_0.1.0-dev.6_linux_amd64.zip",
+          "sha256": "8330f81771539b03275f090c549021126f2c509c979d1b3e24fb13c6dc2974c3",
+          "binary_sha256": "79c763e72b339ecdaba0ddc36e577dd94dfec92d14af88064f96bb1df286653c",
+          "binary_path": "plugins/reflow/bin/reflow",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-221731-235/reflow_plugin_0.1.0-dev.6_linux_amd64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        }
+      ],
+      "pi_adapter_files": [
+        {
+          "path": "reflow.ts",
+          "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+        },
+        {
+          "path": "reflow-openai.ts",
+          "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+        },
+        {
+          "path": "lib/openai-transport.mjs",
+          "sha256": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520"
+        }
+      ],
+      "client_binaries_unchanged": true,
+      "isolated_profile_removed": true
+    },
+    "macos": {
+      "status": "pass",
+      "created_utc": "2026-11-11T22:23:43.786478+00:00",
+      "source_commit": "952bbba4771bf99e53bb8796f77bdf4a6b6e8bcd",
+      "source_sha256": {
+        "scripts/check-native-clients.py": "3c10a35d2927751b7ee78b72a5d1e621dc98aee1b3a91a7957c79ca38305d12d",
+        "scripts/windows_native_sandbox.py": "79abc1ae0f4f641cdf324c8450e3676b65886201266defb76900e0988278cd33",
+        "scripts/test-windows-native-sandbox.py": "b025c460cf8f35b8de0115f2547d166538c5c9544e98defc7eb8db42c7b072f4",
+        "scripts/build.ps1": "022f8b6b8e62397d27fcb3f4519b302df4947c1965b10ffdccbbac271f8e5fa0",
+        "scripts/archive.py": "7ec32e126fea3349338dc6cd1c53d8d83c4d60194257f2cdfa653d5fd486058f",
+        "ci/native-clients/package.json": "befb5fe5f09a72b85cda25c5729617f6fb9a91032920916333ebf7612b17ddac",
+        "ci/native-clients/package-lock.json": "28d9d40ddad4731c4450d1d27a5f9e96b938356f4702f7de055259897af0f191",
+        ".github/workflows/native-clients.yml": "7ae7e11c12495fd3a06471d6e1e8e75eabd00bb30cd1e6108dc654872ca5fa14",
+        "adapters/pi/reflow.ts": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e",
+        "adapters/pi/reflow-openai.ts": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10",
+        "adapters/pi/lib/openai-transport.mjs": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520",
+        "integration/pi_openai_transport.test.mjs": "a3072631018f18396c259851f6106465e0b53ebb59b6e0f3b6185d87ea03c3d2",
+        "integration/testdata/windows-network-probe/main.go": "426984f0e921d46a2d9a27c0499c390972aa6e79ee23684cd40b3e817434d2d6",
+        "plugins/codex/plugin.json": "acedbc7617d5e73a8e8fcb26abc8a318494e0cb39f702c41de5e981080136b94",
+        "plugins/codex/mcp.json": "01d592d2ac2b3a93aa1c2a12c00cf7e7e13c2b7265f1b55d90aa9809ae67cb8f",
+        "evaluations/client_preflight.py": "e28d724f832b2ca445bd27709dc45e2f6975f938bf1b37b4c1f86521093d778e",
+        "evaluations/pi_probe.py": "c6d4cca712616067fb6f9d5de5ec7462327b25e4388695676f9bf17c2bbebef4",
+        "evaluations/pi_events.py": "e7c5f4428fd294c11eaa33404df77bd42b1995ffc841f8ef8c473e02605d95ee",
+        "evaluations/pi_probe_guard.ts": "9316a683e8a723ed2f1888b78e2539ebf9d2ab3ad77fcb6d28fcfb18b00eb6cc",
+        "evaluations/run.py": "83ffb8699f2d40f40b807617699f820eb5e3fb0758569f6f5caa3e69a3381b95",
+        "go.mod": "c32fe88ca7ce52041bb6a2034e7067850181d868e71b67624b21aa8c1ed289cf",
+        "go.sum": "dcf7b4e263456a644692679820876474b92f4c743c2939a6cc7163a9c7e32a93",
+        "VERSION": "e57d458fbe6a87f8c76553824ca9a44448249600ca8e7a0b03cd2377a08fe362",
+        "integration/app_server_test.go": "96cb585374a97bade27f7dc5df7c88085aa53b9046fc3e0a0cbb69f09b1a5d4a",
+        "integration/codex_test.go": "d7cbf7acbd7d16ca7bc74b1bd468cb11e3e7f5b5e1cd391d31ba64cc264f1426",
+        "integration/native_diagnostics_test.go": "73ddb24d83b7cac24abf8d6d434588512d953a2f1bda46795384662b27df2db4",
+        "integration/native_event_probe_test.go": "0dbd232e5aba929640a32912567d2a3b73c36c6138d3ff45b58cc1d33cb9a919",
+        "integration/native_windows_sandbox_test.go": "8ccb1932d0cc414b313ca1c3798c785c8ae3a443b667f6ff144fd3370b056058",
+        "integration/native_write_probe_test.go": "5d890d990e0edc6f3bf99e14c329ede58734fa30ba372469fc6b275d9a1f2f09",
+        "integration/pi_probe_test.go": "94ad3318e9242ecc94d6ffaea777fc367b727362d4f1f4bd39a1bd0eee7d89c2",
+        "integration/pi_test.go": "b56db7f25595cc3201091db042fab39e356355a6583417700994de5855728550",
+        "integration/plugin_test.go": "3f7dde39e86eaa8d7f40a014a8c51bb3fc1084feb922eda4fabfe4f86c5406c8",
+        "integration/proxy_process_test.go": "d3cb39f3a1532565753a7b9f0d79e258f7f97471654d9fe46a0916708d6ec970"
+      },
+      "checks": {
+        "native": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "7ab78f03e92f8541bba19c37dea24750fb2e7f6255cf9f20028ad70011981225"
+        },
+        "race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 14,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeLoginOffline",
+            "TestCodexAppServerOffline",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiTransportBoundaries"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexAppServerOffline",
+            "TestCodexAppServerOffline/legacy",
+            "TestCodexAppServerOffline/paginated",
+            "TestCodexNativeLoginOffline",
+            "TestCodexNativeLoginOffline/code_mode",
+            "TestCodexNativeLoginOffline/direct_mcp",
+            "TestCodexPluginInstallAndStdioOffline",
+            "TestPiOAuthOffline",
+            "TestPiOAuthOffline/public_api_key_sse",
+            "TestPiOAuthOffline/public_endpoint_only_control",
+            "TestPiOAuthOffline/public_oauth_sse",
+            "TestPiOAuthOffline/sse",
+            "TestPiOAuthOffline/websocket",
+            "TestPiTransportBoundaries"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "3341a3ca2f1848a61453568e590ebac181691d49282f09e24b55dbcd8ebbed4f"
+        },
+        "write": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 6,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/patch_via_reflow",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/command_via_reflow"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestCodexNativeWriteProbe",
+            "TestCodexNativeWriteProbe/command_via_reflow",
+            "TestCodexNativeWriteProbe/patch_add_direct",
+            "TestCodexNativeWriteProbe/patch_direct",
+            "TestCodexNativeWriteProbe/patch_direct_no_daemon",
+            "TestCodexNativeWriteProbe/patch_via_reflow"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "0a1bf0c95a3f01ed710cc2b4c937d56a9be7eb8fbd42d7be9140469559270c3f"
+        },
+        "pi_probe": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "38fb96ad331562cb6f03ded845684fe0787a22bd98478832f755d0ad7ab67fc6"
+        },
+        "pi_probe_race": {
+          "exit_code": 0,
+          "tests": {
+            "pass": 4,
+            "skip": 0,
+            "fail": 0
+          },
+          "required_tests": [
+            "TestPiProbeOffline"
+          ],
+          "missing_tests": [],
+          "passed_names": [
+            "TestPiProbeOffline",
+            "TestPiProbeOffline/blocked_read",
+            "TestPiProbeOffline/rate_limit",
+            "TestPiProbeOffline/success"
+          ],
+          "failed_names": [],
+          "package_passed": true,
+          "failure_observations": [],
+          "status": "pass",
+          "log_sha256": "094bb956d4332b8e4682960803f7ba633d5c9da9eff762894480deb0909e1fc8"
+        }
+      },
+      "max_native_clients": 1,
+      "synthetic_auth": true,
+      "model_calls": 0,
+      "existing_login_read": false,
+      "production_modified": false,
+      "desktop_dot_ui_tested": false,
+      "scope": "native extracted packages and local fixture upstreams only",
+      "platform": "darwin/arm64",
+      "node": {
+        "platform": "darwin",
+        "arch": "arm64",
+        "version": "v24.17.0"
+      },
+      "codex_version": "codex-cli 0.165.0",
+      "pi_version": "1.4.0",
+      "client_sha256": {
+        "codex": "a45099154d7fb4a5ed8a56f40966a95deb938e508bab23e6985035c709e9a85a",
+        "code_mode_host": "e723d01c65aba4b81451d486d57318232b2738889de67c35051734be917d96ba"
+      },
+      "host_diagnostics": {
+        "model_calls": 0,
+        "existing_login_read": false,
+        "host_configuration_modified": false,
+        "purpose": "diagnostic context only; original write-test gates remain mandatory",
+        "shells_available": {
+          "bash": true,
+          "sh": true,
+          "cmd": false,
+          "pwsh": true,
+          "powershell": true
+        },
+        "native_sandbox_command": {
+          "status": "pass",
+          "exit_code": 0,
+          "timed_out": false,
+          "stdout_bytes": 0,
+          "stderr_bytes": 0,
+          "matching_output": {},
+          "workspace_marker_verified": true
+        }
+      },
+      "packages": [
+        {
+          "kind": "standalone",
+          "platform": "darwin/arm64",
+          "archive": "reflow_0.1.0-dev.6_darwin_arm64.zip",
+          "sha256": "9f035d5d9652c219d7b316ec2c9cc2ad96286ff48aae72bf32aee34bf535a68f",
+          "binary_sha256": "5b5de3e709f11649c73f8d90541073c97fbc3dd256dd114af8b4d419bca347ea",
+          "binary_path": "reflow",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-222346-250/reflow_0.1.0-dev.6_darwin_arm64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        },
+        {
+          "kind": "codex-plugin",
+          "platform": "darwin/arm64",
+          "archive": "reflow_plugin_0.1.0-dev.6_darwin_arm64.zip",
+          "sha256": "4c96f8faced1a28b87089bac68f1d44f07f2ffe0c4335d87255ff5a271ae479c",
+          "binary_sha256": "5b5de3e709f11649c73f8d90541073c97fbc3dd256dd114af8b4d419bca347ea",
+          "binary_path": "plugins/reflow/bin/reflow",
+          "runtime_tested": true,
+          "source_archive": "dist/0.1.0-dev.6/20261111-222346-250/reflow_plugin_0.1.0-dev.6_darwin_arm64.zip",
+          "archive_hash_verified": true,
+          "extracted_binary_verified": true
+        }
+      ],
+      "pi_adapter_files": [
+        {
+          "path": "reflow.ts",
+          "sha256": "bcd5432d4127c2a8b51ddb5485759a825e4a07e72a56791f3b1a8bd28d02b12e"
+        },
+        {
+          "path": "reflow-openai.ts",
+          "sha256": "50ff661eb9e42bb299c13dea28dbce23e68a08f87ae9869066571da3bfd42a10"
+        },
+        {
+          "path": "lib/openai-transport.mjs",
+          "sha256": "df2324e19a6dce2e848acfd3a212319e42253fef6d45c0fb73df70447bde3520"
+        }
+      ],
+      "client_binaries_unchanged": true,
+      "isolated_profile_removed": true
+    }
+  },
+  "offline_counts": {
+    "run_id": 43110438507,
+    "head": "952bbba4771bf99e53bb8796f77bdf4a6b6e8bcd",
+    "log_archive_sha256": "53e305b917b7b3a9a2d2846fbe85b39e6b5afa4ec347a6982624b5125516c73f",
+    "platforms": {
+      "ubuntu": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "windows_control_tests_passed": 26,
+        "failed": 0
+      },
+      "windows": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "windows_control_tests_passed": 26,
+        "failed": 0
+      },
+      "macos": {
+        "ordinary_pass": 106,
+        "race_pass": 106,
+        "ordinary_skip": 4,
+        "race_skip": 4,
+        "windows_control_tests_passed": 26,
+        "failed": 0
+      }
+    }
+  }
+}

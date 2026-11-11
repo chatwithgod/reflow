@@ -8,6 +8,10 @@
 
 ## Windows 文件检查修复：2026-11-12
 
+`952bbba` 的[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438507)和[专用原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438307)三平台均已通过。常规普通/race 各 106 通过、4 跳过，新增 Windows 控制检查各 26 项通过；专用原生普通/race 各 14 项、五个写文件场景、Pi 探针普通/race 各 4 项通过。五场景含父测试为 6 项，原始断言未改变。客户端与 Reflow 构件散列保持一致，临时目录清理通过，原生任务实际串行执行。
+
+托管 Windows 的网络摘要仍明确记录 `local_listener_blocked_in_sandbox=false` 与 `known_loopback_limitation`；它没有被写成隔离通过。这是用户确定的文件集成验收范围。数字、原始场景/断言核对和任务时间见[分支验收证据](evidence/windows-native-ci-branch-2026-11-12.json)。
+
 `297966b` 的[旧原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43099211239)因托管 Windows 不支持强制选择的 MXC，五个写文件场景失败。`2758e3e` 使用官方 `elevated` 后端后，托管 Windows 原有五项写入、客户端普通/race 各 14 项和 Pi 探针各 4 项均通过；文件越界拒绝、离线账号身份与清理通过。
 
 该次[原生 CI](https://github.com/chatwithgod/reflow/actions/runs/43108621939)仍因新增的回环网络门槛失败：规则已启用，但沙箱内能连接本机端口。用户已确认本轮按原五项文件功能验收；后续保留网络真实结果为已知限制，不宣称完整网络隔离。所有原有写入断言保留，本机默认 MXC 不变。见[完整结果与验收范围](WINDOWS-NATIVE-CI-2026-11-12.md)。

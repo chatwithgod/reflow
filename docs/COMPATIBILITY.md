@@ -2,9 +2,11 @@
 
 Reflow 是独立 Go 服务，不依赖 CPA SDK。以下记录的是已运行的验证，不把交叉编译、模拟上游或健康检查当作真实账号验收。
 
+2026-11-12 源码 CI 补充：托管 Windows 使用官方 `elevated` 后端，原有五个写文件场景全部通过；三平台常规与专用原生流水线均通过，原生任务并发 1、真实模型调用 0。Windows 文件越界拦截、离线账号身份与清理通过，回环网络仍可连接，按用户确定的文件验收范围明确保留为已知限制。见[本轮修复](WINDOWS-NATIVE-CI-2026-11-12.md)。本页下方的 dev.5、旧客户端及发布历史保留当时结论；当前发布构件范围见[开发与验证](DEVELOPMENT.md)。
+
 [dev.5 预发布](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.5)已提供五平台服务/插件包，12 个附件公开下载核验通过。Windows amd64、Linux amd64、macOS arm64 的包内二进制与指定的发布前原生 CI 相同；Linux arm64/macOS amd64 仍仅交叉编译。完整平台表、已知失败与标签 CI 见[发布记录](RELEASE-0.1.0-dev.5.md)。
 
-2026-11-04 最新检查点：文档提交 `6d6cfbf` 的三平台常规 CI 通过；原生 Ubuntu/macOS 全部阶段通过，托管 Windows 写入仍失败。Ubuntu 本次未由工作流修改宿主配置，客户端和 CI 输入与前轮一致，但通过原因尚未确定；详见[原生 CI](NATIVE-CI.md)。同日已发布 Windows 独立包的[真实开关对照](LIVE-SCHEDULER-PAIR-2026-11-04.md)两组均正常结束、18/18、零工具失败且保护文件未变，但无续接，不能消除历史配置审计例外或证明收益。
+2026-11-04 历史检查点：文档提交 `6d6cfbf` 的三平台常规 CI 通过；原生 Ubuntu/macOS 全部阶段通过，托管 Windows 写入仍失败。Ubuntu 本次未由工作流修改宿主配置，客户端和 CI 输入与前轮一致，但通过原因尚未确定；详见[原生 CI](NATIVE-CI.md)。同日已发布 Windows 独立包的[真实开关对照](LIVE-SCHEDULER-PAIR-2026-11-04.md)两组均正常结束、18/18、零工具失败且保护文件未变，但无续接，不能消除历史配置审计例外或证明收益。
 
 同日补验当前桌面附带的 `0.166.0-alpha.6` 后端，`legacy`/`paginated` 两个历史格式均通过模拟续接、工具回传、关闭进程后恢复和配置还原；运行中的后端缓存与受测包内 CLI 散列相同。该次只验证后端，未启动 GUI；后续界面实测另列，见[桌面准备记录](DESKTOP-DOT-2026-11-04.md)。
 
@@ -51,7 +53,7 @@ Windows 普通 GUI 构建、Windows `nogui reflow` 构建、Linux `nogui` 构建
 
 ## 覆盖限制与历史记录
 
-原生 Windows CLI 的功能闭环保留历史批次配置审计例外；新 Desktop 样本已经独立完成同一会话真实续接、成功工具往返及保护检查，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。仍未验证真实 Token 刷新、dot 全部功能、Linux arm64/macOS amd64 原生客户端与构件以及全面生产接入，托管 Windows 写入失败仍保留。macOS arm64 和默认 Ubuntu amd64 runner 已有离线客户端及构件通过证据，不能推广到所有主机。已完成的开关对照没有触发续接，尚无质量改善结论。插件安装成功或 `/healthz` 正常只证明相应组件可用，实际推理路由另由本次真实计数验证。
+原生 Windows CLI 的功能闭环保留历史批次配置审计例外；新 Desktop 样本已经独立完成同一会话真实续接、成功工具往返及保护检查，见[当前总表](NATIVE-LOGIN-ACCEPTANCE.md)。仍未验证真实 Token 刷新、dot 全部功能、Linux arm64/macOS amd64 原生客户端与构件以及全面生产接入。托管 Windows 的旧写入失败记录保留；11 月 12 日新的文件集成 CI 已通过，回环网络限制另列。macOS arm64 和默认 Ubuntu amd64 runner 已有离线客户端及构件通过证据，不能推广到所有主机。已完成的开关对照没有触发续接，尚无质量改善结论。插件安装成功或 `/healthz` 正常只证明相应组件可用，实际推理路由另由本次真实计数验证。
 
 以下历史实测保留当时结论和累计数字，当前状态以[总表](NATIVE-LOGIN-ACCEPTANCE.md)为准。
 
