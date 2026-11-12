@@ -32,7 +32,7 @@ foreach ($platform in $platforms) {
     $binary = Join-Path $packageDir $binaryName
     & $GoExe build -trimpath -ldflags "-X github.com/chatwithgod/reflow/internal/version.String=$version" -o $binary ./cmd/reflow
     if ($LASTEXITCODE -ne 0) { throw "Build failed: $platform" }
-    foreach ($file in @('LICENSE','THIRD_PARTY_LICENSES.txt','THIRD_PARTY_NOTICES.md','VERSION','README.md','PLAN.md')) {
+    foreach ($file in @('LICENSE','THIRD_PARTY_LICENSES.txt','THIRD_PARTY_NOTICES.md','VERSION','README.md','README_EN.md','PLAN.md')) {
         if (Test-Path -LiteralPath (Join-Path $projectRoot $file)) { Copy-Item -LiteralPath (Join-Path $projectRoot $file) -Destination $packageDir }
     }
     # CPA is a separate native package; never recurse into its build/cache tree.

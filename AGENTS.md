@@ -1,12 +1,12 @@
 # Reflow
 
-- 说中文，说大白话。以运行证据判断完成范围。
-- 本项目是独立 Reflow 核心与接入层；保持核心不依赖 CPA、Codex 或 Magpie 的 SDK。
-- 保留 CPA CodexReflow 的稳定源码、发布构件和用户未提交修改。
-- 开发和自动测试默认使用隔离进程、临时目录、合成凭证与模拟上游。
-- 没有针对相应步骤的用户授权，不调用真实账号或计费模型，不修改生产配置，不推送、发布或对外提交。
-- 不记录凭证、请求正文、回答正文、加密推理内容；不把这些内容写入诊断包或磁盘缓存。
-- 保留上游来源、版权和许可证。构件按版本另存，不覆盖已有版本。
-- 不把 516 token 当作截断的确定证明，不保证续接提高答案质量。
-- 核心与接入改动运行 go test ./...、go test -race ./...、go vet ./...，并验证失败、取消、工具调用和多轮状态。
-- CPA 接入是 adapters/cpa 下的独立 Go 模块；根目录测试不会覆盖它。共用核心改动还需在该模块运行普通/race/vet，并跑原生 ABI 模拟宿主测试。打包源码指纹必须同时包含 CPA 模块和共用 core。
+- Base completion claims on observed execution evidence.
+- This project provides an independent Reflow core and integration layers. Keep the core independent of CPA, Codex, and Magpie SDKs.
+- Preserve stable CPA CodexReflow sources, release artifacts, and the user's uncommitted changes.
+- Use isolated processes, temporary directories, synthetic credentials, and mock upstreams by default for development and automated testing.
+- Do not use real accounts or billable models, modify production configuration, push, publish, or submit anything externally without user authorization for that specific step.
+- Do not log credentials, request bodies, response bodies, or encrypted reasoning content. Do not save them in diagnostic bundles or disk caches.
+- Preserve upstream provenance, copyrights, and licenses. Store artifacts separately by version without overwriting earlier versions.
+- Do not treat 516 tokens as proof of truncation or guarantee that continuation improves answer quality.
+- For core or integration changes, run `go test ./...`, `go test -race ./...`, and `go vet ./...`. Cover failures, cancellation, tool calls, and multi-turn state.
+- The CPA adapter is a separate Go module under `adapters/cpa`; root tests do not cover it. When changing the shared core, also run normal tests, race tests, vet, and native ABI mock-host tests in that module. Package source fingerprints must include both the CPA module and the shared `core`.

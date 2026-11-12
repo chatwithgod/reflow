@@ -1,6 +1,6 @@
 # CodexReflow working rules
 
-- Reply in Chinese by default. Evaluate claims independently and explain plain language first.
+- Evaluate claims independently.
 - Keep changes narrow, reversible, and covered by regression tests. End task reports with a useful next step.
 - This is an independent fork of CodexComp v0.1.7. Retain upstream attribution and licenses.
 - This subtree now builds against the repository's shared core via its own Go module. Keep CPA SDK dependencies here; retain the shared core in source snapshots and provenance fingerprints. Nested .github workflows are historical; active workflows are at the repository root.
