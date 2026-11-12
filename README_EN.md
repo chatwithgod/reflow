@@ -4,7 +4,7 @@
 
 **Address quality loss from GPT chain-of-thought truncation and keep reasoning going.**
 
-GPT can produce an answer quickly that still feels underdeveloped. In usage records, reasoning sometimes ends at the same recurring counts: `516`, `1034`, `1552`, and so on. Reflow treats this as a possible sign of an early stop, tries another round when its rules allow, and sends the final answer back to your client.
+We have observed that GPT reasoning token counts often stop at `516`, `1034`, `1552`, and so on. Reflow responds to this pattern by asking the model to think for another round, then returns the final answer to you.
 
 Keep using your existing client, model, and account without manually asking it to “think again.” Reflow works as a CPA plugin or as a standalone program for Codex, Pi, and Magpie.
 
