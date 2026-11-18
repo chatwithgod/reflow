@@ -8,7 +8,7 @@
 
 你继续使用原来的客户端、模型和登录账号，不用每次手动追问“再想想”。Reflow 既能作为 CPA 插件使用，也能独立配合 Codex、Pi 和 Magpie。
 
-[独立版 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 版 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
+[独立版 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 版 0.1.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.5) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
 
 ## 它能做什么？
 
@@ -78,7 +78,7 @@
 2. 安装后，在本地插件列表中启用它。
 3. 照常使用客户端。全新配置默认会匹配 GPT 文本模型，一般不需要手写模型名单。
 
-如果商店仍显示旧版 `0.1.3`，可以直接下载合并仓库的 [CPA 0.1.4 正式版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4)。需要回退时，[旧版下载](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)仍然可用。
+如果商店仍显示旧版 `0.1.3`，可以直接下载合并仓库的 [CPA 0.1.5 正式版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.5)。需要回退时，[旧版下载](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)仍然可用。
 
 如果已经启用了 CodexComp，请先停用它，避免两个插件同时接管同一请求。使用 CPA 插件时，不需要再套一层独立 Reflow。配置选项见[CPA 使用说明](adapters/cpa/docs/CONFIGURATION.md)。
 

@@ -11,7 +11,7 @@ import subprocess
 import sys
 import tempfile
 
-from package_release import (NATIVE_CASES, archive_name, host_platform, library_name, license_bytes,
+from package_release import (NATIVE_CASES, archive_name, go_race_supported, host_platform, library_name, license_bytes,
                              source_fingerprint, validate_archive, validate_native_report)
 from source_layout import snapshot_source
 
@@ -57,6 +57,7 @@ def main():
     os.environ["GOWORK"] = "off"
     os.environ["GOTELEMETRY"] = "off"
     fingerprint = source_fingerprint(ROOT)
+    race_supported = go_race_supported(args.goos, args.goarch)
     build = (args.build_dir or ROOT / "build" / f"platform-{args.goos}-{args.goarch}").resolve()
     output = (args.output_dir or ROOT / "dist" / version / f"{args.goos}_{args.goarch}").resolve()
     if not build.is_relative_to(ROOT / "build") or not output.is_relative_to(ROOT / "dist"):
@@ -77,11 +78,14 @@ def main():
         unformatted = subprocess.check_output(["gofmt", "-l", *map(str, snapshot.glob("*.go"))], cwd=snapshot)
         if unformatted:
             raise ValueError("Go source is not formatted")
-        run("go", "test", "./...", "-count=1", cwd=snapshot)
-        run("go", "test", "./...", "-race", "-count=1", cwd=snapshot)
+        run("go", "test", "./...", "-parallel=1", "-count=1", cwd=snapshot)
+        if race_supported:
+            run("go", "test", "./...", "-race", "-parallel=1", "-count=1", cwd=snapshot)
+        else:
+            print("Go 1.26.8 does not support -race on windows/arm64.", flush=True)
         run("go", "vet", "./...", cwd=snapshot)
-        run("go", "test", "-run", "^$", "-fuzz", "^FuzzDecoderChunkBoundaries$", "-fuzztime=15s", "-parallel=2", cwd=snapshot)
-        run("go", "test", "-run", "^$", "-fuzz", "^FuzzRestoreCollaborationToolSchemas$", "-fuzztime=15s", "-parallel=2", cwd=snapshot)
+        run("go", "test", "-run", "^$", "-fuzz", "^FuzzDecoderChunkBoundaries$", "-fuzztime=15s", "-parallel=1", cwd=snapshot)
+        run("go", "test", "-run", "^$", "-fuzz", "^FuzzRestoreCollaborationToolSchemas$", "-fuzztime=15s", "-parallel=1", cwd=snapshot)
         run("go", "build", "-trimpath", "-buildmode=c-shared", "-ldflags",
             f"-X main.pluginVersion={version} -X main.pluginRepository={REPOSITORY}", "-o", library, ".", cwd=snapshot)
     run(sys.executable, "-m", "unittest", "discover", "-s", "scripts", "-p", "test_*.py")
@@ -93,16 +97,17 @@ def main():
         "--repository", REPOSITORY, "--goos", args.goos, "--goarch", args.goarch,
         "--library", library, "--report", native, "--output-dir", output)
     contents = validate_archive((output / archive).read_bytes(), version, args.goos, args.goarch, license_bytes(ROOT))
-    if contents[library.name] != raw:
+    packaged_bytes = contents[library.name]
+    if packaged_bytes != raw:
         raise ValueError("ZIP library bytes differ from the tested build")
     # Write only the validated root library, never blindly extract ZIP paths.
     packaged = build / "packaged"
     packaged.mkdir(exist_ok=False)
     with (packaged / library.name).open("xb") as stream:
-        stream.write(raw)
+        stream.write(packaged_bytes)
     packed_report = build / "packaged-native-smoke.json"
     run(sys.executable, ROOT / "scripts/native_smoke.py", packaged / library.name, "--report", packed_report)
-    validate_native_report(json.loads(packed_report.read_bytes()), raw, version)
+    validate_native_report(json.loads(packed_report.read_bytes()), packaged_bytes, version)
     if source_fingerprint(ROOT) != fingerprint:
         raise ValueError("root Go module changed during validation")
     if capture("git", "status", "--porcelain", "--untracked-files=no") or capture("git", "rev-parse", "HEAD") != commit:
@@ -116,7 +121,8 @@ def main():
                 "root_go_source_sha256": fingerprint, "sdk_version": "8.0.13", "go_version": config["GOVERSION"],
                 "archive": archive, "archive_sha256": hashlib.sha256((output / archive).read_bytes()).hexdigest(),
                 "library_sha256": hashlib.sha256(raw).hexdigest(), "reports": reports,
-                "go_unit_race_vet_fuzz_passed": True, "python_tests_passed": True,
+                "go_unit_vet_fuzz_passed": True, "go_race_status": "passed" if race_supported else "unsupported",
+                "go_unit_race_vet_fuzz_passed": race_supported, "python_tests_passed": True,
                 "native_case_executions": NATIVE_CASES, "packaged_native_case_executions": NATIVE_CASES,
                 "validation_scope": "offline native ABI; not full CPA integration or live models",
                 "production_changes": False, "billable_model_calls": 0, "published": False}

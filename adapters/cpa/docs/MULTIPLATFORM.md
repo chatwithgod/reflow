@@ -1,6 +1,14 @@
-# 五平台构建、验收与发布边界
+# CPA 插件的原生平台包
 
-## 当前正式版 v0.1.3
+## v0.1.5 六平台构建
+
+合并仓库的 [CPA 打包工作流](../../../.github/workflows/cpa-packages.yml) 在 Windows、Linux 和 macOS 各自的 amd64、arm64 主机上依次构建。Windows ARM64 使用 `windows-11-arm`、原生 ARM64 Python、Go 1.26.8 和 LLVM-MinGW。Windows 两种架构的 ZIP 都在根部提供 `codexreflow.dll`，打包器根据 PE 头校验 CPU 类型。
+
+每个平台运行普通 Go 测试、vet、两项 fuzz、Python 回归，以及打包前后各 46 个原生 ABI 用例。Go 1.26.8 的 race detector 在 Windows 只支持 amd64，Windows ARM64 的记录为 `go_race_status: unsupported`；其余五个平台要求 race 通过。汇总包包含六个插件 ZIP、六行 `checksums.txt` 和 `validation-summary.json`。商店要求见 [Reflow #1](https://github.com/chatwithgod/reflow/issues/1)。
+
+以下保留旧仓库 v0.1.3 及以前的构建与发布记录。
+
+## 历史正式版 v0.1.3
 
 `v0.1.3` 已完成五平台原生构建和公开下载核验。完整 ABI 套件为 46 项，每个平台分别在构建库和 ZIP 解出库上执行；每组五平台合计 230 次执行，不是 460 种不同场景。同一 Windows 正式 DLL 另通过 72 项隔离 CPA 用例，SDK 仍固定 v8.0.13。完整来源和资产哈希见 [2026-11-04 发布记录](RELEASE-2026-11-04-0.1.3.md)。
 

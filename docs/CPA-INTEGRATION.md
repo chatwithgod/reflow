@@ -41,26 +41,26 @@ CPA 的专用兼容逻辑不能直接套到原生登录路径。工具声明回�
 
 ## 本地验证
 
-在根目录运行普通测试、race 和 vet；再在 `adapters/cpa` 重复这三项。两套测试都是必需的，`go test ./...` 不跨越嵌套模块。
+在根目录运行普通测试、race 和 vet；在 `adapters/cpa` 也运行对应检查。Go 1.26.8 在 Windows ARM64 上不支持 race。两套测试都是必需的，`go test ./...` 不跨越嵌套模块。
 
 CPA 的原生 ABI 和打包检查使用合成数据、模拟宿主，无真实模型调用：
 
 ```sh
 cd adapters/cpa
 python -m unittest discover -s scripts -p 'test_*.py'
-go build -trimpath -buildmode=c-shared -ldflags '-X main.pluginVersion=0.1.4 -X main.pluginRepository=https://github.com/chatwithgod/reflow' -o build/0.1.4/codexreflow.dll .
-python scripts/native_smoke.py build/0.1.4/codexreflow.dll --report build/0.1.4/native-smoke.json
+go build -trimpath -buildmode=c-shared -ldflags '-X main.pluginVersion=0.1.5 -X main.pluginRepository=https://github.com/chatwithgod/reflow' -o build/0.1.5/codexreflow.dll .
+python scripts/native_smoke.py build/0.1.5/codexreflow.dll --report build/0.1.5/native-smoke.json
 ```
 
 上例用于 Windows；其他系统使用对应的 `.so` 或 `.dylib`。构建前准备新的输出目录，保留旧版本；Windows 也可用 `scripts/build_windows.ps1` 自动创建带版本和时间戳的目录。
 
-`scripts/build_platform.py` 在独立快照中验证并打包，快照同时包含 CPA 源码、共用 `core`、两份模块文件；任一部分变更都会改变源码指纹。根目录 `cpa-packages.yml` 保留五平台原生验证、打包后再次检查和完整附件校验，任务并发为 1。它没有创建标签、发布 Release 或改写商店的权限。
+`scripts/build_platform.py` 在独立快照中验证并打包，快照同时包含 CPA 源码、共用 `core`、两份模块文件；任一部分变更都会改变源码指纹。根目录 `cpa-packages.yml` 包含[六平台原生验证](../adapters/cpa/docs/MULTIPLATFORM.md)、打包后再次检查和完整附件校验，任务并发为 1。它没有创建标签、发布 Release 或改写商店的权限。
 
 独立版打包明确排除 CPA 源码、动态库、缓存及测试输出，避免把两类产品混进同一 ZIP。
 
 ## 版本与后续入口迁移
 
-当前是未发布候选：独立版 `0.1.0-dev.6`，CPA `0.1.4`。旧公开版本的真实账号、Desktop/dot 和多平台验收不自动适用于新构件；本次结果以新的离线记录为准。
+源码整合时的候选版本为：独立版 `0.1.0-dev.6`，CPA `0.1.4`。旧公开版本的真实账号、Desktop/dot 和多平台验收不自动适用于新构件；本次结果以新的离线记录为准。
 
 整合源码已推送并完成[五平台离线验收及合并审查](CPA-INTEGRATION-ACCEPTANCE-2026-11-12.md)。旧 CPA 仓库继续保留历史下载与现有商店入口；商店迁移、旧仓库归档和发布属于后续步骤。代码历史的导入不会自动合并两边的 Star、Issue 或 Release。
 

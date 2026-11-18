@@ -1,4 +1,4 @@
-"""Validate all five same-commit platform artifacts and collect ZIPs/checksums.
+"""Validate all six same-commit platform artifacts and collect ZIPs/checksums.
 
 No library execution on foreign hosts, installation, Release or network write.
 Per-platform native evidence is a trusted CI report, not a cryptographic attestation
@@ -12,7 +12,7 @@ from pathlib import Path
 import re
 import subprocess
 
-from package_release import (NATIVE_CASES, PLATFORMS, archive_name, library_name, license_bytes,
+from package_release import (NATIVE_CASES, PLATFORMS, archive_name, go_race_supported, library_name, license_bytes,
                              source_fingerprint, validate_archive, validate_metadata,
                              validate_native_report)
 
@@ -36,10 +36,12 @@ def validate_platform(directory, version, repository, commit, fingerprint, goos,
     evidence = json.loads((directory / "validation.json").read_bytes())
     if not isinstance(evidence, dict):
         raise ValueError("platform validation record must be an object")
+    race_supported = go_race_supported(goos, goarch)
     expected = {"schema_version": 1, "plugin": "codexreflow", "version": version, "repository": repository,
                 "goos": goos, "goarch": goarch, "source_commit": commit, "root_go_source_sha256": fingerprint,
                 "sdk_version": "8.0.13", "go_version": "go1.26.8", "archive": name, "archive_sha256": digest,
-                "library_sha256": hashlib.sha256(library).hexdigest(), "go_unit_race_vet_fuzz_passed": True,
+                "library_sha256": hashlib.sha256(library).hexdigest(), "go_unit_vet_fuzz_passed": True,
+                "go_race_status": "passed" if race_supported else "unsupported", "go_unit_race_vet_fuzz_passed": race_supported,
                 "python_tests_passed": True, "native_case_executions": NATIVE_CASES, "packaged_native_case_executions": NATIVE_CASES,
                 "validation_scope": "offline native ABI; not full CPA integration or live models",
                 "production_changes": False, "billable_model_calls": 0, "published": False}
@@ -67,7 +69,7 @@ def assemble(input_dir, output_dir, version, repository, commit, fingerprint, li
         raise ValueError("source module fingerprint required")
     directories = {f"platform-{goos}-{goarch}": (goos, goarch) for goos, goarch in PLATFORMS}
     if {path.name for path in input_dir.iterdir()} != set(directories) or any(path.is_symlink() or not path.is_dir() for path in input_dir.iterdir()):
-        raise ValueError("exactly five native platform artifact directories required")
+        raise ValueError("expected one native artifact directory for every release platform")
     artifacts = {}
     evidence = []
     for directory, (goos, goarch) in directories.items():

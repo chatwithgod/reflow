@@ -31,7 +31,7 @@ def library_fixture(goos, goarch):
         raw[:2] = b"MZ"
         struct.pack_into("<I", raw, 60, 128)
         raw[128:132] = b"PE\0\0"
-        struct.pack_into("<H", raw, 132, 0x8664)
+        struct.pack_into("<H", raw, 132, {"amd64": 0x8664, "arm64": 0xAA64}[goarch])
         struct.pack_into("<H", raw, 150, 0x2000)
     elif goos == "linux":
         raw[:7] = b"\x7fELF\x02\x01\x01"
@@ -77,7 +77,9 @@ def write_platform(parent, goos, goarch):
                 "sdk_version": "8.0.13", "go_version": "go1.26.8", "archive": archive.name,
                 "archive_sha256": hashlib.sha256(archive.read_bytes()).hexdigest(),
                 "library_sha256": hashlib.sha256(raw).hexdigest(), "reports": reports,
-                "go_unit_race_vet_fuzz_passed": True, "python_tests_passed": True,
+                "go_unit_vet_fuzz_passed": True,
+                "go_race_status": "unsupported" if (goos, goarch) == ("windows", "arm64") else "passed",
+                "go_unit_race_vet_fuzz_passed": (goos, goarch) != ("windows", "arm64"), "python_tests_passed": True,
                 "native_case_executions": NATIVE_CASES, "packaged_native_case_executions": NATIVE_CASES,
                 "validation_scope": "offline native ABI; not full CPA integration or live models",
                 "production_changes": False, "billable_model_calls": 0, "published": False}
@@ -86,7 +88,7 @@ def write_platform(parent, goos, goarch):
 
 
 class PlatformHeaderTests(unittest.TestCase):
-    def test_five_target_headers(self):
+    def test_six_target_headers(self):
         for goos, goarch in PLATFORMS:
             with self.subTest(target=(goos, goarch)):
                 validate_library(library_fixture(goos, goarch), goos, goarch)
@@ -123,16 +125,17 @@ class PlatformHeaderTests(unittest.TestCase):
 
     def test_native_host_aliases(self):
         for system, machine, expected in (("win32", "AMD64", ("windows", "amd64")),
+                                         ("win32", "ARM64", ("windows", "arm64")),
                                          ("linux", "aarch64", ("linux", "arm64")),
                                          ("darwin", "arm64", ("darwin", "arm64")),
                                          ("darwin", "x86_64", ("darwin", "amd64"))):
             self.assertEqual(host_platform(system, machine), expected)
 
     def test_unsupported_hosts_and_targets_rejected(self):
-        for system, machine in (("freebsd", "amd64"), ("win32", "arm64"), ("linux", "riscv64")):
+        for system, machine in (("freebsd", "amd64"), ("win32", "x86"), ("linux", "riscv64")):
             with self.assertRaises(ValueError):
                 host_platform(system, machine)
-        for goos, goarch in (("windows", "arm64"), ("linux", "386"), ("../linux", "amd64")):
+        for goos, goarch in (("windows", "386"), ("linux", "386"), ("../linux", "amd64")):
             with self.assertRaises(ValueError):
                 library_name(goos, goarch)
 
@@ -196,7 +199,7 @@ class NativeEvidenceTests(unittest.TestCase):
 
 
 class ArchiveTests(unittest.TestCase):
-    def test_five_platform_root_layout_and_license_bytes(self):
+    def test_six_platform_root_layout_and_license_bytes(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             for goos, goarch in PLATFORMS:
@@ -268,25 +271,25 @@ class AggregateTests(unittest.TestCase):
     def collect(self):
         return assemble(self.incoming, self.output, VERSION, REPOSITORY, COMMIT, FINGERPRINT, LICENSES)
 
-    def test_five_package_bundle(self):
+    def test_six_package_bundle(self):
         summary = self.collect()
-        self.assertEqual(len(summary["platforms"]), 5)
+        self.assertEqual(len(summary["platforms"]), 6)
         self.assertFalse(summary["published"])
         self.assertEqual(summary["native_case_executions"], NATIVE_CASES * len(PLATFORMS))
         expected = {archive_name(VERSION, *target) for target in PLATFORMS}
         self.assertEqual({path.name for path in self.output.glob("*.zip")}, expected)
         lines = (self.output / "checksums.txt").read_text().splitlines()
-        self.assertEqual(len(lines), 5)
+        self.assertEqual(len(lines), 6)
         for line in lines:
             digest, name = line.split("  ")
             self.assertEqual(digest, hashlib.sha256((self.output / name).read_bytes()).hexdigest())
 
     def test_missing_or_extra_target_fails_before_output_creation(self):
-        shutil.rmtree(self.incoming / "platform-linux-arm64")
+        shutil.rmtree(self.incoming / "platform-windows-arm64")
         with self.assertRaises(ValueError):
             self.collect()
         self.assertFalse(self.output.exists())
-        write_platform(self.incoming, "linux", "arm64")
+        write_platform(self.incoming, "windows", "arm64")
         (self.incoming / "unexpected").mkdir()
         with self.assertRaises(ValueError):
             self.collect()
@@ -305,6 +308,19 @@ class AggregateTests(unittest.TestCase):
                 self.collect()
             self.assertFalse(self.output.exists())
         path.write_bytes(original)
+
+    def test_race_exception_is_specific_to_windows_arm64(self):
+        for arch, claim in (("arm64", "passed"), ("amd64", "unsupported")):
+            path = self.incoming / f"platform-windows-{arch}/validation.json"
+            original = path.read_bytes()
+            record = json.loads(original)
+            record["go_race_status"] = claim
+            record["go_unit_race_vet_fuzz_passed"] = claim == "passed"
+            path.write_text(json.dumps(record), encoding="utf-8")
+            with self.subTest(arch=arch), self.assertRaises(ValueError):
+                self.collect()
+            self.assertFalse(self.output.exists())
+            path.write_bytes(original)
 
     def test_changed_checksum_or_report_bytes_rejected(self):
         directory = self.incoming / "platform-windows-amd64"

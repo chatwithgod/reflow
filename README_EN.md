@@ -8,7 +8,7 @@ We have observed that GPT reasoning token counts often stop at `516`, `1034`, `1
 
 Keep using your existing client, model, and account without manually asking it to “think again.” Reflow works as a CPA plugin or as a standalone program for Codex, Pi, and Magpie.
 
-[Standalone 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [Report a problem](https://github.com/chatwithgod/reflow/issues)
+[Standalone 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 0.1.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.5) · [Report a problem](https://github.com/chatwithgod/reflow/issues)
 
 ## What does it do?
 
@@ -78,7 +78,7 @@ Install the stable version from the plugin store:
 2. Install it, then enable it in your local plugin list.
 3. Use your client as usual. Fresh configurations match GPT text models automatically, so you generally do not need to write a model list.
 
-If the store still lists `0.1.3`, download [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) from this repository. The [previous release](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) is available for rollback.
+If the store still lists `0.1.3`, download [CPA 0.1.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.5) from this repository. The [previous release](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) is available for rollback.
 
 If CodexComp is enabled, disable it first so that both plugins do not handle the same requests. The CPA plugin does not need an additional standalone Reflow proxy. See the [CPA configuration guide](adapters/cpa/docs/CONFIGURATION.md) for options.
 

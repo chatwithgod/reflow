@@ -1,6 +1,8 @@
 # 兼容性与验收边界
 
-## 当前正式版 v0.1.3（2026-11-04）
+v0.1.5 加入 Windows ARM64，与 Windows amd64、Linux 和 macOS 两种架构共六个目标。各平台的原生加载检查及 Go race 的适用范围见[六平台说明](MULTIPLATFORM.md)。
+
+## 历史正式版 v0.1.3（2026-11-04）
 
 [`v0.1.3`](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) 已正式发布，修复 collaboration 工具参数被 CPA 插件路径误改导致的首轮失败。正式版使用与下述候选相同的 Go 修复源码，但单独生成正式版本和仓库元数据，不把开发 DLL 改名冒充正式构件。
 

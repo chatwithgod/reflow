@@ -10,7 +10,7 @@ GPT 经常只想了 `516` 个 token 就草草交卷？CodexReflow 是一个 [CLI
 
 **项目来源：** 本项目基于 [uf-hy / CPA CodexComp v0.1.7](https://github.com/uf-hy/cpa-plugin-codexcomp/tree/v0.1.7) 独立维护，沿用源自 [dzshzx / codexcomp](https://github.com/dzshzx/codexcomp) 与 [neteroster / CodexCont](https://github.com/neteroster/CodexCont) 的续接机制与算法。
 
-[English](README_EN.md) · [下载 v0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
+[English](README_EN.md) · [下载 v0.1.5](https://github.com/chatwithgod/reflow/releases/tag/v0.1.5) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
 
 ## 它能做什么？
 
@@ -36,19 +36,20 @@ GPT 经常只想了 `516` 个 token 就草草交卷？CodexReflow 是一个 [CLI
 - 更新插件版本前，建议先保留旧插件并备份现有配置，等待当前正在生成的回答全部结束。
 
 <details>
-<summary>手动下载 v0.1.4（点击展开）</summary>
+<summary>手动下载 v0.1.5（点击展开）</summary>
 
 按操作系统与架构下载对应压缩包：
 
 | 平台 | 下载链接 |
 |---|---|
-| Windows x64 | [codexreflow_0.1.4_windows_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_windows_amd64.zip) |
-| Linux x64 | [codexreflow_0.1.4_linux_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_linux_amd64.zip) |
-| Linux ARM64 | [codexreflow_0.1.4_linux_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_linux_arm64.zip) |
-| macOS Intel | [codexreflow_0.1.4_darwin_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_darwin_amd64.zip) |
-| macOS Apple Silicon | [codexreflow_0.1.4_darwin_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_darwin_arm64.zip) |
+| Windows x64 | [codexreflow_0.1.5_windows_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_windows_amd64.zip) |
+| Windows ARM64 | [codexreflow_0.1.5_windows_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_windows_arm64.zip) |
+| Linux x64 | [codexreflow_0.1.5_linux_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_linux_amd64.zip) |
+| Linux ARM64 | [codexreflow_0.1.5_linux_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_linux_arm64.zip) |
+| macOS Intel | [codexreflow_0.1.5_darwin_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_darwin_amd64.zip) |
+| macOS Apple Silicon | [codexreflow_0.1.5_darwin_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/codexreflow_0.1.5_darwin_arm64.zip) |
 
-下载后建议通过 [checksums.txt](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/checksums.txt) 校验 SHA256。各平台的测试覆盖与已知限制见[兼容性说明](docs/COMPATIBILITY.md)。
+下载后建议通过 [checksums.txt](https://github.com/chatwithgod/reflow/releases/download/v0.1.5/checksums.txt) 校验 SHA256。各平台的测试覆盖与已知限制见[兼容性说明](docs/COMPATIBILITY.md)。
 
 </details>
 

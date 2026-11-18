@@ -1,4 +1,4 @@
-name: CPA five-platform offline packages
+name: CPA six-platform offline packages
 
 on:
   push:
@@ -30,6 +30,9 @@ jobs:
       max-parallel: 1
       matrix:
         include:
+          - runner: windows-11-arm
+            goos: windows
+            goarch: arm64
           - runner: ubuntu-24.04
             goos: linux
             goarch: amd64
@@ -50,6 +53,7 @@ jobs:
       GOTOOLCHAIN: local
       GOWORK: 'off'
       GOTELEMETRY: 'off'
+      GOFLAGS: -p=1
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
@@ -57,6 +61,7 @@ jobs:
       - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
           python-version: '3.13'
+          architecture: ${{ matrix.goarch == 'arm64' && 'arm64' || 'x64' }}
       - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
         if: matrix.goos != 'windows'
         with:
@@ -73,8 +78,8 @@ jobs:
         run: |
           python scripts/bootstrap_windows_tools.py
           if ($LASTEXITCODE -ne 0) { throw 'Tool bootstrap failed.' }
-          . ./scripts/dev_env.ps1
-          python scripts/build_platform.py --goos windows --goarch amd64
+          . ./scripts/dev_env.ps1 -GoArch '${{ matrix.goarch }}'
+          python scripts/build_platform.py --goos windows --goarch '${{ matrix.goarch }}'
           if ($LASTEXITCODE -ne 0) { throw 'Native package validation failed.' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
@@ -83,7 +88,7 @@ jobs:
           if-no-files-found: error
           retention-days: 14
   assemble:
-    name: verify-five-platform-bundle
+    name: verify-six-platform-bundle
     needs: native
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -105,7 +110,7 @@ jobs:
           --repository https://github.com/chatwithgod/reflow
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: codexreflow-five-platform-candidate
+          name: codexreflow-six-platform-candidate
           path: adapters/cpa/dist/full-platform-candidate/*
           if-no-files-found: error
           retention-days: 14

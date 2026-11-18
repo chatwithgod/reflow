@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5
+
+Add a native Windows ARM64 plugin package. Windows, Linux and macOS now each have amd64 and arm64 packages. The release build verifies each archive's CPU architecture and runs the same 46 mock-host ABI cases before and after packaging. Go 1.26.8 supports race detection on five of these six targets.
+
+## 0.1.4
+
+Move the CPA adapter into the [shared Reflow repository](https://github.com/chatwithgod/reflow). The plugin keeps its existing ID and uses the same continuation core as standalone Reflow.
+
 ## 0.1.3
 
 Published on 2026-11-04 as latest stable with five native packages. All six public assets were anonymously downloaded and matched against the tested CI bytes. See [release verification](docs/RELEASE-2026-11-04-0.1.3.md).

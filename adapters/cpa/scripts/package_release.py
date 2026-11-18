@@ -2,7 +2,7 @@
 
 Native registration and the same-library ABI report are mandatory. A CI package
 is not a GitHub Release or full CPA/live-model acceptance. Versioned outputs are
-immutable; assemble_release.py combines all five validated platform packages.
+immutable; assemble_release.py combines all six validated platform packages.
 """
 
 import argparse
@@ -14,6 +14,7 @@ import platform
 import re
 import struct
 import sys
+import sysconfig
 import zipfile
 
 from native_smoke import OfflineHost
@@ -22,7 +23,7 @@ from source_layout import source_files
 ROOT = Path(__file__).resolve().parents[1]
 VERSION_PATTERN = r"(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)"
 REPOSITORY_PATTERN = r"https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+"
-PLATFORMS = (("darwin", "amd64"), ("darwin", "arm64"), ("linux", "amd64"), ("linux", "arm64"), ("windows", "amd64"))
+PLATFORMS = tuple((os_name, arch) for os_name in ("darwin", "linux", "windows") for arch in ("amd64", "arm64"))
 LICENSE_FILES = ("LICENSE", "THIRD_PARTY_NOTICES.md", "THIRD_PARTY_LICENSES.txt")
 NATIVE_KIND = "offline C ABI mock host; not live CPA/WebSocket"
 NATIVE_CASE_KEYS = frozenset(
@@ -56,7 +57,11 @@ def archive_name(version, goos, goarch):
 
 def host_platform(system=None, machine=None):
     system = sys.platform if system is None else system
-    machine = platform.machine().lower() if machine is None else machine.lower()
+    if machine is None:
+        # On Windows an emulated Python can report the operating system's CPU.
+        # ctypes must load a library built for this interpreter.
+        machine = sysconfig.get_platform().removeprefix("win-") if system == "win32" else platform.machine()
+    machine = machine.lower()
     goos = {"win32": "windows", "linux": "linux", "darwin": "darwin"}.get(system)
     goarch = {"amd64": "amd64", "x86_64": "amd64", "arm64": "arm64", "aarch64": "arm64"}.get(machine)
     if (goos, goarch) not in PLATFORMS:
@@ -64,7 +69,12 @@ def host_platform(system=None, machine=None):
     return goos, goarch
 
 
-def validate_windows_amd64_dll(raw):
+def go_race_supported(goos, goarch):
+    # Go 1.26.8 internal/platform.RaceDetectorSupported.
+    return (goos, goarch) != ("windows", "arm64")
+
+
+def validate_windows_dll(raw, goarch):
     if len(raw) < 64 or raw[:2] != b"MZ":
         raise ValueError("release asset must be a Windows PE DLL")
     offset = struct.unpack_from("<I", raw, 60)[0]
@@ -72,8 +82,14 @@ def validate_windows_amd64_dll(raw):
         raise ValueError("invalid PE header")
     machine = struct.unpack_from("<H", raw, offset + 4)[0]
     characteristics = struct.unpack_from("<H", raw, offset + 22)[0]
-    if machine != 0x8664 or not characteristics & 0x2000:
-        raise ValueError("only Windows amd64 DLLs may use this release asset name")
+    expected = {"amd64": 0x8664, "arm64": 0xAA64}.get(goarch)
+    if machine != expected or not characteristics & 0x2000:
+        raise ValueError(f"expected a Windows {goarch} DLL")
+
+
+def validate_windows_amd64_dll(raw):
+    """The legacy local-candidate packager only produces x64 ZIPs."""
+    validate_windows_dll(raw, "amd64")
 
 
 def validate_library(raw, goos, goarch):
@@ -81,7 +97,7 @@ def validate_library(raw, goos, goarch):
     if not raw or len(raw) > MAX_LIBRARY_SIZE:
         raise ValueError("invalid or oversized library")
     if goos == "windows":
-        validate_windows_amd64_dll(raw)
+        validate_windows_dll(raw, goarch)
     elif goos == "linux":
         if len(raw) < 64 or raw[:7] != b"\x7fELF\x02\x01\x01":
             raise ValueError("expected a little-endian ELF64 shared library")
