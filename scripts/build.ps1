@@ -41,6 +41,15 @@ foreach ($platform in $platforms) {
     foreach ($adapter in @('pi', 'magpie')) {
         Copy-Item -LiteralPath (Join-Path $projectRoot "adapters/$adapter") -Destination $adapterDocs -Recurse
     }
+    # Both READMEs link to these CPA guides and illustrations.
+    $cpaDocDir = Join-Path $adapterDocs 'cpa/docs'
+    $cpaImages = New-Item -ItemType Directory -Path (Join-Path $cpaDocDir 'assets')
+    foreach ($guide in @('CONFIGURATION.md','DIAGNOSTICS.md')) {
+        Copy-Item -LiteralPath (Join-Path $projectRoot "adapters/cpa/docs/$guide") -Destination $cpaDocDir
+    }
+    foreach ($image in @('candy-observation-zh.svg','candy-observation-en.svg')) {
+        Copy-Item -LiteralPath (Join-Path $projectRoot "adapters/cpa/docs/assets/$image") -Destination $cpaImages.FullName
+    }
     Copy-Item -LiteralPath (Join-Path $projectRoot 'docs') -Destination $packageDir -Recurse
     Copy-Item -LiteralPath (Join-Path $projectRoot 'contrib') -Destination $packageDir -Recurse
     $pluginDocs = Join-Path $packageDir 'plugins/codex'

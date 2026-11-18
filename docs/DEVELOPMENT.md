@@ -4,6 +4,10 @@
 
 这里集中记录构建方法、自动测试结果和平台限制。版本使用说明见首页。
 
+## 从合并仓库发布
+
+[独立版 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) 提供独立程序和 Codex 本地插件包。[CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) 提供五个原生插件包。商店根据仓库的 `releases/latest` 选择版本，再从该版下载 `codexreflow_<版本>_<系统>_<架构>.zip` 和 `checksums.txt`。发布 CPA 正式版时将它设为 Latest。独立版使用 `standalone-v<版本>` 标签，发布时指定 `--latest=false`，这样两种产品可以独立更新。
+
 ## 当前验证范围
 
 2026-11-12，后续源码 `952bbba` 的[常规 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438507)和[原生客户端 CI](https://github.com/chatwithgod/reflow/actions/runs/43110438307)在三个平台均通过。常规普通/race 各 106 项通过、4 项可选客户端检查跳过；专用原生普通/race 各 14 项、五个写文件场景及 Pi 模拟探针各 4 项通过。

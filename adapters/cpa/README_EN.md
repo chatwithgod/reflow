@@ -8,7 +8,7 @@ When a response matches this pattern, usable context and upstream reasoning stat
 
 **Project origins:** Independently maintained fork of [uf-hy / CPA CodexComp v0.1.7](https://github.com/uf-hy/cpa-plugin-codexcomp/tree/v0.1.7), carrying forward continuation algorithms and mechanisms from [dzshzx / codexcomp](https://github.com/dzshzx/codexcomp) and [neteroster / CodexCont](https://github.com/neteroster/CodexCont).
 
-[简体中文](README.md) · [Download v0.1.3](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) · [Report a problem](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/new?template=bug_report.md)
+[简体中文](README.md) · [Download v0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [Report a problem](https://github.com/chatwithgod/reflow/issues)
 
 ## What it does
 
@@ -24,7 +24,7 @@ When a response matches this pattern, usable context and upstream reasoning stat
 The easiest way is via the **CPA / ECPA Plugin Store**:
 
 1. Open **Plugins → Plugin Store** and search for **CodexReflow**.
-2. Click **Install**. Leave the version blank for the latest release, or enter `v0.1.3`.
+2. Click **Install**. Leave the version blank to install the stable release listed by the store.
 3. Enable CodexReflow in your local plugin list and confirm its status shows **Running**.
 4. Use your client as usual. **Fresh installations require no handwritten YAML and no model list.**
 
@@ -34,19 +34,19 @@ The easiest way is via the **CPA / ECPA Plugin Store**:
 - Before updating versions, keep a copy of the previous plugin and configuration, and wait for ongoing responses to complete.
 
 <details>
-<summary>Manual downloads for v0.1.3 (click to expand)</summary>
+<summary>Manual downloads for v0.1.4 (click to expand)</summary>
 
 Download the release archive for your operating system and architecture:
 
 | Platform | Download link |
 |---|---|
-| Windows x64 | [codexreflow_0.1.3_windows_amd64.zip](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/codexreflow_0.1.3_windows_amd64.zip) |
-| Linux x64 | [codexreflow_0.1.3_linux_amd64.zip](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/codexreflow_0.1.3_linux_amd64.zip) |
-| Linux ARM64 | [codexreflow_0.1.3_linux_arm64.zip](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/codexreflow_0.1.3_linux_arm64.zip) |
-| macOS Intel | [codexreflow_0.1.3_darwin_amd64.zip](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/codexreflow_0.1.3_darwin_amd64.zip) |
-| macOS Apple Silicon | [codexreflow_0.1.3_darwin_arm64.zip](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/codexreflow_0.1.3_darwin_arm64.zip) |
+| Windows x64 | [codexreflow_0.1.4_windows_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_windows_amd64.zip) |
+| Linux x64 | [codexreflow_0.1.4_linux_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_linux_amd64.zip) |
+| Linux ARM64 | [codexreflow_0.1.4_linux_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_linux_arm64.zip) |
+| macOS Intel | [codexreflow_0.1.4_darwin_amd64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_darwin_amd64.zip) |
+| macOS Apple Silicon | [codexreflow_0.1.4_darwin_arm64.zip](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/codexreflow_0.1.4_darwin_arm64.zip) |
 
-Verify SHA256 hashes against [checksums.txt](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/download/v0.1.3/checksums.txt). For platform coverage and known constraints, see the [compatibility notes](docs/COMPATIBILITY.md).
+Verify SHA256 hashes against [checksums.txt](https://github.com/chatwithgod/reflow/releases/download/v0.1.4/checksums.txt). For platform coverage and known constraints, see the [compatibility notes](docs/COMPATIBILITY.md).
 
 </details>
 
@@ -119,7 +119,7 @@ Yes. Subsequent rounds require complete, available context and valid upstream en
 
 1. Temporarily disable CodexReflow in your CPA plugin list and send a message with the same model. If normal behavior resumes, include that observation in your report to help narrow down the cause.
 2. When reporting issues, include CPA/ECPA, plugin, and client versions alongside sanitized error logs.
-3. Never post API keys, account credentials, full configs, or private chat histories. [Submit a report](https://github.com/chatwithgod/cpa-plugin-codexreflow/issues/new?template=bug_report.md).
+3. Never post API keys, account credentials, full configs, or private chat histories. [Submit a report](https://github.com/chatwithgod/reflow/issues).
 
 ## Privacy and data handling
 

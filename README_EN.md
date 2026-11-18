@@ -8,7 +8,7 @@ We have observed that GPT reasoning token counts often stop at `516`, `1034`, `1
 
 Keep using your existing client, model, and account without manually asking it to “think again.” Reflow works as a CPA plugin or as a standalone program for Codex, Pi, and Magpie.
 
-[Standalone dev.6 (prerelease)](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.6) · [CPA 0.1.4 (prerelease)](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [Report a problem](https://github.com/chatwithgod/reflow/issues)
+[Standalone 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [Report a problem](https://github.com/chatwithgod/reflow/issues)
 
 ## What does it do?
 
@@ -25,7 +25,7 @@ Keep using your existing client, model, and account without manually asking it t
 
 Download and start the standalone program, then configure Codex to send requests through it. The following example is for Windows.
 
-**1. Download and start Reflow.** Download the [Windows x64 standalone package](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_windows_amd64.zip), extract it, and open PowerShell in that folder:
+**1. Download and start Reflow.** Download the [Windows x64 standalone package](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_windows_amd64.zip), extract it, and open PowerShell in that folder:
 
 ```powershell
 .\reflow.exe -max-continue 1
@@ -52,10 +52,10 @@ After reviewing the preview, connect:
 
 | Platform | Download |
 | --- | --- |
-| macOS Apple Silicon | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_darwin_arm64.zip) |
-| macOS Intel | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_darwin_amd64.zip) |
-| Linux x64 | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_linux_amd64.zip) |
-| Linux ARM64 | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_linux_arm64.zip) |
+| macOS Apple Silicon | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_darwin_arm64.zip) |
+| macOS Intel | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_darwin_amd64.zip) |
+| Linux x64 | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_linux_amd64.zip) |
+| Linux ARM64 | [Standalone package](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_linux_arm64.zip) |
 
 Start `./reflow -max-continue 1` in the extracted folder and keep it running. In another terminal, run these commands, then restart Codex:
 
@@ -64,7 +64,7 @@ Start `./reflow -max-continue 1` in the extracted folder and keep it running. In
 ./reflow codex-config --action connect
 ```
 
-These are prerelease packages. See [development and verification](docs/DEVELOPMENT.md) for actual platform coverage and known limitations.
+See [development and verification](docs/DEVELOPMENT.md) for actual platform coverage and known limitations.
 
 </details>
 
@@ -78,7 +78,7 @@ Install the stable version from the plugin store:
 2. Install it, then enable it in your local plugin list.
 3. Use your client as usual. Fresh configurations match GPT text models automatically, so you generally do not need to write a model list.
 
-The store currently offers stable `v0.1.3` from the old repository. [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) in this repository is a prerelease built from the combined source tree and requires a separate download. The store entry has not been migrated yet.
+If the store still lists `0.1.3`, download [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) from this repository. The [previous release](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3) is available for rollback.
 
 If CodexComp is enabled, disable it first so that both plugins do not handle the same requests. The CPA plugin does not need an additional standalone Reflow proxy. See the [CPA configuration guide](adapters/cpa/docs/CONFIGURATION.md) for options.
 
@@ -158,7 +158,7 @@ Most linked technical guides are currently in Chinese.
 - [CPA configuration](adapters/cpa/docs/CONFIGURATION.md) · [Statistics and methodology](docs/REASONING-PATTERN-2026-11-12.md)
 - [Tested platforms, known limitations, and development](docs/DEVELOPMENT.md) · [Native sign-in verification](docs/NATIVE-LOGIN-ACCEPTANCE.md)
 
-Standalone dev.6 and CPA 0.1.4 are both prereleases. The guides above describe actual test results and remaining gaps.
+See [development and verification](docs/DEVELOPMENT.md) for test results and known limitations by release.
 
 ## Origins, acknowledgments, and license
 

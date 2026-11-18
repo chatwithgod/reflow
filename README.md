@@ -8,7 +8,7 @@
 
 你继续使用原来的客户端、模型和登录账号，不用每次手动追问“再想想”。Reflow 既能作为 CPA 插件使用，也能独立配合 Codex、Pi 和 Magpie。
 
-[独立版 dev.6（预发布）](https://github.com/chatwithgod/reflow/releases/tag/v0.1.0-dev.6) · [CPA 版 0.1.4（预发布）](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
+[独立版 0.1.0](https://github.com/chatwithgod/reflow/releases/tag/standalone-v0.1.0) · [CPA 版 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) · [反馈问题](https://github.com/chatwithgod/reflow/issues)
 
 ## 它能做什么？
 
@@ -25,7 +25,7 @@
 
 下载独立程序，解压后启动，再让 Codex 通过它发请求。下面以 Windows 为例。
 
-**1. 下载并启动。** 下载 [Windows x64 独立包](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_windows_amd64.zip)，在解压后的文件夹中打开 PowerShell：
+**1. 下载并启动。** 下载 [Windows x64 独立包](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_windows_amd64.zip)，在解压后的文件夹中打开 PowerShell：
 
 ```powershell
 .\reflow.exe -max-continue 1
@@ -52,10 +52,10 @@
 
 | 系统 | 下载 |
 | --- | --- |
-| macOS Apple Silicon | [独立包](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_darwin_arm64.zip) |
-| macOS Intel | [独立包](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_darwin_amd64.zip) |
-| Linux x64 | [独立包](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_linux_amd64.zip) |
-| Linux ARM64 | [独立包](https://github.com/chatwithgod/reflow/releases/download/v0.1.0-dev.6/reflow_0.1.0-dev.6_linux_arm64.zip) |
+| macOS Apple Silicon | [独立包](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_darwin_arm64.zip) |
+| macOS Intel | [独立包](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_darwin_amd64.zip) |
+| Linux x64 | [独立包](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_linux_amd64.zip) |
+| Linux ARM64 | [独立包](https://github.com/chatwithgod/reflow/releases/download/standalone-v0.1.0/reflow_0.1.0_linux_arm64.zip) |
 
 在解压目录启动 `./reflow -max-continue 1`，保持运行；另开终端依次执行以下命令，然后重启 Codex：
 
@@ -64,7 +64,7 @@
 ./reflow codex-config --action connect
 ```
 
-这些是预发布包。各平台实际测试情况与已知限制见[开发与验证](docs/DEVELOPMENT.md)。
+各平台实际测试情况与已知限制见[开发与验证](docs/DEVELOPMENT.md)。
 
 </details>
 
@@ -78,7 +78,7 @@
 2. 安装后，在本地插件列表中启用它。
 3. 照常使用客户端。全新配置默认会匹配 GPT 文本模型，一般不需要手写模型名单。
 
-商店当前仍提供旧仓库的稳定版 `v0.1.3`。本仓库的 [CPA 0.1.4](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4) 是合并源码后的预发布版，需单独下载；商店入口尚未迁移。
+如果商店仍显示旧版 `0.1.3`，可以直接下载合并仓库的 [CPA 0.1.4 正式版](https://github.com/chatwithgod/reflow/releases/tag/v0.1.4)。需要回退时，[旧版下载](https://github.com/chatwithgod/cpa-plugin-codexreflow/releases/tag/v0.1.3)仍然可用。
 
 如果已经启用了 CodexComp，请先停用它，避免两个插件同时接管同一请求。使用 CPA 插件时，不需要再套一层独立 Reflow。配置选项见[CPA 使用说明](adapters/cpa/docs/CONFIGURATION.md)。
 
@@ -156,7 +156,7 @@ Reflow 把这类数字当成“可能提前停下”的线索，在上游还允�
 - [CPA 配置](adapters/cpa/docs/CONFIGURATION.md) · [统计口径与数据](docs/REASONING-PATTERN-2026-11-12.md)
 - [已测平台、已知限制与开发方法](docs/DEVELOPMENT.md) · [真实登录验收记录](docs/NATIVE-LOGIN-ACCEPTANCE.md)
 
-当前独立版 dev.6 和 CPA 0.1.4 都是预发布版。具体测试结果与未覆盖的范围集中在上述文档中。
+各版本的测试结果和已知限制见[开发与验证](docs/DEVELOPMENT.md)。
 
 ## 来源、致谢与许可证
 
